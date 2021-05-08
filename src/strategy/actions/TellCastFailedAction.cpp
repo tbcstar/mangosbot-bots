@@ -13,7 +13,7 @@ bool TellCastFailedAction::Execute(Event event)
     uint8 castCount, result;
     uint32 spellId;
     p >> castCount >> spellId >> result;
-    ai->SpellInterrupted(spellId);
+    botAI->SpellInterrupted(spellId);
 
     if (result == SPELL_CAST_OK)
         return false;
@@ -46,7 +46,7 @@ bool TellCastFailedAction::Execute(Event event)
     }
     int32 castTime = GetSpellCastTime(pSpellInfo);
     if (castTime >= 2000)
-        ai->TellError(out.str());
+        botAI->TellError(out.str());
     return true;
 }
 
@@ -63,6 +63,6 @@ bool TellSpellAction::Execute(Event event)
         return false;
 
     ostringstream out; out << chat->formatSpell(spellInfo);
-    ai->TellError(out.str());
+    botAI->TellError(out.str());
     return true;
 }

@@ -14,7 +14,7 @@ public:
 private:
 };
 
-HealDruidStrategy::HealDruidStrategy(PlayerbotAI* ai) : GenericDruidStrategy(ai)
+HealDruidStrategy::HealDruidStrategy(PlayerbotAI* botAI) : GenericDruidStrategy(botAI)
 {
     actionNodeFactories.Add(new HealDruidStrategyActionNodeFactory());
 }

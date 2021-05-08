@@ -65,7 +65,7 @@ bool TellReputationAction::Execute(Event event)
         base -= ReputationMgr::PointsInRank[i];
 
     out << " (" << (reputation - base) << "/" << ReputationMgr::PointsInRank[rank] << ")";
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 
     return true;
 }

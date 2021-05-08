@@ -6,7 +6,7 @@
 using namespace ai;
 
 
-GenericPaladinStrategy::GenericPaladinStrategy(PlayerbotAI* ai) : CombatStrategy(ai)
+GenericPaladinStrategy::GenericPaladinStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericPaladinStrategyActionNodeFactory());
 }

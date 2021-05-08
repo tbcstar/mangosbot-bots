@@ -7,29 +7,29 @@ namespace ai
 {
     class EnemyTooCloseForSpellTrigger : public Trigger {
     public:
-        EnemyTooCloseForSpellTrigger(PlayerbotAI* ai) : Trigger(ai, "enemy too close for spell") {}
+        EnemyTooCloseForSpellTrigger(PlayerbotAI* botAI) : Trigger(ai, "enemy too close for spell") {}
         virtual bool IsActive()
 		{
 			Unit* target = AI_VALUE(Unit*, "current target");
             return target &&
-                    sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), ai->GetRange("spell") / 2);
+                    sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), botAI->GetRange("spell") / 2);
         }
     };
 
     class EnemyTooCloseForShootTrigger : public Trigger {
     public:
-        EnemyTooCloseForShootTrigger(PlayerbotAI* ai) : Trigger(ai, "enemy too close for shoot") {}
+        EnemyTooCloseForShootTrigger(PlayerbotAI* botAI) : Trigger(ai, "enemy too close for shoot") {}
         virtual bool IsActive()
 		{
 			Unit* target = AI_VALUE(Unit*, "current target");
             return target &&
-                    sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), ai->GetRange("shoot") / 2);
+                    sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), botAI->GetRange("shoot") / 2);
         }
     };
 
     class EnemyTooCloseForMeleeTrigger : public Trigger {
     public:
-        EnemyTooCloseForMeleeTrigger(PlayerbotAI* ai) : Trigger(ai, "enemy too close for melee") {}
+        EnemyTooCloseForMeleeTrigger(PlayerbotAI* botAI) : Trigger(ai, "enemy too close for melee") {}
         virtual bool IsActive()
 		{
 			Unit* target = AI_VALUE(Unit*, "current target");
@@ -39,7 +39,7 @@ namespace ai
 
     class EnemyIsCloseTrigger : public Trigger {
     public:
-        EnemyIsCloseTrigger(PlayerbotAI* ai) : Trigger(ai, "enemy is close") {}
+        EnemyIsCloseTrigger(PlayerbotAI* botAI) : Trigger(ai, "enemy is close") {}
         virtual bool IsActive()
 		{
 			Unit* target = AI_VALUE(Unit*, "current target");
@@ -50,7 +50,7 @@ namespace ai
 
     class OutOfRangeTrigger : public Trigger {
     public:
-        OutOfRangeTrigger(PlayerbotAI* ai, string name, float distance) : Trigger(ai, name)
+        OutOfRangeTrigger(PlayerbotAI* botAI, string name, float distance) : Trigger(ai, name)
 		{
             this->distance = distance;
         }
@@ -69,25 +69,25 @@ namespace ai
     class EnemyOutOfMeleeTrigger : public OutOfRangeTrigger
 	{
     public:
-        EnemyOutOfMeleeTrigger(PlayerbotAI* ai) : OutOfRangeTrigger(ai, "enemy out of melee range", sPlayerbotAIConfig->meleeDistance) {}
+        EnemyOutOfMeleeTrigger(PlayerbotAI* botAI) : OutOfRangeTrigger(ai, "enemy out of melee range", sPlayerbotAIConfig->meleeDistance) {}
     };
 
     class EnemyOutOfSpellRangeTrigger : public OutOfRangeTrigger
 	{
     public:
-        EnemyOutOfSpellRangeTrigger(PlayerbotAI* ai) : OutOfRangeTrigger(ai, "enemy out of spell range", ai->GetRange("spell")) {}
+        EnemyOutOfSpellRangeTrigger(PlayerbotAI* botAI) : OutOfRangeTrigger(ai, "enemy out of spell range", botAI->GetRange("spell")) {}
     };
 
     class PartyMemberToHealOutOfSpellRangeTrigger : public OutOfRangeTrigger
 	{
     public:
-        PartyMemberToHealOutOfSpellRangeTrigger(PlayerbotAI* ai) : OutOfRangeTrigger(ai, "party member to heal out of spell range", ai->GetRange("heal")) {}
+        PartyMemberToHealOutOfSpellRangeTrigger(PlayerbotAI* botAI) : OutOfRangeTrigger(ai, "party member to heal out of spell range", botAI->GetRange("heal")) {}
         virtual string GetTargetName() { return "party member to heal"; }
     };
 
     class FarFromMasterTrigger : public Trigger {
     public:
-        FarFromMasterTrigger(PlayerbotAI* ai, string name = "far from master", float distance = 12.0f, int checkInterval = 50) : Trigger(ai, name, checkInterval), distance(distance) {}
+        FarFromMasterTrigger(PlayerbotAI* botAI, string name = "far from master", float distance = 12.0f, int checkInterval = 50) : Trigger(ai, name, checkInterval), distance(distance) {}
 
         virtual bool IsActive()
         {
@@ -101,6 +101,6 @@ namespace ai
     class OutOfReactRangeTrigger : public FarFromMasterTrigger
     {
     public:
-        OutOfReactRangeTrigger(PlayerbotAI* ai) : FarFromMasterTrigger(ai, "out of react range", sPlayerbotAIConfig->reactDistance / 2, 10) {}
+        OutOfReactRangeTrigger(PlayerbotAI* botAI) : FarFromMasterTrigger(ai, "out of react range", sPlayerbotAIConfig->reactDistance / 2, 10) {}
     };
 }

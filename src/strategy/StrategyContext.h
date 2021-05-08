@@ -75,37 +75,37 @@ namespace ai
         }
 
     private:
-        static Strategy* behind(PlayerbotAI* ai) { return new SetBehindCombatStrategy(ai); }
-        static Strategy* ranged(PlayerbotAI* ai) { return new RangedCombatStrategy(ai); }
-        static Strategy* close(PlayerbotAI* ai) { return new MeleeCombatStrategy(ai); }
-        static Strategy* mark_rti(PlayerbotAI* ai) { return new MarkRtiStrategy(ai); }
-        static Strategy* tell_target(PlayerbotAI* ai) { return new TellTargetStrategy(ai); }
-        static Strategy* threat(PlayerbotAI* ai) { return new ThreatStrategy(ai); }
-        static Strategy* cast_time(PlayerbotAI* ai) { return new CastTimeStrategy(ai); }
-        static Strategy* potions(PlayerbotAI* ai) { return new UsePotionsStrategy(ai); }
-        static Strategy* kite(PlayerbotAI* ai) { return new KiteStrategy(ai); }
-        static Strategy* duel(PlayerbotAI* ai) { return new DuelStrategy(ai); }
-        static Strategy* flee(PlayerbotAI* ai) { return new FleeStrategy(ai); }
-        static Strategy* dead(PlayerbotAI* ai) { return new DeadStrategy(ai); }
-        static Strategy* racials(PlayerbotAI* ai) { return new RacialsStrategy(ai); }
-        static Strategy* loot(PlayerbotAI* ai) { return new LootNonCombatStrategy(ai); }
-        static Strategy* gather(PlayerbotAI* ai) { return new GatherStrategy(ai); }
-        static Strategy* emote(PlayerbotAI* ai) { return new EmoteStrategy(ai); }
-        static Strategy* passive(PlayerbotAI* ai) { return new PassiveStrategy(ai); }
-        static Strategy* conserve_mana(PlayerbotAI* ai) { return new ConserveManaStrategy(ai); }
-        static Strategy* food(PlayerbotAI* ai) { return new UseFoodStrategy(ai); }
-        static Strategy* chat(PlayerbotAI* ai) { return new ChatCommandHandlerStrategy(ai); }
-        static Strategy* world_packet(PlayerbotAI* ai) { return new WorldPacketHandlerStrategy(ai); }
-        static Strategy* ready_check(PlayerbotAI* ai) { return new ReadyCheckStrategy(ai); }
-        static Strategy* pvp(PlayerbotAI* ai) { return new AttackEnemyPlayersStrategy(ai); }
-        static Strategy* _return(PlayerbotAI* ai) { return new ReturnStrategy(ai); }
-        static Strategy* lfg(PlayerbotAI* ai) { return new LfgStrategy(ai); }
-        static Strategy* custom(PlayerbotAI* ai) { return new CustomStrategy(ai); }
-        static Strategy* reveal(PlayerbotAI* ai) { return new RevealStrategy(ai); }
-        static Strategy* collision(PlayerbotAI* ai) { return new CollisionStrategy(ai); }
-        static Strategy* rpg(PlayerbotAI* ai) { return new RpgStrategy(ai); }
-        static Strategy* sit(PlayerbotAI* ai) { return new SitStrategy(ai); }
-        static Strategy* possible_ads(PlayerbotAI* ai) { return new PossibleAdsStrategy(ai); }
+        static Strategy* behind(PlayerbotAI* botAI) { return new SetBehindCombatStrategy(botAI); }
+        static Strategy* ranged(PlayerbotAI* botAI) { return new RangedCombatStrategy(botAI); }
+        static Strategy* close(PlayerbotAI* botAI) { return new MeleeCombatStrategy(botAI); }
+        static Strategy* mark_rti(PlayerbotAI* botAI) { return new MarkRtiStrategy(botAI); }
+        static Strategy* tell_target(PlayerbotAI* botAI) { return new TellTargetStrategy(botAI); }
+        static Strategy* threat(PlayerbotAI* botAI) { return new ThreatStrategy(botAI); }
+        static Strategy* cast_time(PlayerbotAI* botAI) { return new CastTimeStrategy(botAI); }
+        static Strategy* potions(PlayerbotAI* botAI) { return new UsePotionsStrategy(botAI); }
+        static Strategy* kite(PlayerbotAI* botAI) { return new KiteStrategy(botAI); }
+        static Strategy* duel(PlayerbotAI* botAI) { return new DuelStrategy(botAI); }
+        static Strategy* flee(PlayerbotAI* botAI) { return new FleeStrategy(botAI); }
+        static Strategy* dead(PlayerbotAI* botAI) { return new DeadStrategy(botAI); }
+        static Strategy* racials(PlayerbotAI* botAI) { return new RacialsStrategy(botAI); }
+        static Strategy* loot(PlayerbotAI* botAI) { return new LootNonCombatStrategy(botAI); }
+        static Strategy* gather(PlayerbotAI* botAI) { return new GatherStrategy(botAI); }
+        static Strategy* emote(PlayerbotAI* botAI) { return new EmoteStrategy(botAI); }
+        static Strategy* passive(PlayerbotAI* botAI) { return new PassiveStrategy(botAI); }
+        static Strategy* conserve_mana(PlayerbotAI* botAI) { return new ConserveManaStrategy(botAI); }
+        static Strategy* food(PlayerbotAI* botAI) { return new UseFoodStrategy(botAI); }
+        static Strategy* chat(PlayerbotAI* botAI) { return new ChatCommandHandlerStrategy(botAI); }
+        static Strategy* world_packet(PlayerbotAI* botAI) { return new WorldPacketHandlerStrategy(botAI); }
+        static Strategy* ready_check(PlayerbotAI* botAI) { return new ReadyCheckStrategy(botAI); }
+        static Strategy* pvp(PlayerbotAI* botAI) { return new AttackEnemyPlayersStrategy(botAI); }
+        static Strategy* _return(PlayerbotAI* botAI) { return new ReturnStrategy(botAI); }
+        static Strategy* lfg(PlayerbotAI* botAI) { return new LfgStrategy(botAI); }
+        static Strategy* custom(PlayerbotAI* botAI) { return new CustomStrategy(botAI); }
+        static Strategy* reveal(PlayerbotAI* botAI) { return new RevealStrategy(botAI); }
+        static Strategy* collision(PlayerbotAI* botAI) { return new CollisionStrategy(botAI); }
+        static Strategy* rpg(PlayerbotAI* botAI) { return new RpgStrategy(botAI); }
+        static Strategy* sit(PlayerbotAI* botAI) { return new SitStrategy(botAI); }
+        static Strategy* possible_ads(PlayerbotAI* botAI) { return new PossibleAdsStrategy(botAI); }
     };
 
     class MovementStrategyContext : public NamedObjectContext<Strategy>
@@ -121,11 +121,11 @@ namespace ai
         }
 
     private:
-        static Strategy* guard(PlayerbotAI* ai) { return new GuardStrategy(ai); }
-        static Strategy* follow_master(PlayerbotAI* ai) { return new FollowMasterStrategy(ai); }
-        static Strategy* stay(PlayerbotAI* ai) { return new StayStrategy(ai); }
-        static Strategy* runaway(PlayerbotAI* ai) { return new RunawayStrategy(ai); }
-        static Strategy* flee_from_adds(PlayerbotAI* ai) { return new FleeFromAddsStrategy(ai); }
+        static Strategy* guard(PlayerbotAI* botAI) { return new GuardStrategy(botAI); }
+        static Strategy* follow_master(PlayerbotAI* botAI) { return new FollowMasterStrategy(botAI); }
+        static Strategy* stay(PlayerbotAI* botAI) { return new StayStrategy(botAI); }
+        static Strategy* runaway(PlayerbotAI* botAI) { return new RunawayStrategy(botAI); }
+        static Strategy* flee_from_adds(PlayerbotAI* botAI) { return new FleeFromAddsStrategy(botAI); }
     };
 
     class AssistStrategyContext : public NamedObjectContext<Strategy>
@@ -140,10 +140,10 @@ namespace ai
         }
 
     private:
-        static Strategy* dps_assist(PlayerbotAI* ai) { return new DpsAssistStrategy(ai); }
-        static Strategy* dps_aoe(PlayerbotAI* ai) { return new DpsAoeStrategy(ai); }
-        static Strategy* tank_aoe(PlayerbotAI* ai) { return new TankAoeStrategy(ai); }
-        static Strategy* grind(PlayerbotAI* ai) { return new GrindingStrategy(ai); }
+        static Strategy* dps_assist(PlayerbotAI* botAI) { return new DpsAssistStrategy(botAI); }
+        static Strategy* dps_aoe(PlayerbotAI* botAI) { return new DpsAoeStrategy(botAI); }
+        static Strategy* tank_aoe(PlayerbotAI* botAI) { return new TankAoeStrategy(botAI); }
+        static Strategy* grind(PlayerbotAI* botAI) { return new GrindingStrategy(botAI); }
     };
 
     class QuestStrategyContext : public NamedObjectContext<Strategy>
@@ -156,7 +156,7 @@ namespace ai
         }
 
     private:
-        static Strategy* quest(PlayerbotAI* ai) { return new DefaultQuestStrategy(ai); }
-        static Strategy* accept_all_quests(PlayerbotAI* ai) { return new AcceptAllQuestsStrategy(ai); }
+        static Strategy* quest(PlayerbotAI* botAI) { return new DefaultQuestStrategy(botAI); }
+        static Strategy* accept_all_quests(PlayerbotAI* botAI) { return new AcceptAllQuestsStrategy(botAI); }
     };
 };

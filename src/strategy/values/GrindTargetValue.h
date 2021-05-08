@@ -8,7 +8,7 @@ namespace ai
     class GrindTargetValue : public TargetValue
 	{
 	public:
-        GrindTargetValue(PlayerbotAI* ai) : TargetValue(ai) {}
+        GrindTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
 
     public:
         Unit* Calculate();

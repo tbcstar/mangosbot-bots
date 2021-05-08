@@ -20,11 +20,11 @@ namespace ai
     template <class T> class NamedObjectFactory
     {
     protected:
-        typedef T* (*ActionCreator) (PlayerbotAI* ai);
+        typedef T* (*ActionCreator) (PlayerbotAI* botAI);
         map<string, ActionCreator> creators;
 
     public:
-        T* create(string name, PlayerbotAI* ai)
+        T* create(string name, PlayerbotAI* botAI)
         {
             size_t found = name.find("::");
             string qualifier;
@@ -41,7 +41,7 @@ namespace ai
             if (!creator)
                 return NULL;
 
-            T *object = (*creator)(ai);
+            T *object = (*creator)(botAI);
             Qualified *q = dynamic_cast<Qualified *>(object);
             if (q)
                 q->Qualify(qualifier);
@@ -65,7 +65,7 @@ namespace ai
         NamedObjectContext(bool shared = false, bool supportsSiblings = false) :
             NamedObjectFactory<T>(), shared(shared), supportsSiblings(supportsSiblings) {}
 
-        T* create(string name, PlayerbotAI* ai)
+        T* create(string name, PlayerbotAI* botAI)
         {
             if (created.find(name) == created.end())
                 return created[name] = NamedObjectFactory<T>::create(name, ai);
@@ -142,7 +142,7 @@ namespace ai
             contexts.push_back(context);
         }
 
-        T* GetObject(string name, PlayerbotAI* ai)
+        T* GetObject(string name, PlayerbotAI* botAI)
         {
             for (typename list<NamedObjectContext<T>*>::iterator i = contexts.begin(); i != contexts.end(); i++)
             {
@@ -234,7 +234,7 @@ namespace ai
             factories.push_front(context);
         }
 
-        T* GetObject(string name, PlayerbotAI* ai)
+        T* GetObject(string name, PlayerbotAI* botAI)
         {
             for (typename list<NamedObjectFactory<T>*>::iterator i = factories.begin(); i != factories.end(); i++)
             {

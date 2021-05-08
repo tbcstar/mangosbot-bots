@@ -78,7 +78,7 @@ void TrainerAction::Iterate(Creature* creature, TrainerSpellAction action, Spell
         if (action)
             (this->*action)(cost, tSpell, out);
 
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
     }
 
     TellFooter(totalCost);
@@ -93,13 +93,13 @@ bool TrainerAction::Execute(Event event)
     if (!master)
         return false;
 
-    Creature *creature = ai->GetCreature(master->GetTarget());
+    Creature *creature = botAI->GetCreature(master->GetTarget());
     if (!creature)
         return false;
 
     if (!creature->IsTrainerOf(bot, false))
     {
-        ai->TellError("This trainer cannot teach me");
+        botAI->TellError("This trainer cannot teach me");
         return false;
     }
 
@@ -108,7 +108,7 @@ bool TrainerAction::Execute(Event event)
     TrainerSpellData const* tSpells = creature->GetTrainerTemplateSpells();
     if (!cSpells && !tSpells)
     {
-        ai->TellError("No spells can be learned from this trainer");
+        botAI->TellError("No spells can be learned from this trainer");
         return false;
     }
 
@@ -128,7 +128,7 @@ bool TrainerAction::Execute(Event event)
 void TrainerAction::TellHeader(Creature* creature)
 {
     ostringstream out; out << "--- Can learn from " << creature->GetName() << " ---";
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 }
 
 void TrainerAction::TellFooter(uint32 totalCost)
@@ -136,6 +136,6 @@ void TrainerAction::TellFooter(uint32 totalCost)
     if (totalCost)
     {
         ostringstream out; out << "Total cost: " << chat->formatMoney(totalCost);
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
     }
 }

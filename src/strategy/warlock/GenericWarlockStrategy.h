@@ -8,7 +8,7 @@ namespace ai
     class GenericWarlockStrategy : public CombatStrategy
     {
     public:
-        GenericWarlockStrategy(PlayerbotAI* ai);
+        GenericWarlockStrategy(PlayerbotAI* botAI);
         virtual string getName() { return "warlock"; }
 
     public:
@@ -19,7 +19,7 @@ namespace ai
     class WarlockBoostStrategy : public Strategy
     {
     public:
-        WarlockBoostStrategy(PlayerbotAI* ai) : Strategy(ai) {};
+        WarlockBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
         virtual string getName() { return "boost"; }
 
     public:
@@ -29,7 +29,7 @@ namespace ai
     class WarlockCcStrategy : public Strategy
     {
     public:
-        WarlockCcStrategy(PlayerbotAI* ai) : Strategy(ai) {};
+        WarlockCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
         virtual string getName() { return "cc"; }
 
     public:

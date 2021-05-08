@@ -19,49 +19,49 @@ public:
         creators["backstab"] = &backstab;
     }
 private:
-    static ActionNode* riposte(PlayerbotAI* ai)
+    static ActionNode* riposte(PlayerbotAI* botAI)
     {
         return new ActionNode ("riposte",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("mutilate"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* mutilate(PlayerbotAI* ai)
+    static ActionNode* mutilate(PlayerbotAI* botAI)
     {
         return new ActionNode ("mutilate",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("sinister strike"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* sinister_strike(PlayerbotAI* ai)
+    static ActionNode* sinister_strike(PlayerbotAI* botAI)
     {
         return new ActionNode ("sinister strike",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* kick(PlayerbotAI* ai)
+    static ActionNode* kick(PlayerbotAI* botAI)
     {
         return new ActionNode ("kick",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("kidney shot"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* kidney_shot(PlayerbotAI* ai)
+    static ActionNode* kidney_shot(PlayerbotAI* botAI)
     {
         return new ActionNode ("kidney shot",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* rupture(PlayerbotAI* ai)
+    static ActionNode* rupture(PlayerbotAI* botAI)
     {
         return new ActionNode ("rupture",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("eviscerate"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* backstab(PlayerbotAI* ai)
+    static ActionNode* backstab(PlayerbotAI* botAI)
     {
         return new ActionNode ("backstab",
             /*P*/ NULL,
@@ -70,7 +70,7 @@ private:
     }
 };
 
-DpsRogueStrategy::DpsRogueStrategy(PlayerbotAI* ai) : CombatStrategy(ai)
+DpsRogueStrategy::DpsRogueStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {
     actionNodeFactories.Add(new DpsRogueStrategyActionNodeFactory());
 }

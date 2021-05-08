@@ -2,14 +2,11 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
-#include "playerbot.h"
 #include "ChatFilter.h"
+#include "Playerbot.h"
 #include "strategy/values/RtiTargetValue.h"
 
-using namespace ai;
-using namespace std;
-
-string ChatFilter::Filter(string message)
+std::string ChatFilter::Filter(std::string message)
 {
     if (message.find("@") == string::npos)
         return message;
@@ -19,274 +16,271 @@ string ChatFilter::Filter(string message)
 
 class StrategyChatFilter : public ChatFilter
 {
-public:
-    StrategyChatFilter(PlayerbotAI* ai) : ChatFilter(ai) {}
+    public:
+        StrategyChatFilter(PlayerbotAI* botAI) : ChatFilter(botAI) { }
 
-    virtual string Filter(string message)
-    {
-        Player* bot = ai->GetBot();
+        std::string Filter(std::string message) override
+        {
+            Player* bot = botAI->GetBot();
 
-        bool tank = message.find("@tank") == 0;
-        if (tank && !ai->IsTank(bot))
-            return "";
+            bool tank = message.find("@tank") == 0;
+            if (tank && !botAI->IsTank(bot))
+                return "";
 
-        bool dps = message.find("@dps") == 0;
-        if (dps && (ai->IsTank(bot) || ai->IsHeal(bot)))
-            return "";
+            bool dps = message.find("@dps") == 0;
+            if (dps && (botAI->IsTank(bot) || botAI->IsHeal(bot)))
+                return "";
 
-        bool heal = message.find("@heal") == 0;
-        if (heal && !ai->IsHeal(bot))
-            return "";
+            bool heal = message.find("@heal") == 0;
+            if (heal && !botAI->IsHeal(bot))
+                return "";
 
-        bool ranged = message.find("@ranged") == 0;
-        if (ranged && !ai->IsRanged(bot))
-            return "";
+            bool ranged = message.find("@ranged") == 0;
+            if (ranged && !botAI->IsRanged(bot))
+                return "";
 
-        bool melee = message.find("@melee") == 0;
-        if (melee && ai->IsRanged(bot))
-            return "";
+            bool melee = message.find("@melee") == 0;
+            if (melee && botAI->IsRanged(bot))
+                return "";
 
-        if (tank || dps || heal || ranged || melee)
-            return ChatFilter::Filter(message);
+            if (tank || dps || heal || ranged || melee)
+                return ChatFilter::Filter(message);
 
-        return message;
-    }
+            return message;
+        }
 };
 
 class LevelChatFilter : public ChatFilter
 {
-public:
-    LevelChatFilter(PlayerbotAI* ai) : ChatFilter(ai) {}
+    public:
+        LevelChatFilter(PlayerbotAI* botAI) : ChatFilter(botAI) { }
 
-    virtual string Filter(string message)
-    {
-        Player* bot = ai->GetBot();
-
-        if (message[0] != '@')
-            return message;
-
-        if (message.find("-") != string::npos)
+        std::string Filter(std::string message) override
         {
-            int fromLevel = atoi(message.substr(message.find("@") + 1, message.find("-")).c_str());
-            int toLevel = atoi(message.substr(message.find("-") + 1, message.find(" ")).c_str());
+            Player* bot = botAI->GetBot();
 
-            if (bot->getLevel() >= fromLevel && bot->getLevel() <= toLevel)
+            if (message[0] != '@')
+                return message;
+
+            if (message.find("-") != string::npos)
+            {
+                uint32 fromLevel = atoi(message.substr(message.find("@") + 1, message.find("-")).c_str());
+                uint32 toLevel = atoi(message.substr(message.find("-") + 1, message.find(" ")).c_str());
+
+                if (bot->getLevel() >= fromLevel && bot->getLevel() <= toLevel)
+                    return ChatFilter::Filter(message);
+
+                return message;
+            }
+
+		    uint32 level = atoi(message.substr(message.find("@") + 1, message.find(" ")).c_str());
+            if (bot->getLevel() == level)
                 return ChatFilter::Filter(message);
 
             return message;
         }
-
-		int level = atoi(message.substr(message.find("@") + 1, message.find(" ")).c_str());
-        if (bot->getLevel() == level)
-            return ChatFilter::Filter(message);
-
-        return message;
-    }
 };
 
 class CombatTypeChatFilter : public ChatFilter
 {
-public:
-    CombatTypeChatFilter(PlayerbotAI* ai) : ChatFilter(ai) {}
+    public:
+        CombatTypeChatFilter(PlayerbotAI* botAI) : ChatFilter(botAI) { }
 
-    virtual string Filter(string message)
-    {
-        Player* bot = ai->GetBot();
-
-        bool melee = message.find("@melee") == 0;
-        bool ranged = message.find("@ranged") == 0;
-
-        if (!melee && !ranged)
-            return message;
-
-        switch (bot->getClass())
+        std::string Filter(std::string message) override
         {
-            case CLASS_WARRIOR:
-            case CLASS_PALADIN:
-            case CLASS_ROGUE:
-            /*case CLASS_DEATH_KNIGHT:
-                if (ranged)
-                    return "";
-                break;*/
+            Player* bot = botAI->GetBot();
 
-            case CLASS_HUNTER:
-            case CLASS_PRIEST:
-            case CLASS_MAGE:
-            case CLASS_WARLOCK:
-                if (melee)
-                    return "";
-                break;
+            bool melee = message.find("@melee") == 0;
+            bool ranged = message.find("@ranged") == 0;
 
-            case CLASS_DRUID:
-                if (ranged && ai->IsTank(bot))
-                    return "";
-                if (melee && !ai->IsTank(bot))
-                    return "";
-                break;
+            if (!melee && !ranged)
+                return message;
 
-            case CLASS_SHAMAN:
-                if (melee && ai->IsHeal(bot))
-                    return "";
-                if (ranged && !ai->IsHeal(bot))
-                    return "";
-                break;
+            switch (bot->getClass())
+            {
+                case CLASS_WARRIOR:
+                case CLASS_PALADIN:
+                case CLASS_ROGUE:
+                /*case CLASS_DEATH_KNIGHT:
+                    if (ranged)
+                        return "";
+                    break;*/
+                case CLASS_HUNTER:
+                case CLASS_PRIEST:
+                case CLASS_MAGE:
+                case CLASS_WARLOCK:
+                    if (melee)
+                        return "";
+                    break;
+                case CLASS_DRUID:
+                    if (ranged && botAI->IsTank(bot))
+                        return "";
+                    if (melee && !botAI->IsTank(bot))
+                        return "";
+                    break;
+                case CLASS_SHAMAN:
+                    if (melee && botAI->IsHeal(bot))
+                        return "";
+                    if (ranged && !botAI->IsHeal(bot))
+                        return "";
+                    break;
+            }
+
+            return ChatFilter::Filter(message);
         }
-
-        return ChatFilter::Filter(message);
-    }
 };
 
 class RtiChatFilter : public ChatFilter
 {
-public:
-    RtiChatFilter(PlayerbotAI* ai) : ChatFilter(ai)
-    {
-        rtis.push_back("@star");
-        rtis.push_back("@circle");
-        rtis.push_back("@diamond");
-        rtis.push_back("@triangle");
-        rtis.push_back("@moon");
-        rtis.push_back("@square");
-        rtis.push_back("@cross");
-        rtis.push_back("@skull");
-    }
-
-    virtual string Filter(string message)
-    {
-        Player* bot = ai->GetBot();
-        Group *group = bot->GetGroup();
-        if(!group)
-            return message;
-
-        bool found = false;
-        for (list<string>::iterator i = rtis.begin(); i != rtis.end(); i++)
+    public:
+        RtiChatFilter(PlayerbotAI* botAI) : ChatFilter(botAI)
         {
-            string rti = *i;
-
-            bool isRti = message.find(rti) == 0;
-            if (!isRti)
-                continue;
-
-            ObjectGuid rtiTarget = group->GetTargetIcon(RtiTargetValue::GetRtiIndex(rti.substr(1)));
-            if (bot->GetGUID() == rtiTarget)
-                return ChatFilter::Filter(message);
-
-            Unit* target = *ai->GetAiObjectContext()->GetValue<Unit*>("current target");
-            if (!target)
-                return "";
-
-            if (target->GetGUID() != rtiTarget)
-                return "";
-
-            if (found |= isRti)
-                break;
+            rtis.push_back("@star");
+            rtis.push_back("@circle");
+            rtis.push_back("@diamond");
+            rtis.push_back("@triangle");
+            rtis.push_back("@moon");
+            rtis.push_back("@square");
+            rtis.push_back("@cross");
+            rtis.push_back("@skull");
         }
 
-        if (found)
-            return ChatFilter::Filter(message);
+        std::string Filter(std::string message) override
+        {
+            Player* bot = botAI->GetBot();
+            Group* group = bot->GetGroup();
+            if (!group)
+                return message;
 
-        return message;
-    }
+            bool found = false;
+            for (std::vector<std::string>::iterator i = rtis.begin(); i != rtis.end(); i++)
+            {
+                std::string rti = *i;
 
-private:
-    list<string> rtis;
+                bool isRti = message.find(rti) == 0;
+                if (!isRti)
+                    continue;
+
+                ObjectGuid rtiTarget = group->GetTargetIcon(RtiTargetValue::GetRtiIndex(rti.substr(1)));
+                if (bot->GetGUID() == rtiTarget)
+                    return ChatFilter::Filter(message);
+
+                Unit* target = *botAI->GetAiObjectContext()->GetValue<Unit*>("current target");
+                if (!target)
+                    return "";
+
+                if (target->GetGUID() != rtiTarget)
+                    return "";
+
+                if (found |= isRti)
+                    break;
+            }
+
+            if (found)
+                return ChatFilter::Filter(message);
+
+            return message;
+        }
+
+    private:
+        std::vector<string> rtis;
 };
 
 class ClassChatFilter : public ChatFilter
 {
-public:
-    ClassChatFilter(PlayerbotAI* ai) : ChatFilter(ai)
-    {
-        //classNames["@death_knight"] = CLASS_DEATH_KNIGHT;
-        classNames["@druid"] = CLASS_DRUID;
-        classNames["@hunter"] = CLASS_HUNTER;
-        classNames["@mage"] = CLASS_MAGE;
-        classNames["@paladin"] = CLASS_PALADIN;
-        classNames["@priest"] = CLASS_PRIEST;
-        classNames["@rogue"] = CLASS_ROGUE;
-        classNames["@shaman"] = CLASS_SHAMAN;
-        classNames["@warlock"] = CLASS_WARLOCK;
-        classNames["@warrior"] = CLASS_WARRIOR;
-    }
-
-    virtual string Filter(string message)
-    {
-        Player* bot = ai->GetBot();
-
-        bool found = false;
-        for (map<string, uint8>::iterator i = classNames.begin(); i != classNames.end(); i++)
+    public:
+        ClassChatFilter(PlayerbotAI* botAI) : ChatFilter(botAI)
         {
-            bool isClass = message.find(i->first) == 0;
-            if (isClass && bot->getClass() != i->second)
-                return "";
-
-            if (found |= isClass)
-                break;
+            classNames["@death_knight"] = CLASS_DEATH_KNIGHT;
+            classNames["@druid"] = CLASS_DRUID;
+            classNames["@hunter"] = CLASS_HUNTER;
+            classNames["@mage"] = CLASS_MAGE;
+            classNames["@paladin"] = CLASS_PALADIN;
+            classNames["@priest"] = CLASS_PRIEST;
+            classNames["@rogue"] = CLASS_ROGUE;
+            classNames["@shaman"] = CLASS_SHAMAN;
+            classNames["@warlock"] = CLASS_WARLOCK;
+            classNames["@warrior"] = CLASS_WARRIOR;
         }
 
-        if (found)
-            return ChatFilter::Filter(message);
+        std::string Filter(std::string message) override
+        {
+            Player* bot = botAI->GetBot();
 
-        return message;
-    }
+            bool found = false;
+            for (std::map<std::string, uint8>::iterator i = classNames.begin(); i != classNames.end(); i++)
+            {
+                bool isClass = message.find(i->first) == 0;
+                if (isClass && bot->getClass() != i->second)
+                    return "";
 
-private:
-    map<string, uint8> classNames;
+                if (found |= isClass)
+                    break;
+            }
+
+            if (found)
+                return ChatFilter::Filter(message);
+
+            return message;
+        }
+
+    private:
+        std::map<std::string, uint8> classNames;
 };
 
 class SubGroupChatFilter : public ChatFilter
 {
-public:
-    SubGroupChatFilter(PlayerbotAI* ai) : ChatFilter(ai) {}
+    public:
+        SubGroupChatFilter(PlayerbotAI* botAI) : ChatFilter(botAI) { }
 
-    virtual string Filter(string message)
-    {
-        Player* bot = ai->GetBot();
-
-        if (message.find("@group") == 0)
+        std::string Filter(std::string message) override
         {
-            string pnum = message.substr(6, message.find(" "));
-            int from = atoi(pnum.c_str());
-            int to = from;
-            if (pnum.find("-") != string::npos)
+            Player* bot = botAI->GetBot();
+
+            if (message.find("@group") == 0)
             {
-                from = atoi(pnum.substr(pnum.find("@") + 1, pnum.find("-")).c_str());
-                to = atoi(pnum.substr(pnum.find("-") + 1, pnum.find(" ")).c_str());
+                std::string pnum = message.substr(6, message.find(" "));
+                uint32 from = atoi(pnum.c_str());
+                uint32 to = from;
+                if (pnum.find("-") != string::npos)
+                {
+                    from = atoi(pnum.substr(pnum.find("@") + 1, pnum.find("-")).c_str());
+                    to = atoi(pnum.substr(pnum.find("-") + 1, pnum.find(" ")).c_str());
+                }
+
+                if (!bot->GetGroup())
+                    return message;
+
+                uint32 sg = bot->GetSubGroup() + 1;
+                if (sg >= from && sg <= to)
+                    return ChatFilter::Filter(message);
             }
 
-            if (!bot->GetGroup())
-                return message;
-
-            int sg = (int)bot->GetSubGroup() + 1;
-            if (sg >= from && sg <= to)
-                return ChatFilter::Filter(message);
+            return message;
         }
-
-        return message;
-    }
 };
 
-CompositeChatFilter::CompositeChatFilter(PlayerbotAI* ai) : ChatFilter(ai)
+CompositeChatFilter::CompositeChatFilter(PlayerbotAI* botAI) : ChatFilter(botAI)
 {
-    filters.push_back(new StrategyChatFilter(ai));
-    filters.push_back(new ClassChatFilter(ai));
-    filters.push_back(new RtiChatFilter(ai));
-    filters.push_back(new CombatTypeChatFilter(ai));
-    filters.push_back(new LevelChatFilter(ai));
-    filters.push_back(new SubGroupChatFilter(ai));
+    filters.push_back(new StrategyChatFilter(botAI));
+    filters.push_back(new ClassChatFilter(botAI));
+    filters.push_back(new RtiChatFilter(botAI));
+    filters.push_back(new CombatTypeChatFilter(botAI));
+    filters.push_back(new LevelChatFilter(botAI));
+    filters.push_back(new SubGroupChatFilter(botAI));
 }
 
 CompositeChatFilter::~CompositeChatFilter()
 {
-    for (list<ChatFilter*>::iterator i = filters.begin(); i != filters.end(); i++)
+    for (std::vector<ChatFilter*>::iterator i = filters.begin(); i != filters.end(); i++)
         delete (*i);
 }
 
-string CompositeChatFilter::Filter(string message)
+std::string CompositeChatFilter::Filter(std::string message)
 {
-    for (int j = 0; j < filters.size(); ++j)
+    for (uint32 j = 0; j < filters.size(); ++j)
     {
-        for (list<ChatFilter*>::iterator i = filters.begin(); i != filters.end(); i++)
+        for (std::vector<ChatFilter*>::iterator i = filters.begin(); i != filters.end(); i++)
         {
             message = (*i)->Filter(message);
             if (message.empty())

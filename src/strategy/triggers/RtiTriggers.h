@@ -8,7 +8,7 @@ namespace ai
     class NoRtiTrigger : public Trigger
     {
     public:
-        NoRtiTrigger(PlayerbotAI* ai) : Trigger(ai, "no rti target") {}
+        NoRtiTrigger(PlayerbotAI* botAI) : Trigger(ai, "no rti target") {}
 
         virtual bool IsActive()
 		{

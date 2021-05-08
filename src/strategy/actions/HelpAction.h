@@ -6,7 +6,7 @@ namespace ai
 {
     class HelpAction : public Action {
     public:
-        HelpAction(PlayerbotAI* ai);
+        HelpAction(PlayerbotAI* botAI);
         virtual ~HelpAction();
         virtual bool Execute(Event event);
 

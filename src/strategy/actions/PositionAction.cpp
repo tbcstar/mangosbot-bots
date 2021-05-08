@@ -5,18 +5,18 @@
 
 using namespace ai;
 
-void TellPosition(PlayerbotAI* ai, string name, ai::Position pos)
+void TellPosition(PlayerbotAI* botAI, string name, ai::Position pos)
 {
     ostringstream out; out << "Position " << name;
     if (pos.isSet())
     {
         float x = pos.x, y = pos.y;
-        Map2ZoneCoordinates(x, y, ai->GetBot()->GetZoneId());
+        Map2ZoneCoordinates(x, y, botAI->GetBot()->GetZoneId());
         out << " is set to " << x << "," << y;
     }
     else
         out << " is not set";
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 }
 
 bool PositionAction::Execute(Event event)
@@ -43,7 +43,7 @@ bool PositionAction::Execute(Event event)
     vector<string> params = split(param, ' ');
     if (params.size() != 2)
     {
-        ai->TellMaster("Whisper position <name> ?/set/reset");
+        botAI->TellMaster("Whisper position <name> ?/set/reset");
         return false;
     }
 
@@ -59,21 +59,21 @@ bool PositionAction::Execute(Event event)
     vector<string> coords = split(action, ',');
     if (coords.size() == 3)
     {
-        pos.Set(atoi(coords[0].c_str()), atoi(coords[1].c_str()), atoi(coords[2].c_str()), ai->GetBot()->GetMapId());
+        pos.Set(atoi(coords[0].c_str()), atoi(coords[1].c_str()), atoi(coords[2].c_str()), botAI->GetBot()->GetMapId());
         posMap[name] = pos;
 
         ostringstream out; out << "Position " << name << " is set";
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
         return true;
     }
 
 	if (action == "set")
 	{
-	    pos.Set( bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ(), ai->GetBot()->GetMapId());
+	    pos.Set( bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ(), botAI->GetBot()->GetMapId());
 	    posMap[name] = pos;
 
 	    ostringstream out; out << "Position " << name << " is set";
-	    ai->TellMaster(out);
+	    botAI->TellMaster(out);
 	    return true;
 	}
 
@@ -83,7 +83,7 @@ bool PositionAction::Execute(Event event)
 	    posMap[name] = pos;
 
 	    ostringstream out; out << "Position " << name << " is reset";
-	    ai->TellMaster(out);
+	    botAI->TellMaster(out);
 	    return true;
 	}
 
@@ -96,7 +96,7 @@ bool MoveToPositionAction::Execute(Event event)
     if (!pos.isSet())
     {
         ostringstream out; out << "Position " << qualifier << " is not set";
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
         return false;
     }
 

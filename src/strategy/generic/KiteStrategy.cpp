@@ -4,7 +4,7 @@
 
 using namespace ai;
 
-KiteStrategy::KiteStrategy(PlayerbotAI* ai) : Strategy(ai)
+KiteStrategy::KiteStrategy(PlayerbotAI* botAI) : Strategy(botAI)
 {
 }
 

@@ -6,11 +6,11 @@ namespace ai
 {
     class TellMasterAction : public Action {
     public:
-        TellMasterAction(PlayerbotAI* ai, string text) : Action(ai, "tell master"), text(text) {}
+        TellMasterAction(PlayerbotAI* botAI, string text) : Action(ai, "tell master"), text(text) {}
 
         virtual bool Execute(Event event)
         {
-            ai->TellMaster(text);
+            botAI->TellMaster(text);
             return true;
         }
 
@@ -20,18 +20,18 @@ namespace ai
 
     class OutOfReactRangeAction : public MovementAction {
     public:
-        OutOfReactRangeAction(PlayerbotAI* ai) : MovementAction(ai, "tell out of react range") {}
+        OutOfReactRangeAction(PlayerbotAI* botAI) : MovementAction(ai, "tell out of react range") {}
 
         virtual bool Execute(Event event)
         {
             bool canFollow = Follow(AI_VALUE(Unit*, "master target"));
             if (!canFollow)
             {
-                ai->SetNextCheckDelay(5000);
+                botAI->SetNextCheckDelay(5000);
                 return false;
             }
 
-            ai->TellMaster("Wait for me!");
+            botAI->TellMaster("Wait for me!");
             return true;
         }
    };

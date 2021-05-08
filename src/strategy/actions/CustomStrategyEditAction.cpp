@@ -25,9 +25,9 @@ bool CustomStrategyEditAction::Execute(Event event)
 
 bool CustomStrategyEditAction::PrintHelp()
 {
-    ai->TellMaster("=== Custom strategies ===");
+    botAI->TellMaster("=== Custom strategies ===");
 
-    uint32 owner = (uint32)ai->GetBot()->GetGUIDLow();
+    uint32 owner = (uint32)botAI->GetBot()->GetGUIDLow();
     QueryResult* results = CharacterDatabase.PQuery("SELECT distinct name FROM ai_playerbot_custom_strategy WHERE owner = '%u'",
             owner);
     if (results)
@@ -36,21 +36,21 @@ bool CustomStrategyEditAction::PrintHelp()
         {
             Field* fields = results->Fetch();
             string name = fields[0].GetString();
-            ai->TellMaster(name);
+            botAI->TellMaster(name);
         } while (results->NextRow());
 
         delete results;
     }
-    ai->TellMaster("Usage: cs <name> <idx> <command>");
+    botAI->TellMaster("Usage: cs <name> <idx> <command>");
     return false;
 }
 
 bool CustomStrategyEditAction::Print(string name)
 {
     ostringstream out; out << "=== " << name << " ===";
-    ai->TellMaster(out.str());
+    botAI->TellMaster(out.str());
 
-    uint32 owner = (uint32)ai->GetBot()->GetGUIDLow();
+    uint32 owner = (uint32)botAI->GetBot()->GetGUIDLow();
     QueryResult* results = CharacterDatabase.PQuery("SELECT idx, action_line FROM ai_playerbot_custom_strategy WHERE name = '%s' and owner = '%u' order by idx",
             name.c_str(), owner);
     if (results)
@@ -71,7 +71,7 @@ bool CustomStrategyEditAction::Print(string name)
 
 bool CustomStrategyEditAction::Edit(string name, uint32 idx, string command)
 {
-    uint32 owner = (uint32)ai->GetBot()->GetGUIDLow();
+    uint32 owner = (uint32)botAI->GetBot()->GetGUIDLow();
     QueryResult* results = CharacterDatabase.PQuery("SELECT action_line FROM ai_playerbot_custom_strategy WHERE name = '%s' and owner = '%u' and idx = '%u'",
             name.c_str(), owner, idx);
     if (results)
@@ -97,14 +97,14 @@ bool CustomStrategyEditAction::Edit(string name, uint32 idx, string command)
     PrintActionLine(idx, command);
 
     ostringstream ss; ss << "custom::" << name;
-    Strategy* strategy = ai->GetAiObjectContext()->GetStrategy(ss.str());
+    Strategy* strategy = botAI->GetAiObjectContext()->GetStrategy(ss.str());
     if (strategy)
     {
         CustomStrategy *cs = dynamic_cast<CustomStrategy*>(strategy);
         if (cs)
         {
             cs->Reset();
-            ai->ReInitCurrentEngine();
+            botAI->ReInitCurrentEngine();
         }
     }
     return true;
@@ -113,6 +113,6 @@ bool CustomStrategyEditAction::Edit(string name, uint32 idx, string command)
 bool CustomStrategyEditAction::PrintActionLine(uint32 idx, string command)
 {
     ostringstream out; out << "#" << idx << " " << command;
-    ai->TellMaster(out.str());
+    botAI->TellMaster(out.str());
     return true;
 }

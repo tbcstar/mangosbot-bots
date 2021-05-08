@@ -7,14 +7,14 @@ using namespace ai;
 
 void QueryQuestAction::TellObjective(string name, int available, int required)
 {
-    ai->TellMaster(chat->formatQuestObjective(name, available, required));
+    botAI->TellMaster(chat->formatQuestObjective(name, available, required));
 }
 
 
 bool QueryQuestAction::Execute(Event event)
 {
 
-    Player *bot = ai->GetBot();
+    Player *bot = botAI->GetBot();
     string text = event.getParam();
 
     PlayerbotChatHandler ch(bot);
@@ -32,12 +32,12 @@ bool QueryQuestAction::Execute(Event event)
         if (bot->GetQuestStatus(questId) == QUEST_STATUS_COMPLETE)
         {
             out << "|c0000FF00completed|r ---";
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
         }
         else
         {
             out << "|c00FF0000not completed|r ---";
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
             TellObjectives(questId);
         }
 
@@ -55,7 +55,7 @@ void QueryQuestAction::TellObjectives(uint32 questId)
     for (int i = 0; i < QUEST_OBJECTIVES_COUNT; i++)
     {
         if (!questTemplate->ObjectiveText[i].empty())
-            ai->TellMaster(questTemplate->ObjectiveText[i]);
+            botAI->TellMaster(questTemplate->ObjectiveText[i]);
 
         if (questTemplate->ReqItemId[i])
         {

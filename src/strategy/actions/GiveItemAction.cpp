@@ -20,7 +20,7 @@ bool GiveItemAction::Execute(Event event)
     if (!receiverAi)
         return false;
 
-    if (receiverAi->GetAiObjectContext()->GetValue<uint8>("item count", item)->Get())
+    if (receiverbotAI->GetAiObjectContext()->GetValue<uint8>("item count", item)->Get())
         return true;
 
     bool moved = false;
@@ -40,13 +40,13 @@ bool GiveItemAction::Execute(Event event)
 
             ostringstream out;
             out << "Got " << chat->formatItem(item->GetProto(), item->GetCount()) << " from " << bot->GetName();
-            receiverAi->TellMasterNoFacing(out.str());
+            receiverbotAI->TellMasterNoFacing(out.str());
         }
         else
         {
             ostringstream out;
             out << "Cannot get " << chat->formatItem(item->GetProto(), item->GetCount()) << " from " << bot->GetName() << "- my bags are full";
-            receiverAi->TellError(out.str());
+            receiverbotAI->TellError(out.str());
         }
     }
 

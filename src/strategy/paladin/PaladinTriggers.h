@@ -11,14 +11,14 @@ namespace ai
 	class CrusaderAuraTrigger : public BuffTrigger
 	{
 	public:
-		CrusaderAuraTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "crusader aura") {}
+		CrusaderAuraTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "crusader aura") {}
 		virtual bool IsActive();
 	};
 
 	class SealTrigger : public BuffTrigger
 	{
 	public:
-		SealTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "seal of justice") {}
+		SealTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "seal of justice") {}
 		virtual bool IsActive();
 	};
 
@@ -28,109 +28,109 @@ namespace ai
     class BlessingOnPartyTrigger : public BuffOnPartyTrigger
     {
     public:
-        BlessingOnPartyTrigger(PlayerbotAI* ai) : BuffOnPartyTrigger(ai, "blessing of kings,blessing of might,blessing of wisdom", 2) {}
+        BlessingOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(ai, "blessing of kings,blessing of might,blessing of wisdom", 2) {}
     };
 
     class BlessingTrigger : public BuffTrigger
     {
     public:
-        BlessingTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "blessing of sanctuary", 2) {}
+        BlessingTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "blessing of sanctuary", 2) {}
         virtual bool IsActive();
     };
 
     class HammerOfJusticeInterruptSpellTrigger : public InterruptSpellTrigger
     {
     public:
-        HammerOfJusticeInterruptSpellTrigger(PlayerbotAI* ai) : InterruptSpellTrigger(ai, "hammer of justice") {}
+        HammerOfJusticeInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(ai, "hammer of justice") {}
     };
 
     class HammerOfJusticeSnareTrigger : public SnareTargetTrigger
     {
     public:
-        HammerOfJusticeSnareTrigger(PlayerbotAI* ai) : SnareTargetTrigger(ai, "hammer of justice") {}
+        HammerOfJusticeSnareTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(ai, "hammer of justice") {}
     };
 
     class ArtOfWarTrigger : public HasAuraTrigger
     {
     public:
-        ArtOfWarTrigger(PlayerbotAI* ai) : HasAuraTrigger(ai, "the art of war") {}
+        ArtOfWarTrigger(PlayerbotAI* botAI) : HasAuraTrigger(ai, "the art of war") {}
     };
 
     class ShadowResistanceAuraTrigger : public BuffTrigger
     {
     public:
-        ShadowResistanceAuraTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "shadow resistance aura") {}
+        ShadowResistanceAuraTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "shadow resistance aura") {}
     };
 
     class FrostResistanceAuraTrigger : public BuffTrigger
     {
     public:
-        FrostResistanceAuraTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "frost resistance aura") {}
+        FrostResistanceAuraTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "frost resistance aura") {}
     };
 
     class FireResistanceAuraTrigger : public BuffTrigger
     {
     public:
-        FireResistanceAuraTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "fire resistance aura") {}
+        FireResistanceAuraTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "fire resistance aura") {}
     };
 
     class DevotionAuraTrigger : public BuffTrigger
     {
     public:
-        DevotionAuraTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "devotion aura") {}
+        DevotionAuraTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "devotion aura") {}
     };
 
     class CleanseCureDiseaseTrigger : public NeedCureTrigger
     {
     public:
-        CleanseCureDiseaseTrigger(PlayerbotAI* ai) : NeedCureTrigger(ai, "cleanse", DISPEL_DISEASE) {}
+        CleanseCureDiseaseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "cleanse", DISPEL_DISEASE) {}
     };
 
     class CleanseCurePartyMemberDiseaseTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        CleanseCurePartyMemberDiseaseTrigger(PlayerbotAI* ai) : PartyMemberNeedCureTrigger(ai, "cleanse", DISPEL_DISEASE) {}
+        CleanseCurePartyMemberDiseaseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "cleanse", DISPEL_DISEASE) {}
     };
 
     class CleanseCurePoisonTrigger : public NeedCureTrigger
     {
     public:
-        CleanseCurePoisonTrigger(PlayerbotAI* ai) : NeedCureTrigger(ai, "cleanse", DISPEL_POISON) {}
+        CleanseCurePoisonTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "cleanse", DISPEL_POISON) {}
     };
 
     class CleanseCurePartyMemberPoisonTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        CleanseCurePartyMemberPoisonTrigger(PlayerbotAI* ai) : PartyMemberNeedCureTrigger(ai, "cleanse", DISPEL_POISON) {}
+        CleanseCurePartyMemberPoisonTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "cleanse", DISPEL_POISON) {}
     };
 
     class CleanseCureMagicTrigger : public NeedCureTrigger
     {
     public:
-        CleanseCureMagicTrigger(PlayerbotAI* ai) : NeedCureTrigger(ai, "cleanse", DISPEL_MAGIC) {}
+        CleanseCureMagicTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "cleanse", DISPEL_MAGIC) {}
     };
 
     class CleanseCurePartyMemberMagicTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        CleanseCurePartyMemberMagicTrigger(PlayerbotAI* ai) : PartyMemberNeedCureTrigger(ai, "cleanse", DISPEL_MAGIC) {}
+        CleanseCurePartyMemberMagicTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "cleanse", DISPEL_MAGIC) {}
     };
 
     class HammerOfJusticeEnemyHealerTrigger : public InterruptEnemyHealerTrigger
     {
     public:
-        HammerOfJusticeEnemyHealerTrigger(PlayerbotAI* ai) : InterruptEnemyHealerTrigger(ai, "hammer of justice") {}
+        HammerOfJusticeEnemyHealerTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(ai, "hammer of justice") {}
     };
 
     class DivineFavorTrigger : public BuffTrigger
     {
     public:
-        DivineFavorTrigger(PlayerbotAI* ai) : BuffTrigger(ai, "divine favor") {}
+        DivineFavorTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "divine favor") {}
     };
 
     class TurnUndeadTrigger : public HasCcTargetTrigger
     {
     public:
-        TurnUndeadTrigger(PlayerbotAI* ai) : HasCcTargetTrigger(ai, "turn undead") {}
+        TurnUndeadTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(ai, "turn undead") {}
     };
 }

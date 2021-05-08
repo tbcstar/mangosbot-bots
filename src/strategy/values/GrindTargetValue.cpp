@@ -34,7 +34,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
     list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (!unit || !sServerFacade->IsAlive(unit))
             continue;
 
@@ -50,7 +50,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
     Unit* result = NULL;
     for(list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.end(); tIter++)
     {
-        Unit* unit = ai->GetUnit(*tIter);
+        Unit* unit = botAI->GetUnit(*tIter);
         if (!unit)
             continue;
 
@@ -116,8 +116,8 @@ int GrindTargetValue::GetTargetingPlayerCount( Unit* unit )
         if( !member || !sServerFacade->IsAlive(member) || member == bot)
             continue;
 
-        PlayerbotAI* ai = member->GetPlayerbotAI();
-        if ((ai && *ai->GetAiObjectContext()->GetValue<Unit*>("current target") == unit) ||
+        PlayerbotAI* botAI = member->GetPlayerbotAI();
+        if ((ai && *botAI->GetAiObjectContext()->GetValue<Unit*>("current target") == unit) ||
             (!ai && member->GetTarget() == unit->GetGUID()))
             count++;
     }

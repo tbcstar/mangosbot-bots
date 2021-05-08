@@ -7,6 +7,6 @@ namespace ai
     class WarlockAiObjectContext : public AiObjectContext
     {
     public:
-        WarlockAiObjectContext(PlayerbotAI* ai);
+        WarlockAiObjectContext(PlayerbotAI* botAI);
     };
 }

@@ -5,7 +5,7 @@ namespace ai
     class KiteStrategy : public Strategy
     {
     public:
-        KiteStrategy(PlayerbotAI* ai);
+        KiteStrategy(PlayerbotAI* botAI);
         virtual string getName() { return "kite"; }
     
     public:

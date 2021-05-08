@@ -8,7 +8,7 @@ namespace ai
     class CcTargetValue : public TargetValue, public Qualified
 	{
 	public:
-        CcTargetValue(PlayerbotAI* ai) : TargetValue(ai) {}
+        CcTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
 
     public:
         Unit* Calculate();

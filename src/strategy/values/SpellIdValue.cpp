@@ -6,7 +6,7 @@
 
 using namespace ai;
 
-SpellIdValue::SpellIdValue(PlayerbotAI* ai) :
+SpellIdValue::SpellIdValue(PlayerbotAI* botAI) :
         CalculatedValue<uint32>(ai, "spell id")
 {
 }

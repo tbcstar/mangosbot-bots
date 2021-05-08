@@ -6,7 +6,7 @@ namespace ai
 {
     class HireAction : public Action {
     public:
-        HireAction(PlayerbotAI* ai) : Action(ai, "hire") {}
+        HireAction(PlayerbotAI* botAI) : Action(ai, "hire") {}
         virtual bool Execute(Event event);
 
     };

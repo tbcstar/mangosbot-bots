@@ -65,19 +65,19 @@ void BuffAction::TellHeader(uint32 subClass)
     switch (subClass)
     {
     case ITEM_SUBCLASS_ELIXIR:
-        ai->TellMaster("--- Elixir ---");
+        botAI->TellMaster("--- Elixir ---");
         return;
     case ITEM_SUBCLASS_FLASK:
-        ai->TellMaster("--- Flask ---");
+        botAI->TellMaster("--- Flask ---");
         return;
     case ITEM_SUBCLASS_SCROLL:
-        ai->TellMaster("--- Scroll ---");
+        botAI->TellMaster("--- Scroll ---");
         return;
     case ITEM_SUBCLASS_FOOD:
-        ai->TellMaster("--- Food ---");
+        botAI->TellMaster("--- Food ---");
         return;
     case ITEM_SUBCLASS_ITEM_ENHANCEMENT:
-        ai->TellMaster("--- Enchant ---");
+        botAI->TellMaster("--- Enchant ---");
         return;
     }
 }
@@ -107,7 +107,7 @@ bool BuffAction::Execute(Event event)
             Item* item = *j;
             ostringstream out;
             out << chat->formatItem(item->GetProto(), item->GetCount());
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
         }
     }
     

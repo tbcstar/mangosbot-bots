@@ -4,7 +4,7 @@ namespace ai
 {
 	class TaxiAction : public Action {
 	public:
-		TaxiAction(PlayerbotAI* ai) : Action(ai, "taxi") {}
+		TaxiAction(PlayerbotAI* botAI) : Action(ai, "taxi") {}
 
     public:
         virtual bool Execute(Event event);

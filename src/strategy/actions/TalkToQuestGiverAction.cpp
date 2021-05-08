@@ -28,7 +28,7 @@ void TalkToQuestGiverAction::ProcessQuest(Quest const* quest, WorldObject* quest
     }
 
     out << ": " << chat->formatQuest(quest);
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 }
 
 void TalkToQuestGiverAction::TurnInQuest(Quest const* quest, WorldObject* questGiver, ostringstream& out) 
@@ -85,7 +85,7 @@ void TalkToQuestGiverAction::AskToSelectReward(Quest const* quest, ostringstream
         ItemPrototype const* item = sObjectMgr->GetItemPrototype(quest->RewChoiceItemId[i]);
         msg << chat->formatItem(item);
     }
-    ai->TellMaster(msg);
+    botAI->TellMaster(msg);
 
     out << "Reward pending";
 }

@@ -8,7 +8,7 @@ namespace ai
     class QuestAction : public Action 
     {
     public:
-        QuestAction(PlayerbotAI* ai, string name) : Action(ai, name) {}
+        QuestAction(PlayerbotAI* botAI, string name) : Action(ai, name) {}
 
     public:
         virtual bool Execute(Event event);
@@ -25,7 +25,7 @@ namespace ai
     class QuestObjectiveCompletedAction : public Action 
     {
     public:
-        QuestObjectiveCompletedAction(PlayerbotAI* ai) : Action(ai, "quest objective completed") {}
+        QuestObjectiveCompletedAction(PlayerbotAI* botAI) : Action(ai, "quest objective completed") {}
 
     public:
         virtual bool Execute(Event event);

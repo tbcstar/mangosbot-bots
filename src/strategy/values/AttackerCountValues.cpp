@@ -38,7 +38,7 @@ bool HasAggroValue::Calculate()
         if (victim)
         {
             Player* pl = dynamic_cast<Player*>(victim);
-            if (pl && ai->IsTank(pl)) return true;
+            if (pl && botAI->IsTank(pl)) return true;
         }
     }
 
@@ -53,7 +53,7 @@ uint8 AttackerCountValue::Calculate()
     list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (!unit || !sServerFacade->IsAlive(unit))
             continue;
 
@@ -88,7 +88,7 @@ uint8 BalancePercentValue::Calculate()
 
     for (list<ObjectGuid>::iterator i = v.begin(); i!=v.end(); i++)
     {
-        Creature* creature = ai->GetCreature((*i));
+        Creature* creature = botAI->GetCreature((*i));
         if (!creature || !sServerFacade->IsAlive(creature))
             continue;
 

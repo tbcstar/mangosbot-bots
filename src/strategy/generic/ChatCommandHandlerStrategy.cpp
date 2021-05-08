@@ -13,7 +13,7 @@ public:
     }
 
 private:
-    static ActionNode* tank_attack_chat_shortcut(PlayerbotAI* ai)
+    static ActionNode* tank_attack_chat_shortcut(PlayerbotAI* botAI)
     {
         return new ActionNode ("tank attack chat shortcut",
             /*P*/ NULL,
@@ -139,7 +139,7 @@ void ChatCommandHandlerStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 
 
 
-ChatCommandHandlerStrategy::ChatCommandHandlerStrategy(PlayerbotAI* ai) : PassTroughStrategy(ai)
+ChatCommandHandlerStrategy::ChatCommandHandlerStrategy(PlayerbotAI* botAI) : PassTroughStrategy(botAI)
 {
     actionNodeFactories.Add(new ChatCommandActionNodeFactoryInternal());
 

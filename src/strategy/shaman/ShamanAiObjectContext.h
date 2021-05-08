@@ -7,6 +7,6 @@ namespace ai
     class ShamanAiObjectContext : public AiObjectContext
     {
     public:
-        ShamanAiObjectContext(PlayerbotAI* ai);
+        ShamanAiObjectContext(PlayerbotAI* botAI);
     };
 }

@@ -8,7 +8,7 @@ namespace ai
     class PossibleTargetsValue : public NearestUnitsValue
 	{
 	public:
-        PossibleTargetsValue(PlayerbotAI* ai, string name = "possible targets", float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :
+        PossibleTargetsValue(PlayerbotAI* botAI, string name = "possible targets", float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :
           NearestUnitsValue(ai, name, range, ignoreLos) {}
 
     protected:
@@ -20,7 +20,7 @@ namespace ai
     class AllTargetsValue : public PossibleTargetsValue
 	{
 	public:
-        AllTargetsValue(PlayerbotAI* ai, float range = sPlayerbotAIConfig->sightDistance) :
+        AllTargetsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) :
             PossibleTargetsValue(ai, "all targets", range, true) {}
 	};
 }

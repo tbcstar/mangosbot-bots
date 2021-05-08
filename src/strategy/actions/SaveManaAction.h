@@ -8,7 +8,7 @@ namespace ai
     class SaveManaAction : public Action
     {
     public:
-        SaveManaAction(PlayerbotAI* ai) : Action(ai, "save mana") {}
+        SaveManaAction(PlayerbotAI* botAI) : Action(ai, "save mana") {}
 
     public:
         virtual bool Execute(Event event);

@@ -35,19 +35,19 @@ bool UseItemAction::Execute(Event event)
             return UseItemOnGameObject(*items.begin(), *gos.begin());
     }
 
-    ai->TellError("No items (or game objects) available");
+    botAI->TellError("No items (or game objects) available");
     return false;
 }
 
 bool UseItemAction::UseGameObject(ObjectGuid guid)
 {
-    GameObject* go = ai->GetGameObject(guid);
+    GameObject* go = botAI->GetGameObject(guid);
     if (!go || !sServerFacade->isSpawned(go) || go->GetGoState() != GO_STATE_READY)
         return false;
 
     go->Use(bot);
     ostringstream out; out << "Using " << chat->formatGameobject(go);
-    ai->TellMasterNoFacing(out.str());
+    botAI->TellMasterNoFacing(out.str());
     return true;
 }
 
@@ -100,7 +100,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
 
     if (goGuid)
     {
-        GameObject* go = ai->GetGameObject(goGuid);
+        GameObject* go = botAI->GetGameObject(goGuid);
         if (!go || !sServerFacade->isSpawned(go))
             return false;
 
@@ -127,7 +127,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
 		ObjectGuid masterSelection = master->GetTarget();
 		if (masterSelection)
 		{
-			Unit* unit = ai->GetUnit(masterSelection);
+			Unit* unit = botAI->GetUnit(masterSelection);
 			if (unit)
 			{
 			    targetFlag = TARGET_FLAG_UNIT;
@@ -149,7 +149,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
             packet << uint32(0);
             bot->GetSession()->HandleQuestgiverAcceptQuestOpcode(packet);
             ostringstream out; out << "Got quest " << chat->formatQuest(qInfo);
-            ai->TellMasterNoFacing(out.str());
+            botAI->TellMasterNoFacing(out.str());
             return true;
         }
     }
@@ -160,7 +160,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
     if (sServerFacade->isMoving(bot))
     {
         bot->StopMoving();
-        ai->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
         return false;
     }
 
@@ -170,7 +170,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
         if (!spellId)
             continue;
 
-        if (!ai->CanCastSpell(spellId, bot, false))
+        if (!botAI->CanCastSpell(spellId, bot, false))
             continue;
 
 		const SpellEntry* const pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
@@ -203,7 +203,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
             }
 
             Spell *spell = new Spell(bot, pSpellInfo, false);
-            ai->WaitForSpellCast(spell);
+            botAI->WaitForSpellCast(spell);
             delete spell;
         }
         break;
@@ -228,7 +228,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
             return false;
 
         bot->addUnitState(UNIT_STAND_STATE_SIT);
-        ai->InterruptSpell();
+        botAI->InterruptSpell();
 
         float hp = bot->GetHealthPercent();
         float mp = bot->GetPower(POWER_MANA) * 100.0f / bot->GetMaxPower(POWER_MANA);
@@ -248,13 +248,13 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
             p = hp;
             TellConsumableUse(item, "Eating", p);
         }
-        ai->SetNextCheckDelay(27000.0f * (100 - p) / 100.0f);
+        botAI->SetNextCheckDelay(27000.0f * (100 - p) / 100.0f);
         bot->GetSession()->HandleUseItemOpcode(packet);
         return true;
     }
 
-    ai->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
-    ai->TellMasterNoFacing(out.str());
+    botAI->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
+    botAI->TellMasterNoFacing(out.str());
     bot->GetSession()->HandleUseItemOpcode(packet);
     return true;
 }
@@ -265,7 +265,7 @@ void UseItemAction::TellConsumableUse(Item* item, string action, float percent)
     out << action << " " << chat->formatItem(item->GetProto());
     if ((int)item->GetProto()->Stackable > 1) out << "/x" << item->GetCount();
     out  << " (" << round(percent) << "%)";
-    ai->TellMasterNoFacing(out.str());
+    botAI->TellMasterNoFacing(out.str());
 }
 
 bool UseItemAction::isPossible()

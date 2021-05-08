@@ -4,7 +4,7 @@
 
 using namespace ai;
 
-RangeValue::RangeValue(PlayerbotAI* ai)
+RangeValue::RangeValue(PlayerbotAI* botAI)
     : ManualSetValue<float>(ai, 0, "range"), Qualified()
 {
 }

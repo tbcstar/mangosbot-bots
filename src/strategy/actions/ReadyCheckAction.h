@@ -8,7 +8,7 @@ namespace ai
     class ReadyCheckAction : public InventoryAction
     {
     public:
-        ReadyCheckAction(PlayerbotAI* ai, string name = "ready check") : InventoryAction(ai, name) {}
+        ReadyCheckAction(PlayerbotAI* botAI, string name = "ready check") : InventoryAction(ai, name) {}
 
         virtual bool Execute(Event event);
 
@@ -19,7 +19,7 @@ namespace ai
     class FinishReadyCheckAction : public ReadyCheckAction
     {
     public:
-        FinishReadyCheckAction(PlayerbotAI* ai) : ReadyCheckAction(ai, "finish ready check") {}
+        FinishReadyCheckAction(PlayerbotAI* botAI) : ReadyCheckAction(ai, "finish ready check") {}
 
         virtual bool Execute(Event event);
     };

@@ -29,7 +29,7 @@ static bool substrContainsInMap(string searchTerm, map<string, T> searchIn)
     return false;
 }
 
-ChatHelper::ChatHelper(PlayerbotAI* ai) : PlayerbotAIAware(ai)
+ChatHelper::ChatHelper(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
 {
     itemQualities["poor"] = ITEM_QUALITY_POOR;
     itemQualities["gray"] = ITEM_QUALITY_POOR;
@@ -325,7 +325,7 @@ string ChatHelper::formatChat(ChatMsg chat)
 
 uint32 ChatHelper::parseSpell(string& text)
 {
-    PlayerbotChatHandler handler(ai->GetBot());
+    PlayerbotChatHandler handler(botAI->GetBot());
     return handler.extractSpellId(text);
 }
 

@@ -9,7 +9,7 @@ using namespace ai;
 
 bool TaxiAction::Execute(Event event)
 {
-    ai->RemoveShapeshift();
+    botAI->RemoveShapeshift();
 
     LastMovement& movement = context->GetValue<LastMovement&>("last taxi")->Get();
 
@@ -19,7 +19,7 @@ bool TaxiAction::Execute(Event event)
     {
         movement.taxiNodes.clear();
         movement.Set(NULL);
-        ai->TellMaster("I am ready for the next flight");
+        botAI->TellMaster("I am ready for the next flight");
         return true;
     }
 
@@ -45,7 +45,7 @@ bool TaxiAction::Execute(Event event)
 
         if (param == "?")
         {
-            ai->TellMasterNoFacing("=== Taxi ===");
+            botAI->TellMasterNoFacing("=== Taxi ===");
             int index = 1;
             for (vector<uint32>::iterator i = nodes.begin(); i != nodes.end(); ++i)
             {
@@ -57,7 +57,7 @@ bool TaxiAction::Execute(Event event)
 
                 ostringstream out;
                 out << index++ << ": " << dest->name[0];
-                ai->TellMasterNoFacing(out.str());
+                botAI->TellMasterNoFacing(out.str());
             }
             return true;
         }
@@ -76,13 +76,13 @@ bool TaxiAction::Execute(Event event)
         {
             movement.taxiNodes.clear();
             movement.Set(NULL);
-            ai->TellError("I can't fly with you");
+            botAI->TellError("I can't fly with you");
             return false;
         }
 
         return true;
     }
 
-    ai->TellError("Cannot find any flightmaster to talk");
+    botAI->TellError("Cannot find any flightmaster to talk");
     return false;
 }

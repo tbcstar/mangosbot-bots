@@ -7,7 +7,7 @@ namespace ai
 {
     class TradeAction : public InventoryAction {
     public:
-        TradeAction(PlayerbotAI* ai) : InventoryAction(ai, "trade") {}
+        TradeAction(PlayerbotAI* botAI) : InventoryAction(ai, "trade") {}
         virtual bool Execute(Event event);
 
     private:

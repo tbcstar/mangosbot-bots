@@ -6,12 +6,12 @@ using namespace ai;
 
 bool CastSpellAction::Execute(Event event)
 {
-	return ai->CastSpell(spell, GetTarget());
+	return botAI->CastSpell(spell, GetTarget());
 }
 
 bool CastSpellAction::isPossible()
 {
-	return ai->CanCastSpell(spell, GetTarget());
+	return botAI->CanCastSpell(spell, GetTarget());
 }
 
 bool CastSpellAction::isUseful()
@@ -21,7 +21,7 @@ bool CastSpellAction::isUseful()
 
 bool CastAuraSpellAction::isUseful()
 {
-	return CastSpellAction::isUseful() && !ai->HasAura(spell, GetTarget(), true);
+	return CastSpellAction::isUseful() && !botAI->HasAura(spell, GetTarget(), true);
 }
 
 bool CastEnchantItemAction::isPossible()

@@ -8,7 +8,7 @@ namespace ai
     class InventoryItemValueBase : public InventoryAction
     {
     public:
-        InventoryItemValueBase(PlayerbotAI* ai) : InventoryAction(ai, "empty") {}
+        InventoryItemValueBase(PlayerbotAI* botAI) : InventoryAction(ai, "empty") {}
         virtual bool Execute(Event event) { return false; }
 
     protected:
@@ -18,7 +18,7 @@ namespace ai
     class ItemCountValue : public Uint8CalculatedValue, public Qualified, InventoryItemValueBase
 	{
 	public:
-        ItemCountValue(PlayerbotAI* ai) : Uint8CalculatedValue(ai), InventoryItemValueBase(ai) {}
+        ItemCountValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI), InventoryItemValueBase(botAI) {}
 
     public:
         virtual uint8 Calculate();
@@ -27,7 +27,7 @@ namespace ai
     class InventoryItemValue : public CalculatedValue<list<Item*> >, public Qualified, InventoryItemValueBase
     {
     public:
-        InventoryItemValue(PlayerbotAI* ai) : CalculatedValue<list<Item*> >(ai), InventoryItemValueBase(ai) {}
+        InventoryItemValue(PlayerbotAI* botAI) : CalculatedValue<list<Item*> >(botAI), InventoryItemValueBase(botAI) {}
 
     public:
         virtual list<Item*> Calculate();

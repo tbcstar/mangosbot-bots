@@ -14,14 +14,14 @@ public:
         creators["demon armor"] = &demon_armor;
     }
 private:
-    static ActionNode* fel_armor(PlayerbotAI* ai)
+    static ActionNode* fel_armor(PlayerbotAI* botAI)
     {
         return new ActionNode ("fel armor",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("demon armor"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* demon_armor(PlayerbotAI* ai)
+    static ActionNode* demon_armor(PlayerbotAI* botAI)
     {
         return new ActionNode ("demon armor",
             /*P*/ NULL,
@@ -30,7 +30,7 @@ private:
     }
 };
 
-GenericWarlockNonCombatStrategy::GenericWarlockNonCombatStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai)
+GenericWarlockNonCombatStrategy::GenericWarlockNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericWarlockNonCombatStrategyActionNodeFactory());
 }

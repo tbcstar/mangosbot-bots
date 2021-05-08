@@ -8,7 +8,7 @@ namespace ai
     class CastCustomSpellAction : public InventoryAction
     {
     public:
-        CastCustomSpellAction(PlayerbotAI* ai) : InventoryAction(ai, "cast custom spell") {}
+        CastCustomSpellAction(PlayerbotAI* botAI) : InventoryAction(ai, "cast custom spell") {}
         virtual bool Execute(Event event);
     };
 }

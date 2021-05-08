@@ -28,3 +28,6 @@ void split(std::vector<std::string>& dest, std::string const& str, const char* d
 #ifndef WIN32
 int strcmpi(std::string s1, std::string s2);
 #endif
+
+// Ultranix: brakuje death knighta
+// Ultranix: sLog->outdebug

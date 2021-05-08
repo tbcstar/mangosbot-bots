@@ -5,7 +5,7 @@
 
 using namespace ai;
 
-MeleeDruidStrategy::MeleeDruidStrategy(PlayerbotAI* ai) : CombatStrategy(ai)
+MeleeDruidStrategy::MeleeDruidStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {
 }
 

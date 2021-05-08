@@ -44,10 +44,10 @@ bool WhoAction::Execute(Event event)
         }
     }
 
-    if (ai->GetMaster())
+    if (botAI->GetMaster())
     {
         if (!out.str().empty()) out << ", ";
-        out << "playing with " << ai->GetMaster()->GetName();
+        out << "playing with " << botAI->GetMaster()->GetName();
     }
 
     string tell = out.str();
@@ -83,7 +83,7 @@ string WhoAction::QuerySkill(string text)
 {
     ostringstream out;
     uint32 skill = chat->parseSkill(text);
-    if (!skill || !ai->HasSkill((SkillType)skill))
+    if (!skill || !botAI->HasSkill((SkillType)skill))
         return "";
 
     string skillName = chat->formatSkill(skill);
@@ -109,7 +109,7 @@ string WhoAction::QuerySpec(string text)
     int spec = AiFactory::GetPlayerSpecTab(bot);
     out << "|h|cffffffff" << chat->formatRace(bot->getRace()) << " [" << (bot->getGender() == GENDER_MALE ? "M" : "F") << "] " << chat->formatClass(bot, spec);
     out << " (|h|cff00ff00" << (uint32)bot->getLevel() << "|h|cffffffff lvl), ";
-    out << "|h|cff00ff00" << ai->GetEquipGearScore(bot, false, false) << "|h|cffffffff GS (";
+    out << "|h|cff00ff00" << botAI->GetEquipGearScore(bot, false, false) << "|h|cffffffff GS (";
 
     ItemCountByQuality visitor;
     IterateItems(&visitor, ITERATE_ITEMS_IN_EQUIP);

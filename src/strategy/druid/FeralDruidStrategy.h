@@ -18,42 +18,42 @@ namespace ai
             creators["healing touch on party"] = &healing_touch_on_party;
         }
     private:
-        static ActionNode* regrowth(PlayerbotAI* ai)
+        static ActionNode* regrowth(PlayerbotAI* botAI)
         {
             return new ActionNode ("regrowth",
                 /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("healing touch"), NULL),
                 /*C*/ NextAction::array(0, new NextAction("melee", 10.0f), NULL));
         }
-        static ActionNode* rejuvenation(PlayerbotAI* ai)
+        static ActionNode* rejuvenation(PlayerbotAI* botAI)
         {
             return new ActionNode ("rejuvenation",
                 /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* healing_touch(PlayerbotAI* ai)
+        static ActionNode* healing_touch(PlayerbotAI* botAI)
         {
             return new ActionNode ("healing touch",
                 /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* regrowth_on_party(PlayerbotAI* ai)
+        static ActionNode* regrowth_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("regrowth on party",
                 /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("healing touch on party"), NULL),
                 /*C*/ NextAction::array(0, new NextAction("melee", 10.0f), NULL));
         }
-        static ActionNode* rejuvenation_on_party(PlayerbotAI* ai)
+        static ActionNode* rejuvenation_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("rejuvenation on party",
                 /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* healing_touch_on_party(PlayerbotAI* ai)
+        static ActionNode* healing_touch_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("healing touch on party",
                 /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
@@ -65,7 +65,7 @@ namespace ai
     class FeralDruidStrategy : public GenericDruidStrategy
     {
     protected:
-        FeralDruidStrategy(PlayerbotAI* ai);
+        FeralDruidStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

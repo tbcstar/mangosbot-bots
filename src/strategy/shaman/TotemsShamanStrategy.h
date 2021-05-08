@@ -7,7 +7,7 @@ namespace ai
     class TotemsShamanStrategy : public GenericShamanStrategy
     {
     public:
-        TotemsShamanStrategy(PlayerbotAI* ai);
+        TotemsShamanStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

@@ -11,7 +11,7 @@ namespace ai
     class AiObjectContext : public PlayerbotAIAware
     {
     public:
-        AiObjectContext(PlayerbotAI* ai);
+        AiObjectContext(PlayerbotAI* botAI);
         virtual ~AiObjectContext() {}
 
     public:

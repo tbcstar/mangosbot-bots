@@ -10,7 +10,7 @@ namespace ai
     class GenericDruidStrategy : public CombatStrategy
     {
     protected:
-        GenericDruidStrategy(PlayerbotAI* ai);
+        GenericDruidStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -19,7 +19,7 @@ namespace ai
     class DruidCureStrategy : public Strategy
     {
     public:
-        DruidCureStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        DruidCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -29,7 +29,7 @@ namespace ai
     class DruidBoostStrategy : public Strategy
     {
     public:
-        DruidBoostStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        DruidBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -39,7 +39,7 @@ namespace ai
     class DruidCcStrategy : public Strategy
     {
     public:
-        DruidCcStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        DruidCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

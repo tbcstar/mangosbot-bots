@@ -8,7 +8,7 @@ namespace ai
     class CheckValuesAction : public Action
     {
     public:
-        CheckValuesAction(PlayerbotAI* ai);
+        CheckValuesAction(PlayerbotAI* botAI);
         virtual bool Execute(Event event);
     };
 }

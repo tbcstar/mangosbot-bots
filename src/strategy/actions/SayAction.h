@@ -8,7 +8,7 @@ namespace ai
     class SayAction : public Action, public Qualified
     {
     public:
-        SayAction(PlayerbotAI* ai);
+        SayAction(PlayerbotAI* botAI);
         virtual bool Execute(Event event);
         virtual bool isUseful();
         virtual string getName() { return "say::" + qualifier; }

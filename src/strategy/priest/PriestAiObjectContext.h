@@ -7,6 +7,6 @@ namespace ai
     class PriestAiObjectContext : public AiObjectContext
     {
     public:
-        PriestAiObjectContext(PlayerbotAI* ai);
+        PriestAiObjectContext(PlayerbotAI* botAI);
     };
 }

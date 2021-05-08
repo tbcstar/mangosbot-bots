@@ -51,7 +51,7 @@ bool PanicTrigger::IsActive()
 bool BuffTrigger::IsActive()
 {
     Unit* target = GetTarget();
-	return SpellTrigger::IsActive() && !ai->HasAura(spell, target, true);
+	return SpellTrigger::IsActive() && !botAI->HasAura(spell, target, true);
 }
 
 Value<Unit*>* BuffOnPartyTrigger::GetTargetValue()
@@ -102,7 +102,7 @@ bool SpellTrigger::IsActive()
 bool SpellCanBeCastTrigger::IsActive()
 {
 	Unit* target = GetTarget();
-	return target && ai->CanCastSpell(spell, target);
+	return target && botAI->CanCastSpell(spell, target);
 }
 
 bool RandomTrigger::IsActive()
@@ -141,12 +141,12 @@ bool ItemCountTrigger::IsActive()
 
 bool InterruptSpellTrigger::IsActive()
 {
-	return SpellTrigger::IsActive() && ai->IsInterruptableSpellCasting(GetTarget(), getName());
+	return SpellTrigger::IsActive() && botAI->IsInterruptableSpellCasting(GetTarget(), getName());
 }
 
 bool HasAuraTrigger::IsActive()
 {
-	return ai->HasAura(getName(), GetTarget());
+	return botAI->HasAura(getName(), GetTarget());
 }
 
 bool TankAoeTrigger::IsActive()

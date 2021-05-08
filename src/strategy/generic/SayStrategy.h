@@ -5,7 +5,7 @@ namespace ai
     class SayStrategy : public Strategy
     {
     public:
-        SayStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        SayStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

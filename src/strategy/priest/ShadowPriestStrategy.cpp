@@ -6,7 +6,7 @@
 
 using namespace ai;
 
-ShadowPriestStrategy::ShadowPriestStrategy(PlayerbotAI* ai) : GenericPriestStrategy(ai)
+ShadowPriestStrategy::ShadowPriestStrategy(PlayerbotAI* botAI) : GenericPriestStrategy(botAI)
 {
     actionNodeFactories.Add(new ShadowPriestStrategyActionNodeFactory());
 }

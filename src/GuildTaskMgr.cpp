@@ -956,7 +956,7 @@ bool GuildTaskMgr::Reward(uint32 owner, uint32 guildId)
 void GuildTaskMgr::CheckKillTask(Player* player, Unit* victim)
 {
     if (!player) return;
-	Group *group = player->GetGroup();
+	Group* group = player->GetGroup();
     if (group)
     {
         for (GroupReference *gr = group->GetFirstMember(); gr; gr = gr->next())
@@ -987,8 +987,8 @@ void GuildTaskMgr::SendCompletionMessage(Player* player, string verb)
     else
     {
         PlayerbotAI *ai = player->GetPlayerbotAI();
-        if (ai && ai->GetMaster())
-            ChatHandler(ai->GetMaster()->GetSession()).PSendSysMessage(out.str().c_str());
+        if (ai && botAI->GetMaster())
+            ChatHandler(botAI->GetMaster()->GetSession()).PSendSysMessage(out.str().c_str());
     }
 
     ostringstream self; self << "You have " << verb << " a guild task";

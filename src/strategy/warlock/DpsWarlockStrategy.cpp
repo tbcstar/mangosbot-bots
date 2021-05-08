@@ -15,7 +15,7 @@ public:
         creators["shadow bolt"] = &shadow_bolt;
     }
 private:
-    static ActionNode* shadow_bolt(PlayerbotAI* ai)
+    static ActionNode* shadow_bolt(PlayerbotAI* botAI)
     {
         return new ActionNode ("shadow bolt",
             /*P*/ NULL,
@@ -24,7 +24,7 @@ private:
     }
 };
 
-DpsWarlockStrategy::DpsWarlockStrategy(PlayerbotAI* ai) : GenericWarlockStrategy(ai)
+DpsWarlockStrategy::DpsWarlockStrategy(PlayerbotAI* botAI) : GenericWarlockStrategy(botAI)
 {
     actionNodeFactories.Add(new DpsWarlockStrategyActionNodeFactory());
 }

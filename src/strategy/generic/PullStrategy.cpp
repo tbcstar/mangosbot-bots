@@ -8,7 +8,7 @@ using namespace ai;
 class MagePullMultiplier : public PassiveMultiplier
 {
 public:
-    MagePullMultiplier(PlayerbotAI* ai, string action) : PassiveMultiplier(ai)
+    MagePullMultiplier(PlayerbotAI* botAI, string action) : PassiveMultiplier(botAI)
     {
         this->action = action;
     }

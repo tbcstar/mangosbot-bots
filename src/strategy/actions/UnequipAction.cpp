@@ -58,6 +58,6 @@ void UnequipAction::UnequipItem(Item& item)
     bot->GetSession()->HandleAutoStoreBagItemOpcode(packet);
 
     ostringstream out; out << chat->formatItem(item.GetProto()) << " unequipped";
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 }
 

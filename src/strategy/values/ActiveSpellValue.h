@@ -6,7 +6,7 @@ namespace ai
     class ActiveSpellValue : public CalculatedValue<uint32>
 	{
 	public:
-        ActiveSpellValue(PlayerbotAI* ai) : CalculatedValue<uint32>(ai) {}
+        ActiveSpellValue(PlayerbotAI* botAI) : CalculatedValue<uint32>(botAI) {}
 
         virtual uint32 Calculate();
     };

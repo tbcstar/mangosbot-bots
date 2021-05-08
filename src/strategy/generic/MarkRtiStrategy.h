@@ -5,7 +5,7 @@ namespace ai
     class MarkRtiStrategy : public Strategy
     {
     public:
-        MarkRtiStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        MarkRtiStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
         virtual string getName() { return "mark rti"; }
 
     public:

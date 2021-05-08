@@ -7,7 +7,7 @@ namespace ai
     class TankWarriorStrategy : public GenericWarriorStrategy
     {
     public:
-        TankWarriorStrategy(PlayerbotAI* ai);
+        TankWarriorStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

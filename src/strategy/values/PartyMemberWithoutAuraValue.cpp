@@ -10,8 +10,8 @@ extern vector<string> split(const string &s, char delim);
 class PlayerWithoutAuraPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {
 public:
-    PlayerWithoutAuraPredicate(PlayerbotAI* ai, string aura) :
-        PlayerbotAIAware(ai), FindPlayerPredicate(), auras(split(aura, ',')) {}
+    PlayerWithoutAuraPredicate(PlayerbotAI* botAI, string aura) :
+        PlayerbotAIAware(botAI), FindPlayerPredicate(), auras(split(aura, ',')) {}
 
 public:
     virtual bool Check(Unit* unit)
@@ -24,7 +24,7 @@ public:
 
         for (vector<string>::iterator i = auras.begin(); i != auras.end(); ++i)
         {
-            if (ai->HasAura(*i, unit))
+            if (botAI->HasAura(*i, unit))
                 return false;
         }
 

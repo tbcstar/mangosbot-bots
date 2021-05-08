@@ -6,7 +6,7 @@ namespace ai
     class GuardStrategy : public NonCombatStrategy
     {
     public:
-        GuardStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        GuardStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "guard"; }
         NextAction** getDefaultActions();
 

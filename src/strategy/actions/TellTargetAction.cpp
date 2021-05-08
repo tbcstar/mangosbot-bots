@@ -15,7 +15,7 @@ bool TellTargetAction::Execute(Event event)
     {
         ostringstream out;
 		out << "Attacking " << target->GetName();
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
 
         context->GetValue<Unit*>("old target")->Set(target);
     }
@@ -24,19 +24,19 @@ bool TellTargetAction::Execute(Event event)
 
 bool TellAttackersAction::Execute(Event event)
 {
-    ai->TellMaster("--- Attackers ---");
+    botAI->TellMaster("--- Attackers ---");
 
     list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (!unit || !sServerFacade->IsAlive(unit))
             continue;
 
-        ai->TellMaster(unit->GetName());
+        botAI->TellMaster(unit->GetName());
     }
 
-    ai->TellMaster("--- Threat ---");
+    botAI->TellMaster("--- Threat ---");
     HostileReference *ref = sServerFacade->GetHostileRefManager(bot).getFirst();
     if (!ref)
         return true;
@@ -48,7 +48,7 @@ bool TellAttackersAction::Execute(Event event)
         float threat = ref->getThreat();
 
         ostringstream out; out << unit->GetName() << " (" << threat << ")";
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
 
         ref = ref->next();
     }

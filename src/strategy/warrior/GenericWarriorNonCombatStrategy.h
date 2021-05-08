@@ -7,7 +7,7 @@ namespace ai
     class GenericWarriorNonCombatStrategy : public NonCombatStrategy
     {
     public:
-        GenericWarriorNonCombatStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        GenericWarriorNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "nc"; }
    };
 }

@@ -9,12 +9,12 @@ using namespace ai;
 map<string, uint32> EmoteActionBase::emotes;
 map<string, uint32> EmoteActionBase::textEmotes;
 
-EmoteActionBase::EmoteActionBase(PlayerbotAI* ai, string name) : Action(ai, name)
+EmoteActionBase::EmoteActionBase(PlayerbotAI* botAI, string name) : Action(ai, name)
 {
     if (emotes.empty()) InitEmotes();
 }
 
-EmoteAction::EmoteAction(PlayerbotAI* ai) : EmoteActionBase(ai, "emote"), Qualified()
+EmoteAction::EmoteAction(PlayerbotAI* botAI) : EmoteActionBase(ai, "emote"), Qualified()
 {
 }
 
@@ -114,7 +114,7 @@ Unit* EmoteActionBase::GetTarget()
     vector<Unit*> targets;
     for (list<ObjectGuid>::iterator i = nfp.begin(); i != nfp.end(); ++i)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (unit && sServerFacade->GetDistance2d(bot, unit) < sPlayerbotAIConfig->tooCloseDistance) targets.push_back(unit);
     }
 
@@ -133,18 +133,18 @@ bool EmoteAction::Execute(Event event)
     if (param.empty())
     {
         time_t lastEmote = AI_VALUE2(time_t, "last emote", qualifier);
-        ai->GetAiObjectContext()->GetValue<time_t>("last emote", qualifier)->Set(time(0) + urand(1000, sPlayerbotAIConfig->repeatDelay) / 1000);
+        botAI->GetAiObjectContext()->GetValue<time_t>("last emote", qualifier)->Set(time(0) + urand(1000, sPlayerbotAIConfig->repeatDelay) / 1000);
         param = qualifier;
     }
 
     if (param.find("sound") == 0)
     {
-        return ai->PlaySound(atoi(param.substr(5).c_str()));
+        return botAI->PlaySound(atoi(param.substr(5).c_str()));
     }
 
     if (!param.empty() && textEmotes.find(param) != textEmotes.end())
     {
-        return ai->PlaySound(textEmotes[param]);
+        return botAI->PlaySound(textEmotes[param]);
     }
 
     if (param.empty() || emotes.find(param) == emotes.end())
@@ -175,7 +175,7 @@ bool EmoteAction::isUseful()
 
 bool TalkAction::Execute(Event event)
 {
-    Unit* target = ai->GetUnit(AI_VALUE(ObjectGuid, "talk target"));
+    Unit* target = botAI->GetUnit(AI_VALUE(ObjectGuid, "talk target"));
     if (!target)
         target = GetTarget();
 

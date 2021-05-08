@@ -8,7 +8,7 @@ namespace ai
 {
     class LootRollAction : public QueryItemUsageAction {
     public:
-        LootRollAction(PlayerbotAI* ai) : QueryItemUsageAction(ai, "loot roll") {}
+        LootRollAction(PlayerbotAI* botAI) : QueryItemUsageAction(ai, "loot roll") {}
         virtual bool Execute(Event event);
 
     private:

@@ -7,7 +7,7 @@ namespace ai
     class SecurityCheckAction : public Action
     {
     public:
-        SecurityCheckAction(PlayerbotAI* ai) : Action(ai, "security check") {}
+        SecurityCheckAction(PlayerbotAI* botAI) : Action(ai, "security check") {}
         virtual bool isUseful();
         virtual bool Execute(Event event);
     };

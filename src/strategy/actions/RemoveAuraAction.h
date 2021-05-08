@@ -7,7 +7,7 @@ namespace ai
     class RemoveAuraAction : public Action
     {
     public:
-        RemoveAuraAction(PlayerbotAI* ai);
+        RemoveAuraAction(PlayerbotAI* botAI);
         virtual bool Execute(Event event);
     };
 }

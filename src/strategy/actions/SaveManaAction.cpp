@@ -14,7 +14,7 @@ bool SaveManaAction::Execute(Event event)
     if (text == "?")
     {
         ostringstream out; out << "Mana save level: " << format(value);
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
         return true;
     }
 
@@ -49,10 +49,10 @@ bool SaveManaAction::Execute(Event event)
     value = max(1.0, value);
     value = floor(value * 100 + 0.5) / 100.0;
 
-    ai->GetAiObjectContext()->GetValue<double>("mana save level")->Set(value);
+    botAI->GetAiObjectContext()->GetValue<double>("mana save level")->Set(value);
 
     ostringstream out; out << "Mana save level set: " << format(value);
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 
     return true;
 }

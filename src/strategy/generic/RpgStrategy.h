@@ -5,7 +5,7 @@ namespace ai
     class RpgStrategy : public Strategy
     {
     public:
-        RpgStrategy(PlayerbotAI* ai);
+        RpgStrategy(PlayerbotAI* botAI);
         virtual string getName() { return "rpg"; }
 
     public:

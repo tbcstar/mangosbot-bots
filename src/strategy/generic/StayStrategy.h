@@ -6,7 +6,7 @@ namespace ai
     class StayStrategy : public NonCombatStrategy
     {
     public:
-        StayStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        StayStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "stay"; }
         virtual NextAction** getDefaultActions();
     };
@@ -14,7 +14,7 @@ namespace ai
     class SitStrategy : public NonCombatStrategy
     {
     public:
-        SitStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        SitStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "sit"; }
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
     };

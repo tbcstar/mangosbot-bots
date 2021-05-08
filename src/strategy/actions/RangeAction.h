@@ -7,7 +7,7 @@ namespace ai
     class RangeAction : public Action
     {
     public:
-        RangeAction(PlayerbotAI* ai) : Action(ai, "range")
+        RangeAction(PlayerbotAI* botAI) : Action(ai, "range")
         {}
 
         virtual bool Execute(Event event);

@@ -8,7 +8,7 @@ namespace ai
     class HasTotemValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        HasTotemValue(PlayerbotAI* ai) : BoolCalculatedValue(ai) {}
+        HasTotemValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
 
     public:
         bool Calculate()
@@ -16,7 +16,7 @@ namespace ai
             list<ObjectGuid> units = *context->GetValue<list<ObjectGuid> >("nearest npcs");
             for (list<ObjectGuid>::iterator i = units.begin(); i != units.end(); i++)
             {
-                Unit* unit = ai->GetUnit(*i);
+                Unit* unit = botAI->GetUnit(*i);
                 if (!unit)
                     continue;
 
@@ -24,7 +24,7 @@ namespace ai
                 if (!creature || !creature->IsTotem())
                     continue;
 
-                if (strstri(creature->GetName(), qualifier.c_str()) && bot->GetDistance(creature) <= ai->GetRange("spell"))
+                if (strstri(creature->GetName(), qualifier.c_str()) && bot->GetDistance(creature) <= botAI->GetRange("spell"))
                     return true;
             }
 

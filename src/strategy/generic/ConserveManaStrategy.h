@@ -5,7 +5,7 @@ namespace ai
     class ConserveManaMultiplier : public Multiplier
     {
     public:
-        ConserveManaMultiplier(PlayerbotAI* ai) : Multiplier(ai, "conserve mana") {}
+        ConserveManaMultiplier(PlayerbotAI* botAI) : Multiplier(ai, "conserve mana") {}
 
     public:
         virtual float GetValue(Action* action);
@@ -14,7 +14,7 @@ namespace ai
     class SaveManaMultiplier : public Multiplier
     {
     public:
-        SaveManaMultiplier(PlayerbotAI* ai) : Multiplier(ai, "save mana") {}
+        SaveManaMultiplier(PlayerbotAI* botAI) : Multiplier(ai, "save mana") {}
 
     public:
         virtual float GetValue(Action* action);
@@ -23,7 +23,7 @@ namespace ai
     class ConserveManaStrategy : public Strategy
     {
     public:
-        ConserveManaStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        ConserveManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitMultipliers(std::list<Multiplier*> &multipliers);

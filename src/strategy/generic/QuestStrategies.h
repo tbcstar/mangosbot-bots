@@ -6,7 +6,7 @@ namespace ai
     class QuestStrategy : public PassTroughStrategy
     {
     public:
-        QuestStrategy(PlayerbotAI* ai);
+        QuestStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -15,7 +15,7 @@ namespace ai
     class DefaultQuestStrategy : public QuestStrategy
     {
     public:
-        DefaultQuestStrategy(PlayerbotAI* ai);
+        DefaultQuestStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -25,7 +25,7 @@ namespace ai
     class AcceptAllQuestsStrategy : public QuestStrategy
     {
     public:
-        AcceptAllQuestsStrategy(PlayerbotAI* ai);
+        AcceptAllQuestsStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

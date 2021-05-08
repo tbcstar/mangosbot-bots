@@ -7,7 +7,7 @@ namespace ai
     class AcceptDuelAction : public Action
     {
     public:
-        AcceptDuelAction(PlayerbotAI* ai) : Action(ai, "accept duel")
+        AcceptDuelAction(PlayerbotAI* botAI) : Action(ai, "accept duel")
         {}
 
         virtual bool Execute(Event event)
@@ -23,7 +23,7 @@ namespace ai
             packet << flagGuid;
             bot->GetSession()->HandleDuelAcceptedOpcode(packet);
 
-            ai->ResetStrategies();
+            botAI->ResetStrategies();
             return true;
         }
     };

@@ -9,7 +9,7 @@ namespace ai
     class TradeStatusAction : public QueryItemUsageAction
     {
     public:
-        TradeStatusAction(PlayerbotAI* ai) : QueryItemUsageAction(ai, "accept trade") {}
+        TradeStatusAction(PlayerbotAI* botAI) : QueryItemUsageAction(ai, "accept trade") {}
         virtual bool Execute(Event event);
 
     private:

@@ -7,7 +7,7 @@ namespace ai
     class RtiAction : public Action
     {
     public:
-        RtiAction(PlayerbotAI* ai) : Action(ai, "rti")
+        RtiAction(PlayerbotAI* botAI) : Action(ai, "rti")
         {}
 
         virtual bool Execute(Event event);
@@ -20,7 +20,7 @@ namespace ai
     class MarkRtiAction : public Action
     {
     public:
-        MarkRtiAction(PlayerbotAI* ai) : Action(ai, "mark rti")
+        MarkRtiAction(PlayerbotAI* botAI) : Action(ai, "mark rti")
         {}
 
         virtual bool Execute(Event event);

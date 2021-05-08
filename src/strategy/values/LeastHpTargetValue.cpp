@@ -11,7 +11,7 @@ using namespace std;
 class FindLeastHpTargetStrategy : public FindNonCcTargetStrategy
 {
 public:
-    FindLeastHpTargetStrategy(PlayerbotAI* ai) : FindNonCcTargetStrategy(ai)
+    FindLeastHpTargetStrategy(PlayerbotAI* botAI) : FindNonCcTargetStrategy(botAI)
     {
         minHealth = 0;
     }
@@ -19,7 +19,7 @@ public:
 public:
     virtual void CheckAttacker(Unit* attacker, ThreatManager* threatManager)
     {
-        Player* bot = ai->GetBot();
+        Player* bot = botAI->GetBot();
         if (IsCcTarget(attacker)) return;
 
         if (!result || result->GetHealth() > attacker->GetHealth())
@@ -33,6 +33,6 @@ protected:
 
 Unit* LeastHpTargetValue::Calculate()
 {
-    FindLeastHpTargetStrategy strategy(ai);
+    FindLeastHpTargetStrategy strategy(botAI);
     return FindTarget(&strategy);
 }

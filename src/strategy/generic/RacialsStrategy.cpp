@@ -13,7 +13,7 @@ public:
         creators["lifeblood"] = &lifeblood;
     }
 private:
-    static ActionNode* lifeblood(PlayerbotAI* ai)
+    static ActionNode* lifeblood(PlayerbotAI* botAI)
     {
         return new ActionNode ("lifeblood",  
             /*P*/ NULL,
@@ -33,7 +33,7 @@ void RacialsStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("arcane torrent", ACTION_EMERGENCY + 6), NULL)));
 }
 
-RacialsStrategy::RacialsStrategy(PlayerbotAI* ai) : Strategy(ai)
+RacialsStrategy::RacialsStrategy(PlayerbotAI* botAI) : Strategy(botAI)
 {
     actionNodeFactories.Add(new RacialsStrategyActionNodeFactory());
 }

@@ -7,7 +7,7 @@
 class clazz : public CastSpellAction \
         { \
         public: \
-        clazz(PlayerbotAI* ai) : CastSpellAction(ai, name) {} \
+        clazz(PlayerbotAI* botAI) : CastSpellAction(ai, name) {} \
 
 
 #define END_SPELL_ACTION() \
@@ -17,19 +17,19 @@ class clazz : public CastSpellAction \
 class clazz : public CastDebuffSpellAction \
         { \
         public: \
-        clazz(PlayerbotAI* ai) : CastDebuffSpellAction(ai, name) {} \
+        clazz(PlayerbotAI* botAI) : CastDebuffSpellAction(ai, name) {} \
 
 #define BEGIN_RANGED_SPELL_ACTION(clazz, name) \
 class clazz : public CastSpellAction \
         { \
         public: \
-        clazz(PlayerbotAI* ai) : CastSpellAction(ai, name) {} \
+        clazz(PlayerbotAI* botAI) : CastSpellAction(ai, name) {} \
 
 #define BEGIN_MELEE_SPELL_ACTION(clazz, name) \
 class clazz : public CastMeleeSpellAction \
         { \
         public: \
-        clazz(PlayerbotAI* ai) : CastMeleeSpellAction(ai, name) {} \
+        clazz(PlayerbotAI* botAI) : CastMeleeSpellAction(ai, name) {} \
 
 
 #define END_RANGED_SPELL_ACTION() \
@@ -40,15 +40,15 @@ class clazz : public CastMeleeSpellAction \
 class clazz : public BuffOnPartyAction \
         { \
         public: \
-        clazz(PlayerbotAI* ai) : BuffOnPartyAction(ai, name) {}
+        clazz(PlayerbotAI* botAI) : BuffOnPartyAction(ai, name) {}
 
 namespace ai
 {
     class CastSpellAction : public Action
     {
     public:
-        CastSpellAction(PlayerbotAI* ai, string spell) : Action(ai, spell),
-			range(ai->GetRange("spell"))
+        CastSpellAction(PlayerbotAI* botAI, string spell) : Action(ai, spell),
+			range(botAI->GetRange("spell"))
         {
             this->spell = spell;
         }
@@ -61,7 +61,7 @@ namespace ai
 
 		virtual NextAction** getPrerequisites()
 		{
-			if (range > ai->GetRange("spell"))
+			if (range > botAI->GetRange("spell"))
 				return NULL;
 			else if (range > ATTACK_DISTANCE)
 				return NextAction::merge( NextAction::array(0, new NextAction("reach spell"), NULL), Action::getPrerequisites());
@@ -78,7 +78,7 @@ namespace ai
 	class CastAuraSpellAction : public CastSpellAction
 	{
 	public:
-		CastAuraSpellAction(PlayerbotAI* ai, string spell) : CastSpellAction(ai, spell) {}
+		CastAuraSpellAction(PlayerbotAI* botAI, string spell) : CastSpellAction(ai, spell) {}
 
 		virtual bool isUseful();
 	};
@@ -87,7 +87,7 @@ namespace ai
     class CastMeleeSpellAction : public CastSpellAction
     {
     public:
-        CastMeleeSpellAction(PlayerbotAI* ai, string spell) : CastSpellAction(ai, spell) {
+        CastMeleeSpellAction(PlayerbotAI* botAI, string spell) : CastSpellAction(ai, spell) {
 			range = ATTACK_DISTANCE;
 		}
     };
@@ -96,13 +96,13 @@ namespace ai
     class CastDebuffSpellAction : public CastAuraSpellAction
     {
     public:
-        CastDebuffSpellAction(PlayerbotAI* ai, string spell) : CastAuraSpellAction(ai, spell) {}
+        CastDebuffSpellAction(PlayerbotAI* botAI, string spell) : CastAuraSpellAction(ai, spell) {}
     };
 
     class CastDebuffSpellOnAttackerAction : public CastAuraSpellAction
     {
     public:
-        CastDebuffSpellOnAttackerAction(PlayerbotAI* ai, string spell) : CastAuraSpellAction(ai, spell) {}
+        CastDebuffSpellOnAttackerAction(PlayerbotAI* botAI, string spell) : CastAuraSpellAction(ai, spell) {}
         Value<Unit*>* GetTargetValue()
         {
             return context->GetValue<Unit*>("attacker without aura", spell);
@@ -114,9 +114,9 @@ namespace ai
 	class CastBuffSpellAction : public CastAuraSpellAction
 	{
 	public:
-		CastBuffSpellAction(PlayerbotAI* ai, string spell) : CastAuraSpellAction(ai, spell)
+		CastBuffSpellAction(PlayerbotAI* botAI, string spell) : CastAuraSpellAction(ai, spell)
 		{
-			range = ai->GetRange("spell");
+			range = botAI->GetRange("spell");
 		}
 
         virtual string GetTargetName() { return "self target"; }
@@ -125,9 +125,9 @@ namespace ai
 	class CastEnchantItemAction : public CastSpellAction
 	{
 	public:
-	    CastEnchantItemAction(PlayerbotAI* ai, string spell) : CastSpellAction(ai, spell)
+	    CastEnchantItemAction(PlayerbotAI* botAI, string spell) : CastSpellAction(ai, spell)
 		{
-			range = ai->GetRange("spell");
+			range = botAI->GetRange("spell");
 		}
 
         virtual bool isPossible();
@@ -139,10 +139,10 @@ namespace ai
     class CastHealingSpellAction : public CastAuraSpellAction
     {
     public:
-        CastHealingSpellAction(PlayerbotAI* ai, string spell, uint8 estAmount = 15.0f) : CastAuraSpellAction(ai, spell)
+        CastHealingSpellAction(PlayerbotAI* botAI, string spell, uint8 estAmount = 15.0f) : CastAuraSpellAction(ai, spell)
 		{
             this->estAmount = estAmount;
-			range = ai->GetRange("spell");
+			range = botAI->GetRange("spell");
         }
 		virtual string GetTargetName() { return "self target"; }
         virtual bool isUseful();
@@ -155,7 +155,7 @@ namespace ai
     class CastAoeHealSpellAction : public CastHealingSpellAction
     {
     public:
-    	CastAoeHealSpellAction(PlayerbotAI* ai, string spell, uint8 estAmount = 15.0f) : CastHealingSpellAction(ai, spell, estAmount) {}
+    	CastAoeHealSpellAction(PlayerbotAI* botAI, string spell, uint8 estAmount = 15.0f) : CastHealingSpellAction(ai, spell, estAmount) {}
 		virtual string GetTargetName() { return "party member to heal"; }
         virtual bool isUseful();
     };
@@ -163,9 +163,9 @@ namespace ai
 	class CastCureSpellAction : public CastSpellAction
 	{
 	public:
-		CastCureSpellAction(PlayerbotAI* ai, string spell) : CastSpellAction(ai, spell)
+		CastCureSpellAction(PlayerbotAI* botAI, string spell) : CastSpellAction(ai, spell)
 		{
-			range = ai->GetRange("spell");
+			range = botAI->GetRange("spell");
 		}
 
 		virtual string GetTargetName() { return "self target"; }
@@ -187,7 +187,7 @@ namespace ai
     class HealPartyMemberAction : public CastHealingSpellAction, public PartyMemberActionNameSupport
     {
     public:
-        HealPartyMemberAction(PlayerbotAI* ai, string spell, uint8 estAmount = 15.0f) :
+        HealPartyMemberAction(PlayerbotAI* botAI, string spell, uint8 estAmount = 15.0f) :
 			CastHealingSpellAction(ai, spell, estAmount), PartyMemberActionNameSupport(spell) {}
 
 		virtual string GetTargetName() { return "party member to heal"; }
@@ -197,7 +197,7 @@ namespace ai
 	class ResurrectPartyMemberAction : public CastSpellAction
 	{
 	public:
-		ResurrectPartyMemberAction(PlayerbotAI* ai, string spell) : CastSpellAction(ai, spell) {}
+		ResurrectPartyMemberAction(PlayerbotAI* botAI, string spell) : CastSpellAction(ai, spell) {}
 
 		virtual string GetTargetName() { return "party member to resurrect"; }
 	};
@@ -206,7 +206,7 @@ namespace ai
     class CurePartyMemberAction : public CastSpellAction, public PartyMemberActionNameSupport
     {
     public:
-        CurePartyMemberAction(PlayerbotAI* ai, string spell, uint32 dispelType) :
+        CurePartyMemberAction(PlayerbotAI* botAI, string spell, uint32 dispelType) :
 			CastSpellAction(ai, spell), PartyMemberActionNameSupport(spell)
         {
             this->dispelType = dispelType;
@@ -224,7 +224,7 @@ namespace ai
     class BuffOnPartyAction : public CastBuffSpellAction, public PartyMemberActionNameSupport
     {
     public:
-        BuffOnPartyAction(PlayerbotAI* ai, string spell) :
+        BuffOnPartyAction(PlayerbotAI* botAI, string spell) :
 			CastBuffSpellAction(ai, spell), PartyMemberActionNameSupport(spell) {}
     public:
 		virtual Value<Unit*>* GetTargetValue();
@@ -236,32 +236,32 @@ namespace ai
     class CastShootAction : public CastSpellAction
     {
     public:
-        CastShootAction(PlayerbotAI* ai) : CastSpellAction(ai, "shoot") {}
+        CastShootAction(PlayerbotAI* botAI) : CastSpellAction(ai, "shoot") {}
         virtual ActionThreatType getThreatType() { return ACTION_THREAT_NONE; }
     };
 
 	class CastLifeBloodAction : public CastHealingSpellAction
 	{
 	public:
-		CastLifeBloodAction(PlayerbotAI* ai) : CastHealingSpellAction(ai, "lifeblood") {}
+		CastLifeBloodAction(PlayerbotAI* botAI) : CastHealingSpellAction(ai, "lifeblood") {}
 	};
 
 	class CastGiftOfTheNaaruAction : public CastHealingSpellAction
 	{
 	public:
-		CastGiftOfTheNaaruAction(PlayerbotAI* ai) : CastHealingSpellAction(ai, "gift of the naaru") {}
+		CastGiftOfTheNaaruAction(PlayerbotAI* botAI) : CastHealingSpellAction(ai, "gift of the naaru") {}
 	};
 
     class CastArcaneTorrentAction : public CastBuffSpellAction
     {
     public:
-        CastArcaneTorrentAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "arcane torrent") {}
+        CastArcaneTorrentAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "arcane torrent") {}
     };
 
     class CastSpellOnEnemyHealerAction : public CastSpellAction
     {
     public:
-        CastSpellOnEnemyHealerAction(PlayerbotAI* ai, string spell) : CastSpellAction(ai, spell) {}
+        CastSpellOnEnemyHealerAction(PlayerbotAI* botAI, string spell) : CastSpellAction(ai, spell) {}
         Value<Unit*>* GetTargetValue()
         {
             return context->GetValue<Unit*>("enemy healer target", spell);
@@ -272,7 +272,7 @@ namespace ai
     class CastSnareSpellAction : public CastDebuffSpellAction
     {
     public:
-        CastSnareSpellAction(PlayerbotAI* ai, string spell) : CastDebuffSpellAction(ai, spell) {}
+        CastSnareSpellAction(PlayerbotAI* botAI, string spell) : CastDebuffSpellAction(ai, spell) {}
         Value<Unit*>* GetTargetValue()
         {
             return context->GetValue<Unit*>("snare target", spell);

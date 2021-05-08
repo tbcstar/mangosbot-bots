@@ -8,7 +8,7 @@ namespace ai
     class SummonAction : public MovementAction
     {
     public:
-        SummonAction(PlayerbotAI* ai, string name = "summon") : MovementAction(ai, name) {}
+        SummonAction(PlayerbotAI* botAI, string name = "summon") : MovementAction(ai, name) {}
 
         virtual bool Execute(Event event);
 
@@ -21,7 +21,7 @@ namespace ai
     class UseMeetingStoneAction : public SummonAction
     {
     public:
-        UseMeetingStoneAction(PlayerbotAI* ai) : SummonAction(ai, "use meeting stone") {}
+        UseMeetingStoneAction(PlayerbotAI* botAI) : SummonAction(ai, "use meeting stone") {}
 
         virtual bool Execute(Event event);
     };

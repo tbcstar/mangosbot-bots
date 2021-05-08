@@ -6,13 +6,13 @@
 #include "../../ServerFacade.h"
 using namespace ai;
 
-RemoveAuraAction::RemoveAuraAction(PlayerbotAI* ai) : Action(ai, "ra")
+RemoveAuraAction::RemoveAuraAction(PlayerbotAI* botAI) : Action(ai, "ra")
 {
 }
 
 bool RemoveAuraAction::Execute(Event event)
 {
     string text = event.getParam();
-    ai->RemoveAura(text);
+    botAI->RemoveAura(text);
     return true;
 }

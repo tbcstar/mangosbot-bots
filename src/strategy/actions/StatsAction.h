@@ -6,7 +6,7 @@ namespace ai
 {
     class StatsAction : public Action {
     public:
-        StatsAction(PlayerbotAI* ai) : Action(ai, "stats") {}
+        StatsAction(PlayerbotAI* botAI) : Action(ai, "stats") {}
         virtual bool Execute(Event event);
 
     private:

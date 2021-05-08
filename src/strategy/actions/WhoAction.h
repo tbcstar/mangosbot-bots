@@ -7,7 +7,7 @@ namespace ai
 {
     class WhoAction : public InventoryAction {
     public:
-        WhoAction(PlayerbotAI* ai) : InventoryAction(ai, "who") {}
+        WhoAction(PlayerbotAI* botAI) : InventoryAction(ai, "who") {}
 
     public:
         virtual bool Execute(Event event);

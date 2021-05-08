@@ -17,7 +17,7 @@ WorldLocation ArrowFormation::GetLocationInternal()
     int healerLines = 1 + healers.Size() / 6;
     float offset = 0;
 
-    Player* master = ai->GetMaster();
+    Player* master = botAI->GetMaster();
     float orientation = master->GetOrientation();
     MultiLineUnitPlacer placer(orientation);
 
@@ -62,11 +62,11 @@ void ArrowFormation::Build()
 
 FormationSlot* ArrowFormation::FindSlot(Player* member)
 {
-    if (ai->IsTank(member))
+    if (botAI->IsTank(member))
         return &tanks;
-    else if (ai->IsHeal(member))
+    else if (botAI->IsHeal(member))
         return &healers;
-    else if (ai->IsRanged(member))
+    else if (botAI->IsRanged(member))
         return &ranged;
     else
         return &melee;
@@ -83,7 +83,7 @@ void ArrowFormation::FillSlotsExceptMaster()
 
         if (member == bot)
             FindSlot(member)->AddLast(botUnit = new FormationUnit(index, false));
-        else if (member != ai->GetMaster())
+        else if (member != botAI->GetMaster())
             FindSlot(member)->AddLast(new FormationUnit(index, false));
 
         gref = gref->next();
@@ -100,7 +100,7 @@ void ArrowFormation::AddMasterToSlot()
     {
         Player* member = gref->getSource();
 
-        if (member == ai->GetMaster())
+        if (member == botAI->GetMaster())
         {
             FindSlot(member)->InsertAtCenter(masterUnit = new FormationUnit(index, true));
             break;

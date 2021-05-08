@@ -11,7 +11,7 @@ bool TeleportAction::Execute(Event event)
     list<ObjectGuid> gos = *context->GetValue<list<ObjectGuid> >("nearest game objects");
     for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); i++)
     {
-        GameObject* go = ai->GetGameObject(*i);
+        GameObject* go = botAI->GetGameObject(*i);
         if (!go)
             continue;
 
@@ -25,9 +25,9 @@ bool TeleportAction::Execute(Event event)
             continue;
 
         ostringstream out; out << "Teleporting using " << goInfo->name;
-        ai->TellMasterNoFacing(out.str());
+        botAI->TellMasterNoFacing(out.str());
 
-        ai->ChangeStrategy("-follow,+stay", BOT_STATE_NON_COMBAT);
+        botAI->ChangeStrategy("-follow,+stay", BOT_STATE_NON_COMBAT);
 
         Spell *spell = new Spell(bot, pSpellInfo, false);
         SpellCastTargets targets;
@@ -50,6 +50,6 @@ bool TeleportAction::Execute(Event event)
         return true;
     }
 
-    ai->TellError("Cannot find any portal to teleport");
+    botAI->TellError("Cannot find any portal to teleport");
     return false;
 }

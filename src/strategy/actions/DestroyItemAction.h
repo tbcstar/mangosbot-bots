@@ -7,7 +7,7 @@ namespace ai
 {
     class DestroyItemAction : public InventoryAction {
     public:
-        DestroyItemAction(PlayerbotAI* ai) : InventoryAction(ai, "destroy") {}
+        DestroyItemAction(PlayerbotAI* botAI) : InventoryAction(ai, "destroy") {}
         virtual bool Execute(Event event);
 
     private:

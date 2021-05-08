@@ -8,7 +8,7 @@ namespace ai
     class DpsTargetValue : public RtiTargetValue
 	{
 	public:
-        DpsTargetValue(PlayerbotAI* ai) : RtiTargetValue(ai) {}
+        DpsTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) {}
 
     public:
         Unit* Calculate();
@@ -17,7 +17,7 @@ namespace ai
     class DpsAoeTargetValue : public RtiTargetValue
 	{
 	public:
-        DpsAoeTargetValue(PlayerbotAI* ai) : RtiTargetValue(ai) {}
+        DpsAoeTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) {}
 
     public:
         Unit* Calculate();

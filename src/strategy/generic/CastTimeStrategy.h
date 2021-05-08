@@ -6,7 +6,7 @@ namespace ai
     class CastTimeMultiplier : public Multiplier
     {
     public:
-        CastTimeMultiplier(PlayerbotAI* ai) : Multiplier(ai, "cast time") {}
+        CastTimeMultiplier(PlayerbotAI* botAI) : Multiplier(ai, "cast time") {}
 
     public:
         virtual float GetValue(Action* action);
@@ -15,7 +15,7 @@ namespace ai
     class CastTimeStrategy : public Strategy
     {
     public:
-        CastTimeStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        CastTimeStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitMultipliers(std::list<Multiplier*> &multipliers);

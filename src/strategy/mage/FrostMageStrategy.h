@@ -8,7 +8,7 @@ namespace ai
     class FrostMageStrategy : public GenericMageStrategy
     {
     public:
-        FrostMageStrategy(PlayerbotAI* ai);
+        FrostMageStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -19,7 +19,7 @@ namespace ai
     class FrostMageAoeStrategy : public CombatStrategy
     {
     public:
-        FrostMageAoeStrategy(PlayerbotAI* ai) : CombatStrategy(ai) {}
+        FrostMageAoeStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

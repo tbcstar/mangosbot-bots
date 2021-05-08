@@ -6,7 +6,7 @@ namespace ai
 {
     class WithinAreaTrigger : public Trigger {
     public:
-        WithinAreaTrigger(PlayerbotAI* ai) : Trigger(ai, "within area trigger") {}
+        WithinAreaTrigger(PlayerbotAI* botAI) : Trigger(ai, "within area trigger") {}
 
         virtual bool IsActive()
 		{

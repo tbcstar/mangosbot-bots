@@ -7,7 +7,7 @@ namespace ai
     class HolyPriestStrategy : public HealPriestStrategy
     {
     public:
-        HolyPriestStrategy(PlayerbotAI* ai);
+        HolyPriestStrategy(PlayerbotAI* botAI);
 
     public:
         virtual NextAction** getDefaultActions();

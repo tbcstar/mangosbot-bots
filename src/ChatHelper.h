@@ -10,7 +10,7 @@ namespace ai
     class ChatHelper : public PlayerbotAIAware
     {
     public:
-        ChatHelper(PlayerbotAI* ai);
+        ChatHelper(PlayerbotAI* botAI);
 
     public:
         static string formatMoney(uint32 copper);

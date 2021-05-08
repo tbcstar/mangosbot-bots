@@ -6,7 +6,7 @@ namespace ai
 {
 	class ChangeCombatStrategyAction : public Action {
 	public:
-		ChangeCombatStrategyAction(PlayerbotAI* ai, string name = "co") : Action(ai, name) {}
+		ChangeCombatStrategyAction(PlayerbotAI* botAI, string name = "co") : Action(ai, name) {}
 
     public:
         virtual bool Execute(Event event);
@@ -14,7 +14,7 @@ namespace ai
 
     class ChangeNonCombatStrategyAction : public Action {
     public:
-        ChangeNonCombatStrategyAction(PlayerbotAI* ai) : Action(ai, "nc") {}
+        ChangeNonCombatStrategyAction(PlayerbotAI* botAI) : Action(ai, "nc") {}
 
     public:
         virtual bool Execute(Event event);
@@ -22,7 +22,7 @@ namespace ai
 
     class ChangeDeadStrategyAction : public Action {
     public:
-        ChangeDeadStrategyAction(PlayerbotAI* ai) : Action(ai, "dead") {}
+        ChangeDeadStrategyAction(PlayerbotAI* botAI) : Action(ai, "dead") {}
 
     public:
         virtual bool Execute(Event event);

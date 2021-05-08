@@ -40,6 +40,6 @@ bool DropQuestAction::Execute(Event event)
     bot->SetQuestStatus(entry, QUEST_STATUS_NONE);
     bot->getQuestStatusMap()[entry].m_rewarded = false;
 
-    ai->TellMaster("Quest removed");
+    botAI->TellMaster("Quest removed");
     return true;
 }

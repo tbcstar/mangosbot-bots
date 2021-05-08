@@ -13,9 +13,9 @@ bool OutfitAction::Execute(Event event)
     if (param == "?")
     {
         List();
-        ai->TellMaster("outfit <name> +[item] to add items");
-        ai->TellMaster("outfit <name> -[item] to remove items");
-        ai->TellMaster("outfit <name> equip/replace to equip items");
+        botAI->TellMaster("outfit <name> +[item] to add items");
+        botAI->TellMaster("outfit <name> -[item] to remove items");
+        botAI->TellMaster("outfit <name> equip/replace to equip items");
     }
     else
     {
@@ -26,7 +26,7 @@ bool OutfitAction::Execute(Event event)
             Save(name, items);
             ostringstream out;
             out << "Setting outfit " << name << " as " << param;
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
             return true;
         }
 
@@ -43,7 +43,7 @@ bool OutfitAction::Execute(Event event)
         {
             ostringstream out;
             out << "Equipping outfit " << name;
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
             EquipItems(outfit);
             return true;
         }
@@ -51,7 +51,7 @@ bool OutfitAction::Execute(Event event)
         {
             ostringstream out;
             out << "Replacing current equip with outfit " << name;
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
             for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; slot++)
             {
                 Item* const pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
@@ -72,7 +72,7 @@ bool OutfitAction::Execute(Event event)
         {
             ostringstream out;
             out << "Resetting outfit " << name;
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
             Save(name, ItemIds());
             return true;
         }
@@ -80,7 +80,7 @@ bool OutfitAction::Execute(Event event)
         {
             ostringstream out;
             out << "Updating with current items outfit " << name;
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
             Update(name);
             return true;
         }
@@ -106,7 +106,7 @@ bool OutfitAction::Execute(Event event)
                 out << " added to ";
             }
             out << name;
-            ai->TellMaster(out.str());
+            botAI->TellMaster(out.str());
         }
         Save(name, outfit);
     }
@@ -160,7 +160,7 @@ void OutfitAction::List()
                 out << chat->formatItem(proto) << " ";
             }
         }
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
     }
 }
 

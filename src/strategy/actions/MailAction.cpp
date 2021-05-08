@@ -12,15 +12,15 @@ map<string, MailProcessor*> MailAction::processors;
 class TellMailProcessor : public MailProcessor
 {
 public:
-    virtual bool Before(PlayerbotAI* ai)
+    virtual bool Before(PlayerbotAI* botAI)
     {
-        ai->TellMaster("=== Mailbox ===");
+        botAI->TellMaster("=== Mailbox ===");
         tells.clear();
         return true;
     }
-    virtual bool Process(int index, Mail* mail, PlayerbotAI* ai)
+    virtual bool Process(int index, Mail* mail, PlayerbotAI* botAI)
     {
-        Player* bot = ai->GetBot();
+        Player* bot = botAI->GetBot();
         time_t cur_time = time(0);
         int days = (cur_time - mail->deliver_time) / 3600 / 24;
         ostringstream out;
@@ -53,10 +53,10 @@ public:
         return true;
     }
 
-    virtual bool After(PlayerbotAI* ai)
+    virtual bool After(PlayerbotAI* botAI)
     {
         for (list<string>::iterator i = tells.begin(); i != tells.end(); ++i)
-            ai->TellMaster(*i);
+            botAI->TellMaster(*i);
 
         return true;
     }
@@ -69,21 +69,21 @@ private:
 class TakeMailProcessor : public MailProcessor
 {
 public:
-    virtual bool Process(int index, Mail* mail, PlayerbotAI* ai)
+    virtual bool Process(int index, Mail* mail, PlayerbotAI* botAI)
     {
-        Player* bot = ai->GetBot();
+        Player* bot = botAI->GetBot();
         if (!CheckBagSpace(bot))
         {
-            ai->TellError("Not enough bag space");
+            botAI->TellError("Not enough bag space");
             return false;
         }
 
-        ObjectGuid mailbox = FindMailbox(ai);
+        ObjectGuid mailbox = FindMailbox(botAI);
         if (mail->money)
         {
             ostringstream out;
             out << mail->subject << ", |cffffff00" << ChatHelper::formatMoney(mail->money) << "|cff00ff00 processed";
-            ai->TellMaster(out.str());
+            botAI->TellMaster(out.str());
 
             WorldPacket packet;
             packet << mailbox;
@@ -112,7 +112,7 @@ public:
                 out << mail->subject << ", " << ChatHelper::formatItem(item->GetProto()) << "|cff00ff00 processed";
 
                 bot->GetSession()->HandleMailTakeItem(packet);
-                ai->TellMaster(out.str());
+                botAI->TellMaster(out.str());
             }
 
             RemoveMail(bot, mail->messageID, mailbox);
@@ -150,12 +150,12 @@ private:
 class DeleteMailProcessor : public MailProcessor
 {
 public:
-    virtual bool Process(int index, Mail* mail, PlayerbotAI* ai)
+    virtual bool Process(int index, Mail* mail, PlayerbotAI* botAI)
     {
         ostringstream out;
         out << "|cffffffff" << mail->subject << "|cffff0000 deleted";
-        RemoveMail(ai->GetBot(), mail->messageID, FindMailbox(ai));
-        ai->TellMaster(out.str());
+        RemoveMail(botAI->GetBot(), mail->messageID, FindMailbox(botAI));
+        botAI->TellMaster(out.str());
         return true;
     }
 
@@ -165,15 +165,15 @@ public:
 class ReadMailProcessor : public MailProcessor
 {
 public:
-    virtual bool Process(int index, Mail* mail, PlayerbotAI* ai)
+    virtual bool Process(int index, Mail* mail, PlayerbotAI* botAI)
     {
         ostringstream out, body;
         out << "|cffffffff" << mail->subject;
-        ai->TellMaster(out.str());
+        botAI->TellMaster(out.str());
         if (mail->itemTextId)
         {
             body << "\n" << sObjectMgr->GetItemText(mail->itemTextId);
-            ai->TellMaster(body.str());
+            botAI->TellMaster(body.str());
         }
         return true;
     }
@@ -191,9 +191,9 @@ bool MailAction::Execute(Event event)
     if (!master)
         return false;
 
-    if (!MailProcessor::FindMailbox(ai))
+    if (!MailProcessor::FindMailbox(botAI))
     {
-        ai->TellError("There is no mailbox nearby");
+        botAI->TellError("There is no mailbox nearby");
         return false;
     }
 
@@ -208,7 +208,7 @@ bool MailAction::Execute(Event event)
     string text = event.getParam();
     if (text.empty())
     {
-        ai->TellMaster("whisper 'mail ?' to query mailbox, 'mail take/delete/read filter' to take/delete/read mails by filter");
+        botAI->TellMaster("whisper 'mail ?' to query mailbox, 'mail take/delete/read filter' to take/delete/read mails by filter");
         return false;
     }
 
@@ -219,11 +219,11 @@ bool MailAction::Execute(Event event)
     if (!processor)
     {
         ostringstream out; out << action << ": I don't know how to do that";
-        ai->TellMaster(out.str());
+        botAI->TellMaster(out.str());
         return false;
     }
 
-    if (!processor->Before(ai))
+    if (!processor->Before(botAI))
         return false;
 
     vector<Mail*> mailList;
@@ -244,7 +244,7 @@ bool MailAction::Execute(Event event)
             break;
     }
 
-    return processor->After(ai);
+    return processor->After(botAI);
 }
 
 void MailProcessor::RemoveMail(Player* bot, uint32 id, ObjectGuid mailbox)
@@ -256,13 +256,13 @@ void MailProcessor::RemoveMail(Player* bot, uint32 id, ObjectGuid mailbox)
     bot->GetSession()->HandleMailDelete(packet);
 }
 
-ObjectGuid MailProcessor::FindMailbox(PlayerbotAI* ai)
+ObjectGuid MailProcessor::FindMailbox(PlayerbotAI* botAI)
 {
-    list<ObjectGuid> gos = *ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest game objects");
+    list<ObjectGuid> gos = *botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest game objects");
     ObjectGuid mailbox;
     for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); ++i)
     {
-        GameObject* go = ai->GetGameObject(*i);
+        GameObject* go = botAI->GetGameObject(*i);
         if (go && go->GetGoType() == GAMEOBJECT_TYPE_MAILBOX)
         {
             mailbox = go->GetGUID();

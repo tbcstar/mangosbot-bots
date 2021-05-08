@@ -9,7 +9,7 @@ map<InventoryResult, string> InventoryChangeFailureAction::messages;
 
 bool InventoryChangeFailureAction::Execute(Event event)
 {
-    if (!ai->GetMaster())
+    if (!botAI->GetMaster())
         return false;
 
     if (messages.empty())
@@ -91,7 +91,7 @@ bool InventoryChangeFailureAction::Execute(Event event)
     string msg = messages[(InventoryResult)err];
     if (!msg.empty())
     {
-        ai->TellError(msg);
+        botAI->TellError(msg);
         return true;
     }
 

@@ -7,14 +7,14 @@ namespace ai
 {
     class LeaveGroupAction : public Action {
     public:
-        LeaveGroupAction(PlayerbotAI* ai, string name = "leave") : Action(ai, name) {}
+        LeaveGroupAction(PlayerbotAI* botAI, string name = "leave") : Action(ai, name) {}
 
         virtual bool Execute(Event event)
         {
             if (!bot->GetGroup())
                 return false;
 
-            ai->TellMaster("Goodbye!", PLAYERBOT_SECURITY_TALK);
+            botAI->TellMaster("Goodbye!", PLAYERBOT_SECURITY_TALK);
 
             WorldPacket p;
             string member = bot->GetName();
@@ -28,14 +28,14 @@ namespace ai
                 sRandomPlayerbotMgr->ScheduleTeleport(bot->GetGUID());
             }
 
-            ai->ResetStrategies(!randomBot);
+            botAI->ResetStrategies(!randomBot);
             return true;
         }
     };
 
     class PartyCommandAction : public LeaveGroupAction {
     public:
-        PartyCommandAction(PlayerbotAI* ai) : LeaveGroupAction(ai, "party command") {}
+        PartyCommandAction(PlayerbotAI* botAI) : LeaveGroupAction(ai, "party command") {}
 
         virtual bool Execute(Event event)
         {
@@ -59,7 +59,7 @@ namespace ai
 
     class UninviteAction : public LeaveGroupAction {
     public:
-        UninviteAction(PlayerbotAI* ai) : LeaveGroupAction(ai, "party command") {}
+        UninviteAction(PlayerbotAI* botAI) : LeaveGroupAction(ai, "party command") {}
 
         virtual bool Execute(Event event)
         {

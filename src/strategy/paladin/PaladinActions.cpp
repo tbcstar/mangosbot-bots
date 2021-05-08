@@ -38,7 +38,7 @@ bool CastBlessingOfMightAction::Execute(Event event)
     Unit* target = GetTarget();
     if (!target) return false;
 
-    return ai->CastSpell(GetActualBlessingOfMight(target), target);
+    return botAI->CastSpell(GetActualBlessingOfMight(target), target);
 }
 
 bool CastBlessingOfMightOnPartyAction::Execute(Event event)
@@ -46,7 +46,7 @@ bool CastBlessingOfMightOnPartyAction::Execute(Event event)
     Unit* target = GetTarget();
     if (!target) return false;
 
-    return ai->CastSpell(GetActualBlessingOfMight(target), target);
+    return botAI->CastSpell(GetActualBlessingOfMight(target), target);
 }
 
 bool CastBlessingOfWisdomAction::Execute(Event event)
@@ -54,7 +54,7 @@ bool CastBlessingOfWisdomAction::Execute(Event event)
     Unit* target = GetTarget();
     if (!target) return false;
 
-    return ai->CastSpell(GetActualBlessingOfWisdom(target), target);
+    return botAI->CastSpell(GetActualBlessingOfWisdom(target), target);
 }
 
 bool CastBlessingOfWisdomOnPartyAction::Execute(Event event)
@@ -62,5 +62,5 @@ bool CastBlessingOfWisdomOnPartyAction::Execute(Event event)
     Unit* target = GetTarget();
     if (!target) return false;
 
-    return ai->CastSpell(GetActualBlessingOfWisdom(target), target);
+    return botAI->CastSpell(GetActualBlessingOfWisdom(target), target);
 }

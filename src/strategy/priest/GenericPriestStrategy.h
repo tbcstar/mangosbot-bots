@@ -8,7 +8,7 @@ namespace ai
     class GenericPriestStrategy : public CombatStrategy
     {
     public:
-        GenericPriestStrategy(PlayerbotAI* ai);
+        GenericPriestStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -18,7 +18,7 @@ namespace ai
     class PriestCureStrategy : public Strategy
     {
     public:
-        PriestCureStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PriestCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -28,7 +28,7 @@ namespace ai
     class PriestBoostStrategy : public Strategy
     {
     public:
-        PriestBoostStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PriestBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -38,7 +38,7 @@ namespace ai
     class PriestCcStrategy : public Strategy
     {
     public:
-        PriestCcStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PriestCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

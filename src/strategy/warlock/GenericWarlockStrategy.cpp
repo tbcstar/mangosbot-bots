@@ -14,14 +14,14 @@ public:
         creators["banish"] = &banish;
     }
 private:
-    static ActionNode* summon_voidwalker(PlayerbotAI* ai)
+    static ActionNode* summon_voidwalker(PlayerbotAI* botAI)
     {
         return new ActionNode ("summon voidwalker",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("drain soul"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* banish(PlayerbotAI* ai)
+    static ActionNode* banish(PlayerbotAI* botAI)
     {
         return new ActionNode ("banish",
             /*P*/ NULL,
@@ -30,7 +30,7 @@ private:
     }
 };
 
-GenericWarlockStrategy::GenericWarlockStrategy(PlayerbotAI* ai) : CombatStrategy(ai)
+GenericWarlockStrategy::GenericWarlockStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericWarlockStrategyActionNodeFactory());
 }

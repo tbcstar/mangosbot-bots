@@ -17,7 +17,7 @@ bool SendMailAction::Execute(Event event)
     bool mailboxFound = false;
     for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); ++i)
     {
-        GameObject* go = ai->GetGameObject(*i);
+        GameObject* go = botAI->GetGameObject(*i);
         if (go && go->GetGoType() == GAMEOBJECT_TYPE_MAILBOX)
         {
             mailboxFound = true;
@@ -72,7 +72,7 @@ bool SendMailAction::Execute(Event event)
 
         if (bot->GetMoney() < money)
         {
-            ai->TellError("I don't have enough money");
+            botAI->TellError("I don't have enough money");
             return false;
         }
 
@@ -91,7 +91,7 @@ bool SendMailAction::Execute(Event event)
         draft.SendMailTo(MailReceiver(receiver), MailSender(bot));
 
         ostringstream out; out << "Sending mail to " << receiver->GetName();
-        ai->TellMaster(out.str());
+        botAI->TellMaster(out.str());
         return true;
     }
 

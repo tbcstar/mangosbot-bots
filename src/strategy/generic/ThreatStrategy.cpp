@@ -31,5 +31,5 @@ float ThreatMultiplier::GetValue(Action* action)
 
 void ThreatStrategy::InitMultipliers(std::list<Multiplier*> &multipliers)
 {
-    multipliers.push_back(new ThreatMultiplier(ai));
+    multipliers.push_back(new ThreatMultiplier(botAI));
 }

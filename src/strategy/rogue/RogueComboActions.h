@@ -5,7 +5,7 @@ namespace ai
 	class CastComboAction : public CastMeleeSpellAction
 	{
 	public:
-	    CastComboAction(PlayerbotAI* ai, string name) : CastMeleeSpellAction(ai, name) {}
+	    CastComboAction(PlayerbotAI* botAI, string name) : CastMeleeSpellAction(ai, name) {}
 
 	    virtual bool isUseful()
 	    {
@@ -16,30 +16,30 @@ namespace ai
 	class CastSinisterStrikeAction : public CastComboAction
 	{
 	public:
-		CastSinisterStrikeAction(PlayerbotAI* ai) : CastComboAction(ai, "sinister strike") {}
+		CastSinisterStrikeAction(PlayerbotAI* botAI) : CastComboAction(ai, "sinister strike") {}
 	};
 
     class CastMutilateAction : public CastComboAction
     {
     public:
-        CastMutilateAction(PlayerbotAI* ai) : CastComboAction(ai, "mutilate") {}
+        CastMutilateAction(PlayerbotAI* botAI) : CastComboAction(ai, "mutilate") {}
     };
 
     class CastRiposteAction : public CastComboAction
     {
     public:
-        CastRiposteAction(PlayerbotAI* ai) : CastComboAction(ai, "riposte") {}
+        CastRiposteAction(PlayerbotAI* botAI) : CastComboAction(ai, "riposte") {}
     };
 
 	class CastGougeAction : public CastComboAction
 	{
 	public:
-		CastGougeAction(PlayerbotAI* ai) : CastComboAction(ai, "gouge") {}
+		CastGougeAction(PlayerbotAI* botAI) : CastComboAction(ai, "gouge") {}
 	};
 
     class CastBackstabAction : public CastComboAction
     {
     public:
-        CastBackstabAction(PlayerbotAI* ai) : CastComboAction(ai, "backstab") {}
+        CastBackstabAction(PlayerbotAI* botAI) : CastComboAction(ai, "backstab") {}
     };
 }

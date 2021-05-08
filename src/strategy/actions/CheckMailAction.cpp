@@ -12,7 +12,7 @@ bool CheckMailAction::Execute(Event event)
     WorldPacket p;
     bot->GetSession()->HandleQueryNextMailTime(p);
 
-    if (ai->GetMaster() || !bot->GetMailSize())
+    if (botAI->GetMaster() || !bot->GetMailSize())
         return false;
 
     list<uint32> ids;

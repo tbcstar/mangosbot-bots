@@ -15,14 +15,14 @@ public:
         creators["aspect of the pack"] = &aspect_of_the_pack;
     }
 private:
-    static ActionNode* rapid_fire(PlayerbotAI* ai)
+    static ActionNode* rapid_fire(PlayerbotAI* botAI)
     {
         return new ActionNode ("rapid fire",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("readiness"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* aspect_of_the_pack(PlayerbotAI* ai)
+    static ActionNode* aspect_of_the_pack(PlayerbotAI* botAI)
     {
         return new ActionNode ("aspect of the pack",
             /*P*/ NULL,
@@ -31,7 +31,7 @@ private:
     }
 };
 
-GenericHunterNonCombatStrategy::GenericHunterNonCombatStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai)
+GenericHunterNonCombatStrategy::GenericHunterNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericHunterNonCombatStrategyActionNodeFactory());
 }

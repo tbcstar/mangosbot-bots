@@ -49,5 +49,5 @@ void EquipAction::EquipItem(Item& item)
     }
 
     ostringstream out; out << "equipping " << chat->formatItem(item.GetProto());
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 }

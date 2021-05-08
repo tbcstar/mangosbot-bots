@@ -8,8 +8,8 @@ using namespace ai;
 class PlayerWithoutItemPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {
 public:
-    PlayerWithoutItemPredicate(PlayerbotAI* ai, string item) :
-        PlayerbotAIAware(ai), FindPlayerPredicate(), item(item) {}
+    PlayerWithoutItemPredicate(PlayerbotAI* botAI, string item) :
+        PlayerbotAIAware(botAI), FindPlayerPredicate(), item(item) {}
 
 public:
     virtual bool Check(Unit* unit)
@@ -29,7 +29,7 @@ public:
         if (!botAi)
             return false;
 
-        return !botAi->GetAiObjectContext()->GetValue<uint8>("item count", item)->Get();
+        return !botbotAI->GetAiObjectContext()->GetValue<uint8>("item count", item)->Get();
     }
 
 private:
@@ -52,7 +52,7 @@ FindPlayerPredicate* PartyMemberWithoutItemValue::CreatePredicate()
 class PlayerWithoutFoodPredicate : public PlayerWithoutItemPredicate
 {
 public:
-    PlayerWithoutFoodPredicate(PlayerbotAI* ai) : PlayerWithoutItemPredicate(ai, "conjured food") {}
+    PlayerWithoutFoodPredicate(PlayerbotAI* botAI) : PlayerWithoutItemPredicate(ai, "conjured food") {}
 
 public:
     virtual bool Check(Unit* unit)
@@ -72,7 +72,7 @@ public:
 class PlayerWithoutWaterPredicate : public PlayerWithoutItemPredicate
 {
 public:
-    PlayerWithoutWaterPredicate(PlayerbotAI* ai) : PlayerWithoutItemPredicate(ai, "conjured water") {}
+    PlayerWithoutWaterPredicate(PlayerbotAI* botAI) : PlayerWithoutItemPredicate(ai, "conjured water") {}
 
 public:
     virtual bool Check(Unit* unit)
@@ -97,10 +97,10 @@ public:
 
 FindPlayerPredicate* PartyMemberWithoutFoodValue::CreatePredicate()
 {
-    return new PlayerWithoutFoodPredicate(ai);
+    return new PlayerWithoutFoodPredicate(botAI);
 }
 
 FindPlayerPredicate* PartyMemberWithoutWaterValue::CreatePredicate()
 {
-    return new PlayerWithoutWaterPredicate(ai);
+    return new PlayerWithoutWaterPredicate(botAI);
 }

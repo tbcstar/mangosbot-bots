@@ -6,7 +6,7 @@ namespace ai
     class RtiValue : public ManualSetValue<string>
 	{
 	public:
-        RtiValue(PlayerbotAI* ai);
+        RtiValue(PlayerbotAI* botAI);
 
         virtual string Save() { return value; }
         virtual bool Load(string text) { value = text; return true; }
@@ -15,7 +15,7 @@ namespace ai
     class RtiCcValue : public ManualSetValue<string>
 	{
 	public:
-        RtiCcValue(PlayerbotAI* ai);
+        RtiCcValue(PlayerbotAI* botAI);
 
         virtual string Save() { return value; }
         virtual bool Load(string text) { value = text; return true; }

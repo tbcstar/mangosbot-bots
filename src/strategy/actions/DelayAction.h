@@ -10,18 +10,18 @@ namespace ai
     class DelayAction : public Action
     {
     public:
-        DelayAction(PlayerbotAI* ai) : Action(ai, "delay")
+        DelayAction(PlayerbotAI* botAI) : Action(ai, "delay")
         {}
 
         virtual bool Execute(Event event)
         {
-            if (!sRandomPlayerbotMgr->IsRandomBot(bot) || bot->GetGroup() || ai->GetMaster())
+            if (!sRandomPlayerbotMgr->IsRandomBot(bot) || bot->GetGroup() || botAI->GetMaster())
                 return false;
 
             if (sServerFacade->IsInCombat(bot))
                 return true;
 
-            ai->SetNextCheckDelay(sPlayerbotAIConfig->passiveDelay + sPlayerbotAIConfig->globalCoolDown);
+            botAI->SetNextCheckDelay(sPlayerbotAIConfig->passiveDelay + sPlayerbotAIConfig->globalCoolDown);
             return true;
         }
     };

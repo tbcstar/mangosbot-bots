@@ -6,7 +6,7 @@
 
 using namespace ai;
 
-PriestNonCombatStrategy::PriestNonCombatStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai)
+PriestNonCombatStrategy::PriestNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI)
 {
     actionNodeFactories.Add(new PriestNonCombatStrategyActionNodeFactory());
 }

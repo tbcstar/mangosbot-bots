@@ -6,7 +6,7 @@ namespace ai
     class AoeHealValue : public Uint8CalculatedValue, public Qualified
 	{
 	public:
-    	AoeHealValue(PlayerbotAI* ai) : Uint8CalculatedValue(ai) {}
+    	AoeHealValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) {}
 
     public:
     	virtual uint8 Calculate();

@@ -6,14 +6,14 @@ namespace ai
 {
     class AddLootAction : public Action {
     public:
-        AddLootAction(PlayerbotAI* ai) : Action(ai, "add loot") {}
+        AddLootAction(PlayerbotAI* botAI) : Action(ai, "add loot") {}
         virtual bool Execute(Event event);
         virtual bool isUseful();
     };
 
     class AddAllLootAction : public Action {
     public:
-        AddAllLootAction(PlayerbotAI* ai, string name = "add all loot") : Action(ai, name) {}
+        AddAllLootAction(PlayerbotAI* botAI, string name = "add all loot") : Action(ai, name) {}
         virtual bool Execute(Event event);
         virtual bool isUseful();
 
@@ -23,7 +23,7 @@ namespace ai
 
     class AddGatheringLootAction : public AddAllLootAction {
     public:
-        AddGatheringLootAction(PlayerbotAI* ai) : AddAllLootAction(ai, "add gathering loot") {}
+        AddGatheringLootAction(PlayerbotAI* botAI) : AddAllLootAction(ai, "add gathering loot") {}
 
     protected:
         virtual bool AddLoot(ObjectGuid guid);

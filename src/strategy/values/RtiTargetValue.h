@@ -10,7 +10,7 @@ namespace ai
     class RtiTargetValue : public TargetValue
     {
     public:
-        RtiTargetValue(PlayerbotAI* ai, string type = "rti") : type(type), TargetValue(ai)
+        RtiTargetValue(PlayerbotAI* botAI, string type = "rti") : type(type), TargetValue(botAI)
         {}
 
     public:
@@ -30,7 +30,7 @@ namespace ai
 
         Unit *Calculate()
         {
-            Group *group = bot->GetGroup();
+            Group* group = bot->GetGroup();
             if(!group)
                 return NULL;
 
@@ -47,7 +47,7 @@ namespace ai
             list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
             if (find(attackers.begin(), attackers.end(), guid) == attackers.end()) return NULL;
 
-            Unit* unit = ai->GetUnit(guid);
+            Unit* unit = botAI->GetUnit(guid);
             if (!unit || sServerFacade->UnitIsDead(unit) ||
                     !sServerFacade->IsWithinLOSInMap(bot, unit) ||
                     sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, unit), sPlayerbotAIConfig->sightDistance))
@@ -63,6 +63,6 @@ namespace ai
     class RtiCcTargetValue : public RtiTargetValue
     {
     public:
-        RtiCcTargetValue(PlayerbotAI* ai) : RtiTargetValue(ai, "rti cc") {}
+        RtiCcTargetValue(PlayerbotAI* botAI) : RtiTargetValue(ai, "rti cc") {}
     };
 }

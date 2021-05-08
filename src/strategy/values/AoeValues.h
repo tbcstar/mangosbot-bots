@@ -6,7 +6,7 @@ namespace ai
     class AoePositionValue : public CalculatedValue<WorldLocation>
 	{
 	public:
-        AoePositionValue(PlayerbotAI* ai) : CalculatedValue<WorldLocation>(ai, "aoe position") {}
+        AoePositionValue(PlayerbotAI* botAI) : CalculatedValue<WorldLocation>(ai, "aoe position") {}
 
 	public:
         virtual WorldLocation Calculate();
@@ -15,7 +15,7 @@ namespace ai
     class AoeCountValue : public CalculatedValue<uint8>
 	{
 	public:
-        AoeCountValue(PlayerbotAI* ai) : CalculatedValue<uint8>(ai, "aoe count") {}
+        AoeCountValue(PlayerbotAI* botAI) : CalculatedValue<uint8>(ai, "aoe count") {}
 
 	public:
         virtual uint8 Calculate();

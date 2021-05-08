@@ -131,40 +131,40 @@ void InventoryAction::TellItems(map<uint32, int> itemMap, map<uint32, bool> soul
             switch (proto->Class)
             {
             case ITEM_CLASS_CONSUMABLE:
-                ai->TellMaster("--- consumable ---");
+                botAI->TellMaster("--- consumable ---");
                 break;
             case ITEM_CLASS_CONTAINER:
-                ai->TellMaster("--- container ---");
+                botAI->TellMaster("--- container ---");
                 break;
             case ITEM_CLASS_WEAPON:
-                ai->TellMaster("--- weapon ---");
+                botAI->TellMaster("--- weapon ---");
                 break;
             case ITEM_CLASS_ARMOR:
-                ai->TellMaster("--- armor ---");
+                botAI->TellMaster("--- armor ---");
                 break;
             case ITEM_CLASS_REAGENT:
-                ai->TellMaster("--- reagent ---");
+                botAI->TellMaster("--- reagent ---");
                 break;
             case ITEM_CLASS_PROJECTILE:
-                ai->TellMaster("--- projectile ---");
+                botAI->TellMaster("--- projectile ---");
                 break;
             case ITEM_CLASS_TRADE_GOODS:
-                ai->TellMaster("--- trade goods ---");
+                botAI->TellMaster("--- trade goods ---");
                 break;
             case ITEM_CLASS_RECIPE:
-                ai->TellMaster("--- recipe ---");
+                botAI->TellMaster("--- recipe ---");
                 break;
             case ITEM_CLASS_QUIVER:
-                ai->TellMaster("--- quiver ---");
+                botAI->TellMaster("--- quiver ---");
                 break;
             case ITEM_CLASS_QUEST:
-                ai->TellMaster("--- quest items ---");
+                botAI->TellMaster("--- quest items ---");
                 break;
             case ITEM_CLASS_KEY:
-                ai->TellMaster("--- keys ---");
+                botAI->TellMaster("--- keys ---");
                 break;
             case ITEM_CLASS_MISC:
-                ai->TellMaster("--- other ---");
+                botAI->TellMaster("--- other ---");
                 break;
             }
         }
@@ -179,7 +179,7 @@ void InventoryAction::TellItem(ItemPrototype const * proto, int count, bool soul
     out << chat->formatItem(proto, count);
     if (soulbound)
         out << " (soulbound)";
-    ai->TellMaster(out.str());
+    botAI->TellMaster(out.str());
 }
 
 list<Item*> InventoryAction::parseItems(string text, IterateItemsMask mask)

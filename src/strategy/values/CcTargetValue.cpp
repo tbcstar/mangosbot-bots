@@ -10,7 +10,7 @@ using namespace ai;
 class FindTargetForCcStrategy : public FindTargetStrategy
 {
 public:
-    FindTargetForCcStrategy(PlayerbotAI* ai, string spell) : FindTargetStrategy(ai)
+    FindTargetForCcStrategy(PlayerbotAI* botAI, string spell) : FindTargetStrategy(botAI)
     {
         this->spell = spell;
         maxDistance = 0;
@@ -19,32 +19,32 @@ public:
 public:
     virtual void CheckAttacker(Unit* creature, ThreatManager* threatManager)
     {
-        Player* bot = ai->GetBot();
+        Player* bot = botAI->GetBot();
 
-        if (!ai->CanCastSpell(spell, creature))
+        if (!botAI->CanCastSpell(spell, creature))
             return;
 
-        if (*ai->GetAiObjectContext()->GetValue<Unit*>("rti cc target") == creature)
+        if (*botAI->GetAiObjectContext()->GetValue<Unit*>("rti cc target") == creature)
         {
             result = creature;
             return;
         }
 
-        if (*ai->GetAiObjectContext()->GetValue<Unit*>("current target") == creature)
+        if (*botAI->GetAiObjectContext()->GetValue<Unit*>("current target") == creature)
             return;
 
         uint8 health = creature->GetHealthPercent();
         if (health < sPlayerbotAIConfig->mediumHealth)
             return;
 
-        float minDistance = ai->GetRange("spell");
+        float minDistance = botAI->GetRange("spell");
         Group* group = bot->GetGroup();
         if (!group)
             return;
 
-        if (*ai->GetAiObjectContext()->GetValue<uint8>("aoe count") > 2)
+        if (*botAI->GetAiObjectContext()->GetValue<uint8>("aoe count") > 2)
         {
-            WorldLocation aoe = *ai->GetAiObjectContext()->GetValue<WorldLocation>("aoe position");
+            WorldLocation aoe = *botAI->GetAiObjectContext()->GetValue<WorldLocation>("aoe position");
             if (sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(creature, aoe.coord_x, aoe.coord_y), sPlayerbotAIConfig->aoeRadius))
                 return;
         }
@@ -64,7 +64,7 @@ public:
             if( !member || !sServerFacade->IsAlive(member) || member == bot)
                 continue;
 
-            if (!ai->IsTank(member))
+            if (!botAI->IsTank(member))
                 continue;
 
             float distance = member->GetDistance(creature);

@@ -173,7 +173,7 @@ void RandomPlayerbotMgr::ScheduleChangeStrategy(uint32 bot, uint32 time)
 bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
 {
     Player* player = GetPlayerBot(bot);
-    PlayerbotAI* ai = player ? player->GetPlayerbotAI() : NULL;
+    PlayerbotAI* botAI = player ? player->GetPlayerbotAI() : NULL;
 
     uint32 isValid = GetEventValue(bot, "add");
     if (!isValid)
@@ -208,7 +208,7 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
     uint32 update = GetEventValue(bot, "update");
     if (!update)
     {
-        if (ai) ai->GetAiObjectContext()->GetValue<bool>("random bot update")->Set(true);
+        if (botAI) botAI->GetAiObjectContext()->GetValue<bool>("random bot update")->Set(true);
         uint32 randomTime = urand(sPlayerbotAIConfig->minRandomBotReviveTime, sPlayerbotAIConfig->maxRandomBotReviveTime);
         SetEventValue(bot, "update", 1, randomTime);
         return true;
@@ -848,11 +848,11 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
     for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
     {
         Player* const bot = it->second;
-        PlayerbotAI* ai = bot->GetPlayerbotAI();
-        if (player == ai->GetMaster())
+        PlayerbotAI* botAI = bot->GetPlayerbotAI();
+        if (player == botAI->GetMaster())
         {
-            ai->SetMaster(NULL);
-            ai->ResetStrategies();
+            botAI->SetMaster(NULL);
+            botAI->ResetStrategies();
         }
     }
 
@@ -882,12 +882,12 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
         for (GroupReference *gref = group->GetFirstMember(); gref; gref = gref->next())
         {
             Player* member = gref->getSource();
-            PlayerbotAI* ai = bot->GetPlayerbotAI();
-            if (member == player && (!ai->GetMaster() || ai->GetMaster()->GetPlayerbotAI()))
+            PlayerbotAI* botAI = bot->GetPlayerbotAI();
+            if (member == player && (!botAI->GetMaster() || botAI->GetMaster()->GetPlayerbotAI()))
             {
-                ai->SetMaster(player);
-                ai->ResetStrategies();
-                ai->TellMaster("Hello");
+                botAI->SetMaster(player);
+                botAI->ResetStrategies();
+                botAI->TellMaster("Hello");
                 break;
             }
         }
@@ -1131,7 +1131,7 @@ string RandomPlayerbotMgr::HandleRemoteCommand(string request)
     if (!ai)
         return "invalid guid";
 
-    return ai->HandleRemoteCommand(command);
+    return botAI->HandleRemoteCommand(command);
 }
 
 void RandomPlayerbotMgr::ChangeStrategy(Player* player)

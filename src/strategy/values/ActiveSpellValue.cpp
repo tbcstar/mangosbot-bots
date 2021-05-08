@@ -8,7 +8,7 @@ using namespace ai;
 
 uint32 ActiveSpellValue::Calculate()
 {
-    Player* bot = ai->GetBot();
+    Player* bot = botAI->GetBot();
     for (int type = CURRENT_MELEE_SPELL; type <= CURRENT_CHANNELED_SPELL; ++type)
     {
         Spell *spell = bot->GetCurrentSpell((CurrentSpellTypes)type);

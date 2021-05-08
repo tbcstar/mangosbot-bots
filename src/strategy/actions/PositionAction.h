@@ -8,7 +8,7 @@ namespace ai
     class PositionAction : public Action
     {
     public:
-        PositionAction(PlayerbotAI* ai) : Action(ai, "position")
+        PositionAction(PlayerbotAI* botAI) : Action(ai, "position")
         {}
 
         virtual bool Execute(Event event);
@@ -17,7 +17,7 @@ namespace ai
     class MoveToPositionAction : public MovementAction
     {
     public:
-        MoveToPositionAction(PlayerbotAI* ai, string name, string qualifier, bool idle = false) :
+        MoveToPositionAction(PlayerbotAI* botAI, string name, string qualifier, bool idle = false) :
             MovementAction(ai, name), qualifier(qualifier), idle(idle)
         {}
 
@@ -32,13 +32,13 @@ namespace ai
     class GuardAction : public MoveToPositionAction
     {
     public:
-        GuardAction(PlayerbotAI* ai) : MoveToPositionAction(ai, "move to position", "guard") {}
+        GuardAction(PlayerbotAI* botAI) : MoveToPositionAction(ai, "move to position", "guard") {}
     };
 
     class SetReturnPositionAction : public Action
     {
     public:
-        SetReturnPositionAction(PlayerbotAI* ai) : Action(ai, "set return position")
+        SetReturnPositionAction(PlayerbotAI* botAI) : Action(ai, "set return position")
         {}
 
         virtual bool Execute(Event event);
@@ -48,7 +48,7 @@ namespace ai
     class ReturnAction : public MoveToPositionAction
     {
     public:
-        ReturnAction(PlayerbotAI* ai) : MoveToPositionAction(ai, "return", "return", true) {}
+        ReturnAction(PlayerbotAI* botAI) : MoveToPositionAction(ai, "return", "return", true) {}
 
         virtual bool isUseful();
     };

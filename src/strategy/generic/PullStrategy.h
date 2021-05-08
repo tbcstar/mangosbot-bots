@@ -7,7 +7,7 @@ namespace ai
     class PullStrategy : public CombatStrategy
     {
     public:
-        PullStrategy(PlayerbotAI* ai, string action) : CombatStrategy(ai)
+        PullStrategy(PlayerbotAI* botAI, string action) : CombatStrategy(botAI)
         {
             this->action = action;
         }
@@ -25,7 +25,7 @@ namespace ai
     class PossibleAdsStrategy : public Strategy
     {
     public:
-        PossibleAdsStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PossibleAdsStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

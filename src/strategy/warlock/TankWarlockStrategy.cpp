@@ -14,14 +14,14 @@ public:
         creators["summon felguard"] = &summon_felguard;
     }
 private:
-    static ActionNode* summon_voidwalker(PlayerbotAI* ai)
+    static ActionNode* summon_voidwalker(PlayerbotAI* botAI)
     {
         return new ActionNode ("summon voidwalker",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("drain soul"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* summon_felguard(PlayerbotAI* ai)
+    static ActionNode* summon_felguard(PlayerbotAI* botAI)
     {
         return new ActionNode ("summon felguard",
             /*P*/ NULL,
@@ -30,7 +30,7 @@ private:
     }
 };
 
-TankWarlockStrategy::TankWarlockStrategy(PlayerbotAI* ai) : GenericWarlockStrategy(ai)
+TankWarlockStrategy::TankWarlockStrategy(PlayerbotAI* botAI) : GenericWarlockStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericWarlockStrategyActionNodeFactory());
 }

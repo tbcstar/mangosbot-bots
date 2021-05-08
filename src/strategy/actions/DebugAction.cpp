@@ -12,7 +12,7 @@ bool DebugAction::Execute(Event event)
         return false;
 
     string text = event.getParam();
-    string response = ai->HandleRemoteCommand(text);
-    ai->TellMaster(response);
+    string response = botAI->HandleRemoteCommand(text);
+    botAI->TellMaster(response);
     return true;
 }

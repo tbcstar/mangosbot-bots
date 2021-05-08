@@ -16,15 +16,15 @@ using namespace ai;
 
 void PlayerbotDbStore::Load(PlayerbotAI *ai)
 {
-    ObjectGuid::LowType guid = ai->GetBot()->GetGUID().GetCounter();
+    ObjectGuid::LowType guid = botAI->GetBot()->GetGUID().GetCounter();
 
     QueryResult* results = CharacterDatabase.PQuery("SELECT `key`,`value` FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
     if (results)
     {
-        ai->ClearStrategies(BOT_STATE_COMBAT);
-        ai->ClearStrategies(BOT_STATE_NON_COMBAT);
-        ai->ChangeStrategy("+chat", BOT_STATE_COMBAT);
-        ai->ChangeStrategy("+chat", BOT_STATE_NON_COMBAT);
+        botAI->ClearStrategies(BOT_STATE_COMBAT);
+        botAI->ClearStrategies(BOT_STATE_NON_COMBAT);
+        botAI->ChangeStrategy("+chat", BOT_STATE_COMBAT);
+        botAI->ChangeStrategy("+chat", BOT_STATE_NON_COMBAT);
 
         list<string> values;
         do
@@ -33,31 +33,31 @@ void PlayerbotDbStore::Load(PlayerbotAI *ai)
             string key = fields[0].GetString();
             string value = fields[1].GetString();
             if (key == "value") values.push_back(value);
-            else if (key == "co") ai->ChangeStrategy(value, BOT_STATE_COMBAT);
-            else if (key == "nc") ai->ChangeStrategy(value, BOT_STATE_NON_COMBAT);
-            else if (key == "dead") ai->ChangeStrategy(value, BOT_STATE_DEAD);
+            else if (key == "co") botAI->ChangeStrategy(value, BOT_STATE_COMBAT);
+            else if (key == "nc") botAI->ChangeStrategy(value, BOT_STATE_NON_COMBAT);
+            else if (key == "dead") botAI->ChangeStrategy(value, BOT_STATE_DEAD);
         } while (results->NextRow());
 
-        ai->GetAiObjectContext()->Load(values);
+        botAI->GetAiObjectContext()->Load(values);
         delete results;
     }
 }
 
 void PlayerbotDbStore::Save(PlayerbotAI *ai)
 {
-    ObjectGuid::LowType guid = ai->GetBot()->GetGUID().GetCounter();
+    ObjectGuid::LowType guid = botAI->GetBot()->GetGUID().GetCounter();
 
-    Reset(ai);
+    Reset(botAI);
 
-    list<string> data = ai->GetAiObjectContext()->Save();
+    list<string> data = botAI->GetAiObjectContext()->Save();
     for (list<string>::iterator i = data.begin(); i != data.end(); ++i)
     {
         SaveValue(guid, "value", *i);
     }
 
-    SaveValue(guid, "co", FormatStrategies("co", ai->GetStrategies(BOT_STATE_COMBAT)));
-    SaveValue(guid, "nc", FormatStrategies("nc", ai->GetStrategies(BOT_STATE_NON_COMBAT)));
-    SaveValue(guid, "dead", FormatStrategies("dead", ai->GetStrategies(BOT_STATE_DEAD)));
+    SaveValue(guid, "co", FormatStrategies("co", botAI->GetStrategies(BOT_STATE_COMBAT)));
+    SaveValue(guid, "nc", FormatStrategies("nc", botAI->GetStrategies(BOT_STATE_NON_COMBAT)));
+    SaveValue(guid, "dead", FormatStrategies("dead", botAI->GetStrategies(BOT_STATE_DEAD)));
 }
 
 string PlayerbotDbStore::FormatStrategies(string type, list<string> strategies)
@@ -72,7 +72,7 @@ string PlayerbotDbStore::FormatStrategies(string type, list<string> strategies)
 
 void PlayerbotDbStore::Reset(PlayerbotAI *ai)
 {
-    ObjectGuid::LowType guid = ai->GetBot()->GetGUID().GetCounter();
+    ObjectGuid::LowType guid = botAI->GetBot()->GetGUID().GetCounter();
     uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(guid);
     CharacterDatabase.PExecute("DELETE FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
 }

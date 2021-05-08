@@ -6,7 +6,7 @@ namespace ai
     class RangeValue : public ManualSetValue<float>, public Qualified
 	{
 	public:
-        RangeValue(PlayerbotAI* ai);
+        RangeValue(PlayerbotAI* botAI);
 
         virtual string Save();
         virtual bool Load(string value);

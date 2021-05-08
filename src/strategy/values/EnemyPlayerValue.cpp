@@ -9,7 +9,7 @@ using namespace std;
 class FindEnemyPlayerStrategy : public FindTargetStrategy
 {
 public:
-    FindEnemyPlayerStrategy(PlayerbotAI* ai) : FindTargetStrategy(ai)
+    FindEnemyPlayerStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI)
     {
     }
 
@@ -20,7 +20,7 @@ public:
         {
             Player* enemy = dynamic_cast<Player*>(attacker);
             if (enemy &&
-                    ai->IsOpposing(enemy) &&
+                    botAI->IsOpposing(enemy) &&
                     enemy->IsPvP() &&
                     !sPlayerbotAIConfig->IsInPvpProhibitedZone(enemy->GetAreaId()) &&
                     !enemy->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) &&
@@ -35,6 +35,6 @@ public:
 
 Unit* EnemyPlayerValue::Calculate()
 {
-    FindEnemyPlayerStrategy strategy(ai);
+    FindEnemyPlayerStrategy strategy(botAI);
     return FindTarget(&strategy);
 }

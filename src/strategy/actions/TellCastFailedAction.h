@@ -7,7 +7,7 @@ namespace ai
     class TellSpellAction : public Action
     {
     public:
-        TellSpellAction(PlayerbotAI* ai) : Action(ai, "spell") {}
+        TellSpellAction(PlayerbotAI* botAI) : Action(ai, "spell") {}
 
         virtual bool Execute(Event event);
     };
@@ -15,7 +15,7 @@ namespace ai
     class TellCastFailedAction : public Action 
     {
     public:
-        TellCastFailedAction(PlayerbotAI* ai) : Action(ai, "tell cast failed") {}
+        TellCastFailedAction(PlayerbotAI* botAI) : Action(ai, "tell cast failed") {}
 
         virtual bool Execute(Event event);
     };

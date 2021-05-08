@@ -6,7 +6,7 @@ using namespace ai;
 
 bool CastCasterFormAction::Execute(Event event)
 {
-    ai->RemoveShapeshift();
+    botAI->RemoveShapeshift();
     return true;
 }
 
@@ -27,7 +27,7 @@ Value<Unit*>* CastEntanglingRootsCcAction::GetTargetValue()
 
 bool CastEntanglingRootsCcAction::Execute(Event event)
 {
-    return ai->CastSpell("entangling roots", GetTarget());
+    return botAI->CastSpell("entangling roots", GetTarget());
 }
 
 Value<Unit*>* CastHibernateCcAction::GetTargetValue()
@@ -37,5 +37,5 @@ Value<Unit*>* CastHibernateCcAction::GetTargetValue()
 
 bool CastHibernateCcAction::Execute(Event event)
 {
-    return ai->CastSpell("hibernate", GetTarget());
+    return botAI->CastSpell("hibernate", GetTarget());
 }

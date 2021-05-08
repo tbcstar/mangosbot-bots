@@ -6,7 +6,7 @@ namespace ai
 {
     class CustomStrategyEditAction : public Action {
     public:
-        CustomStrategyEditAction(PlayerbotAI* ai) : Action(ai, "cs") {}
+        CustomStrategyEditAction(PlayerbotAI* botAI) : Action(ai, "cs") {}
         virtual bool Execute(Event event);
 
     private:

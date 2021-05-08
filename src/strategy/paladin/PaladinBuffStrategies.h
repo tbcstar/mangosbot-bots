@@ -7,7 +7,7 @@ namespace ai
     class PaladinBuffManaStrategy : public Strategy
     {
     public:
-        PaladinBuffManaStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PaladinBuffManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -17,7 +17,7 @@ namespace ai
     class PaladinBuffHealthStrategy : public Strategy
     {
     public:
-        PaladinBuffHealthStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PaladinBuffHealthStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -27,7 +27,7 @@ namespace ai
     class PaladinBuffDpsStrategy : public Strategy
     {
     public:
-        PaladinBuffDpsStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PaladinBuffDpsStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -37,7 +37,7 @@ namespace ai
 	class PaladinBuffArmorStrategy : public Strategy
 	{
 	public:
-		PaladinBuffArmorStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+		PaladinBuffArmorStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
 	public:
 		virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -47,7 +47,7 @@ namespace ai
 	class PaladinBuffAoeStrategy : public Strategy
 	{
 	public:
-	    PaladinBuffAoeStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+	    PaladinBuffAoeStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
 	public:
 		virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -57,7 +57,7 @@ namespace ai
 	class PaladinBuffThreatStrategy : public Strategy
 	{
 	public:
-		PaladinBuffThreatStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+		PaladinBuffThreatStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
 	public:
 		virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -67,7 +67,7 @@ namespace ai
 	class PaladinBuffStatsStrategy : public Strategy
 	{
 	public:
-	    PaladinBuffStatsStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+	    PaladinBuffStatsStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
 	public:
 		virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -77,7 +77,7 @@ namespace ai
 	class PaladinShadowResistanceStrategy : public Strategy
 	{
 	public:
-		PaladinShadowResistanceStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+		PaladinShadowResistanceStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
 	public:
 		virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -87,7 +87,7 @@ namespace ai
 	class PaladinFrostResistanceStrategy : public Strategy
 	{
 	public:
-		PaladinFrostResistanceStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+		PaladinFrostResistanceStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
 	public:
 		virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -97,7 +97,7 @@ namespace ai
 	class PaladinFireResistanceStrategy : public Strategy
 	{
 	public:
-		PaladinFireResistanceStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+		PaladinFireResistanceStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
 	public:
 		virtual void InitTriggers(std::list<TriggerNode*> &triggers);

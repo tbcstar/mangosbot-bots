@@ -7,7 +7,7 @@ namespace ai
     class EmoteActionBase : public Action
     {
     public:
-        EmoteActionBase(PlayerbotAI* ai, string name);
+        EmoteActionBase(PlayerbotAI* botAI, string name);
 
     protected:
         bool Emote(Unit* target, uint32 type);
@@ -21,7 +21,7 @@ namespace ai
     class EmoteAction : public EmoteActionBase, public Qualified
     {
     public:
-        EmoteAction(PlayerbotAI* ai);
+        EmoteAction(PlayerbotAI* botAI);
         virtual bool Execute(Event event);
         bool isUseful();
     };
@@ -29,7 +29,7 @@ namespace ai
     class TalkAction : public EmoteActionBase
     {
     public:
-        TalkAction(PlayerbotAI* ai) : EmoteActionBase(ai, "talk") {}
+        TalkAction(PlayerbotAI* botAI) : EmoteActionBase(ai, "talk") {}
         virtual bool Execute(Event event);
 
         static uint32 GetRandomEmote(Unit* unit);

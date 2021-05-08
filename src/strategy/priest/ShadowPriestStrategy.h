@@ -7,7 +7,7 @@ namespace ai
     class ShadowPriestStrategy : public GenericPriestStrategy
     {
     public:
-        ShadowPriestStrategy(PlayerbotAI* ai);
+        ShadowPriestStrategy(PlayerbotAI* botAI);
 
     public:
         virtual NextAction** getDefaultActions();
@@ -19,7 +19,7 @@ namespace ai
     class ShadowPriestAoeStrategy : public CombatStrategy
     {
     public:
-        ShadowPriestAoeStrategy(PlayerbotAI* ai) : CombatStrategy(ai) {}
+        ShadowPriestAoeStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -29,7 +29,7 @@ namespace ai
     class ShadowPriestDebuffStrategy : public CombatStrategy
     {
     public:
-        ShadowPriestDebuffStrategy(PlayerbotAI* ai) : CombatStrategy(ai) {}
+        ShadowPriestDebuffStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

@@ -6,7 +6,7 @@ namespace ai
 {
     class SetHomeAction : public MovementAction {
     public:
-        SetHomeAction(PlayerbotAI* ai) : MovementAction(ai, "home") {}
+        SetHomeAction(PlayerbotAI* botAI) : MovementAction(ai, "home") {}
         virtual bool Execute(Event event);
     };
 }

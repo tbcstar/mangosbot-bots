@@ -2,15 +2,15 @@
 #include "../playerbot.h"
 #include "AiObject.h"
 
-AiObject::AiObject(PlayerbotAI* ai) :
-    PlayerbotAIAware(ai),
-    bot(ai->GetBot()),
-    context(ai->GetAiObjectContext()),
-    chat(ai->GetChatHelper())
+AiObject::AiObject(PlayerbotAI* botAI) :
+    PlayerbotAIAware(botAI),
+    bot(botAI->GetBot()),
+    context(botAI->GetAiObjectContext()),
+    chat(botAI->GetChatHelper())
 {
 }
 
 Player* AiObject::GetMaster()
 {
-    return ai->GetMaster();
+    return botAI->GetMaster();
 }

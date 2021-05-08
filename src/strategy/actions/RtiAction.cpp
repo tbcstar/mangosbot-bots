@@ -19,18 +19,18 @@ bool RtiAction::Execute(Event event)
     {
         ostringstream outRti; outRti << "rti" << ": ";
         AppendRti(outRti, "rti");
-        ai->TellMaster(outRti);
+        botAI->TellMaster(outRti);
 
         ostringstream outRtiCc; outRtiCc << "rti cc" << ": ";
         AppendRti(outRtiCc, "rti cc");
-        ai->TellMaster(outRtiCc);
+        botAI->TellMaster(outRtiCc);
         return true;
     }
 
     context->GetValue<string>(type)->Set(text);
     ostringstream out; out << type << " set to: ";
     AppendRti(out, type);
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
     return true;
 }
 
@@ -47,14 +47,14 @@ void RtiAction::AppendRti(ostringstream & out, string type)
 
 bool MarkRtiAction::Execute(Event event)
 {
-    Group *group = bot->GetGroup();
+    Group* group = bot->GetGroup();
     if (!group) return false;
 
     Unit* target = NULL;
-    list<ObjectGuid> attackers = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
+    list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (!unit)
             continue;
 

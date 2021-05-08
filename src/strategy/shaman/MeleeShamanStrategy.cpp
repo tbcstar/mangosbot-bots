@@ -15,21 +15,21 @@ public:
         creators["magma totem"] = &magma_totem;
     }
 private:
-    static ActionNode* stormstrike(PlayerbotAI* ai)
+    static ActionNode* stormstrike(PlayerbotAI* botAI)
     {
         return new ActionNode ("stormstrike",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("lava lash"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* lava_lash(PlayerbotAI* ai)
+    static ActionNode* lava_lash(PlayerbotAI* botAI)
     {
         return new ActionNode ("lava lash",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* magma_totem(PlayerbotAI* ai)
+    static ActionNode* magma_totem(PlayerbotAI* botAI)
     {
         return new ActionNode ("magma totem",
             /*P*/ NULL,
@@ -38,7 +38,7 @@ private:
     }
 };
 
-MeleeShamanStrategy::MeleeShamanStrategy(PlayerbotAI* ai) : GenericShamanStrategy(ai)
+MeleeShamanStrategy::MeleeShamanStrategy(PlayerbotAI* botAI) : GenericShamanStrategy(botAI)
 {
     actionNodeFactories.Add(new MeleeShamanStrategyActionNodeFactory());
 }

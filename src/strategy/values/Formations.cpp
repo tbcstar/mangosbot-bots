@@ -59,21 +59,21 @@ namespace ai
     class MeleeFormation : public FollowFormation
     {
     public:
-        MeleeFormation(PlayerbotAI* ai) : FollowFormation(ai, "melee") {}
+        MeleeFormation(PlayerbotAI* botAI) : FollowFormation(ai, "melee") {}
         virtual string GetTargetName() { return "master target"; }
     };
 
     class QueueFormation : public FollowFormation
     {
     public:
-        QueueFormation(PlayerbotAI* ai) : FollowFormation(ai, "queue") {}
+        QueueFormation(PlayerbotAI* botAI) : FollowFormation(ai, "queue") {}
         virtual string GetTargetName() { return "line target"; }
     };
 
     class NearFormation : public MoveAheadFormation
     {
     public:
-        NearFormation(PlayerbotAI* ai) : MoveAheadFormation(ai, "near") {}
+        NearFormation(PlayerbotAI* botAI) : MoveAheadFormation(ai, "near") {}
         virtual WorldLocation GetLocationInternal()
         {
             Player* master = GetMaster();
@@ -101,7 +101,7 @@ namespace ai
     class ChaosFormation : public MoveAheadFormation
     {
     public:
-        ChaosFormation(PlayerbotAI* ai) : MoveAheadFormation(ai, "chaos"), lastChangeTime(0) {}
+        ChaosFormation(PlayerbotAI* botAI) : MoveAheadFormation(ai, "chaos"), lastChangeTime(0) {}
         virtual WorldLocation GetLocationInternal()
         {
             Player* master = GetMaster();
@@ -141,7 +141,7 @@ namespace ai
     class CircleFormation : public MoveFormation
     {
     public:
-        CircleFormation(PlayerbotAI* ai) : MoveFormation(ai, "circle") {}
+        CircleFormation(PlayerbotAI* botAI) : MoveFormation(ai, "circle") {}
         virtual WorldLocation GetLocation()
         {
             float range = 2.0f;
@@ -160,15 +160,15 @@ namespace ai
             case CLASS_MAGE:
             case CLASS_PRIEST:
             case CLASS_WARLOCK:
-                range = ai->GetRange("flee");
+                range = botAI->GetRange("flee");
                 break;
             case CLASS_DRUID:
-                if (!ai->IsTank(bot))
-                    range = ai->GetRange("flee");
+                if (!botAI->IsTank(bot))
+                    range = botAI->GetRange("flee");
                 break;
             case CLASS_SHAMAN:
-                if (ai->IsHeal(bot))
-                    range = ai->GetRange("flee");
+                if (botAI->IsHeal(bot))
+                    range = botAI->GetRange("flee");
                 break;
             }
 
@@ -189,7 +189,7 @@ namespace ai
     class LineFormation : public MoveAheadFormation
     {
     public:
-        LineFormation(PlayerbotAI* ai) : MoveAheadFormation(ai, "line") {}
+        LineFormation(PlayerbotAI* botAI) : MoveAheadFormation(ai, "line") {}
         virtual WorldLocation GetLocationInternal()
         {
             Group* group = bot->GetGroup();
@@ -227,7 +227,7 @@ namespace ai
     class ShieldFormation : public MoveFormation
     {
     public:
-        ShieldFormation(PlayerbotAI* ai) : MoveFormation(ai, "shield") {}
+        ShieldFormation(PlayerbotAI* botAI) : MoveFormation(ai, "shield") {}
         virtual WorldLocation GetLocation()
         {
             Group* group = bot->GetGroup();
@@ -253,7 +253,7 @@ namespace ai
                 Player* member = gref->getSource();
                 if (member != master)
                 {
-                    if (ai->IsTank(member))
+                    if (botAI->IsTank(member))
                         tanks.push_back(member);
                     else
                         dps.push_back(member);
@@ -262,25 +262,25 @@ namespace ai
                 gref = gref->next();
             }
 
-            if (ai->IsTank(master))
+            if (botAI->IsTank(master))
                 tanks.insert(tanks.begin() + (tanks.size() + 1) / 2, master);
             else
                 dps.insert(dps.begin() + (dps.size() + 1) / 2, master);
 
-            if (ai->IsTank(bot) && ai->IsTank(master))
+            if (botAI->IsTank(bot) && botAI->IsTank(master))
             {
                 return MoveLine(tanks, 0.0f, x, y, z, orientation, range);
             }
-            if (!ai->IsTank(bot) && !ai->IsTank(master))
+            if (!botAI->IsTank(bot) && !botAI->IsTank(master))
             {
                 return MoveLine(dps, 0.0f, x, y, z, orientation, range);
             }
-            if (ai->IsTank(bot) && !ai->IsTank(master))
+            if (botAI->IsTank(bot) && !botAI->IsTank(master))
             {
                 float diff = tanks.size() % 2 == 0 ? -sPlayerbotAIConfig->tooCloseDistance / 2.0f : 0.0f;
                 return MoveLine(tanks, diff, x + cos(orientation) * range, y + sin(orientation) * range, z, orientation, range);
             }
-            if (!ai->IsTank(bot) && ai->IsTank(master))
+            if (!botAI->IsTank(bot) && botAI->IsTank(master))
             {
                 float diff = dps.size() % 2 == 0 ? -sPlayerbotAIConfig->tooCloseDistance / 2.0f : 0.0f;
                 return MoveLine(dps, diff, x - cos(orientation) * range, y - sin(orientation) * range, z, orientation, range);
@@ -292,7 +292,7 @@ namespace ai
     class FarFormation : public FollowFormation
     {
     public:
-        FarFormation(PlayerbotAI* ai) : FollowFormation(ai, "far") {}
+        FarFormation(PlayerbotAI* botAI) : FollowFormation(ai, "far") {}
         virtual WorldLocation GetLocation()
         {
             float range = sPlayerbotAIConfig->farDistance;
@@ -349,7 +349,7 @@ float Formation::GetFollowAngle()
 {
     Player* master = GetMaster();
     Group* group = bot->GetGroup();
-    PlayerbotAI* ai = bot->GetPlayerbotAI();
+    PlayerbotAI* botAI = bot->GetPlayerbotAI();
     int index = 1, total = 1;
     if (!group && master)
     {
@@ -365,7 +365,7 @@ float Formation::GetFollowAngle()
         for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
         {
             Player* member = ref->getSource();
-            if (member && member != master && !ai->IsTank(member) && !ai->IsHeal(member))
+            if (member && member != master && !botAI->IsTank(member) && !botAI->IsHeal(member))
             {
                 roster.insert(roster.begin() + roster.size() / 2, member);
             }
@@ -373,7 +373,7 @@ float Formation::GetFollowAngle()
         for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
         {
             Player* member = ref->getSource();
-            if (member && member != master && ai->IsHeal(member))
+            if (member && member != master && botAI->IsHeal(member))
             {
                 roster.insert(roster.begin() + roster.size() / 2, member);
             }
@@ -382,7 +382,7 @@ float Formation::GetFollowAngle()
         for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
         {
             Player* member = ref->getSource();
-            if (member && member != master && ai->IsTank(member))
+            if (member && member != master && botAI->IsTank(member))
             {
                 if (left) roster.push_back(member); else roster.insert(roster.begin(), member);
                 left = !left;
@@ -402,7 +402,7 @@ float Formation::GetFollowAngle()
     return start + (0.125f + 1.75f * index / total + (total == 2 ? 0.125f : 0.0f)) * M_PI;
 }
 
-FormationValue::FormationValue(PlayerbotAI* ai) : ManualSetValue<Formation*>(ai, new NearFormation(ai), "formation")
+FormationValue::FormationValue(PlayerbotAI* botAI) : ManualSetValue<Formation*>(ai, new NearFormation(botAI), "formation")
 {
 }
 
@@ -416,47 +416,47 @@ bool FormationValue::Load(string formation)
     if (formation == "melee")
     {
         if (value) delete value;
-        value = new MeleeFormation(ai);
+        value = new MeleeFormation(botAI);
     }
     else if (formation == "queue")
     {
         if (value) delete value;
-        value = new QueueFormation(ai);
+        value = new QueueFormation(botAI);
     }
     else if (formation == "chaos")
     {
         if (value) delete value;
-        value = new ChaosFormation(ai);
+        value = new ChaosFormation(botAI);
     }
     else if (formation == "circle")
     {
         if (value) delete value;
-        value = new CircleFormation(ai);
+        value = new CircleFormation(botAI);
     }
     else if (formation == "line")
     {
         if (value) delete value;
-        value = new LineFormation(ai);
+        value = new LineFormation(botAI);
     }
     else if (formation == "shield")
     {
         if (value) delete value;
-        value = new ShieldFormation(ai);
+        value = new ShieldFormation(botAI);
     }
     else if (formation == "arrow")
     {
         if (value) delete value;
-        value = new ArrowFormation(ai);
+        value = new ArrowFormation(botAI);
     }
     else if (formation == "near" || formation == "default")
     {
         if (value) delete value;
-        value = new NearFormation(ai);
+        value = new NearFormation(botAI);
     }
     else if (formation == "far")
     {
         if (value) delete value;
-        value = new FarFormation(ai);
+        value = new FarFormation(botAI);
     }
     else return false;
 
@@ -472,7 +472,7 @@ bool SetFormationAction::Execute(Event event)
     if (formation == "?" || formation.empty())
     {
         ostringstream str; str << "Formation: |cff00ff00" << value->Get()->getName();
-        ai->TellMaster(str);
+        botAI->TellMaster(str);
         return true;
     }
 
@@ -480,7 +480,7 @@ bool SetFormationAction::Execute(Event event)
     {
         WorldLocation loc = value->Get()->GetLocation();
         if (!Formation::IsNullLocation(loc))
-            ai->Ping(loc.coord_x, loc.coord_y);
+            botAI->Ping(loc.coord_x, loc.coord_y);
 
         return true;
     }
@@ -488,13 +488,13 @@ bool SetFormationAction::Execute(Event event)
     if (!value->Load(formation))
     {
         ostringstream str; str << "Invalid formation: |cffff0000" << formation;
-        ai->TellMaster(str);
-        ai->TellMaster("Please set to any of:|cffffffff near (default), queue, chaos, circle, line, shield, arrow, melee, far");
+        botAI->TellMaster(str);
+        botAI->TellMaster("Please set to any of:|cffffffff near (default), queue, chaos, circle, line, shield, arrow, melee, far");
         return false;
     }
 
     ostringstream str; str << "Formation set to: " << formation;
-    ai->TellMaster(str);
+    botAI->TellMaster(str);
     return true;
 }
 

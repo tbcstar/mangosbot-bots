@@ -47,13 +47,13 @@ bool GossipHelloAction::Execute(Event event)
         sServerFacade->SetFacingTo(bot, pCreature);
 
         ostringstream out; out << "--- " << pCreature->GetName() << " ---";
-        ai->TellMasterNoFacing(out.str());
+        botAI->TellMasterNoFacing(out.str());
 
         TellGossipMenus();
 	}
 	else if (!bot->PlayerTalkClass)
 	{
-	    ai->TellError("I need to talk first");
+	    botAI->TellError("I need to talk first");
 	    return false;
 	}
 	else
@@ -78,9 +78,9 @@ void GossipHelloAction::TellGossipText(uint32 textId)
         for (int i = 0; i < MAX_GOSSIP_TEXT_OPTIONS; i++)
         {
             string text0 = text->Options[i].Text_0;
-            if (!text0.empty()) ai->TellMasterNoFacing(text0);
+            if (!text0.empty()) botAI->TellMasterNoFacing(text0);
             string text1 = text->Options[i].Text_1;
-            if (!text1.empty()) ai->TellMasterNoFacing(text1);
+            if (!text1.empty()) botAI->TellMasterNoFacing(text1);
         }
     }
 }
@@ -102,7 +102,7 @@ void GossipHelloAction::TellGossipMenus()
     {
         GossipMenuItem const& item = menu.GetItem(i);
         ostringstream out; out << "[" << (i+1) << "] " << item.m_gMessage;
-        ai->TellMasterNoFacing(out.str());
+        botAI->TellMasterNoFacing(out.str());
     }
 }
 
@@ -112,7 +112,7 @@ bool GossipHelloAction::ProcessGossip(int menuToSelect)
     GossipMenu& menu = bot->PlayerTalkClass->GetGossipMenu();
     if (menuToSelect != -1 && menuToSelect >= menu.MenuItemCount())
     {
-        ai->TellError("Unknown gossip option");
+        botAI->TellError("Unknown gossip option");
         return false;
     }
     GossipMenuItem const& item = menu.GetItem(menuToSelect);

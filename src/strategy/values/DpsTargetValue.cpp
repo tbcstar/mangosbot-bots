@@ -7,7 +7,7 @@ using namespace ai;
 class FindLeastHpTargetStrategy : public FindTargetStrategy
 {
 public:
-    FindLeastHpTargetStrategy(PlayerbotAI* ai) : FindTargetStrategy(ai)
+    FindLeastHpTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI)
     {
         minHealth = 0;
     }
@@ -15,7 +15,7 @@ public:
 public:
     virtual void CheckAttacker(Unit* attacker, ThreatManager* threatManager)
     {
-        Group* group = ai->GetBot()->GetGroup();
+        Group* group = botAI->GetBot()->GetGroup();
         if (group)
         {
             ObjectGuid guid = group->GetTargetIcon(4);
@@ -35,14 +35,14 @@ Unit* DpsTargetValue::Calculate()
     Unit* rti = RtiTargetValue::Calculate();
     if (rti) return rti;
 
-    FindLeastHpTargetStrategy strategy(ai);
+    FindLeastHpTargetStrategy strategy(botAI);
     return TargetValue::FindTarget(&strategy);
 }
 
 class FindMaxHpTargetStrategy : public FindTargetStrategy
 {
 public:
-    FindMaxHpTargetStrategy(PlayerbotAI* ai) : FindTargetStrategy(ai)
+    FindMaxHpTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI)
     {
         maxHealth = 0;
     }
@@ -50,7 +50,7 @@ public:
 public:
     virtual void CheckAttacker(Unit* attacker, ThreatManager* threatManager)
     {
-        Group* group = ai->GetBot()->GetGroup();
+        Group* group = botAI->GetBot()->GetGroup();
         if (group)
         {
             ObjectGuid guid = group->GetTargetIcon(4);
@@ -70,6 +70,6 @@ Unit* DpsAoeTargetValue::Calculate()
     Unit* rti = RtiTargetValue::Calculate();
     if (rti) return rti;
 
-    FindMaxHpTargetStrategy strategy(ai);
+    FindMaxHpTargetStrategy strategy(botAI);
     return TargetValue::FindTarget(&strategy);
 }

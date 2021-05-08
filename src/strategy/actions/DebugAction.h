@@ -8,7 +8,7 @@ namespace ai
     class DebugAction : public Action
     {
     public:
-        DebugAction(PlayerbotAI* ai) : Action(ai, "Debug") {}
+        DebugAction(PlayerbotAI* botAI) : Action(ai, "Debug") {}
 
         virtual bool Execute(Event event);
     };

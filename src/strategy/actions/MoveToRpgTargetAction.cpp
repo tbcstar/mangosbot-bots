@@ -9,7 +9,7 @@ using namespace ai;
 
 bool MoveToRpgTargetAction::Execute(Event event)
 {
-    Unit* target = ai->GetUnit(AI_VALUE(ObjectGuid, "rpg target"));
+    Unit* target = botAI->GetUnit(AI_VALUE(ObjectGuid, "rpg target"));
     if (!target) return false;
 
     float distance = AI_VALUE2(float, "distance", "rpg target");
@@ -35,7 +35,7 @@ bool MoveToRpgTargetAction::Execute(Event event)
     if (bot->IsNonMeleeSpellCasted(true))
     {
         bot->CastStop();
-        ai->InterruptSpell();
+        botAI->InterruptSpell();
     }
 
     bool generatePath = !bot->IsFlying() && !sServerFacade->IsUnderwater(bot);

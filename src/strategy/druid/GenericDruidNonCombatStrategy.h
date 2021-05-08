@@ -7,7 +7,7 @@ namespace ai
     class GenericDruidNonCombatStrategy : public NonCombatStrategy
     {
     public:
-        GenericDruidNonCombatStrategy(PlayerbotAI* ai);
+        GenericDruidNonCombatStrategy(PlayerbotAI* botAI);
         virtual string getName() { return "nc"; }
 
     public:
@@ -17,7 +17,7 @@ namespace ai
     class GenericDruidBuffStrategy : public NonCombatStrategy
     {
     public:
-        GenericDruidBuffStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        GenericDruidBuffStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "buff"; }
 
     public:

@@ -5,7 +5,7 @@ namespace ai
     class LootNonCombatStrategy : public Strategy
     {
     public:
-        LootNonCombatStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        LootNonCombatStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -15,7 +15,7 @@ namespace ai
     class GatherStrategy : public Strategy
     {
     public:
-        GatherStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        GatherStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -25,7 +25,7 @@ namespace ai
     class RevealStrategy : public Strategy
     {
     public:
-        RevealStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        RevealStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

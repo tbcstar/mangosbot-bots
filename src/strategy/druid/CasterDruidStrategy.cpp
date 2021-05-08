@@ -22,63 +22,63 @@ public:
         creators["starfire"] = &starfire;
     }
 private:
-    static ActionNode* faerie_fire(PlayerbotAI* ai)
+    static ActionNode* faerie_fire(PlayerbotAI* botAI)
     {
         return new ActionNode ("faerie fire",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* hibernate(PlayerbotAI* ai)
+    static ActionNode* hibernate(PlayerbotAI* botAI)
     {
         return new ActionNode ("hibernate",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
             /*A*/ NextAction::array(0, new NextAction("entangling roots"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* entangling_roots(PlayerbotAI* ai)
+    static ActionNode* entangling_roots(PlayerbotAI* botAI)
     {
         return new ActionNode ("entangling roots",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* entangling_roots_on_cc(PlayerbotAI* ai)
+    static ActionNode* entangling_roots_on_cc(PlayerbotAI* botAI)
     {
         return new ActionNode ("entangling roots on cc",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* wrath(PlayerbotAI* ai)
+    static ActionNode* wrath(PlayerbotAI* botAI)
     {
         return new ActionNode ("wrath",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* starfall(PlayerbotAI* ai)
+    static ActionNode* starfall(PlayerbotAI* botAI)
     {
         return new ActionNode ("starfall",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
             /*A*/ NextAction::array(0, new NextAction("hurricane"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* insect_swarm(PlayerbotAI* ai)
+    static ActionNode* insect_swarm(PlayerbotAI* botAI)
     {
         return new ActionNode ("insect swarm",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* moonfire(PlayerbotAI* ai)
+    static ActionNode* moonfire(PlayerbotAI* botAI)
     {
         return new ActionNode ("moonfire",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* starfire(PlayerbotAI* ai)
+    static ActionNode* starfire(PlayerbotAI* botAI)
     {
         return new ActionNode ("starfire",
             /*P*/ NextAction::array(0, new NextAction("moonkin form"), NULL),
@@ -87,7 +87,7 @@ private:
     }
 };
 
-CasterDruidStrategy::CasterDruidStrategy(PlayerbotAI* ai) : GenericDruidStrategy(ai)
+CasterDruidStrategy::CasterDruidStrategy(PlayerbotAI* botAI) : GenericDruidStrategy(botAI)
 {
     actionNodeFactories.Add(new CasterDruidStrategyActionNodeFactory());
     actionNodeFactories.Add(new ShapeshiftDruidStrategyActionNodeFactory());

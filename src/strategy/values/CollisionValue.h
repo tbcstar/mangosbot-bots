@@ -6,7 +6,7 @@ namespace ai
     class CollisionValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        CollisionValue(PlayerbotAI* ai) : BoolCalculatedValue(ai), Qualified() {}
+        CollisionValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI), Qualified() {}
 
         virtual bool Calculate();
     };

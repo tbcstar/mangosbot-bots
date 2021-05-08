@@ -7,7 +7,7 @@ namespace ai
 {
     class AcceptResurrectAction : public Action {
     public:
-        AcceptResurrectAction(PlayerbotAI* ai) : Action(ai, "accept resurrect") {}
+        AcceptResurrectAction(PlayerbotAI* botAI) : Action(ai, "accept resurrect") {}
 
         virtual bool Execute(Event event)
         {
@@ -24,7 +24,7 @@ namespace ai
             packet << uint8(1);                        // accept
             bot->GetSession()->HandleResurrectResponseOpcode(packet);   // queue the packet to get around race condition
 
-            ai->ChangeEngine(BOT_STATE_NON_COMBAT);
+            botAI->ChangeEngine(BOT_STATE_NON_COMBAT);
             return true;
         }
     };

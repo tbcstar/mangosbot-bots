@@ -7,7 +7,7 @@ namespace ai
     class HasAvailableLootValue : public BoolCalculatedValue
 	{
 	public:
-        HasAvailableLootValue(PlayerbotAI* ai) : BoolCalculatedValue(ai) {}
+        HasAvailableLootValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
 
     public:
         virtual bool Calculate()

@@ -115,83 +115,83 @@ namespace ai
         }
 
     private:
-        static Trigger* give_food(PlayerbotAI* ai) { return new GiveFoodTrigger(ai); }
-        static Trigger* give_water(PlayerbotAI* ai) { return new GiveWaterTrigger(ai); }
-        static Trigger* no_rti(PlayerbotAI* ai) { return new NoRtiTrigger(ai); }
-        static Trigger* _return(PlayerbotAI* ai) { return new ReturnTrigger(ai); }
-        static Trigger* sit(PlayerbotAI* ai) { return new SitTrigger(ai); }
-        static Trigger* far_from_rpg_target(PlayerbotAI* ai) { return new FarFromRpgTargetTrigger(ai); }
-        static Trigger* no_rpg_target(PlayerbotAI* ai) { return new NoRpgTargetTrigger(ai); }
-        static Trigger* collision(PlayerbotAI* ai) { return new CollisionTrigger(ai); }
-        static Trigger* lfg_proposal_active(PlayerbotAI* ai) { return new LfgProposalActiveTrigger(ai); }
-        static Trigger* invalid_target(PlayerbotAI* ai) { return new InvalidTargetTrigger(ai); }
-        static Trigger* critical_aoe_heal(PlayerbotAI* ai) { return new AoeHealTrigger(ai, "critical aoe heal", "critical", 2); }
-        static Trigger* low_aoe_heal(PlayerbotAI* ai) { return new AoeHealTrigger(ai, "low aoe heal", "low", 2); }
-        static Trigger* medium_aoe_heal(PlayerbotAI* ai) { return new AoeHealTrigger(ai, "medium aoe heal", "medium", 2); }
-        static Trigger* target_changed(PlayerbotAI* ai) { return new TargetChangedTrigger(ai); }
-        static Trigger* swimming(PlayerbotAI* ai) { return new IsSwimmingTrigger(ai); }
-        static Trigger* no_possible_targets(PlayerbotAI* ai) { return new NoPossibleTargetsTrigger(ai); }
-        static Trigger* possible_ads(PlayerbotAI* ai) { return new PossibleAdsTrigger(ai); }
-        static Trigger* can_loot(PlayerbotAI* ai) { return new CanLootTrigger(ai); }
-        static Trigger* far_from_loot_target(PlayerbotAI* ai) { return new FarFromCurrentLootTrigger(ai); }
-        static Trigger* far_from_master(PlayerbotAI* ai) { return new FarFromMasterTrigger(ai); }
-        static Trigger* behind_target(PlayerbotAI* ai) { return new IsBehindTargetTrigger(ai); }
-        static Trigger* not_behind_target(PlayerbotAI* ai) { return new IsNotBehindTargetTrigger(ai); }
-        static Trigger* not_facing_target(PlayerbotAI* ai) { return new IsNotFacingTargetTrigger(ai); }
-        static Trigger* panic(PlayerbotAI* ai) { return new PanicTrigger(ai); }
-        static Trigger* no_drink(PlayerbotAI* ai) { return new NoDrinkTrigger(ai); }
-        static Trigger* no_food(PlayerbotAI* ai) { return new NoFoodTrigger(ai); }
-        static Trigger* LightAoe(PlayerbotAI* ai) { return new LightAoeTrigger(ai); }
-        static Trigger* MediumAoe(PlayerbotAI* ai) { return new MediumAoeTrigger(ai); }
-        static Trigger* HighAoe(PlayerbotAI* ai) { return new HighAoeTrigger(ai); }
-        static Trigger* LoseAggro(PlayerbotAI* ai) { return new LoseAggroTrigger(ai); }
-        static Trigger* HasAggro(PlayerbotAI* ai) { return new HasAggroTrigger(ai); }
-        static Trigger* LowHealth(PlayerbotAI* ai) { return new LowHealthTrigger(ai); }
-        static Trigger* MediumHealth(PlayerbotAI* ai) { return new MediumHealthTrigger(ai); }
-        static Trigger* AlmostFullHealth(PlayerbotAI* ai) { return new AlmostFullHealthTrigger(ai); }
-        static Trigger* CriticalHealth(PlayerbotAI* ai) { return new CriticalHealthTrigger(ai); }
-        static Trigger* TargetCriticalHealth(PlayerbotAI* ai) { return new TargetCriticalHealthTrigger(ai); }
-        static Trigger* LowMana(PlayerbotAI* ai) { return new LowManaTrigger(ai); }
-        static Trigger* MediumMana(PlayerbotAI* ai) { return new MediumManaTrigger(ai); }
-        static Trigger* LightRageAvailable(PlayerbotAI* ai) { return new LightRageAvailableTrigger(ai); }
-        static Trigger* MediumRageAvailable(PlayerbotAI* ai) { return new MediumRageAvailableTrigger(ai); }
-        static Trigger* HighRageAvailable(PlayerbotAI* ai) { return new HighRageAvailableTrigger(ai); }
-        static Trigger* LightEnergyAvailable(PlayerbotAI* ai) { return new LightEnergyAvailableTrigger(ai); }
-        static Trigger* MediumEnergyAvailable(PlayerbotAI* ai) { return new MediumEnergyAvailableTrigger(ai); }
-        static Trigger* HighEnergyAvailable(PlayerbotAI* ai) { return new HighEnergyAvailableTrigger(ai); }
-        static Trigger* LootAvailable(PlayerbotAI* ai) { return new LootAvailableTrigger(ai); }
-        static Trigger* NoAttackers(PlayerbotAI* ai) { return new NoAttackersTrigger(ai); }
-        static Trigger* TankAoe(PlayerbotAI* ai) { return new TankAoeTrigger(ai); }
-        static Trigger* Timer(PlayerbotAI* ai) { return new TimerTrigger(ai); }
-        static Trigger* NoTarget(PlayerbotAI* ai) { return new NoTargetTrigger(ai); }
-        static Trigger* TargetInSight(PlayerbotAI* ai) { return new TargetInSightTrigger(ai); }
-        static Trigger* not_dps_target_active(PlayerbotAI* ai) { return new NotDpsTargetActiveTrigger(ai); }
-        static Trigger* not_dps_aoe_target_active(PlayerbotAI* ai) { return new NotDpsAoeTargetActiveTrigger(ai); }
-        static Trigger* has_nearest_adds(PlayerbotAI* ai) { return new HasNearestAddsTrigger(ai); }
-        static Trigger* enemy_player_is_attacking(PlayerbotAI* ai) { return new EnemyPlayerIsAttacking(ai); }
-        static Trigger* Random(PlayerbotAI* ai) { return new RandomTrigger(ai, "random", 20); }
-        static Trigger* seldom(PlayerbotAI* ai) { return new RandomTrigger(ai, "seldom", 300); }
-        static Trigger* often(PlayerbotAI* ai) { return new RandomTrigger(ai, "often", 5); }
-        static Trigger* EnemyOutOfMelee(PlayerbotAI* ai) { return new EnemyOutOfMeleeTrigger(ai); }
-        static Trigger* EnemyOutOfSpell(PlayerbotAI* ai) { return new EnemyOutOfSpellRangeTrigger(ai); }
-        static Trigger* enemy_too_close_for_spell(PlayerbotAI* ai) { return new EnemyTooCloseForSpellTrigger(ai); }
-        static Trigger* enemy_too_close_for_shoot(PlayerbotAI* ai) { return new EnemyTooCloseForShootTrigger(ai); }
-        static Trigger* enemy_too_close_for_melee(PlayerbotAI* ai) { return new EnemyTooCloseForMeleeTrigger(ai); }
-        static Trigger* enemy_is_close(PlayerbotAI* ai) { return new EnemyIsCloseTrigger(ai); }
-        static Trigger* party_member_to_heal_out_of_spell_range(PlayerbotAI* ai) { return new PartyMemberToHealOutOfSpellRangeTrigger(ai); }
-        static Trigger* ComboPointsAvailable(PlayerbotAI* ai) { return new ComboPointsAvailableTrigger(ai); }
-        static Trigger* MediumThreat(PlayerbotAI* ai) { return new MediumThreatTrigger(ai); }
-        static Trigger* Dead(PlayerbotAI* ai) { return new DeadTrigger(ai); }
-        static Trigger* PartyMemberDead(PlayerbotAI* ai) { return new PartyMemberDeadTrigger(ai); }
-        static Trigger* PartyMemberLowHealth(PlayerbotAI* ai) { return new PartyMemberLowHealthTrigger(ai); }
-        static Trigger* PartyMemberMediumHealth(PlayerbotAI* ai) { return new PartyMemberMediumHealthTrigger(ai); }
-        static Trigger* PartyMemberAlmostFullHealth(PlayerbotAI* ai) { return new PartyMemberAlmostFullHealthTrigger(ai); }
-        static Trigger* PartyMemberCriticalHealth(PlayerbotAI* ai) { return new PartyMemberCriticalHealthTrigger(ai); }
-        static Trigger* no_pet(PlayerbotAI* ai) { return new NoPetTrigger(ai); }
-        static Trigger* has_attackers(PlayerbotAI* ai) { return new HasAttackersTrigger(ai); }
-        static Trigger* random_bot_update_trigger(PlayerbotAI* ai) { return new RandomBotUpdateTrigger(ai); }
-        static Trigger* no_non_bot_players_around(PlayerbotAI* ai) { return new NoNonBotPlayersAroundTrigger(ai); }
-        static Trigger* new_player_nearby(PlayerbotAI* ai) { return new NewPlayerNearbyTrigger(ai); }
+        static Trigger* give_food(PlayerbotAI* botAI) { return new GiveFoodTrigger(botAI); }
+        static Trigger* give_water(PlayerbotAI* botAI) { return new GiveWaterTrigger(botAI); }
+        static Trigger* no_rti(PlayerbotAI* botAI) { return new NoRtiTrigger(botAI); }
+        static Trigger* _return(PlayerbotAI* botAI) { return new ReturnTrigger(botAI); }
+        static Trigger* sit(PlayerbotAI* botAI) { return new SitTrigger(botAI); }
+        static Trigger* far_from_rpg_target(PlayerbotAI* botAI) { return new FarFromRpgTargetTrigger(botAI); }
+        static Trigger* no_rpg_target(PlayerbotAI* botAI) { return new NoRpgTargetTrigger(botAI); }
+        static Trigger* collision(PlayerbotAI* botAI) { return new CollisionTrigger(botAI); }
+        static Trigger* lfg_proposal_active(PlayerbotAI* botAI) { return new LfgProposalActiveTrigger(botAI); }
+        static Trigger* invalid_target(PlayerbotAI* botAI) { return new InvalidTargetTrigger(botAI); }
+        static Trigger* critical_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(ai, "critical aoe heal", "critical", 2); }
+        static Trigger* low_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(ai, "low aoe heal", "low", 2); }
+        static Trigger* medium_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(ai, "medium aoe heal", "medium", 2); }
+        static Trigger* target_changed(PlayerbotAI* botAI) { return new TargetChangedTrigger(botAI); }
+        static Trigger* swimming(PlayerbotAI* botAI) { return new IsSwimmingTrigger(botAI); }
+        static Trigger* no_possible_targets(PlayerbotAI* botAI) { return new NoPossibleTargetsTrigger(botAI); }
+        static Trigger* possible_ads(PlayerbotAI* botAI) { return new PossibleAdsTrigger(botAI); }
+        static Trigger* can_loot(PlayerbotAI* botAI) { return new CanLootTrigger(botAI); }
+        static Trigger* far_from_loot_target(PlayerbotAI* botAI) { return new FarFromCurrentLootTrigger(botAI); }
+        static Trigger* far_from_master(PlayerbotAI* botAI) { return new FarFromMasterTrigger(botAI); }
+        static Trigger* behind_target(PlayerbotAI* botAI) { return new IsBehindTargetTrigger(botAI); }
+        static Trigger* not_behind_target(PlayerbotAI* botAI) { return new IsNotBehindTargetTrigger(botAI); }
+        static Trigger* not_facing_target(PlayerbotAI* botAI) { return new IsNotFacingTargetTrigger(botAI); }
+        static Trigger* panic(PlayerbotAI* botAI) { return new PanicTrigger(botAI); }
+        static Trigger* no_drink(PlayerbotAI* botAI) { return new NoDrinkTrigger(botAI); }
+        static Trigger* no_food(PlayerbotAI* botAI) { return new NoFoodTrigger(botAI); }
+        static Trigger* LightAoe(PlayerbotAI* botAI) { return new LightAoeTrigger(botAI); }
+        static Trigger* MediumAoe(PlayerbotAI* botAI) { return new MediumAoeTrigger(botAI); }
+        static Trigger* HighAoe(PlayerbotAI* botAI) { return new HighAoeTrigger(botAI); }
+        static Trigger* LoseAggro(PlayerbotAI* botAI) { return new LoseAggroTrigger(botAI); }
+        static Trigger* HasAggro(PlayerbotAI* botAI) { return new HasAggroTrigger(botAI); }
+        static Trigger* LowHealth(PlayerbotAI* botAI) { return new LowHealthTrigger(botAI); }
+        static Trigger* MediumHealth(PlayerbotAI* botAI) { return new MediumHealthTrigger(botAI); }
+        static Trigger* AlmostFullHealth(PlayerbotAI* botAI) { return new AlmostFullHealthTrigger(botAI); }
+        static Trigger* CriticalHealth(PlayerbotAI* botAI) { return new CriticalHealthTrigger(botAI); }
+        static Trigger* TargetCriticalHealth(PlayerbotAI* botAI) { return new TargetCriticalHealthTrigger(botAI); }
+        static Trigger* LowMana(PlayerbotAI* botAI) { return new LowManaTrigger(botAI); }
+        static Trigger* MediumMana(PlayerbotAI* botAI) { return new MediumManaTrigger(botAI); }
+        static Trigger* LightRageAvailable(PlayerbotAI* botAI) { return new LightRageAvailableTrigger(botAI); }
+        static Trigger* MediumRageAvailable(PlayerbotAI* botAI) { return new MediumRageAvailableTrigger(botAI); }
+        static Trigger* HighRageAvailable(PlayerbotAI* botAI) { return new HighRageAvailableTrigger(botAI); }
+        static Trigger* LightEnergyAvailable(PlayerbotAI* botAI) { return new LightEnergyAvailableTrigger(botAI); }
+        static Trigger* MediumEnergyAvailable(PlayerbotAI* botAI) { return new MediumEnergyAvailableTrigger(botAI); }
+        static Trigger* HighEnergyAvailable(PlayerbotAI* botAI) { return new HighEnergyAvailableTrigger(botAI); }
+        static Trigger* LootAvailable(PlayerbotAI* botAI) { return new LootAvailableTrigger(botAI); }
+        static Trigger* NoAttackers(PlayerbotAI* botAI) { return new NoAttackersTrigger(botAI); }
+        static Trigger* TankAoe(PlayerbotAI* botAI) { return new TankAoeTrigger(botAI); }
+        static Trigger* Timer(PlayerbotAI* botAI) { return new TimerTrigger(botAI); }
+        static Trigger* NoTarget(PlayerbotAI* botAI) { return new NoTargetTrigger(botAI); }
+        static Trigger* TargetInSight(PlayerbotAI* botAI) { return new TargetInSightTrigger(botAI); }
+        static Trigger* not_dps_target_active(PlayerbotAI* botAI) { return new NotDpsTargetActiveTrigger(botAI); }
+        static Trigger* not_dps_aoe_target_active(PlayerbotAI* botAI) { return new NotDpsAoeTargetActiveTrigger(botAI); }
+        static Trigger* has_nearest_adds(PlayerbotAI* botAI) { return new HasNearestAddsTrigger(botAI); }
+        static Trigger* enemy_player_is_attacking(PlayerbotAI* botAI) { return new EnemyPlayerIsAttacking(botAI); }
+        static Trigger* Random(PlayerbotAI* botAI) { return new RandomTrigger(ai, "random", 20); }
+        static Trigger* seldom(PlayerbotAI* botAI) { return new RandomTrigger(ai, "seldom", 300); }
+        static Trigger* often(PlayerbotAI* botAI) { return new RandomTrigger(ai, "often", 5); }
+        static Trigger* EnemyOutOfMelee(PlayerbotAI* botAI) { return new EnemyOutOfMeleeTrigger(botAI); }
+        static Trigger* EnemyOutOfSpell(PlayerbotAI* botAI) { return new EnemyOutOfSpellRangeTrigger(botAI); }
+        static Trigger* enemy_too_close_for_spell(PlayerbotAI* botAI) { return new EnemyTooCloseForSpellTrigger(botAI); }
+        static Trigger* enemy_too_close_for_shoot(PlayerbotAI* botAI) { return new EnemyTooCloseForShootTrigger(botAI); }
+        static Trigger* enemy_too_close_for_melee(PlayerbotAI* botAI) { return new EnemyTooCloseForMeleeTrigger(botAI); }
+        static Trigger* enemy_is_close(PlayerbotAI* botAI) { return new EnemyIsCloseTrigger(botAI); }
+        static Trigger* party_member_to_heal_out_of_spell_range(PlayerbotAI* botAI) { return new PartyMemberToHealOutOfSpellRangeTrigger(botAI); }
+        static Trigger* ComboPointsAvailable(PlayerbotAI* botAI) { return new ComboPointsAvailableTrigger(botAI); }
+        static Trigger* MediumThreat(PlayerbotAI* botAI) { return new MediumThreatTrigger(botAI); }
+        static Trigger* Dead(PlayerbotAI* botAI) { return new DeadTrigger(botAI); }
+        static Trigger* PartyMemberDead(PlayerbotAI* botAI) { return new PartyMemberDeadTrigger(botAI); }
+        static Trigger* PartyMemberLowHealth(PlayerbotAI* botAI) { return new PartyMemberLowHealthTrigger(botAI); }
+        static Trigger* PartyMemberMediumHealth(PlayerbotAI* botAI) { return new PartyMemberMediumHealthTrigger(botAI); }
+        static Trigger* PartyMemberAlmostFullHealth(PlayerbotAI* botAI) { return new PartyMemberAlmostFullHealthTrigger(botAI); }
+        static Trigger* PartyMemberCriticalHealth(PlayerbotAI* botAI) { return new PartyMemberCriticalHealthTrigger(botAI); }
+        static Trigger* no_pet(PlayerbotAI* botAI) { return new NoPetTrigger(botAI); }
+        static Trigger* has_attackers(PlayerbotAI* botAI) { return new HasAttackersTrigger(botAI); }
+        static Trigger* random_bot_update_trigger(PlayerbotAI* botAI) { return new RandomBotUpdateTrigger(botAI); }
+        static Trigger* no_non_bot_players_around(PlayerbotAI* botAI) { return new NoNonBotPlayersAroundTrigger(botAI); }
+        static Trigger* new_player_nearby(PlayerbotAI* botAI) { return new NewPlayerNearbyTrigger(botAI); }
 
     };
 };

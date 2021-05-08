@@ -8,7 +8,7 @@ using namespace ai;
 class FindTargetForTankStrategy : public FindNonCcTargetStrategy
 {
 public:
-    FindTargetForTankStrategy(PlayerbotAI* ai) : FindNonCcTargetStrategy(ai)
+    FindTargetForTankStrategy(PlayerbotAI* botAI) : FindNonCcTargetStrategy(botAI)
     {
         minThreat = 0;
     }
@@ -16,7 +16,7 @@ public:
 public:
     virtual void CheckAttacker(Unit* creature, ThreatManager* threatManager)
     {
-        Player* bot = ai->GetBot();
+        Player* bot = botAI->GetBot();
         if (IsCcTarget(creature)) return;
 
         float threat = threatManager->getThreat(bot);
@@ -34,6 +34,6 @@ protected:
 
 Unit* TankTargetValue::Calculate()
 {
-    FindTargetForTankStrategy strategy(ai);
+    FindTargetForTankStrategy strategy(botAI);
     return FindTarget(&strategy);
 }

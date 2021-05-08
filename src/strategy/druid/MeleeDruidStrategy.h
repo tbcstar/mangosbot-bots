@@ -8,7 +8,7 @@ namespace ai
     class MeleeDruidStrategy : public CombatStrategy
     {
     public:
-        MeleeDruidStrategy(PlayerbotAI* ai);
+        MeleeDruidStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

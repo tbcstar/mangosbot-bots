@@ -33,11 +33,11 @@ namespace ai
             }
 
         private:
-            static Strategy* nc(PlayerbotAI* ai) { return new ShamanNonCombatStrategy(ai); }
-            static Strategy* totems(PlayerbotAI* ai) { return new TotemsShamanStrategy(ai); }
-            static Strategy* melee_aoe(PlayerbotAI* ai) { return new MeleeAoeShamanStrategy(ai); }
-            static Strategy* caster_aoe(PlayerbotAI* ai) { return new CasterAoeShamanStrategy(ai); }
-            static Strategy* cure(PlayerbotAI* ai) { return new ShamanCureStrategy(ai); }
+            static Strategy* nc(PlayerbotAI* botAI) { return new ShamanNonCombatStrategy(botAI); }
+            static Strategy* totems(PlayerbotAI* botAI) { return new TotemsShamanStrategy(botAI); }
+            static Strategy* melee_aoe(PlayerbotAI* botAI) { return new MeleeAoeShamanStrategy(botAI); }
+            static Strategy* caster_aoe(PlayerbotAI* botAI) { return new CasterAoeShamanStrategy(botAI); }
+            static Strategy* cure(PlayerbotAI* botAI) { return new ShamanCureStrategy(botAI); }
         };
 
         class BuffStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -50,8 +50,8 @@ namespace ai
             }
 
         private:
-            static Strategy* bmana(PlayerbotAI* ai) { return new ShamanBuffManaStrategy(ai); }
-            static Strategy* bdps(PlayerbotAI* ai) { return new ShamanBuffDpsStrategy(ai); }
+            static Strategy* bmana(PlayerbotAI* botAI) { return new ShamanBuffManaStrategy(botAI); }
+            static Strategy* bdps(PlayerbotAI* botAI) { return new ShamanBuffDpsStrategy(botAI); }
         };
 
         class CombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -66,9 +66,9 @@ namespace ai
             }
 
         private:
-            static Strategy* heal(PlayerbotAI* ai) { return new HealShamanStrategy(ai); }
-            static Strategy* dps(PlayerbotAI* ai) { return new MeleeShamanStrategy(ai); }
-            static Strategy* caster(PlayerbotAI* ai) { return new CasterShamanStrategy(ai); }
+            static Strategy* heal(PlayerbotAI* botAI) { return new HealShamanStrategy(botAI); }
+            static Strategy* dps(PlayerbotAI* botAI) { return new MeleeShamanStrategy(botAI); }
+            static Strategy* caster(PlayerbotAI* botAI) { return new CasterShamanStrategy(botAI); }
         };
     };
 };
@@ -119,38 +119,38 @@ namespace ai
             }
 
         private:
-            static Trigger* maelstrom_weapon(PlayerbotAI* ai) { return new MaelstromWeaponTrigger(ai); }
-            static Trigger* heroism(PlayerbotAI* ai) { return new HeroismTrigger(ai); }
-            static Trigger* bloodlust(PlayerbotAI* ai) { return new BloodlustTrigger(ai); }
-            static Trigger* party_member_cleanse_disease(PlayerbotAI* ai) { return new PartyMemberCleanseSpiritDiseaseTrigger(ai); }
-            static Trigger* party_member_cleanse_curse(PlayerbotAI* ai) { return new PartyMemberCleanseSpiritCurseTrigger(ai); }
-            static Trigger* party_member_cleanse_poison(PlayerbotAI* ai) { return new PartyMemberCleanseSpiritPoisonTrigger(ai); }
-            static Trigger* cleanse_disease(PlayerbotAI* ai) { return new CleanseSpiritDiseaseTrigger(ai); }
-            static Trigger* cleanse_curse(PlayerbotAI* ai) { return new CleanseSpiritCurseTrigger(ai); }
-            static Trigger* cleanse_poison(PlayerbotAI* ai) { return new CleanseSpiritPoisonTrigger(ai); }
-            static Trigger* water_breathing(PlayerbotAI* ai) { return new WaterBreathingTrigger(ai); }
-            static Trigger* water_walking(PlayerbotAI* ai) { return new WaterWalkingTrigger(ai); }
-            static Trigger* water_breathing_on_party(PlayerbotAI* ai) { return new WaterBreathingOnPartyTrigger(ai); }
-            static Trigger* water_walking_on_party(PlayerbotAI* ai) { return new WaterWalkingOnPartyTrigger(ai); }
-            static Trigger* windfury_totem(PlayerbotAI* ai) { return new WindfuryTotemTrigger(ai); }
-            static Trigger* grace_of_air_totem(PlayerbotAI* ai) { return new GraceOfAirTotemTrigger(ai); }
-            static Trigger* mana_spring_totem(PlayerbotAI* ai) { return new ManaSpringTotemTrigger(ai); }
-            static Trigger* flametongue_totem(PlayerbotAI* ai) { return new FlametongueTotemTrigger(ai); }
-            static Trigger* strength_of_earth_totem(PlayerbotAI* ai) { return new StrengthOfEarthTotemTrigger(ai); }
-            static Trigger* magma_totem(PlayerbotAI* ai) { return new MagmaTotemTrigger(ai); }
-            static Trigger* searing_totem(PlayerbotAI* ai) { return new SearingTotemTrigger(ai); }
-            static Trigger* wind_shear(PlayerbotAI* ai) { return new WindShearInterruptSpellTrigger(ai); }
-            static Trigger* purge(PlayerbotAI* ai) { return new PurgeTrigger(ai); }
-            static Trigger* shaman_weapon(PlayerbotAI* ai) { return new ShamanWeaponTrigger(ai); }
-            static Trigger* water_shield(PlayerbotAI* ai) { return new WaterShieldTrigger(ai); }
-            static Trigger* lightning_shield(PlayerbotAI* ai) { return new LightningShieldTrigger(ai); }
-            static Trigger* shock(PlayerbotAI* ai) { return new ShockTrigger(ai); }
-            static Trigger* frost_shock_snare(PlayerbotAI* ai) { return new FrostShockSnareTrigger(ai); }
-            static Trigger* wind_shear_on_enemy_healer(PlayerbotAI* ai) { return new WindShearInterruptEnemyHealerSpellTrigger(ai); }
-            static Trigger* cure_poison(PlayerbotAI* ai) { return new CurePoisonTrigger(ai); }
-            static Trigger* party_member_cure_poison(PlayerbotAI* ai) { return new PartyMemberCurePoisonTrigger(ai); }
-            static Trigger* cure_disease(PlayerbotAI* ai) { return new CureDiseaseTrigger(ai); }
-            static Trigger* party_member_cure_disease(PlayerbotAI* ai) { return new PartyMemberCureDiseaseTrigger(ai); }
+            static Trigger* maelstrom_weapon(PlayerbotAI* botAI) { return new MaelstromWeaponTrigger(botAI); }
+            static Trigger* heroism(PlayerbotAI* botAI) { return new HeroismTrigger(botAI); }
+            static Trigger* bloodlust(PlayerbotAI* botAI) { return new BloodlustTrigger(botAI); }
+            static Trigger* party_member_cleanse_disease(PlayerbotAI* botAI) { return new PartyMemberCleanseSpiritDiseaseTrigger(botAI); }
+            static Trigger* party_member_cleanse_curse(PlayerbotAI* botAI) { return new PartyMemberCleanseSpiritCurseTrigger(botAI); }
+            static Trigger* party_member_cleanse_poison(PlayerbotAI* botAI) { return new PartyMemberCleanseSpiritPoisonTrigger(botAI); }
+            static Trigger* cleanse_disease(PlayerbotAI* botAI) { return new CleanseSpiritDiseaseTrigger(botAI); }
+            static Trigger* cleanse_curse(PlayerbotAI* botAI) { return new CleanseSpiritCurseTrigger(botAI); }
+            static Trigger* cleanse_poison(PlayerbotAI* botAI) { return new CleanseSpiritPoisonTrigger(botAI); }
+            static Trigger* water_breathing(PlayerbotAI* botAI) { return new WaterBreathingTrigger(botAI); }
+            static Trigger* water_walking(PlayerbotAI* botAI) { return new WaterWalkingTrigger(botAI); }
+            static Trigger* water_breathing_on_party(PlayerbotAI* botAI) { return new WaterBreathingOnPartyTrigger(botAI); }
+            static Trigger* water_walking_on_party(PlayerbotAI* botAI) { return new WaterWalkingOnPartyTrigger(botAI); }
+            static Trigger* windfury_totem(PlayerbotAI* botAI) { return new WindfuryTotemTrigger(botAI); }
+            static Trigger* grace_of_air_totem(PlayerbotAI* botAI) { return new GraceOfAirTotemTrigger(botAI); }
+            static Trigger* mana_spring_totem(PlayerbotAI* botAI) { return new ManaSpringTotemTrigger(botAI); }
+            static Trigger* flametongue_totem(PlayerbotAI* botAI) { return new FlametongueTotemTrigger(botAI); }
+            static Trigger* strength_of_earth_totem(PlayerbotAI* botAI) { return new StrengthOfEarthTotemTrigger(botAI); }
+            static Trigger* magma_totem(PlayerbotAI* botAI) { return new MagmaTotemTrigger(botAI); }
+            static Trigger* searing_totem(PlayerbotAI* botAI) { return new SearingTotemTrigger(botAI); }
+            static Trigger* wind_shear(PlayerbotAI* botAI) { return new WindShearInterruptSpellTrigger(botAI); }
+            static Trigger* purge(PlayerbotAI* botAI) { return new PurgeTrigger(botAI); }
+            static Trigger* shaman_weapon(PlayerbotAI* botAI) { return new ShamanWeaponTrigger(botAI); }
+            static Trigger* water_shield(PlayerbotAI* botAI) { return new WaterShieldTrigger(botAI); }
+            static Trigger* lightning_shield(PlayerbotAI* botAI) { return new LightningShieldTrigger(botAI); }
+            static Trigger* shock(PlayerbotAI* botAI) { return new ShockTrigger(botAI); }
+            static Trigger* frost_shock_snare(PlayerbotAI* botAI) { return new FrostShockSnareTrigger(botAI); }
+            static Trigger* wind_shear_on_enemy_healer(PlayerbotAI* botAI) { return new WindShearInterruptEnemyHealerSpellTrigger(botAI); }
+            static Trigger* cure_poison(PlayerbotAI* botAI) { return new CurePoisonTrigger(botAI); }
+            static Trigger* party_member_cure_poison(PlayerbotAI* botAI) { return new PartyMemberCurePoisonTrigger(botAI); }
+            static Trigger* cure_disease(PlayerbotAI* botAI) { return new CureDiseaseTrigger(botAI); }
+            static Trigger* party_member_cure_disease(PlayerbotAI* botAI) { return new PartyMemberCureDiseaseTrigger(botAI); }
         };
     };
 };
@@ -222,65 +222,65 @@ namespace ai
             }
 
         private:
-            static Action* heroism(PlayerbotAI* ai) { return new CastHeroismAction(ai); }
-            static Action* bloodlust(PlayerbotAI* ai) { return new CastBloodlustAction(ai); }
-            static Action* thunderstorm(PlayerbotAI* ai) { return new CastThunderstormAction(ai); }
-            static Action* lightning_bolt(PlayerbotAI* ai) { return new CastLightningBoltAction(ai); }
-            static Action* chain_lightning(PlayerbotAI* ai) { return new CastChainLightningAction(ai); }
-            static Action* frost_shock(PlayerbotAI* ai) { return new CastFrostShockAction(ai); }
-            static Action* earth_shock(PlayerbotAI* ai) { return new CastEarthShockAction(ai); }
-            static Action* flame_shock(PlayerbotAI* ai) { return new CastFlameShockAction(ai); }
-            static Action* cleanse_spirit_poison_on_party(PlayerbotAI* ai) { return new CastCleanseSpiritPoisonOnPartyAction(ai); }
-            static Action* cleanse_spirit_disease_on_party(PlayerbotAI* ai) { return new CastCleanseSpiritDiseaseOnPartyAction(ai); }
-            static Action* cleanse_spirit_curse_on_party(PlayerbotAI* ai) { return new CastCleanseSpiritCurseOnPartyAction(ai); }
-            static Action* cleanse_spirit(PlayerbotAI* ai) { return new CastCleanseSpiritAction(ai); }
-            static Action* water_walking(PlayerbotAI* ai) { return new CastWaterWalkingAction(ai); }
-            static Action* water_breathing(PlayerbotAI* ai) { return new CastWaterBreathingAction(ai); }
-            static Action* water_walking_on_party(PlayerbotAI* ai) { return new CastWaterWalkingOnPartyAction(ai); }
-            static Action* water_breathing_on_party(PlayerbotAI* ai) { return new CastWaterBreathingOnPartyAction(ai); }
-            static Action* water_shield(PlayerbotAI* ai) { return new CastWaterShieldAction(ai); }
-            static Action* lightning_shield(PlayerbotAI* ai) { return new CastLightningShieldAction(ai); }
-            static Action* strength_of_earth_totem(PlayerbotAI* ai) { return new CastStrengthOfEarthTotemAction(ai); }
-            static Action* flametongue_totem(PlayerbotAI* ai) { return new CastFlametongueTotemAction(ai); }
-            static Action* magma_totem(PlayerbotAI* ai) { return new CastMagmaTotemAction(ai); }
-            static Action* searing_totem(PlayerbotAI* ai) { return new CastSearingTotemAction(ai); }
-            static Action* fire_nova(PlayerbotAI* ai) { return new CastFireNovaAction(ai); }
-            static Action* windfury_totem(PlayerbotAI* ai) { return new CastWindfuryTotemAction(ai); }
-            static Action* grace_of_air_totem(PlayerbotAI* ai) { return new CastGraceOfAirTotemAction(ai); }
-            static Action* mana_spring_totem(PlayerbotAI* ai) { return new CastManaSpringTotemAction(ai); }
-            static Action* mana_tide_totem(PlayerbotAI* ai) { return new CastManaTideTotemAction(ai); }
-            static Action* healing_stream_totem(PlayerbotAI* ai) { return new CastHealingStreamTotemAction(ai); }
-            static Action* wind_shear(PlayerbotAI* ai) { return new CastWindShearAction(ai); }
-            static Action* rockbiter_weapon(PlayerbotAI* ai) { return new CastRockbiterWeaponAction(ai); }
-            static Action* flametongue_weapon(PlayerbotAI* ai) { return new CastFlametongueWeaponAction(ai); }
-            static Action* frostbrand_weapon(PlayerbotAI* ai) { return new CastFrostbrandWeaponAction(ai); }
-            static Action* windfury_weapon(PlayerbotAI* ai) { return new CastWindfuryWeaponAction(ai); }
-            static Action* earthliving_weapon(PlayerbotAI* ai) { return new CastEarthlivingWeaponAction(ai); }
-            static Action* purge(PlayerbotAI* ai) { return new CastPurgeAction(ai); }
-            static Action* healing_wave(PlayerbotAI* ai) { return new CastHealingWaveAction(ai); }
-            static Action* lesser_healing_wave(PlayerbotAI* ai) { return new CastLesserHealingWaveAction(ai); }
-            static Action* healing_wave_on_party(PlayerbotAI* ai) { return new CastHealingWaveOnPartyAction(ai); }
-            static Action* lesser_healing_wave_on_party(PlayerbotAI* ai) { return new CastLesserHealingWaveOnPartyAction(ai); }
-            static Action* earth_shield(PlayerbotAI* ai) { return new CastEarthShieldAction(ai); }
-            static Action* earth_shield_on_party(PlayerbotAI* ai) { return new CastEarthShieldOnPartyAction(ai); }
-            static Action* chain_heal(PlayerbotAI* ai) { return new CastChainHealAction(ai); }
-            static Action* riptide(PlayerbotAI* ai) { return new CastRiptideAction(ai); }
-            static Action* riptide_on_party(PlayerbotAI* ai) { return new CastRiptideOnPartyAction(ai); }
-            static Action* stormstrike(PlayerbotAI* ai) { return new CastStormstrikeAction(ai); }
-            static Action* lava_lash(PlayerbotAI* ai) { return new CastLavaLashAction(ai); }
-            static Action* ancestral_spirit(PlayerbotAI* ai) { return new CastAncestralSpiritAction(ai); }
-            static Action* wind_shear_on_enemy_healer(PlayerbotAI* ai) { return new CastWindShearOnEnemyHealerAction(ai); }
-            static Action* cure_poison(PlayerbotAI* ai) { return new CastCurePoisonAction(ai); }
-            static Action* cure_poison_on_party(PlayerbotAI* ai) { return new CastCurePoisonOnPartyAction(ai); }
-            static Action* cure_disease(PlayerbotAI* ai) { return new CastCureDiseaseAction(ai); }
-            static Action* cure_disease_on_party(PlayerbotAI* ai) { return new CastCureDiseaseOnPartyAction(ai); }
+            static Action* heroism(PlayerbotAI* botAI) { return new CastHeroismAction(botAI); }
+            static Action* bloodlust(PlayerbotAI* botAI) { return new CastBloodlustAction(botAI); }
+            static Action* thunderstorm(PlayerbotAI* botAI) { return new CastThunderstormAction(botAI); }
+            static Action* lightning_bolt(PlayerbotAI* botAI) { return new CastLightningBoltAction(botAI); }
+            static Action* chain_lightning(PlayerbotAI* botAI) { return new CastChainLightningAction(botAI); }
+            static Action* frost_shock(PlayerbotAI* botAI) { return new CastFrostShockAction(botAI); }
+            static Action* earth_shock(PlayerbotAI* botAI) { return new CastEarthShockAction(botAI); }
+            static Action* flame_shock(PlayerbotAI* botAI) { return new CastFlameShockAction(botAI); }
+            static Action* cleanse_spirit_poison_on_party(PlayerbotAI* botAI) { return new CastCleanseSpiritPoisonOnPartyAction(botAI); }
+            static Action* cleanse_spirit_disease_on_party(PlayerbotAI* botAI) { return new CastCleanseSpiritDiseaseOnPartyAction(botAI); }
+            static Action* cleanse_spirit_curse_on_party(PlayerbotAI* botAI) { return new CastCleanseSpiritCurseOnPartyAction(botAI); }
+            static Action* cleanse_spirit(PlayerbotAI* botAI) { return new CastCleanseSpiritAction(botAI); }
+            static Action* water_walking(PlayerbotAI* botAI) { return new CastWaterWalkingAction(botAI); }
+            static Action* water_breathing(PlayerbotAI* botAI) { return new CastWaterBreathingAction(botAI); }
+            static Action* water_walking_on_party(PlayerbotAI* botAI) { return new CastWaterWalkingOnPartyAction(botAI); }
+            static Action* water_breathing_on_party(PlayerbotAI* botAI) { return new CastWaterBreathingOnPartyAction(botAI); }
+            static Action* water_shield(PlayerbotAI* botAI) { return new CastWaterShieldAction(botAI); }
+            static Action* lightning_shield(PlayerbotAI* botAI) { return new CastLightningShieldAction(botAI); }
+            static Action* strength_of_earth_totem(PlayerbotAI* botAI) { return new CastStrengthOfEarthTotemAction(botAI); }
+            static Action* flametongue_totem(PlayerbotAI* botAI) { return new CastFlametongueTotemAction(botAI); }
+            static Action* magma_totem(PlayerbotAI* botAI) { return new CastMagmaTotemAction(botAI); }
+            static Action* searing_totem(PlayerbotAI* botAI) { return new CastSearingTotemAction(botAI); }
+            static Action* fire_nova(PlayerbotAI* botAI) { return new CastFireNovaAction(botAI); }
+            static Action* windfury_totem(PlayerbotAI* botAI) { return new CastWindfuryTotemAction(botAI); }
+            static Action* grace_of_air_totem(PlayerbotAI* botAI) { return new CastGraceOfAirTotemAction(botAI); }
+            static Action* mana_spring_totem(PlayerbotAI* botAI) { return new CastManaSpringTotemAction(botAI); }
+            static Action* mana_tide_totem(PlayerbotAI* botAI) { return new CastManaTideTotemAction(botAI); }
+            static Action* healing_stream_totem(PlayerbotAI* botAI) { return new CastHealingStreamTotemAction(botAI); }
+            static Action* wind_shear(PlayerbotAI* botAI) { return new CastWindShearAction(botAI); }
+            static Action* rockbiter_weapon(PlayerbotAI* botAI) { return new CastRockbiterWeaponAction(botAI); }
+            static Action* flametongue_weapon(PlayerbotAI* botAI) { return new CastFlametongueWeaponAction(botAI); }
+            static Action* frostbrand_weapon(PlayerbotAI* botAI) { return new CastFrostbrandWeaponAction(botAI); }
+            static Action* windfury_weapon(PlayerbotAI* botAI) { return new CastWindfuryWeaponAction(botAI); }
+            static Action* earthliving_weapon(PlayerbotAI* botAI) { return new CastEarthlivingWeaponAction(botAI); }
+            static Action* purge(PlayerbotAI* botAI) { return new CastPurgeAction(botAI); }
+            static Action* healing_wave(PlayerbotAI* botAI) { return new CastHealingWaveAction(botAI); }
+            static Action* lesser_healing_wave(PlayerbotAI* botAI) { return new CastLesserHealingWaveAction(botAI); }
+            static Action* healing_wave_on_party(PlayerbotAI* botAI) { return new CastHealingWaveOnPartyAction(botAI); }
+            static Action* lesser_healing_wave_on_party(PlayerbotAI* botAI) { return new CastLesserHealingWaveOnPartyAction(botAI); }
+            static Action* earth_shield(PlayerbotAI* botAI) { return new CastEarthShieldAction(botAI); }
+            static Action* earth_shield_on_party(PlayerbotAI* botAI) { return new CastEarthShieldOnPartyAction(botAI); }
+            static Action* chain_heal(PlayerbotAI* botAI) { return new CastChainHealAction(botAI); }
+            static Action* riptide(PlayerbotAI* botAI) { return new CastRiptideAction(botAI); }
+            static Action* riptide_on_party(PlayerbotAI* botAI) { return new CastRiptideOnPartyAction(botAI); }
+            static Action* stormstrike(PlayerbotAI* botAI) { return new CastStormstrikeAction(botAI); }
+            static Action* lava_lash(PlayerbotAI* botAI) { return new CastLavaLashAction(botAI); }
+            static Action* ancestral_spirit(PlayerbotAI* botAI) { return new CastAncestralSpiritAction(botAI); }
+            static Action* wind_shear_on_enemy_healer(PlayerbotAI* botAI) { return new CastWindShearOnEnemyHealerAction(botAI); }
+            static Action* cure_poison(PlayerbotAI* botAI) { return new CastCurePoisonAction(botAI); }
+            static Action* cure_poison_on_party(PlayerbotAI* botAI) { return new CastCurePoisonOnPartyAction(botAI); }
+            static Action* cure_disease(PlayerbotAI* botAI) { return new CastCureDiseaseAction(botAI); }
+            static Action* cure_disease_on_party(PlayerbotAI* botAI) { return new CastCureDiseaseOnPartyAction(botAI); }
         };
     };
 };
 
 
 
-ShamanAiObjectContext::ShamanAiObjectContext(PlayerbotAI* ai) : AiObjectContext(ai)
+ShamanAiObjectContext::ShamanAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
     strategyContexts.Add(new ai::shaman::StrategyFactoryInternal());
     strategyContexts.Add(new ai::shaman::CombatStrategyFactoryInternal());

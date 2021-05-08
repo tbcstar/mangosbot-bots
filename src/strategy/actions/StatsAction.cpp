@@ -23,7 +23,7 @@ bool StatsAction::Execute(Event event)
         ListXP(out);
     }
 
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
     return true;
 }
 

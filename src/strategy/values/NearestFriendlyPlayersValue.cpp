@@ -16,5 +16,5 @@ void NearestFriendlyPlayersValue::FindUnits(list<Unit*> &targets)
 bool NearestFriendlyPlayersValue::AcceptUnit(Unit* unit)
 {
     ObjectGuid guid = unit->GetGUID();
-    return guid.IsPlayer() && guid != ai->GetBot()->GetGUID();
+    return guid.IsPlayer() && guid != botAI->GetBot()->GetGUID();
 }

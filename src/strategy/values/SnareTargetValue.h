@@ -6,7 +6,7 @@ namespace ai
     class SnareTargetValue : public UnitCalculatedValue, public Qualified
 	{
 	public:
-        SnareTargetValue(PlayerbotAI* ai) :
+        SnareTargetValue(PlayerbotAI* botAI) :
             UnitCalculatedValue(ai, "snare target") {}
 
     protected:

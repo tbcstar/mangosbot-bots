@@ -74,7 +74,7 @@ void SellAction::Sell(FindItemVisitor* visitor)
 void SellAction::Sell(Item* item)
 {
     Player* master = GetMaster();
-    list<ObjectGuid> vendors = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest npcs")->Get();
+    list<ObjectGuid> vendors = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest npcs")->Get();
     bool bought = false;
     for (list<ObjectGuid>::iterator i = vendors.begin(); i != vendors.end(); ++i)
     {
@@ -91,6 +91,6 @@ void SellAction::Sell(Item* item)
         bot->GetSession()->HandleSellItemOpcode(p);
 
         ostringstream out; out << "Selling " << chat->formatItem(item->GetProto());
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
     }
 }

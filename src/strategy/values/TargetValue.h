@@ -6,7 +6,7 @@ namespace ai
     class FindTargetStrategy
     {
     public:
-        FindTargetStrategy(PlayerbotAI* ai)
+        FindTargetStrategy(PlayerbotAI* botAI)
         {
             result = NULL;
             this->ai = ai;
@@ -21,7 +21,7 @@ namespace ai
 
     protected:
         Unit* result;
-        PlayerbotAI* ai;
+        PlayerbotAI* botAI;
 
     protected:
         map<Unit*, int> tankCountCache;
@@ -31,7 +31,7 @@ namespace ai
     class FindNonCcTargetStrategy : public FindTargetStrategy
     {
     public:
-        FindNonCcTargetStrategy(PlayerbotAI* ai) : FindTargetStrategy(ai) {}
+        FindNonCcTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI) {}
 
     protected:
         virtual bool IsCcTarget(Unit* attacker);
@@ -41,7 +41,7 @@ namespace ai
     class TargetValue : public UnitCalculatedValue
 	{
 	public:
-        TargetValue(PlayerbotAI* ai) : UnitCalculatedValue(ai) {}
+        TargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) {}
 
     protected:
         Unit* FindTarget(FindTargetStrategy* strategy);
@@ -50,18 +50,18 @@ namespace ai
     class RpgTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        RpgTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
+        RpgTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
     };
 
     class TalkTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        TalkTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
+        TalkTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
     };
 
     class PullTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        PullTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
+        PullTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
     };
 }

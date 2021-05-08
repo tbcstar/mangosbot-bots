@@ -10,7 +10,7 @@ namespace ai
     class ReachTargetAction : public MovementAction
     {
     public:
-        ReachTargetAction(PlayerbotAI* ai, string name, float distance) : MovementAction(ai, name)
+        ReachTargetAction(PlayerbotAI* botAI, string name, float distance) : MovementAction(ai, name)
 		{
             this->distance = distance;
         }
@@ -31,7 +31,7 @@ namespace ai
     class CastReachTargetSpellAction : public CastSpellAction
     {
     public:
-        CastReachTargetSpellAction(PlayerbotAI* ai, string spell, float distance) : CastSpellAction(ai, spell)
+        CastReachTargetSpellAction(PlayerbotAI* botAI, string spell, float distance) : CastSpellAction(ai, spell)
 		{
             this->distance = distance;
         }
@@ -47,19 +47,19 @@ namespace ai
     class ReachMeleeAction : public ReachTargetAction
 	{
     public:
-        ReachMeleeAction(PlayerbotAI* ai) : ReachTargetAction(ai, "reach melee", sPlayerbotAIConfig->meleeDistance) {}
+        ReachMeleeAction(PlayerbotAI* botAI) : ReachTargetAction(ai, "reach melee", sPlayerbotAIConfig->meleeDistance) {}
     };
 
     class ReachSpellAction : public ReachTargetAction
 	{
     public:
-        ReachSpellAction(PlayerbotAI* ai) : ReachTargetAction(ai, "reach spell", ai->GetRange("spell")) {}
+        ReachSpellAction(PlayerbotAI* botAI) : ReachTargetAction(ai, "reach spell", botAI->GetRange("spell")) {}
     };
 
     class ReachPartyMemberToHealAction : public ReachTargetAction
 	{
     public:
-        ReachPartyMemberToHealAction(PlayerbotAI* ai) : ReachTargetAction(ai, "reach party member to heal", ai->GetRange("heal")) {}
+        ReachPartyMemberToHealAction(PlayerbotAI* botAI) : ReachTargetAction(ai, "reach party member to heal", botAI->GetRange("heal")) {}
         virtual string GetTargetName() { return "party member to heal"; }
     };
 }

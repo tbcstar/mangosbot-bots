@@ -10,7 +10,7 @@ namespace ai
     class GenericHunterStrategy : public CombatStrategy
     {
     public:
-        GenericHunterStrategy(PlayerbotAI* ai);
+        GenericHunterStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -20,7 +20,7 @@ namespace ai
     class HunterBoostStrategy : public Strategy
     {
     public:
-        HunterBoostStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        HunterBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
         virtual string getName() { return "boost"; }
         virtual NextAction** getDefaultActions();
 
@@ -31,7 +31,7 @@ namespace ai
     class HunterCcStrategy : public Strategy
     {
     public:
-        HunterCcStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        HunterCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

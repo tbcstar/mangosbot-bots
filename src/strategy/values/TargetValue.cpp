@@ -10,10 +10,10 @@ using namespace ai;
 
 Unit* TargetValue::FindTarget(FindTargetStrategy* strategy)
 {
-    list<ObjectGuid> attackers = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
+    list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (!unit)
             continue;
 
@@ -27,7 +27,7 @@ Unit* TargetValue::FindTarget(FindTargetStrategy* strategy)
 
 bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
 {
-    Group* group = ai->GetBot()->GetGroup();
+    Group* group = botAI->GetBot()->GetGroup();
     if (group)
     {
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
@@ -38,12 +38,12 @@ bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
                 continue;
 
             PlayerbotAI *ai = member->GetPlayerbotAI();
-            if (ai)
+            if (botAI)
             {
-                if (ai->GetAiObjectContext()->GetValue<Unit*>("rti cc target")->Get() == attacker)
+                if (botAI->GetAiObjectContext()->GetValue<Unit*>("rti cc target")->Get() == attacker)
                     return true;
 
-                string rti = ai->GetAiObjectContext()->GetValue<string>("rti cc")->Get();
+                string rti = botAI->GetAiObjectContext()->GetValue<string>("rti cc")->Get();
                 int index = RtiTargetValue::GetRtiIndex(rti);
                 if (index != -1)
                 {
@@ -64,7 +64,7 @@ bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
 
 void FindTargetStrategy::GetPlayerCount(Unit* creature, int* tankCount, int* dpsCount)
 {
-    Player* bot = ai->GetBot();
+    Player* bot = botAI->GetBot();
     if (tankCountCache.find(creature) != tankCountCache.end())
     {
         *tankCount = tankCountCache[creature];
@@ -86,7 +86,7 @@ void FindTargetStrategy::GetPlayerCount(Unit* creature, int* tankCount, int* dps
         if (!player)
             continue;
 
-        if (ai->IsTank(player))
+        if (botAI->IsTank(player))
             (*tankCount)++;
         else
             (*dpsCount)++;

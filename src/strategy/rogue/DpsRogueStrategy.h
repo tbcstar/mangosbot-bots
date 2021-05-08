@@ -8,7 +8,7 @@ namespace ai
     class DpsRogueStrategy : public CombatStrategy
     {
     public:
-        DpsRogueStrategy(PlayerbotAI* ai);
+        DpsRogueStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -19,7 +19,7 @@ namespace ai
     class RogueAoeStrategy : public Strategy
     {
     public:
-        RogueAoeStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        RogueAoeStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -29,7 +29,7 @@ namespace ai
     class RogueBoostStrategy : public Strategy
     {
     public:
-        RogueBoostStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        RogueBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

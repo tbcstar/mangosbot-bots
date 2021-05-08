@@ -6,7 +6,7 @@ namespace ai
 {
     class TellLosAction : public Action {
     public:
-        TellLosAction(PlayerbotAI* ai) : Action(ai, "los") {}
+        TellLosAction(PlayerbotAI* botAI) : Action(ai, "los") {}
         virtual bool Execute(Event event);
 
     private:

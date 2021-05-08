@@ -17,7 +17,7 @@ bool CastViperStingAction::isUseful()
 
 bool CastAspectOfTheCheetahAction::isUseful()
 {
-    return !ai->HasAnyAuraOf(GetTarget(), "aspect of the cheetah", "aspect of the pack", NULL);
+    return !botAI->HasAnyAuraOf(GetTarget(), "aspect of the cheetah", "aspect of the pack", NULL);
 }
 
 Value<Unit*>* CastFreezingTrap::GetTargetValue()
@@ -46,5 +46,5 @@ Value<Unit*>* CastScareBeastCcAction::GetTargetValue()
 
 bool CastScareBeastCcAction::Execute(Event event)
 {
-    return ai->CastSpell("scare beast", GetTarget());
+    return botAI->CastSpell("scare beast", GetTarget());
 }

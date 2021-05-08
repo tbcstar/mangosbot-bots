@@ -4,12 +4,12 @@
 
 using namespace ai;
 
-RtiValue::RtiValue(PlayerbotAI* ai)
+RtiValue::RtiValue(PlayerbotAI* botAI)
     : ManualSetValue<string>(ai, "skull")
 {
 }
 
-RtiCcValue::RtiCcValue(PlayerbotAI* ai)
+RtiCcValue::RtiCcValue(PlayerbotAI* botAI)
     : ManualSetValue<string>(ai, "moon")
 {
 }

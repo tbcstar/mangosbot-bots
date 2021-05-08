@@ -8,7 +8,7 @@ namespace ai
     class NearestFriendlyPlayersValue : public NearestUnitsValue
 	{
 	public:
-        NearestFriendlyPlayersValue(PlayerbotAI* ai) :
+        NearestFriendlyPlayersValue(PlayerbotAI* botAI) :
           NearestUnitsValue(ai, "nearest friendly players", sPlayerbotAIConfig->sightDistance) {}
 
     protected:

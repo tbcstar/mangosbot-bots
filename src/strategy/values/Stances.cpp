@@ -13,7 +13,7 @@ Unit* Stance::GetTarget()
     if (target) return target;
 
     ObjectGuid pullTarget = context->GetValue<ObjectGuid>("pull target")->Get();
-    if (pullTarget) ai->GetUnit(pullTarget);
+    if (pullTarget) botAI->GetUnit(pullTarget);
 
     return NULL;
 }
@@ -57,7 +57,7 @@ namespace ai
     class NearStance : public MoveStance
     {
     public:
-        NearStance(PlayerbotAI* ai) : MoveStance(ai, "near") {}
+        NearStance(PlayerbotAI* botAI) : MoveStance(ai, "near") {}
 
         virtual float GetAngle()
         {
@@ -74,7 +74,7 @@ namespace ai
     class TankStance : public MoveStance
     {
     public:
-        TankStance(PlayerbotAI* ai) : MoveStance(ai, "tank") {}
+        TankStance(PlayerbotAI* botAI) : MoveStance(ai, "tank") {}
 
         virtual float GetAngle()
         {
@@ -86,7 +86,7 @@ namespace ai
     class TurnBackStance : public MoveStance
     {
     public:
-        TurnBackStance(PlayerbotAI* ai) : MoveStance(ai, "turnback") {}
+        TurnBackStance(PlayerbotAI* botAI) : MoveStance(ai, "turnback") {}
 
         virtual float GetAngle()
         {
@@ -99,7 +99,7 @@ namespace ai
                 for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
                 {
                     Player* member = ref->getSource();
-                    if (member && member != bot && ai->IsRanged(member))
+                    if (member && member != bot && botAI->IsRanged(member))
                     {
                         angle += target->GetAngle(member);
                         count++;
@@ -115,7 +115,7 @@ namespace ai
     class BehindStance : public MoveStance
     {
     public:
-        BehindStance(PlayerbotAI* ai) : MoveStance(ai, "behind") {}
+        BehindStance(PlayerbotAI* botAI) : MoveStance(ai, "behind") {}
 
         virtual float GetAngle()
         {
@@ -128,7 +128,7 @@ namespace ai
                 {
                     Player* member = ref->getSource();
                     if (member == bot) index = count;
-                    if (member && !ai->IsRanged(member) && !ai->IsTank(member)) count++;
+                    if (member && !botAI->IsRanged(member) && !botAI->IsTank(member)) count++;
                 }
             }
 
@@ -141,7 +141,7 @@ namespace ai
     };
 };
 
-StanceValue::StanceValue(PlayerbotAI* ai) : ManualSetValue<Stance*>(ai, new NearStance(ai), "stance")
+StanceValue::StanceValue(PlayerbotAI* botAI) : ManualSetValue<Stance*>(ai, new NearStance(botAI), "stance")
 {
 }
 
@@ -155,22 +155,22 @@ bool StanceValue::Load(string name)
     if (name == "behind")
     {
         if (value) delete value;
-        value = new BehindStance(ai);
+        value = new BehindStance(botAI);
     }
     else if (name == "near" || name == "default")
     {
         if (value) delete value;
-        value = new NearStance(ai);
+        value = new NearStance(botAI);
     }
     else if (name == "tank")
     {
         if (value) delete value;
-        value = new TankStance(ai);
+        value = new TankStance(botAI);
     }
     else if (name == "turnback" || name == "turn")
     {
         if (value) delete value;
-        value = new TurnBackStance(ai);
+        value = new TurnBackStance(botAI);
     }
     else return false;
 
@@ -186,7 +186,7 @@ bool SetStanceAction::Execute(Event event)
     if (stance == "?" || stance.empty())
     {
         ostringstream str; str << "Stance: |cff00ff00" << value->Get()->getName();
-        ai->TellMaster(str);
+        botAI->TellMaster(str);
         return true;
     }
 
@@ -194,7 +194,7 @@ bool SetStanceAction::Execute(Event event)
     {
         WorldLocation loc = value->Get()->GetLocation();
         if (!Formation::IsNullLocation(loc))
-            ai->Ping(loc.coord_x, loc.coord_y);
+            botAI->Ping(loc.coord_x, loc.coord_y);
 
         return true;
     }
@@ -202,12 +202,12 @@ bool SetStanceAction::Execute(Event event)
     if (!value->Load(stance))
     {
         ostringstream str; str << "Invalid stance: |cffff0000" << stance;
-        ai->TellMaster(str);
-        ai->TellMaster("Please set to any of:|cffffffff near (default), tank, turnback, behind");
+        botAI->TellMaster(str);
+        botAI->TellMaster("Please set to any of:|cffffffff near (default), tank, turnback, behind");
         return false;
     }
 
     ostringstream str; str << "Stance set to: " << stance;
-    ai->TellMaster(str);
+    botAI->TellMaster(str);
     return true;
 }

@@ -8,8 +8,8 @@ using namespace ai;
 bool MageArmorTrigger::IsActive()
 {
     Unit* target = GetTarget();
-    return !ai->HasAura("ice armor", target) &&
-        !ai->HasAura("frost armor", target) &&
-        !ai->HasAura("molten armor", target) &&
-        !ai->HasAura("mage armor", target);
+    return !botAI->HasAura("ice armor", target) &&
+        !botAI->HasAura("frost armor", target) &&
+        !botAI->HasAura("molten armor", target) &&
+        !botAI->HasAura("mage armor", target);
 }

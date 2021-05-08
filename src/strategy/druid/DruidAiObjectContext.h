@@ -7,6 +7,6 @@ namespace ai
     class DruidAiObjectContext : public AiObjectContext
     {
     public:
-        DruidAiObjectContext(PlayerbotAI* ai);
+        DruidAiObjectContext(PlayerbotAI* botAI);
     };
 }

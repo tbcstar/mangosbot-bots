@@ -6,8 +6,8 @@ namespace ai
     class PetTargetValue : public UnitCalculatedValue
 	{
 	public:
-        PetTargetValue(PlayerbotAI* ai) : UnitCalculatedValue(ai) {}
+        PetTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) {}
 
-        virtual Unit* Calculate() { return (Unit*)(ai->GetBot()->GetPet()); }
+        virtual Unit* Calculate() { return (Unit*)(botAI->GetBot()->GetPet()); }
     };
 }

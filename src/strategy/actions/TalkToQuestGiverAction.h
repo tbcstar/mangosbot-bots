@@ -7,7 +7,7 @@ namespace ai
 {
     class TalkToQuestGiverAction : public QuestAction {
     public:
-        TalkToQuestGiverAction(PlayerbotAI* ai) : QuestAction(ai, "talk to quest giver") {}
+        TalkToQuestGiverAction(PlayerbotAI* botAI) : QuestAction(ai, "talk to quest giver") {}
 
     protected:
         virtual void ProcessQuest(Quest const* quest, WorldObject* questGiver);

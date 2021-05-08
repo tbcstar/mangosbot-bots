@@ -8,7 +8,7 @@ namespace ai
     class GreetAction : public Action
     {
     public:
-        GreetAction(PlayerbotAI* ai);
+        GreetAction(PlayerbotAI* botAI);
         virtual bool Execute(Event event);
     };
 }

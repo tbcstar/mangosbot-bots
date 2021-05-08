@@ -7,7 +7,7 @@ namespace ai
     class InviteToGroupAction : public Action
     {
     public:
-        InviteToGroupAction(PlayerbotAI* ai) : Action(ai, "invite") {}
+        InviteToGroupAction(PlayerbotAI* botAI) : Action(ai, "invite") {}
 
         virtual bool Execute(Event event)
         {

@@ -15,7 +15,7 @@ bool ChooseRpgTargetAction::Execute(Event event)
     vector<Unit*> units;
     for (list<ObjectGuid>::iterator i = possibleTargets.begin(); i != possibleTargets.end(); ++i)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (unit) units.push_back(unit);
     }
 

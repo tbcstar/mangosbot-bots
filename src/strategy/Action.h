@@ -49,7 +49,7 @@ namespace ai
     class Action : public AiNamedObject
 	{
 	public:
-        Action(PlayerbotAI* ai, string name = "action") : verbose(false), AiNamedObject(ai, name) { }
+        Action(PlayerbotAI* botAI, string name = "action") : verbose(false), AiNamedObject(ai, name) { }
         virtual ~Action(void) {}
 
     public:

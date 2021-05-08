@@ -7,7 +7,7 @@ namespace ai
     class SuggestWhatToDoAction : public InventoryAction
     {
     public:
-        SuggestWhatToDoAction(PlayerbotAI* ai, string name = "suggest what to do");
+        SuggestWhatToDoAction(PlayerbotAI* botAI, string name = "suggest what to do");
         virtual bool Execute(Event event);
         virtual bool isUseful();
 
@@ -32,7 +32,7 @@ namespace ai
     class SuggestTradeAction : public SuggestWhatToDoAction
     {
     public:
-        SuggestTradeAction(PlayerbotAI* ai);
+        SuggestTradeAction(PlayerbotAI* botAI);
         virtual bool Execute(Event event);
         virtual bool isUseful() { return true; }
     };

@@ -59,8 +59,8 @@ void LootObject::Refresh(Player* bot, ObjectGuid guid)
     reqItem = 0;
     guid.Clear();
 
-    PlayerbotAI* ai = bot->GetPlayerbotAI();
-    Creature *creature = ai->GetCreature(guid);
+    PlayerbotAI* botAI = bot->GetPlayerbotAI();
+    Creature *creature = botAI->GetCreature(guid);
     if (creature && sServerFacade->GetDeathState(creature) == CORPSE)
     {
         if (creature->HasFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE))
@@ -71,14 +71,14 @@ void LootObject::Refresh(Player* bot, ObjectGuid guid)
             skillId = creature->GetCreatureInfo()->GetRequiredLootSkill();
             uint32 targetLevel = creature->getLevel();
             reqSkillValue = targetLevel < 10 ? 2 : targetLevel < 20 ? (targetLevel - 10) * 10 : targetLevel * 5;
-            if (ai->HasSkill((SkillType)skillId) && bot->GetSkillValue(skillId) >= reqSkillValue)
+            if (botAI->HasSkill((SkillType)skillId) && bot->GetSkillValue(skillId) >= reqSkillValue)
                 this->guid = guid;
         }
 
         return;
     }
 
-    GameObject* go = ai->GetGameObject(guid);
+    GameObject* go = botAI->GetGameObject(guid);
     if (go && sServerFacade->isSpawned(go) && go->GetGoState() == GO_STATE_READY)
     {
         uint32 lockId = go->GetGOInfo()->GetLockId();
@@ -117,13 +117,13 @@ WorldObject* LootObject::GetWorldObject(Player* bot)
 {
     Refresh(bot, guid);
 
-    PlayerbotAI* ai = bot->GetPlayerbotAI();
+    PlayerbotAI* botAI = bot->GetPlayerbotAI();
 
-    Creature *creature = ai->GetCreature(guid);
+    Creature *creature = botAI->GetCreature(guid);
     if (creature && sServerFacade->GetDeathState(creature) == CORPSE)
         return creature;
 
-    GameObject* go = ai->GetGameObject(guid);
+    GameObject* go = botAI->GetGameObject(guid);
     if (go && sServerFacade->isSpawned(go))
         return go;
 
@@ -143,7 +143,7 @@ bool LootObject::IsLootPossible(Player* bot)
     if (IsEmpty() || !GetWorldObject(bot))
         return false;
 
-    PlayerbotAI* ai = bot->GetPlayerbotAI();
+    PlayerbotAI* botAI = bot->GetPlayerbotAI();
 
     if (reqItem && !bot->HasItemCount(reqItem, 1))
         return false;
@@ -157,7 +157,7 @@ bool LootObject::IsLootPossible(Player* bot)
     if (skillId == SKILL_FISHING)
         return false;
 
-    if (!ai->HasSkill((SkillType)skillId))
+    if (!botAI->HasSkill((SkillType)skillId))
         return false;
 
     if (!reqSkillValue)

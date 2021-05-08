@@ -24,11 +24,11 @@ bool RepairAllAction::Execute(Event event)
 
         ostringstream out;
         out << "Repair: " << chat->formatMoney(totalCost) << " (" << unit->GetName() << ")";
-        ai->TellMasterNoFacing(out.str());
+        botAI->TellMasterNoFacing(out.str());
 
         return true;
     }
 
-    ai->TellError("Cannot find any npc to repair at");
+    botAI->TellError("Cannot find any npc to repair at");
     return false;
 }

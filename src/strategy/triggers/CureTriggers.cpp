@@ -8,7 +8,7 @@ using namespace ai;
 bool NeedCureTrigger::IsActive() 
 {
 	Unit* target = GetTarget();
-	return target && ai->HasAuraToDispel(target, dispelType);
+	return target && botAI->HasAuraToDispel(target, dispelType);
 }
 
 Value<Unit*>* PartyMemberNeedCureTrigger::GetTargetValue()

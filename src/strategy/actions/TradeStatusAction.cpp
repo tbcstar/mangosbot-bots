@@ -28,7 +28,7 @@ bool TradeStatusAction::Execute(Event event)
 		bot->Whisper("I'm kind of busy now", LANG_UNIVERSAL, trader->GetGUID());
     }
 
-    if (trader != master || !ai->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_ALLOW_ALL, true, master))
+    if (trader != master || !botAI->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_ALLOW_ALL, true, master))
     {
         WorldPacket p;
         uint32 status = 0;
@@ -122,16 +122,16 @@ void TradeStatusAction::BeginTrade()
     ListItemsVisitor visitor;
     IterateItems(&visitor);
 
-    ai->TellMaster("=== Inventory ===");
+    botAI->TellMaster("=== Inventory ===");
     TellItems(visitor.items, visitor.soulbound);
 
     if (sRandomPlayerbotMgr->IsRandomBot(bot))
     {
-        uint32 discount = sRandomPlayerbotMgr->GetTradeDiscount(bot, ai->GetMaster());
+        uint32 discount = sRandomPlayerbotMgr->GetTradeDiscount(bot, botAI->GetMaster());
         if (discount)
         {
             ostringstream out; out << "Discount up to: " << chat->formatMoney(discount);
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
         }
     }
 }
@@ -149,7 +149,7 @@ bool TradeStatusAction::CheckTrade()
         int32 playerItemsMoney = CalculateCost(master, false);
         int32 playerMoney = master->GetTradeData()->GetMoney() + playerItemsMoney;
         if (playerMoney || botMoney)
-            ai->PlaySound(playerMoney < botMoney ? TEXTEMOTE_SIGH : TEXTEMOTE_THANK);
+            botAI->PlaySound(playerMoney < botMoney ? TEXTEMOTE_SIGH : TEXTEMOTE_THANK);
         return true;
     }
 
@@ -165,8 +165,8 @@ bool TradeStatusAction::CheckTrade()
         {
             ostringstream out;
             out << chat->formatItem(item->GetProto()) << " - This is not for sale";
-            ai->TellMaster(out);
-            ai->PlaySound(TEXTEMOTE_NO);
+            botAI->TellMaster(out);
+            botAI->PlaySound(TEXTEMOTE_NO);
             return false;
         }
 
@@ -179,8 +179,8 @@ bool TradeStatusAction::CheckTrade()
             {
                 ostringstream out;
                 out << chat->formatItem(item->GetProto()) << " - I don't need this";
-                ai->TellMaster(out);
-                ai->PlaySound(TEXTEMOTE_NO);
+                botAI->TellMaster(out);
+                botAI->PlaySound(TEXTEMOTE_NO);
                 return false;
             }
         }
@@ -191,7 +191,7 @@ bool TradeStatusAction::CheckTrade()
 
     if (!botItemsMoney && !playerItemsMoney)
     {
-        ai->TellError("There are no items to trade");
+        botAI->TellError("There are no items to trade");
         return false;
     }
 
@@ -205,8 +205,8 @@ bool TradeStatusAction::CheckTrade()
         {
             if (moneyDelta < 0)
             {
-                ai->TellError("You can use discount to buy items only");
-                ai->PlaySound(TEXTEMOTE_NO);
+                botAI->TellError("You can use discount to buy items only");
+                botAI->PlaySound(TEXTEMOTE_NO);
                 return false;
             }
             success = true;
@@ -222,26 +222,26 @@ bool TradeStatusAction::CheckTrade()
         sRandomPlayerbotMgr->AddTradeDiscount(bot, master, delta);
         switch (urand(0, 4)) {
         case 0:
-            ai->TellMaster("A pleasure doing business with you");
+            botAI->TellMaster("A pleasure doing business with you");
             break;
         case 1:
-            ai->TellMaster("Fair trade");
+            botAI->TellMaster("Fair trade");
             break;
         case 2:
-            ai->TellMaster("Thanks");
+            botAI->TellMaster("Thanks");
             break;
         case 3:
-            ai->TellMaster("Off with you");
+            botAI->TellMaster("Off with you");
             break;
         }
-        ai->PlaySound(TEXTEMOTE_THANK);
+        botAI->PlaySound(TEXTEMOTE_THANK);
         return true;
     }
 
     ostringstream out;
     out << "I want " << chat->formatMoney(-(delta + discount)) << " for this";
-    ai->TellMaster(out);
-    ai->PlaySound(TEXTEMOTE_NO);
+    botAI->TellMaster(out);
+    botAI->PlaySound(TEXTEMOTE_NO);
     return false;
 }
 

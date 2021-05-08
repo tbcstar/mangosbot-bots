@@ -6,7 +6,7 @@ namespace ai
     class WorldPacketHandlerStrategy : public PassTroughStrategy
     {
     public:
-        WorldPacketHandlerStrategy(PlayerbotAI* ai);
+        WorldPacketHandlerStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -16,7 +16,7 @@ namespace ai
     class ReadyCheckStrategy : public PassTroughStrategy
     {
     public:
-        ReadyCheckStrategy(PlayerbotAI* ai) : PassTroughStrategy(ai) {}
+        ReadyCheckStrategy(PlayerbotAI* botAI) : PassTroughStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

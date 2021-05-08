@@ -30,7 +30,7 @@ bool UseMeetingStoneAction::Execute(Event event)
 
     if (sServerFacade->IsInCombat(bot))
     {
-        ai->TellError("I am in combat");
+        botAI->TellError("I am in combat");
         return false;
     }
 
@@ -79,13 +79,13 @@ bool SummonAction::Execute(Event event)
 
     if (SummonUsingGos(master, bot) || SummonUsingNpcs(master, bot))
     {
-        ai->TellMasterNoFacing("Hello!");
+        botAI->TellMasterNoFacing("Hello!");
         return true;
     }
 
     if (SummonUsingGos(bot, master) || SummonUsingNpcs(bot, master))
     {
-        ai->TellMasterNoFacing("Welcome!");
+        botAI->TellMasterNoFacing("Welcome!");
         return true;
     }
 
@@ -107,7 +107,7 @@ bool SummonAction::SummonUsingGos(Player *summoner, Player *player)
             return Teleport(summoner, player);
     }
 
-    ai->TellError(summoner == bot ? "There is no meeting stone nearby" : "There is no meeting stone near you");
+    botAI->TellError(summoner == bot ? "There is no meeting stone nearby" : "There is no meeting stone near you");
     return false;
 }
 
@@ -127,13 +127,13 @@ bool SummonAction::SummonUsingNpcs(Player *summoner, Player *player)
         {
             if (!player->HasItemCount(6948, 1, false))
             {
-                ai->TellError(player == bot ? "I have no hearthstone" : "You have no hearthstone");
+                botAI->TellError(player == bot ? "I have no hearthstone" : "You have no hearthstone");
                 return false;
             }
 
             if (!sServerFacade->IsSpellReady(player, 8690))
             {
-                ai->TellError(player == bot ? "My hearthstone is not ready" : "Your hearthstone is not ready");
+                botAI->TellError(player == bot ? "My hearthstone is not ready" : "Your hearthstone is not ready");
                 return false;
             }
 
@@ -148,7 +148,7 @@ bool SummonAction::SummonUsingNpcs(Player *summoner, Player *player)
         }
     }
 
-    ai->TellError(summoner == bot ? "There are no innkeepers nearby" : "There are no innkeepers near you");
+    botAI->TellError(summoner == bot ? "There are no innkeepers nearby" : "There are no innkeepers near you");
     return false;
 }
 
@@ -173,6 +173,6 @@ bool SummonAction::Teleport(Player *summoner, Player *player)
         }
     }
 
-    ai->TellError("Not enough place to summon");
+    botAI->TellError("Not enough place to summon");
     return false;
 }

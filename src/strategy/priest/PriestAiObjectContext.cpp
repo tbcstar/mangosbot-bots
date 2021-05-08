@@ -37,15 +37,15 @@ namespace ai
             }
 
         private:
-            static Strategy* cc(PlayerbotAI* ai) { return new PriestCcStrategy(ai); }
-            static Strategy* rshadow(PlayerbotAI* ai) { return new PriestShadowResistanceStrategy(ai); }
-            static Strategy* boost(PlayerbotAI* ai) { return new PriestBoostStrategy(ai); }
-            static Strategy* buff(PlayerbotAI* ai) { return new PriestBuffStrategy(ai); }
-            static Strategy* nc(PlayerbotAI* ai) { return new PriestNonCombatStrategy(ai); }
-            static Strategy* shadow_aoe(PlayerbotAI* ai) { return new ShadowPriestAoeStrategy(ai); }
-            static Strategy* pull(PlayerbotAI* ai) { return new PullStrategy(ai, "shoot"); }
-            static Strategy* shadow_debuff(PlayerbotAI* ai) { return new ShadowPriestDebuffStrategy(ai); }
-            static Strategy* cure(PlayerbotAI* ai) { return new PriestCureStrategy(ai); }
+            static Strategy* cc(PlayerbotAI* botAI) { return new PriestCcStrategy(botAI); }
+            static Strategy* rshadow(PlayerbotAI* botAI) { return new PriestShadowResistanceStrategy(botAI); }
+            static Strategy* boost(PlayerbotAI* botAI) { return new PriestBoostStrategy(botAI); }
+            static Strategy* buff(PlayerbotAI* botAI) { return new PriestBuffStrategy(botAI); }
+            static Strategy* nc(PlayerbotAI* botAI) { return new PriestNonCombatStrategy(botAI); }
+            static Strategy* shadow_aoe(PlayerbotAI* botAI) { return new ShadowPriestAoeStrategy(botAI); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* shadow_debuff(PlayerbotAI* botAI) { return new ShadowPriestDebuffStrategy(botAI); }
+            static Strategy* cure(PlayerbotAI* botAI) { return new PriestCureStrategy(botAI); }
         };
 
         class CombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -60,9 +60,9 @@ namespace ai
             }
 
         private:
-            static Strategy* heal(PlayerbotAI* ai) { return new HealPriestStrategy(ai); }
-            static Strategy* dps(PlayerbotAI* ai) { return new ShadowPriestStrategy(ai); }
-            static Strategy* holy(PlayerbotAI* ai) { return new HolyPriestStrategy(ai); }
+            static Strategy* heal(PlayerbotAI* botAI) { return new HealPriestStrategy(botAI); }
+            static Strategy* dps(PlayerbotAI* botAI) { return new ShadowPriestStrategy(botAI); }
+            static Strategy* holy(PlayerbotAI* botAI) { return new HolyPriestStrategy(botAI); }
         };
     };
 };
@@ -102,26 +102,26 @@ namespace ai
             }
 
         private:
-            static Trigger* vampiric_embrace(PlayerbotAI* ai) { return new VampiricEmbraceTrigger(ai); }
-            static Trigger* shadowform(PlayerbotAI* ai) { return new ShadowformTrigger(ai); }
-            static Trigger* vampiric_touch(PlayerbotAI* ai) { return new VampiricTouchTrigger(ai); }
-            static Trigger* devouring_plague(PlayerbotAI* ai) { return new DevouringPlagueTrigger(ai); }
-            static Trigger* shadow_word_pain(PlayerbotAI* ai) { return new PowerWordPainTrigger(ai); }
-            static Trigger* shadow_word_pain_on_attacker(PlayerbotAI* ai) { return new PowerWordPainOnAttackerTrigger(ai); }
-            static Trigger* dispel_magic(PlayerbotAI* ai) { return new DispelMagicTrigger(ai); }
-            static Trigger* dispel_magic_party_member(PlayerbotAI* ai) { return new DispelMagicPartyMemberTrigger(ai); }
-            static Trigger* cure_disease(PlayerbotAI* ai) { return new CureDiseaseTrigger(ai); }
-            static Trigger* party_member_cure_disease(PlayerbotAI* ai) { return new PartyMemberCureDiseaseTrigger(ai); }
-            static Trigger* power_word_fortitude(PlayerbotAI* ai) { return new PowerWordFortitudeTrigger(ai); }
-            static Trigger* power_word_fortitude_on_party(PlayerbotAI* ai) { return new PowerWordFortitudeOnPartyTrigger(ai); }
-            static Trigger* divine_spirit(PlayerbotAI* ai) { return new DivineSpiritTrigger(ai); }
-            static Trigger* divine_spirit_on_party(PlayerbotAI* ai) { return new DivineSpiritOnPartyTrigger(ai); }
-            static Trigger* inner_fire(PlayerbotAI* ai) { return new InnerFireTrigger(ai); }
-            static Trigger* power_infusion(PlayerbotAI* ai) { return new PowerInfusionTrigger(ai); }
-            static Trigger* inner_focus(PlayerbotAI* ai) { return new InnerFocusTrigger(ai); }
-            static Trigger* shadow_protection_on_party(PlayerbotAI* ai) { return new ShadowProtectionOnPartyTrigger(ai); }
-            static Trigger* shadow_protection(PlayerbotAI* ai) { return new ShadowProtectionTrigger(ai); }
-            static Trigger* shackle_undead(PlayerbotAI* ai) { return new ShackleUndeadTrigger(ai); }
+            static Trigger* vampiric_embrace(PlayerbotAI* botAI) { return new VampiricEmbraceTrigger(botAI); }
+            static Trigger* shadowform(PlayerbotAI* botAI) { return new ShadowformTrigger(botAI); }
+            static Trigger* vampiric_touch(PlayerbotAI* botAI) { return new VampiricTouchTrigger(botAI); }
+            static Trigger* devouring_plague(PlayerbotAI* botAI) { return new DevouringPlagueTrigger(botAI); }
+            static Trigger* shadow_word_pain(PlayerbotAI* botAI) { return new PowerWordPainTrigger(botAI); }
+            static Trigger* shadow_word_pain_on_attacker(PlayerbotAI* botAI) { return new PowerWordPainOnAttackerTrigger(botAI); }
+            static Trigger* dispel_magic(PlayerbotAI* botAI) { return new DispelMagicTrigger(botAI); }
+            static Trigger* dispel_magic_party_member(PlayerbotAI* botAI) { return new DispelMagicPartyMemberTrigger(botAI); }
+            static Trigger* cure_disease(PlayerbotAI* botAI) { return new CureDiseaseTrigger(botAI); }
+            static Trigger* party_member_cure_disease(PlayerbotAI* botAI) { return new PartyMemberCureDiseaseTrigger(botAI); }
+            static Trigger* power_word_fortitude(PlayerbotAI* botAI) { return new PowerWordFortitudeTrigger(botAI); }
+            static Trigger* power_word_fortitude_on_party(PlayerbotAI* botAI) { return new PowerWordFortitudeOnPartyTrigger(botAI); }
+            static Trigger* divine_spirit(PlayerbotAI* botAI) { return new DivineSpiritTrigger(botAI); }
+            static Trigger* divine_spirit_on_party(PlayerbotAI* botAI) { return new DivineSpiritOnPartyTrigger(botAI); }
+            static Trigger* inner_fire(PlayerbotAI* botAI) { return new InnerFireTrigger(botAI); }
+            static Trigger* power_infusion(PlayerbotAI* botAI) { return new PowerInfusionTrigger(botAI); }
+            static Trigger* inner_focus(PlayerbotAI* botAI) { return new InnerFocusTrigger(botAI); }
+            static Trigger* shadow_protection_on_party(PlayerbotAI* botAI) { return new ShadowProtectionOnPartyTrigger(botAI); }
+            static Trigger* shadow_protection(PlayerbotAI* botAI) { return new ShadowProtectionTrigger(botAI); }
+            static Trigger* shackle_undead(PlayerbotAI* botAI) { return new ShackleUndeadTrigger(botAI); }
         };
     };
 };
@@ -188,57 +188,57 @@ namespace ai
             }
 
         private:
-            static Action* shadow_protection_on_party(PlayerbotAI* ai) { return new CastShadowProtectionOnPartyAction(ai); }
-            static Action* shadow_protection(PlayerbotAI* ai) { return new CastShadowProtectionAction(ai); }
-            static Action* power_infusion(PlayerbotAI* ai) { return new CastPowerInfusionAction(ai); }
-            static Action* inner_focus(PlayerbotAI* ai) { return new CastInnerFocusAction(ai); }
-            static Action* dispersion(PlayerbotAI* ai) { return new CastDispersionAction(ai); }
-            static Action* vampiric_embrace(PlayerbotAI* ai) { return new CastVampiricEmbraceAction(ai); }
-            static Action* vampiric_touch(PlayerbotAI* ai) { return new CastVampiricTouchAction(ai); }
-            static Action* psychic_scream(PlayerbotAI* ai) { return new CastPsychicScreamAction(ai); }
-            static Action* circle_of_healing(PlayerbotAI* ai) { return new CastCircleOfHealingAction(ai); }
-            static Action* resurrection(PlayerbotAI* ai) { return new CastResurrectionAction(ai); }
-            static Action* shadow_word_pain(PlayerbotAI* ai) { return new CastPowerWordPainAction(ai); }
-            static Action* shadow_word_pain_on_attacker(PlayerbotAI* ai) { return new CastPowerWordPainOnAttackerAction(ai); }
-            static Action* devouring_plague(PlayerbotAI* ai) { return new CastDevouringPlagueAction(ai); }
-            static Action* mind_flay(PlayerbotAI* ai) { return new CastMindFlayAction(ai); }
-            static Action* holy_fire(PlayerbotAI* ai) { return new CastHolyFireAction(ai); }
-            static Action* smite(PlayerbotAI* ai) { return new CastSmiteAction(ai); }
-            static Action* mind_blast(PlayerbotAI* ai) { return new CastMindBlastAction(ai); }
-            static Action* shadowform(PlayerbotAI* ai) { return new CastShadowformAction(ai); }
-            static Action* remove_shadowform(PlayerbotAI* ai) { return new CastRemoveShadowformAction(ai); }
-            static Action* holy_nova(PlayerbotAI* ai) { return new CastHolyNovaAction(ai); }
-            static Action* power_word_fortitude(PlayerbotAI* ai) { return new CastPowerWordFortitudeAction(ai); }
-            static Action* power_word_fortitude_on_party(PlayerbotAI* ai) { return new CastPowerWordFortitudeOnPartyAction(ai); }
-            static Action* divine_spirit(PlayerbotAI* ai) { return new CastDivineSpiritAction(ai); }
-            static Action* divine_spirit_on_party(PlayerbotAI* ai) { return new CastDivineSpiritOnPartyAction(ai); }
-            static Action* power_word_shield(PlayerbotAI* ai) { return new CastPowerWordShieldAction(ai); }
-            static Action* power_word_shield_on_party(PlayerbotAI* ai) { return new CastPowerWordShieldOnPartyAction(ai); }
-            static Action* renew(PlayerbotAI* ai) { return new CastRenewAction(ai); }
-            static Action* renew_on_party(PlayerbotAI* ai) { return new CastRenewOnPartyAction(ai); }
-            static Action* greater_heal(PlayerbotAI* ai) { return new CastGreaterHealAction(ai); }
-            static Action* greater_heal_on_party(PlayerbotAI* ai) { return new CastGreaterHealOnPartyAction(ai); }
-            static Action* heal(PlayerbotAI* ai) { return new CastHealAction(ai); }
-            static Action* heal_on_party(PlayerbotAI* ai) { return new CastHealOnPartyAction(ai); }
-            static Action* lesser_heal(PlayerbotAI* ai) { return new CastLesserHealAction(ai); }
-            static Action* lesser_heal_on_party(PlayerbotAI* ai) { return new CastLesserHealOnPartyAction(ai); }
-            static Action* flash_heal(PlayerbotAI* ai) { return new CastFlashHealAction(ai); }
-            static Action* flash_heal_on_party(PlayerbotAI* ai) { return new CastFlashHealOnPartyAction(ai); }
-            static Action* dispel_magic(PlayerbotAI* ai) { return new CastDispelMagicAction(ai); }
-            static Action* dispel_magic_on_party(PlayerbotAI* ai) { return new CastDispelMagicOnPartyAction(ai); }
-            static Action* dispel_magic_on_target(PlayerbotAI* ai) { return new CastDispelMagicOnTargetAction(ai); }
-            static Action* cure_disease(PlayerbotAI* ai) { return new CastCureDiseaseAction(ai); }
-            static Action* cure_disease_on_party(PlayerbotAI* ai) { return new CastCureDiseaseOnPartyAction(ai); }
-            static Action* abolish_disease(PlayerbotAI* ai) { return new CastAbolishDiseaseAction(ai); }
-            static Action* abolish_disease_on_party(PlayerbotAI* ai) { return new CastAbolishDiseaseOnPartyAction(ai); }
-            static Action* fade(PlayerbotAI* ai) { return new CastFadeAction(ai); }
-            static Action* inner_fire(PlayerbotAI* ai) { return new CastInnerFireAction(ai); }
-            static Action* shackle_undead(PlayerbotAI* ai) { return new CastShackleUndeadAction(ai); }
+            static Action* shadow_protection_on_party(PlayerbotAI* botAI) { return new CastShadowProtectionOnPartyAction(botAI); }
+            static Action* shadow_protection(PlayerbotAI* botAI) { return new CastShadowProtectionAction(botAI); }
+            static Action* power_infusion(PlayerbotAI* botAI) { return new CastPowerInfusionAction(botAI); }
+            static Action* inner_focus(PlayerbotAI* botAI) { return new CastInnerFocusAction(botAI); }
+            static Action* dispersion(PlayerbotAI* botAI) { return new CastDispersionAction(botAI); }
+            static Action* vampiric_embrace(PlayerbotAI* botAI) { return new CastVampiricEmbraceAction(botAI); }
+            static Action* vampiric_touch(PlayerbotAI* botAI) { return new CastVampiricTouchAction(botAI); }
+            static Action* psychic_scream(PlayerbotAI* botAI) { return new CastPsychicScreamAction(botAI); }
+            static Action* circle_of_healing(PlayerbotAI* botAI) { return new CastCircleOfHealingAction(botAI); }
+            static Action* resurrection(PlayerbotAI* botAI) { return new CastResurrectionAction(botAI); }
+            static Action* shadow_word_pain(PlayerbotAI* botAI) { return new CastPowerWordPainAction(botAI); }
+            static Action* shadow_word_pain_on_attacker(PlayerbotAI* botAI) { return new CastPowerWordPainOnAttackerAction(botAI); }
+            static Action* devouring_plague(PlayerbotAI* botAI) { return new CastDevouringPlagueAction(botAI); }
+            static Action* mind_flay(PlayerbotAI* botAI) { return new CastMindFlayAction(botAI); }
+            static Action* holy_fire(PlayerbotAI* botAI) { return new CastHolyFireAction(botAI); }
+            static Action* smite(PlayerbotAI* botAI) { return new CastSmiteAction(botAI); }
+            static Action* mind_blast(PlayerbotAI* botAI) { return new CastMindBlastAction(botAI); }
+            static Action* shadowform(PlayerbotAI* botAI) { return new CastShadowformAction(botAI); }
+            static Action* remove_shadowform(PlayerbotAI* botAI) { return new CastRemoveShadowformAction(botAI); }
+            static Action* holy_nova(PlayerbotAI* botAI) { return new CastHolyNovaAction(botAI); }
+            static Action* power_word_fortitude(PlayerbotAI* botAI) { return new CastPowerWordFortitudeAction(botAI); }
+            static Action* power_word_fortitude_on_party(PlayerbotAI* botAI) { return new CastPowerWordFortitudeOnPartyAction(botAI); }
+            static Action* divine_spirit(PlayerbotAI* botAI) { return new CastDivineSpiritAction(botAI); }
+            static Action* divine_spirit_on_party(PlayerbotAI* botAI) { return new CastDivineSpiritOnPartyAction(botAI); }
+            static Action* power_word_shield(PlayerbotAI* botAI) { return new CastPowerWordShieldAction(botAI); }
+            static Action* power_word_shield_on_party(PlayerbotAI* botAI) { return new CastPowerWordShieldOnPartyAction(botAI); }
+            static Action* renew(PlayerbotAI* botAI) { return new CastRenewAction(botAI); }
+            static Action* renew_on_party(PlayerbotAI* botAI) { return new CastRenewOnPartyAction(botAI); }
+            static Action* greater_heal(PlayerbotAI* botAI) { return new CastGreaterHealAction(botAI); }
+            static Action* greater_heal_on_party(PlayerbotAI* botAI) { return new CastGreaterHealOnPartyAction(botAI); }
+            static Action* heal(PlayerbotAI* botAI) { return new CastHealAction(botAI); }
+            static Action* heal_on_party(PlayerbotAI* botAI) { return new CastHealOnPartyAction(botAI); }
+            static Action* lesser_heal(PlayerbotAI* botAI) { return new CastLesserHealAction(botAI); }
+            static Action* lesser_heal_on_party(PlayerbotAI* botAI) { return new CastLesserHealOnPartyAction(botAI); }
+            static Action* flash_heal(PlayerbotAI* botAI) { return new CastFlashHealAction(botAI); }
+            static Action* flash_heal_on_party(PlayerbotAI* botAI) { return new CastFlashHealOnPartyAction(botAI); }
+            static Action* dispel_magic(PlayerbotAI* botAI) { return new CastDispelMagicAction(botAI); }
+            static Action* dispel_magic_on_party(PlayerbotAI* botAI) { return new CastDispelMagicOnPartyAction(botAI); }
+            static Action* dispel_magic_on_target(PlayerbotAI* botAI) { return new CastDispelMagicOnTargetAction(botAI); }
+            static Action* cure_disease(PlayerbotAI* botAI) { return new CastCureDiseaseAction(botAI); }
+            static Action* cure_disease_on_party(PlayerbotAI* botAI) { return new CastCureDiseaseOnPartyAction(botAI); }
+            static Action* abolish_disease(PlayerbotAI* botAI) { return new CastAbolishDiseaseAction(botAI); }
+            static Action* abolish_disease_on_party(PlayerbotAI* botAI) { return new CastAbolishDiseaseOnPartyAction(botAI); }
+            static Action* fade(PlayerbotAI* botAI) { return new CastFadeAction(botAI); }
+            static Action* inner_fire(PlayerbotAI* botAI) { return new CastInnerFireAction(botAI); }
+            static Action* shackle_undead(PlayerbotAI* botAI) { return new CastShackleUndeadAction(botAI); }
         };
     };
 };
 
-PriestAiObjectContext::PriestAiObjectContext(PlayerbotAI* ai) : AiObjectContext(ai)
+PriestAiObjectContext::PriestAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
     strategyContexts.Add(new ai::priest::StrategyFactoryInternal());
     strategyContexts.Add(new ai::priest::CombatStrategyFactoryInternal());

@@ -5,7 +5,7 @@
 
 using namespace ai;
 
-HelpAction::HelpAction(PlayerbotAI* ai) : Action(ai, "help")
+HelpAction::HelpAction(PlayerbotAI* botAI) : Action(ai, "help")
 {
     chatContext = new ChatActionContext();
 }
@@ -28,15 +28,15 @@ void HelpAction::TellChatCommands()
     out << "Whisper any of: ";
     out << CombineSupported(chatContext->supports());
     out << ", [item], [quest] or [object] link";
-    ai->TellError(out.str());
+    botAI->TellError(out.str());
 }
 
 void HelpAction::TellStrategies()
 {
     ostringstream out;
     out << "Possible strategies (co/nc/dead commands): ";
-    out << CombineSupported(ai->GetAiObjectContext()->GetSupportedStrategies());
-    ai->TellError(out.str());
+    out << CombineSupported(botAI->GetAiObjectContext()->GetSupportedStrategies());
+    botAI->TellError(out.str());
 }
 
 string HelpAction::CombineSupported(set<string> commands)

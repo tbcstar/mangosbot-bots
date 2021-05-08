@@ -8,7 +8,7 @@ namespace ai
     class RandomBotUpdateAction : public Action
     {
     public:
-        RandomBotUpdateAction(PlayerbotAI* ai) : Action(ai, "random bot update")
+        RandomBotUpdateAction(PlayerbotAI* botAI) : Action(ai, "random bot update")
         {}
 
         virtual bool Execute(Event event)

@@ -29,140 +29,140 @@ namespace ai
             creators["fade"] = &fade;
         }
     private:
-        static ActionNode* inner_fire(PlayerbotAI* ai)
+        static ActionNode* inner_fire(PlayerbotAI* botAI)
         {
             return new ActionNode ("inner fire",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* holy_nova(PlayerbotAI* ai)
+        static ActionNode* holy_nova(PlayerbotAI* botAI)
         {
             return new ActionNode ("holy nova",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* power_word_fortitude(PlayerbotAI* ai)
+        static ActionNode* power_word_fortitude(PlayerbotAI* botAI)
         {
             return new ActionNode ("power word: fortitude",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* power_word_fortitude_on_party(PlayerbotAI* ai)
+        static ActionNode* power_word_fortitude_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("power word: fortitude on party",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* divine_spirit(PlayerbotAI* ai)
+        static ActionNode* divine_spirit(PlayerbotAI* botAI)
         {
             return new ActionNode ("divine spirit",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* divine_spirit_on_party(PlayerbotAI* ai)
+        static ActionNode* divine_spirit_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("divine spirit on party",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* power_word_shield(PlayerbotAI* ai)
+        static ActionNode* power_word_shield(PlayerbotAI* botAI)
         {
             return new ActionNode ("power word: shield",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("renew", 50.0f), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* power_word_shield_on_party(PlayerbotAI* ai)
+        static ActionNode* power_word_shield_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("power word: shield on party",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("renew on party", 50.0f), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* renew(PlayerbotAI* ai)
+        static ActionNode* renew(PlayerbotAI* botAI)
         {
             return new ActionNode ("renew",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* renew_on_party(PlayerbotAI* ai)
+        static ActionNode* renew_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("renew on party",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* greater_heal(PlayerbotAI* ai)
+        static ActionNode* greater_heal(PlayerbotAI* botAI)
         {
             return new ActionNode ("greater heal",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("heal"), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* greater_heal_on_party(PlayerbotAI* ai)
+        static ActionNode* greater_heal_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("greater heal on party",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("heal on party"), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* heal(PlayerbotAI* ai)
+        static ActionNode* heal(PlayerbotAI* botAI)
         {
             return new ActionNode ("heal",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("lesser heal"), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* heal_on_party(PlayerbotAI* ai)
+        static ActionNode* heal_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("heal on party",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("lesser heal on party"), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* lesser_heal(PlayerbotAI* ai)
+        static ActionNode* lesser_heal(PlayerbotAI* botAI)
         {
             return new ActionNode ("lesser heal",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* lesser_heal_on_party(PlayerbotAI* ai)
+        static ActionNode* lesser_heal_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("lesser heal on party",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NULL,
                 /*C*/ NULL);
         }
-        static ActionNode* flash_heal(PlayerbotAI* ai)
+        static ActionNode* flash_heal(PlayerbotAI* botAI)
         {
             return new ActionNode ("flash heal",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("greater heal"), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* flash_heal_on_party(PlayerbotAI* ai)
+        static ActionNode* flash_heal_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("flash heal on party",
                 /*P*/ NextAction::array(0, new NextAction("remove shadowform"), NULL),
                 /*A*/ NextAction::array(0, new NextAction("greater heal on party"), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* psychic_scream(PlayerbotAI* ai)
+        static ActionNode* psychic_scream(PlayerbotAI* botAI)
         {
             return new ActionNode ("psychic scream",
                 /*P*/ NULL,
                 /*A*/ NextAction::array(0, new NextAction("fade"), NULL),
                 /*C*/ NULL);
         }
-        static ActionNode* fade(PlayerbotAI* ai)
+        static ActionNode* fade(PlayerbotAI* botAI)
         {
             return new ActionNode ("fade",
                 /*P*/ NULL,

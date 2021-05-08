@@ -5,7 +5,7 @@ namespace ai
     class PassiveStrategy : public Strategy
     {
     public:
-        PassiveStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PassiveStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitMultipliers(std::list<Multiplier*> &multipliers);

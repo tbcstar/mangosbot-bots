@@ -33,13 +33,13 @@ namespace ai
             }
 
         private:
-            static Strategy* pet(PlayerbotAI* ai) { return new WarlockPetStrategy(ai); }
-            static Strategy* nc(PlayerbotAI* ai) { return new GenericWarlockNonCombatStrategy(ai); }
-            static Strategy* aoe(PlayerbotAI* ai) { return new DpsAoeWarlockStrategy(ai); }
-            static Strategy* dps_debuff(PlayerbotAI* ai) { return new DpsWarlockDebuffStrategy(ai); }
-            static Strategy* pull(PlayerbotAI* ai) { return new PullStrategy(ai, "shoot"); }
-            static Strategy* boost(PlayerbotAI* ai) { return new WarlockBoostStrategy(ai); }
-            static Strategy* cc(PlayerbotAI* ai) { return new WarlockCcStrategy(ai); }
+            static Strategy* pet(PlayerbotAI* botAI) { return new WarlockPetStrategy(botAI); }
+            static Strategy* nc(PlayerbotAI* botAI) { return new GenericWarlockNonCombatStrategy(botAI); }
+            static Strategy* aoe(PlayerbotAI* botAI) { return new DpsAoeWarlockStrategy(botAI); }
+            static Strategy* dps_debuff(PlayerbotAI* botAI) { return new DpsWarlockDebuffStrategy(botAI); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* boost(PlayerbotAI* botAI) { return new WarlockBoostStrategy(botAI); }
+            static Strategy* cc(PlayerbotAI* botAI) { return new WarlockCcStrategy(botAI); }
         };
 
         class CombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -52,8 +52,8 @@ namespace ai
             }
 
         private:
-            static Strategy* tank(PlayerbotAI* ai) { return new TankWarlockStrategy(ai); }
-            static Strategy* dps(PlayerbotAI* ai) { return new DpsWarlockStrategy(ai); }
+            static Strategy* tank(PlayerbotAI* botAI) { return new TankWarlockStrategy(botAI); }
+            static Strategy* dps(PlayerbotAI* botAI) { return new DpsWarlockStrategy(botAI); }
         };
     };
 };
@@ -91,23 +91,23 @@ namespace ai
             }
 
         private:
-            static Trigger* amplify_curse(PlayerbotAI* ai) { return new AmplifyCurseTrigger(ai); }
-            static Trigger* shadow_trance(PlayerbotAI* ai) { return new ShadowTranceTrigger(ai); }
-            static Trigger* demon_armor(PlayerbotAI* ai) { return new DemonArmorTrigger(ai); }
-            static Trigger* HasHealthstone(PlayerbotAI* ai) { return new HasHealthstoneTrigger(ai); }
-            static Trigger* HasFirestone(PlayerbotAI* ai) { return new HasFirestoneTrigger(ai); }
-            static Trigger* HasSpellstone(PlayerbotAI* ai) { return new HasSpellstoneTrigger(ai); }
-            static Trigger* corruption(PlayerbotAI* ai) { return new CorruptionTrigger(ai); }
-            static Trigger* corruption_on_attacker(PlayerbotAI* ai) { return new CorruptionOnAttackerTrigger(ai); }
-            static Trigger* siphon_life(PlayerbotAI* ai) { return new SiphonLifeTrigger(ai); }
-            static Trigger* siphon_life_on_attacker(PlayerbotAI* ai) { return new SiphonLifeOnAttackerTrigger(ai); }
-            static Trigger* curse_of_agony(PlayerbotAI* ai) { return new CurseOfAgonyTrigger(ai); }
-            static Trigger* curse_of_agony_on_attacker(PlayerbotAI* ai) { return new CastCurseOfAgonyOnAttackerTrigger(ai); }
-            static Trigger* banish(PlayerbotAI* ai) { return new BanishTrigger(ai); }
-            static Trigger* spellstone(PlayerbotAI* ai) { return new SpellstoneTrigger(ai); }
-            static Trigger* backlash(PlayerbotAI* ai) { return new BacklashTrigger(ai); }
-            static Trigger* fear(PlayerbotAI* ai) { return new FearTrigger(ai); }
-            static Trigger* immolate(PlayerbotAI* ai) { return new ImmolateTrigger(ai); }
+            static Trigger* amplify_curse(PlayerbotAI* botAI) { return new AmplifyCurseTrigger(botAI); }
+            static Trigger* shadow_trance(PlayerbotAI* botAI) { return new ShadowTranceTrigger(botAI); }
+            static Trigger* demon_armor(PlayerbotAI* botAI) { return new DemonArmorTrigger(botAI); }
+            static Trigger* HasHealthstone(PlayerbotAI* botAI) { return new HasHealthstoneTrigger(botAI); }
+            static Trigger* HasFirestone(PlayerbotAI* botAI) { return new HasFirestoneTrigger(botAI); }
+            static Trigger* HasSpellstone(PlayerbotAI* botAI) { return new HasSpellstoneTrigger(botAI); }
+            static Trigger* corruption(PlayerbotAI* botAI) { return new CorruptionTrigger(botAI); }
+            static Trigger* corruption_on_attacker(PlayerbotAI* botAI) { return new CorruptionOnAttackerTrigger(botAI); }
+            static Trigger* siphon_life(PlayerbotAI* botAI) { return new SiphonLifeTrigger(botAI); }
+            static Trigger* siphon_life_on_attacker(PlayerbotAI* botAI) { return new SiphonLifeOnAttackerTrigger(botAI); }
+            static Trigger* curse_of_agony(PlayerbotAI* botAI) { return new CurseOfAgonyTrigger(botAI); }
+            static Trigger* curse_of_agony_on_attacker(PlayerbotAI* botAI) { return new CastCurseOfAgonyOnAttackerTrigger(botAI); }
+            static Trigger* banish(PlayerbotAI* botAI) { return new BanishTrigger(botAI); }
+            static Trigger* spellstone(PlayerbotAI* botAI) { return new SpellstoneTrigger(botAI); }
+            static Trigger* backlash(PlayerbotAI* botAI) { return new BacklashTrigger(botAI); }
+            static Trigger* fear(PlayerbotAI* botAI) { return new FearTrigger(botAI); }
+            static Trigger* immolate(PlayerbotAI* botAI) { return new ImmolateTrigger(botAI); }
 
         };
     };
@@ -159,38 +159,38 @@ namespace ai
             }
 
         private:
-            static Action* amplify_curse(PlayerbotAI* ai) { return new CastAmplifyCurseAction(ai); }
-            static Action* conflagrate(PlayerbotAI* ai) { return new CastConflagrateAction(ai); }
-            static Action* incinirate(PlayerbotAI* ai) { return new CastIncinirateAction(ai); }
-            static Action* fear_on_cc(PlayerbotAI* ai) { return new CastFearOnCcAction(ai); }
-            static Action* fear(PlayerbotAI* ai) { return new CastFearAction(ai); }
-            static Action* immolate(PlayerbotAI* ai) { return new CastImmolateAction(ai); }
-            static Action* summon_imp(PlayerbotAI* ai) { return new CastSummonImpAction(ai); }
-            static Action* fel_armor(PlayerbotAI* ai) { return new CastFelArmorAction(ai); }
-            static Action* demon_armor(PlayerbotAI* ai) { return new CastDemonArmorAction(ai); }
-            static Action* demon_skin(PlayerbotAI* ai) { return new CastDemonSkinAction(ai); }
-            static Action* create_healthstone(PlayerbotAI* ai) { return new CastCreateHealthstoneAction(ai); }
-            static Action* create_firestone(PlayerbotAI* ai) { return new CastCreateFirestoneAction(ai); }
-            static Action* create_spellstone(PlayerbotAI* ai) { return new CastCreateSpellstoneAction(ai); }
-            static Action* spellstone(PlayerbotAI* ai) { return new UseSpellItemAction(ai, "spellstone", true); }
-            static Action* summon_voidwalker(PlayerbotAI* ai) { return new CastSummonVoidwalkerAction(ai); }
-            static Action* summon_felguard(PlayerbotAI* ai) { return new CastSummonFelguardAction(ai); }
-            static Action* corruption(PlayerbotAI* ai) { return new CastCorruptionAction(ai); }
-            static Action* corruption_on_attacker(PlayerbotAI* ai) { return new CastCorruptionOnAttackerAction(ai); }
-            static Action* siphon_life(PlayerbotAI* ai) { return new CastSiphonLifeAction(ai); }
-            static Action* siphon_life_on_attacker(PlayerbotAI* ai) { return new CastSiphonLifeOnAttackerAction(ai); }
-            static Action* curse_of_agony(PlayerbotAI* ai) { return new CastCurseOfAgonyAction(ai); }
-            static Action* curse_of_agony_on_attacker(PlayerbotAI* ai) { return new CastCurseOfAgonyOnAttackerAction(ai); }
-            static Action* shadow_bolt(PlayerbotAI* ai) { return new CastShadowBoltAction(ai); }
-            static Action* drain_soul(PlayerbotAI* ai) { return new CastDrainSoulAction(ai); }
-            static Action* drain_mana(PlayerbotAI* ai) { return new CastDrainManaAction(ai); }
-            static Action* drain_life(PlayerbotAI* ai) { return new CastDrainLifeAction(ai); }
-            static Action* banish(PlayerbotAI* ai) { return new CastBanishAction(ai); }
-            static Action* banish_on_cc(PlayerbotAI* ai) { return new CastBanishAction(ai); }
-            static Action* seed_of_corruption(PlayerbotAI* ai) { return new CastSeedOfCorruptionAction(ai); }
-            static Action* rain_of_fire(PlayerbotAI* ai) { return new CastRainOfFireAction(ai); }
-            static Action* shadowfury(PlayerbotAI* ai) { return new CastShadowfuryAction(ai); }
-            static Action* life_tap(PlayerbotAI* ai) { return new CastLifeTapAction(ai); }
+            static Action* amplify_curse(PlayerbotAI* botAI) { return new CastAmplifyCurseAction(botAI); }
+            static Action* conflagrate(PlayerbotAI* botAI) { return new CastConflagrateAction(botAI); }
+            static Action* incinirate(PlayerbotAI* botAI) { return new CastIncinirateAction(botAI); }
+            static Action* fear_on_cc(PlayerbotAI* botAI) { return new CastFearOnCcAction(botAI); }
+            static Action* fear(PlayerbotAI* botAI) { return new CastFearAction(botAI); }
+            static Action* immolate(PlayerbotAI* botAI) { return new CastImmolateAction(botAI); }
+            static Action* summon_imp(PlayerbotAI* botAI) { return new CastSummonImpAction(botAI); }
+            static Action* fel_armor(PlayerbotAI* botAI) { return new CastFelArmorAction(botAI); }
+            static Action* demon_armor(PlayerbotAI* botAI) { return new CastDemonArmorAction(botAI); }
+            static Action* demon_skin(PlayerbotAI* botAI) { return new CastDemonSkinAction(botAI); }
+            static Action* create_healthstone(PlayerbotAI* botAI) { return new CastCreateHealthstoneAction(botAI); }
+            static Action* create_firestone(PlayerbotAI* botAI) { return new CastCreateFirestoneAction(botAI); }
+            static Action* create_spellstone(PlayerbotAI* botAI) { return new CastCreateSpellstoneAction(botAI); }
+            static Action* spellstone(PlayerbotAI* botAI) { return new UseSpellItemAction(ai, "spellstone", true); }
+            static Action* summon_voidwalker(PlayerbotAI* botAI) { return new CastSummonVoidwalkerAction(botAI); }
+            static Action* summon_felguard(PlayerbotAI* botAI) { return new CastSummonFelguardAction(botAI); }
+            static Action* corruption(PlayerbotAI* botAI) { return new CastCorruptionAction(botAI); }
+            static Action* corruption_on_attacker(PlayerbotAI* botAI) { return new CastCorruptionOnAttackerAction(botAI); }
+            static Action* siphon_life(PlayerbotAI* botAI) { return new CastSiphonLifeAction(botAI); }
+            static Action* siphon_life_on_attacker(PlayerbotAI* botAI) { return new CastSiphonLifeOnAttackerAction(botAI); }
+            static Action* curse_of_agony(PlayerbotAI* botAI) { return new CastCurseOfAgonyAction(botAI); }
+            static Action* curse_of_agony_on_attacker(PlayerbotAI* botAI) { return new CastCurseOfAgonyOnAttackerAction(botAI); }
+            static Action* shadow_bolt(PlayerbotAI* botAI) { return new CastShadowBoltAction(botAI); }
+            static Action* drain_soul(PlayerbotAI* botAI) { return new CastDrainSoulAction(botAI); }
+            static Action* drain_mana(PlayerbotAI* botAI) { return new CastDrainManaAction(botAI); }
+            static Action* drain_life(PlayerbotAI* botAI) { return new CastDrainLifeAction(botAI); }
+            static Action* banish(PlayerbotAI* botAI) { return new CastBanishAction(botAI); }
+            static Action* banish_on_cc(PlayerbotAI* botAI) { return new CastBanishAction(botAI); }
+            static Action* seed_of_corruption(PlayerbotAI* botAI) { return new CastSeedOfCorruptionAction(botAI); }
+            static Action* rain_of_fire(PlayerbotAI* botAI) { return new CastRainOfFireAction(botAI); }
+            static Action* shadowfury(PlayerbotAI* botAI) { return new CastShadowfuryAction(botAI); }
+            static Action* life_tap(PlayerbotAI* botAI) { return new CastLifeTapAction(botAI); }
 
         };
     };
@@ -198,7 +198,7 @@ namespace ai
 
 
 
-WarlockAiObjectContext::WarlockAiObjectContext(PlayerbotAI* ai) : AiObjectContext(ai)
+WarlockAiObjectContext::WarlockAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
     strategyContexts.Add(new ai::warlock::StrategyFactoryInternal());
     strategyContexts.Add(new ai::warlock::CombatStrategyFactoryInternal());

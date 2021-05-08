@@ -7,7 +7,7 @@ namespace ai
 {
     class InventoryAction : public Action {
     public:
-        InventoryAction(PlayerbotAI* ai, string name) : Action(ai, name) {}
+        InventoryAction(PlayerbotAI* botAI, string name) : Action(ai, name) {}
 
     protected:
         void IterateItems(IterateItemsVisitor* visitor, IterateItemsMask mask = ITERATE_ITEMS_IN_BAGS);

@@ -8,7 +8,7 @@ namespace ai
     class PossibleRpgTargetsValue : public NearestUnitsValue
 	{
 	public:
-        PossibleRpgTargetsValue(PlayerbotAI* ai, float range = sPlayerbotAIConfig->rpgDistance);
+        PossibleRpgTargetsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->rpgDistance);
 
     protected:
         void FindUnits(list<Unit*> &targets);

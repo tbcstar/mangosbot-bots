@@ -15,21 +15,21 @@ public:
         creators["arcane missiles"] = &arcane_missiles;
     }
 private:
-    static ActionNode* arcane_blast(PlayerbotAI* ai)
+    static ActionNode* arcane_blast(PlayerbotAI* botAI)
     {
         return new ActionNode ("arcane blast",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("arcane missiles"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* arcane_barrage(PlayerbotAI* ai)
+    static ActionNode* arcane_barrage(PlayerbotAI* botAI)
     {
         return new ActionNode ("arcane barrage",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("arcane missiles"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* arcane_missiles(PlayerbotAI* ai)
+    static ActionNode* arcane_missiles(PlayerbotAI* botAI)
     {
         return new ActionNode ("arcane missiles",
             /*P*/ NULL,
@@ -38,7 +38,7 @@ private:
     }
 };
 
-ArcaneMageStrategy::ArcaneMageStrategy(PlayerbotAI* ai) : GenericMageStrategy(ai)
+ArcaneMageStrategy::ArcaneMageStrategy(PlayerbotAI* botAI) : GenericMageStrategy(botAI)
 {
     actionNodeFactories.Add(new ArcaneMageStrategyActionNodeFactory());
 }

@@ -15,15 +15,15 @@ bool GuildAcceptAction::Execute(Event event)
     uint32 guildId = master->GetGuildId();
     if (!guildId)
     {
-        ai->TellError("You are not in a guild");
+        botAI->TellError("You are not in a guild");
         accept = false;
     }
     else if (bot->GetGuildId())
     {
-        ai->TellError("Sorry, I am in a guild already");
+        botAI->TellError("Sorry, I am in a guild already");
         accept = false;
     }
-    else if (!ai->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, master, true))
+    else if (!botAI->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, master, true))
     {
         accept = false;
     }

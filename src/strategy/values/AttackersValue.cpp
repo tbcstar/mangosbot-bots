@@ -122,20 +122,20 @@ bool AttackersValue::IsValidTarget(Unit *attacker, Player *bot)
 bool PossibleAdsValue::Calculate()
 {
     PlayerbotAI *ai = bot->GetPlayerbotAI();
-    list<ObjectGuid> possible = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets")->Get();
-    list<ObjectGuid> attackers = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
+    list<ObjectGuid> possible = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets")->Get();
+    list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
 
     for (list<ObjectGuid>::iterator i = possible.begin(); i != possible.end(); ++i)
     {
         ObjectGuid guid = *i;
         if (find(attackers.begin(), attackers.end(), guid) != attackers.end()) continue;
 
-        Unit* add = ai->GetUnit(guid);
+        Unit* add = botAI->GetUnit(guid);
         if (add && !add->GetTargetGuid() && !sServerFacade->GetThreatManager(add).getCurrentVictim() && sServerFacade->IsHostileTo(add, bot))
         {
             for (list<ObjectGuid>::iterator j = attackers.begin(); j != attackers.end(); ++j)
             {
-                Unit* attacker = ai->GetUnit(*j);
+                Unit* attacker = botAI->GetUnit(*j);
                 if (!attacker) continue;
 
                 float dist = sServerFacade->GetDistance2d(attacker, add);

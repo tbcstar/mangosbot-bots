@@ -32,7 +32,7 @@ Item* ItemForSpellValue::Calculate()
             return itemForSpell;
     }
 
-    Player* master = ai->GetMaster();
+    Player* master = botAI->GetMaster();
     if (master)
     {
         trader = master->GetTrader();

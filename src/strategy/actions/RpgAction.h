@@ -8,7 +8,7 @@ namespace ai
 {
     class RpgAction : public MovementAction {
     public:
-        RpgAction(PlayerbotAI* ai) : MovementAction(ai, "rpg") {}
+        RpgAction(PlayerbotAI* botAI) : MovementAction(ai, "rpg") {}
 
         virtual bool Execute(Event event);
         virtual bool isUseful();

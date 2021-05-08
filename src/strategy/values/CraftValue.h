@@ -55,7 +55,7 @@ namespace ai
     class CraftValue : public ManualSetValue<CraftData&>
 	{
 	public:
-        CraftValue(PlayerbotAI* ai) : ManualSetValue<CraftData&>(ai, data) {}
+        CraftValue(PlayerbotAI* botAI) : ManualSetValue<CraftData&>(ai, data) {}
 
 	private:
         CraftData data;

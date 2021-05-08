@@ -7,7 +7,7 @@ namespace ai
 {
 	class GoAction : public MovementAction {
 	public:
-		GoAction(PlayerbotAI* ai) : MovementAction(ai, "Go") {}
+		GoAction(PlayerbotAI* botAI) : MovementAction(ai, "Go") {}
 		virtual bool Execute(Event event);
 	};
 }

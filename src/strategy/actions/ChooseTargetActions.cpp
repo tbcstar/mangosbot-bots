@@ -11,15 +11,15 @@ bool DropTargetAction::Execute(Event event)
 {
     Unit* target = context->GetValue<Unit*>("current target")->Get();
     ObjectGuid pullTarget = context->GetValue<ObjectGuid>("pull target")->Get();
-    list<ObjectGuid> possible = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets")->Get();
+    list<ObjectGuid> possible = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets")->Get();
     if (pullTarget && find(possible.begin(), possible.end(), pullTarget) == possible.end())
     {
         context->GetValue<ObjectGuid>("pull target")->Set(ObjectGuid::Empty);
     }
     context->GetValue<Unit*>("current target")->Set(NULL);
     bot->SetTarget(ObjectGuid::Empty);
-    ai->ChangeEngine(BOT_STATE_NON_COMBAT);
-    ai->InterruptSpell();
+    botAI->ChangeEngine(BOT_STATE_NON_COMBAT);
+    botAI->InterruptSpell();
     bot->AttackStop();
     Pet* pet = bot->GetPet();
     if (pet)
@@ -45,7 +45,7 @@ bool DropTargetAction::Execute(Event event)
             sounds.push_back(304); // guard
             sounds.push_back(325); // stay
         }
-        if (!sounds.empty()) ai->PlaySound(sounds[urand(0, sounds.size() - 1)]);
+        if (!sounds.empty()) botAI->PlaySound(sounds[urand(0, sounds.size() - 1)]);
     }
     return true;
 }

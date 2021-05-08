@@ -10,7 +10,7 @@ namespace ai
     class UntypedValue : public AiNamedObject
     {
     public:
-        UntypedValue(PlayerbotAI* ai, string name) : AiNamedObject(ai, name) {}
+        UntypedValue(PlayerbotAI* botAI, string name) : AiNamedObject(ai, name) {}
         virtual void Update() {}
         virtual void Reset() {}
         virtual string Format() { return "?"; }
@@ -31,7 +31,7 @@ namespace ai
     class CalculatedValue : public UntypedValue, public Value<T>
 	{
 	public:
-        CalculatedValue(PlayerbotAI* ai, string name = "value", int checkInterval = 1) : UntypedValue(ai, name),
+        CalculatedValue(PlayerbotAI* botAI, string name = "value", int checkInterval = 1) : UntypedValue(ai, name),
             checkInterval(checkInterval)
         {
             lastCheckTime = time(0) - rand() % checkInterval;
@@ -67,7 +67,7 @@ namespace ai
     class Uint8CalculatedValue : public CalculatedValue<uint8>
     {
     public:
-        Uint8CalculatedValue(PlayerbotAI* ai, string name = "value", int checkInterval = 1) :
+        Uint8CalculatedValue(PlayerbotAI* botAI, string name = "value", int checkInterval = 1) :
             CalculatedValue<uint8>(ai, name, checkInterval) {}
 
         virtual string Format()
@@ -80,7 +80,7 @@ namespace ai
     class Uint32CalculatedValue : public CalculatedValue<uint32>
     {
     public:
-        Uint32CalculatedValue(PlayerbotAI* ai, string name = "value", int checkInterval = 1) :
+        Uint32CalculatedValue(PlayerbotAI* botAI, string name = "value", int checkInterval = 1) :
             CalculatedValue<uint32>(ai, name, checkInterval) {}
 
         virtual string Format()
@@ -93,7 +93,7 @@ namespace ai
     class FloatCalculatedValue : public CalculatedValue<float>
     {
     public:
-        FloatCalculatedValue(PlayerbotAI* ai, string name = "value", int checkInterval = 1) :
+        FloatCalculatedValue(PlayerbotAI* botAI, string name = "value", int checkInterval = 1) :
             CalculatedValue<float>(ai, name, checkInterval) {}
 
         virtual string Format()
@@ -106,7 +106,7 @@ namespace ai
     class BoolCalculatedValue : public CalculatedValue<bool>
     {
     public:
-        BoolCalculatedValue(PlayerbotAI* ai, string name = "value", int checkInterval = 1) :
+        BoolCalculatedValue(PlayerbotAI* botAI, string name = "value", int checkInterval = 1) :
             CalculatedValue<bool>(ai, name, checkInterval) {}
 
         virtual string Format()
@@ -118,7 +118,7 @@ namespace ai
     class UnitCalculatedValue : public CalculatedValue<Unit*>
     {
     public:
-        UnitCalculatedValue(PlayerbotAI* ai, string name = "value", int checkInterval = 1) :
+        UnitCalculatedValue(PlayerbotAI* botAI, string name = "value", int checkInterval = 1) :
             CalculatedValue<Unit*>(ai, name, checkInterval) {}
 
         virtual string Format()
@@ -131,7 +131,7 @@ namespace ai
     class ObjectGuidListCalculatedValue : public CalculatedValue<list<ObjectGuid> >
     {
     public:
-        ObjectGuidListCalculatedValue(PlayerbotAI* ai, string name = "value", int checkInterval = 1) :
+        ObjectGuidListCalculatedValue(PlayerbotAI* botAI, string name = "value", int checkInterval = 1) :
             CalculatedValue<list<ObjectGuid> >(ai, name, checkInterval) {}
 
         virtual string Format()
@@ -152,7 +152,7 @@ namespace ai
     class ManualSetValue : public UntypedValue, public Value<T>
     {
     public:
-        ManualSetValue(PlayerbotAI* ai, T defaultValue, string name = "value") :
+        ManualSetValue(PlayerbotAI* botAI, T defaultValue, string name = "value") :
             UntypedValue(ai, name), value(defaultValue), defaultValue(defaultValue) {}
         virtual ~ManualSetValue() {}
 
@@ -170,7 +170,7 @@ namespace ai
     class UnitManualSetValue : public ManualSetValue<Unit*>
     {
     public:
-        UnitManualSetValue(PlayerbotAI* ai, Unit* defaultValue, string name = "value") :
+        UnitManualSetValue(PlayerbotAI* botAI, Unit* defaultValue, string name = "value") :
             ManualSetValue<Unit*>(ai, defaultValue, name) {}
 
         virtual string Format()

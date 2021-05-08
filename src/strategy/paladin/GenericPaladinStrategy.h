@@ -9,7 +9,7 @@ namespace ai
     class GenericPaladinStrategy : public CombatStrategy
     {
     public:
-        GenericPaladinStrategy(PlayerbotAI* ai);
+        GenericPaladinStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -19,7 +19,7 @@ namespace ai
     class PaladinCureStrategy : public Strategy
     {
     public:
-        PaladinCureStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PaladinCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -29,7 +29,7 @@ namespace ai
     class PaladinBoostStrategy : public Strategy
     {
     public:
-        PaladinBoostStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PaladinBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -39,7 +39,7 @@ namespace ai
     class PaladinCcStrategy : public Strategy
     {
     public:
-        PaladinCcStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        PaladinCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

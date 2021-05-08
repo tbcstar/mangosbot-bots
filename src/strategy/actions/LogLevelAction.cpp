@@ -8,7 +8,7 @@ using namespace ai;
 bool LogLevelAction::Execute(Event event)
 {
     string param = event.getParam();
-    Value<LogLevel> *value = ai->GetAiObjectContext()->GetValue<LogLevel>("log level");
+    Value<LogLevel> *value = botAI->GetAiObjectContext()->GetValue<LogLevel>("log level");
 
     ostringstream out; 
     if (param != "?")
@@ -20,7 +20,7 @@ bool LogLevelAction::Execute(Event event)
     {
         out << "My log level is " << logLevel2string(value->Get());
     }
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
     return true;    
 }
 

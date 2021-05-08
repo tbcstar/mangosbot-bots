@@ -7,7 +7,7 @@ namespace ai
     class Formation : public AiNamedObject
     {
     public:
-        Formation(PlayerbotAI* ai, string name) : AiNamedObject (ai, name) {}
+        Formation(PlayerbotAI* botAI, string name) : AiNamedObject (ai, name) {}
 
     public:
         virtual string GetTargetName() { return ""; }
@@ -23,13 +23,13 @@ namespace ai
     class FollowFormation : public Formation
     {
     public:
-        FollowFormation(PlayerbotAI* ai, string name) : Formation(ai, name) {}
+        FollowFormation(PlayerbotAI* botAI, string name) : Formation(ai, name) {}
     };
 
     class MoveFormation : public Formation
     {
     public:
-        MoveFormation(PlayerbotAI* ai, string name) : Formation(ai, name) {}
+        MoveFormation(PlayerbotAI* botAI, string name) : Formation(ai, name) {}
 
     protected:
         WorldLocation MoveLine(vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range);
@@ -39,7 +39,7 @@ namespace ai
     class MoveAheadFormation : public MoveFormation
     {
     public:
-        MoveAheadFormation(PlayerbotAI* ai, string name) : MoveFormation(ai, name) {}
+        MoveAheadFormation(PlayerbotAI* botAI, string name) : MoveFormation(ai, name) {}
         virtual WorldLocation GetLocation();
         virtual WorldLocation GetLocationInternal() { return NullLocation; }
     };
@@ -47,7 +47,7 @@ namespace ai
     class FormationValue : public ManualSetValue<Formation*>
 	{
 	public:
-        FormationValue(PlayerbotAI* ai);
+        FormationValue(PlayerbotAI* botAI);
         ~FormationValue() { if (value) { delete value; value = NULL; } }
         virtual string Save();
         virtual bool Load(string value);
@@ -56,7 +56,7 @@ namespace ai
     class SetFormationAction : public Action
     {
     public:
-        SetFormationAction(PlayerbotAI* ai) : Action(ai, "set formation") {}
+        SetFormationAction(PlayerbotAI* botAI) : Action(ai, "set formation") {}
         virtual bool Execute(Event event);
     };
 };

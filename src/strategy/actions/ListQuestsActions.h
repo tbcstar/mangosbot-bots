@@ -13,7 +13,7 @@ namespace ai
 
     class ListQuestsAction : public Action {
     public:
-        ListQuestsAction(PlayerbotAI* ai) : Action(ai, "quests") {}
+        ListQuestsAction(PlayerbotAI* botAI) : Action(ai, "quests") {}
         virtual bool Execute(Event event);
 
     private:

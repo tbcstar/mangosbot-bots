@@ -8,7 +8,7 @@ using namespace ai;
 
 bool SetHomeAction::Execute(Event event)
 {
-    Player* master = ai->GetMaster();
+    Player* master = botAI->GetMaster();
     if (!master)
         return false;
 
@@ -24,7 +24,7 @@ bool SetHomeAction::Execute(Event event)
             float z = unit->GetPositionZ();
             WorldLocation loc(unit->GetMapId(), x, y, z);
             bot->SetHomebindToLocation(loc, unit->GetAreaId());
-            ai->TellMaster("This inn is my new home");
+            botAI->TellMaster("This inn is my new home");
             return true;
         }
     }
@@ -37,10 +37,10 @@ bool SetHomeAction::Execute(Event event)
             continue;
 
         bot->GetSession()->SendBindPoint(unit);
-        ai->TellMaster("This inn is my new home");
+        botAI->TellMaster("This inn is my new home");
         return true;
     }
 
-    ai->TellError("Can't find any innkeeper around");
+    botAI->TellError("Can't find any innkeeper around");
     return false;
 }

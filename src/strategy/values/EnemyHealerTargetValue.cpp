@@ -9,18 +9,18 @@ Unit* EnemyHealerTargetValue::Calculate()
 {
     string spell = qualifier;
 
-    list<ObjectGuid> attackers = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
-    Unit* target = ai->GetAiObjectContext()->GetValue<Unit*>("current target")->Get();
+    list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
+    Unit* target = botAI->GetAiObjectContext()->GetValue<Unit*>("current target")->Get();
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (!unit || unit == target)
             continue;
 
-        if (bot->GetDistance(unit) > ai->GetRange("spell"))
+        if (bot->GetDistance(unit) > botAI->GetRange("spell"))
             continue;
 
-        if (!ai->IsInterruptableSpellCasting(unit, spell))
+        if (!botAI->IsInterruptableSpellCasting(unit, spell))
             continue;
 
         Spell* spell = unit->GetCurrentSpell(CURRENT_GENERIC_SPELL);

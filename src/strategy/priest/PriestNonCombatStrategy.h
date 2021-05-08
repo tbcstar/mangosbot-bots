@@ -8,7 +8,7 @@ namespace ai
     class PriestNonCombatStrategy : public NonCombatStrategy
     {
     public:
-        PriestNonCombatStrategy(PlayerbotAI* ai);
+        PriestNonCombatStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -18,7 +18,7 @@ namespace ai
     class PriestBuffStrategy : public NonCombatStrategy
     {
     public:
-        PriestBuffStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        PriestBuffStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -28,7 +28,7 @@ namespace ai
     class PriestShadowResistanceStrategy : public NonCombatStrategy
     {
     public:
-        PriestShadowResistanceStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        PriestShadowResistanceStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

@@ -14,14 +14,14 @@ public:
         creators["mana tide totem"] = &mana_tide_totem;
     }
 private:
-    static ActionNode* earthliving_weapon(PlayerbotAI* ai)
+    static ActionNode* earthliving_weapon(PlayerbotAI* botAI)
     {
         return new ActionNode ("earthliving weapon",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("flametongue weapon"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* mana_tide_totem(PlayerbotAI* ai)
+    static ActionNode* mana_tide_totem(PlayerbotAI* botAI)
     {
         return new ActionNode ("mana tide totem",
             /*P*/ NULL,
@@ -31,7 +31,7 @@ private:
 
 };
 
-HealShamanStrategy::HealShamanStrategy(PlayerbotAI* ai) : GenericShamanStrategy(ai)
+HealShamanStrategy::HealShamanStrategy(PlayerbotAI* botAI) : GenericShamanStrategy(botAI)
 {
     actionNodeFactories.Add(new HealShamanStrategyActionNodeFactory());
 }

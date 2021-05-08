@@ -24,91 +24,91 @@ public:
         creators["demoralizing roar"] = &demoralizing_roar;
     }
 private:
-    static ActionNode* melee(PlayerbotAI* ai)
+    static ActionNode* melee(PlayerbotAI* botAI)
     {
         return new ActionNode ("melee",
             /*P*/ NextAction::array(0, new NextAction("feral charge - bear"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* feral_charge_bear(PlayerbotAI* ai)
+    static ActionNode* feral_charge_bear(PlayerbotAI* botAI)
     {
         return new ActionNode ("feral charge - bear",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("reach melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* swipe_bear(PlayerbotAI* ai)
+    static ActionNode* swipe_bear(PlayerbotAI* botAI)
     {
         return new ActionNode ("swipe (bear)",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* faerie_fire_feral(PlayerbotAI* ai)
+    static ActionNode* faerie_fire_feral(PlayerbotAI* botAI)
     {
         return new ActionNode ("faerie fire (feral)",
             /*P*/ NextAction::array(0, new NextAction("feral charge - bear"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* bear_form(PlayerbotAI* ai)
+    static ActionNode* bear_form(PlayerbotAI* botAI)
     {
         return new ActionNode ("bear form",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* dire_bear_form(PlayerbotAI* ai)
+    static ActionNode* dire_bear_form(PlayerbotAI* botAI)
     {
         return new ActionNode ("dire bear form",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("bear form"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* mangle_bear(PlayerbotAI* ai)
+    static ActionNode* mangle_bear(PlayerbotAI* botAI)
     {
         return new ActionNode ("mangle (bear)",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("lacerate"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* maul(PlayerbotAI* ai)
+    static ActionNode* maul(PlayerbotAI* botAI)
     {
         return new ActionNode ("maul",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* bash(PlayerbotAI* ai)
+    static ActionNode* bash(PlayerbotAI* botAI)
     {
         return new ActionNode ("bash",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* swipe(PlayerbotAI* ai)
+    static ActionNode* swipe(PlayerbotAI* botAI)
     {
         return new ActionNode ("swipe",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* lacerate(PlayerbotAI* ai)
+    static ActionNode* lacerate(PlayerbotAI* botAI)
     {
         return new ActionNode ("lacerate",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("maul"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* growl(PlayerbotAI* ai)
+    static ActionNode* growl(PlayerbotAI* botAI)
     {
         return new ActionNode ("growl",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* demoralizing_roar(PlayerbotAI* ai)
+    static ActionNode* demoralizing_roar(PlayerbotAI* botAI)
     {
         return new ActionNode ("demoralizing roar",
             /*P*/ NULL,
@@ -117,7 +117,7 @@ private:
     }
 };
 
-BearTankDruidStrategy::BearTankDruidStrategy(PlayerbotAI* ai) : FeralDruidStrategy(ai)
+BearTankDruidStrategy::BearTankDruidStrategy(PlayerbotAI* botAI) : FeralDruidStrategy(botAI)
 {
     actionNodeFactories.Add(new BearTankDruidStrategyActionNodeFactory());
 }

@@ -6,7 +6,7 @@ namespace ai
     class DuelStrategy : public PassTroughStrategy
     {
     public:
-        DuelStrategy(PlayerbotAI* ai);
+        DuelStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

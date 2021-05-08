@@ -7,7 +7,7 @@ namespace ai
 {
     class SkipSpellsListAction : public Action {
     public:
-        SkipSpellsListAction(PlayerbotAI* ai) : Action(ai, "ss") {}
+        SkipSpellsListAction(PlayerbotAI* botAI) : Action(ai, "ss") {}
         virtual bool Execute(Event event);
 
     private:

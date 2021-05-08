@@ -8,7 +8,7 @@ namespace ai
     class Stance : public Formation
     {
     public:
-        Stance(PlayerbotAI* ai, string name) : Formation (ai, name) {}
+        Stance(PlayerbotAI* botAI, string name) : Formation (ai, name) {}
 
     protected:
         virtual Unit* GetTarget();
@@ -24,7 +24,7 @@ namespace ai
     class MoveStance : public Stance
     {
     public:
-        MoveStance(PlayerbotAI* ai, string name) : Stance (ai, name) {}
+        MoveStance(PlayerbotAI* botAI, string name) : Stance (ai, name) {}
 
     protected:
         virtual WorldLocation GetLocationInternal();
@@ -37,7 +37,7 @@ namespace ai
     class StanceValue : public ManualSetValue<Stance*>
 	{
 	public:
-        StanceValue(PlayerbotAI* ai);
+        StanceValue(PlayerbotAI* botAI);
         ~StanceValue() { if (value) { delete value; value = NULL; } }
         virtual string Save();
         virtual bool Load(string value);
@@ -46,7 +46,7 @@ namespace ai
     class SetStanceAction : public Action
     {
     public:
-        SetStanceAction(PlayerbotAI* ai) : Action(ai, "set Stance") {}
+        SetStanceAction(PlayerbotAI* botAI) : Action(ai, "set Stance") {}
         virtual bool Execute(Event event);
     };
 };

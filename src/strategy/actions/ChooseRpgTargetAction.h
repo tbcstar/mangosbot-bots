@@ -8,7 +8,7 @@ namespace ai
 {
     class ChooseRpgTargetAction : public MovementAction {
     public:
-        ChooseRpgTargetAction(PlayerbotAI* ai) : MovementAction(ai, "choose rpg target") {}
+        ChooseRpgTargetAction(PlayerbotAI* botAI) : MovementAction(ai, "choose rpg target") {}
 
         virtual bool Execute(Event event);
         virtual bool isUseful();

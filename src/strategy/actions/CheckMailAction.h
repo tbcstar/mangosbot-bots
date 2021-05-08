@@ -8,7 +8,7 @@ namespace ai
     class CheckMailAction : public Action
     {
     public:
-        CheckMailAction(PlayerbotAI* ai) : Action(ai, "check mail") {}
+        CheckMailAction(PlayerbotAI* botAI) : Action(ai, "check mail") {}
         virtual bool Execute(Event event);
 
     private:

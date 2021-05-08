@@ -35,7 +35,7 @@ namespace ai
     class Strategy : public PlayerbotAIAware
     {
     public:
-        Strategy(PlayerbotAI* ai);
+        Strategy(PlayerbotAI* botAI);
         virtual ~Strategy() {}
 
     public:

@@ -18,7 +18,7 @@ bool TellItemCountAction::Execute(Event event)
         soulbound[proto->ItemId] = (*i)->IsSoulBound();
     }
 
-    ai->TellMaster("=== Inventory ===");
+    botAI->TellMaster("=== Inventory ===");
     for (map<uint32, uint32>::iterator i = itemMap.begin(); i != itemMap.end(); ++i)
     {
         ItemPrototype const* proto = sItemStorage.LookupEntry<ItemPrototype>(i->first);

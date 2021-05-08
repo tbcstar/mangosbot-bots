@@ -7,7 +7,7 @@ namespace ai
     class ValueInRangeTrigger : public Trigger
     {
     public:
-        ValueInRangeTrigger(PlayerbotAI* ai, string name, float maxValue, float minValue) : Trigger(ai, name) {
+        ValueInRangeTrigger(PlayerbotAI* botAI, string name, float maxValue, float minValue) : Trigger(ai, name) {
             this->maxValue = maxValue;
             this->minValue = minValue;
         }
@@ -25,7 +25,7 @@ namespace ai
 	class HealthInRangeTrigger : public ValueInRangeTrigger
 	{
 	public:
-		HealthInRangeTrigger(PlayerbotAI* ai, string name, float maxValue, float minValue = 0) :
+		HealthInRangeTrigger(PlayerbotAI* botAI, string name, float maxValue, float minValue = 0) :
 		  ValueInRangeTrigger(ai, name, maxValue, minValue) {}
 
 		virtual bool IsActive()
@@ -39,7 +39,7 @@ namespace ai
     class LowHealthTrigger : public HealthInRangeTrigger
     {
     public:
-        LowHealthTrigger(PlayerbotAI* ai, string name = "low health",
+        LowHealthTrigger(PlayerbotAI* botAI, string name = "low health",
             float value = sPlayerbotAIConfig->lowHealth, float minValue = sPlayerbotAIConfig->criticalHealth) :
             HealthInRangeTrigger(ai, name, value, minValue) {}
 
@@ -49,28 +49,28 @@ namespace ai
     class CriticalHealthTrigger : public LowHealthTrigger
     {
     public:
-        CriticalHealthTrigger(PlayerbotAI* ai) :
+        CriticalHealthTrigger(PlayerbotAI* botAI) :
             LowHealthTrigger(ai, "critical health", sPlayerbotAIConfig->criticalHealth, 0) {}
     };
 
     class MediumHealthTrigger : public LowHealthTrigger
     {
     public:
-        MediumHealthTrigger(PlayerbotAI* ai) :
+        MediumHealthTrigger(PlayerbotAI* botAI) :
             LowHealthTrigger(ai, "medium health", sPlayerbotAIConfig->mediumHealth, sPlayerbotAIConfig->lowHealth) {}
     };
 
     class AlmostFullHealthTrigger : public LowHealthTrigger
     {
     public:
-        AlmostFullHealthTrigger(PlayerbotAI* ai) :
+        AlmostFullHealthTrigger(PlayerbotAI* botAI) :
             LowHealthTrigger(ai, "almost full health", sPlayerbotAIConfig->almostFullHealth, sPlayerbotAIConfig->mediumHealth) {}
     };
 
     class PartyMemberLowHealthTrigger : public HealthInRangeTrigger
     {
     public:
-        PartyMemberLowHealthTrigger(PlayerbotAI* ai, string name = "party member low health", float value = sPlayerbotAIConfig->lowHealth, float minValue = sPlayerbotAIConfig->criticalHealth) :
+        PartyMemberLowHealthTrigger(PlayerbotAI* botAI, string name = "party member low health", float value = sPlayerbotAIConfig->lowHealth, float minValue = sPlayerbotAIConfig->criticalHealth) :
             HealthInRangeTrigger(ai, name, value, minValue) {}
 
         virtual string GetTargetName() { return "party member to heal"; }
@@ -79,27 +79,27 @@ namespace ai
     class PartyMemberCriticalHealthTrigger : public PartyMemberLowHealthTrigger
     {
     public:
-        PartyMemberCriticalHealthTrigger(PlayerbotAI* ai) :
+        PartyMemberCriticalHealthTrigger(PlayerbotAI* botAI) :
             PartyMemberLowHealthTrigger(ai, "party member critical health", sPlayerbotAIConfig->criticalHealth, 0) {}
     };
 
     class PartyMemberMediumHealthTrigger : public PartyMemberLowHealthTrigger
     {
     public:
-        PartyMemberMediumHealthTrigger(PlayerbotAI* ai) :
+        PartyMemberMediumHealthTrigger(PlayerbotAI* botAI) :
             PartyMemberLowHealthTrigger(ai, "party member medium health", sPlayerbotAIConfig->mediumHealth,sPlayerbotAIConfig->lowHealth) {}
     };
 
     class PartyMemberAlmostFullHealthTrigger : public PartyMemberLowHealthTrigger
     {
     public:
-        PartyMemberAlmostFullHealthTrigger(PlayerbotAI* ai) :
+        PartyMemberAlmostFullHealthTrigger(PlayerbotAI* botAI) :
             PartyMemberLowHealthTrigger(ai, "party member almost full health", sPlayerbotAIConfig->almostFullHealth,sPlayerbotAIConfig->mediumHealth) {}
     };
 
     class TargetLowHealthTrigger : public HealthInRangeTrigger {
     public:
-        TargetLowHealthTrigger(PlayerbotAI* ai, float value, float minValue = 0) :
+        TargetLowHealthTrigger(PlayerbotAI* botAI, float value, float minValue = 0) :
             HealthInRangeTrigger(ai, "target low health", value, minValue) {}
         virtual string GetTargetName() { return "current target"; }
     };
@@ -107,26 +107,26 @@ namespace ai
     class TargetCriticalHealthTrigger : public TargetLowHealthTrigger
     {
     public:
-        TargetCriticalHealthTrigger(PlayerbotAI* ai) : TargetLowHealthTrigger(ai, 20) {}
+        TargetCriticalHealthTrigger(PlayerbotAI* botAI) : TargetLowHealthTrigger(ai, 20) {}
     };
 
 	class PartyMemberDeadTrigger : public Trigger {
 	public:
-		PartyMemberDeadTrigger(PlayerbotAI* ai) : Trigger(ai, "resurrect", 3) {}
+		PartyMemberDeadTrigger(PlayerbotAI* botAI) : Trigger(ai, "resurrect", 3) {}
         virtual string GetTargetName() { return "party member to resurrect"; }
 		virtual bool IsActive();
 	};
 
     class DeadTrigger : public Trigger {
     public:
-        DeadTrigger(PlayerbotAI* ai) : Trigger(ai, "dead", 30) {}
+        DeadTrigger(PlayerbotAI* botAI) : Trigger(ai, "dead", 30) {}
         virtual string GetTargetName() { return "self target"; }
         virtual bool IsActive();
     };
 
     class AoeHealTrigger : public Trigger {
     public:
-    	AoeHealTrigger(PlayerbotAI* ai, string name, string type, int count) :
+    	AoeHealTrigger(PlayerbotAI* botAI, string name, string type, int count) :
     		Trigger(ai, name), type(type), count(count) {}
     public:
         virtual bool IsActive();

@@ -15,7 +15,7 @@ uint8 ThreatValue::Calculate()
         list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
         for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
         {
-            Unit* unit = ai->GetUnit(*i);
+            Unit* unit = botAI->GetUnit(*i);
             if (!unit || !sServerFacade->IsAlive(unit))
                 continue;
 
@@ -53,7 +53,7 @@ uint8 ThreatValue::Calculate(Unit* target)
         if( !player || !sServerFacade->IsAlive(player) || player == bot)
             continue;
 
-        if (ai->IsTank(player))
+        if (botAI->IsTank(player))
         {
             float threat = sServerFacade->GetThreatManager(target).getThreat(player);
             if (maxThreat < threat)

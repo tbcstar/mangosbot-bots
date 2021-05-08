@@ -23,77 +23,77 @@ public:
         creators["remove curse on party"] = &remove_curse_on_party;
     }
 private:
-    static ActionNode* frostbolt(PlayerbotAI* ai)
+    static ActionNode* frostbolt(PlayerbotAI* botAI)
     {
         return new ActionNode ("frostbolt",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("shoot"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* fire_blast(PlayerbotAI* ai)
+    static ActionNode* fire_blast(PlayerbotAI* botAI)
     {
         return new ActionNode ("fire blast",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("scorch"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* scorch(PlayerbotAI* ai)
+    static ActionNode* scorch(PlayerbotAI* botAI)
     {
         return new ActionNode ("scorch",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("shoot"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* frost_nova(PlayerbotAI* ai)
+    static ActionNode* frost_nova(PlayerbotAI* botAI)
     {
         return new ActionNode ("frost nova",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* icy_veins(PlayerbotAI* ai)
+    static ActionNode* icy_veins(PlayerbotAI* botAI)
     {
         return new ActionNode ("icy veins",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* combustion(PlayerbotAI* ai)
+    static ActionNode* combustion(PlayerbotAI* botAI)
     {
         return new ActionNode ("combustion",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* evocation(PlayerbotAI* ai)
+    static ActionNode* evocation(PlayerbotAI* botAI)
     {
         return new ActionNode ("evocation",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("mana potion"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* dragons_breath(PlayerbotAI* ai)
+    static ActionNode* dragons_breath(PlayerbotAI* botAI)
     {
         return new ActionNode ("dragon's breath",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("blast wave"), NULL),
             /*C*/ NextAction::array(0, new NextAction("flamestrike", 71.0f), NULL));
     }
-    static ActionNode* blast_wave(PlayerbotAI* ai)
+    static ActionNode* blast_wave(PlayerbotAI* botAI)
     {
         return new ActionNode ("blast wave",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("frost nova"), NULL),
             /*C*/ NextAction::array(0, new NextAction("flamestrike", 71.0f), NULL));
     }
-    static ActionNode* remove_curse(PlayerbotAI* ai)
+    static ActionNode* remove_curse(PlayerbotAI* botAI)
     {
         return new ActionNode ("remove curse",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("remove lesser curse"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* remove_curse_on_party(PlayerbotAI* ai)
+    static ActionNode* remove_curse_on_party(PlayerbotAI* botAI)
     {
         return new ActionNode ("remove curse on party",
             /*P*/ NULL,
@@ -102,7 +102,7 @@ private:
     }
 };
 
-GenericMageStrategy::GenericMageStrategy(PlayerbotAI* ai) : CombatStrategy(ai)
+GenericMageStrategy::GenericMageStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericMageStrategyActionNodeFactory());
 }

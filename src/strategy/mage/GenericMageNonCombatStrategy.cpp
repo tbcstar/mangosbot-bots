@@ -15,21 +15,21 @@ public:
         creators["ice armor"] = &ice_armor;
     }
 private:
-    static ActionNode* molten_armor(PlayerbotAI* ai)
+    static ActionNode* molten_armor(PlayerbotAI* botAI)
     {
         return new ActionNode ("molten armor",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("mage armor"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* mage_armor(PlayerbotAI* ai)
+    static ActionNode* mage_armor(PlayerbotAI* botAI)
     {
         return new ActionNode ("mage armor",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("ice armor"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* ice_armor(PlayerbotAI* ai)
+    static ActionNode* ice_armor(PlayerbotAI* botAI)
     {
         return new ActionNode ("ice armor",
             /*P*/ NULL,
@@ -38,7 +38,7 @@ private:
     }
 };
 
-GenericMageNonCombatStrategy::GenericMageNonCombatStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai)
+GenericMageNonCombatStrategy::GenericMageNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericMageNonCombatStrategyActionNodeFactory());
 }

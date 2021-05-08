@@ -17,7 +17,7 @@ namespace ai
     class ItemUsageValue : public CalculatedValue<ItemUsage>, public Qualified
 	{
 	public:
-        ItemUsageValue(PlayerbotAI* ai) : CalculatedValue<ItemUsage>(ai) {}
+        ItemUsageValue(PlayerbotAI* botAI) : CalculatedValue<ItemUsage>(botAI) {}
 
     public:
         virtual ItemUsage Calculate();

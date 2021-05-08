@@ -7,7 +7,7 @@ namespace ai
     class EnemyPlayerValue : public TargetValue
 	{
 	public:
-        EnemyPlayerValue(PlayerbotAI* ai) : TargetValue(ai) {}
+        EnemyPlayerValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
 
     public:
         Unit* Calculate();

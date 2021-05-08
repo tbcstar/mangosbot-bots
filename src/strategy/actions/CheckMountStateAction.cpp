@@ -33,7 +33,7 @@ bool CheckMountStateAction::Execute(Event event)
 bool CheckMountStateAction::Mount()
 {
 	Player* master = GetMaster();
-	ai->RemoveShapeshift();
+	botAI->RemoveShapeshift();
 
 	Unit::AuraList const& auras = master->GetAurasByType(SPELL_AURA_MOUNTED);
 	if (auras.empty()) return false;
@@ -66,7 +66,7 @@ bool CheckMountStateAction::Mount()
 		if (index >= ids.size())
 			continue;
 
-		ai->CastSpell(ids[index], bot);
+		botAI->CastSpell(ids[index], bot);
 		return true;
 	}
 

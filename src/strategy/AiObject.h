@@ -10,7 +10,7 @@ namespace ai
     class AiObject : public PlayerbotAIAware
 	{
 	public:
-        AiObject(PlayerbotAI* ai);
+        AiObject(PlayerbotAI* botAI);
 
     protected:
         Player* bot;
@@ -22,7 +22,7 @@ namespace ai
     class AiNamedObject : public AiObject
     {
     public:
-        AiNamedObject(PlayerbotAI* ai, string name) : AiObject(ai), name(name) {}
+        AiNamedObject(PlayerbotAI* botAI, string name) : AiObject(botAI), name(name) {}
 
     public:
         virtual string getName() { return name; }

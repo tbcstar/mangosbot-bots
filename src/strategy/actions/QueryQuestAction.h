@@ -6,7 +6,7 @@ namespace ai
 {
     class QueryQuestAction : public Action {
     public:
-        QueryQuestAction(PlayerbotAI* ai) : Action(ai, "query quest") {}
+        QueryQuestAction(PlayerbotAI* botAI) : Action(ai, "query quest") {}
         virtual bool Execute(Event event);
 
     private:

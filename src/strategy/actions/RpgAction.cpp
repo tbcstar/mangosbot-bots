@@ -10,7 +10,7 @@ using namespace ai;
 
 bool RpgAction::Execute(Event event)
 {
-    Unit* target = ai->GetUnit(AI_VALUE(ObjectGuid, "rpg target"));
+    Unit* target = botAI->GetUnit(AI_VALUE(ObjectGuid, "rpg target"));
     if (!target)
         return false;
 
@@ -26,7 +26,7 @@ bool RpgAction::Execute(Event event)
     if (!sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT) && !bot->IsTaxiFlying() && !bot->IsFlying())
     {
         sServerFacade->SetFacingTo(bot, target, true);
-        ai->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
         return false;
     }
 
@@ -53,13 +53,13 @@ bool RpgAction::Execute(Event event)
 void RpgAction::stay(Unit* unit)
 {
     if (bot->PlayerTalkClass) bot->PlayerTalkClass->CloseGossip();
-    ai->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
+    botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::work(Unit* unit)
 {
     bot->HandleEmoteCommand(EMOTE_STATE_USESTANDING);
-    ai->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
+    botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::emote(Unit* unit)
@@ -80,7 +80,7 @@ void RpgAction::emote(Unit* unit)
     if (oldSelection)
         bot->SetTarget(oldSelection);
 
-    ai->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
+    botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::cancel(Unit* unit)

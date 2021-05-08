@@ -8,7 +8,7 @@ namespace ai
     class HunterBuffSpeedStrategy : public NonCombatStrategy
     {
     public:
-        HunterBuffSpeedStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        HunterBuffSpeedStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "bspeed"; }
 
     public:
@@ -18,7 +18,7 @@ namespace ai
     class HunterBuffManaStrategy : public NonCombatStrategy
     {
     public:
-        HunterBuffManaStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        HunterBuffManaStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "bmana"; }
 
     public:
@@ -28,7 +28,7 @@ namespace ai
 	class HunterBuffDpsStrategy : public NonCombatStrategy
 	{
 	public:
-		HunterBuffDpsStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+		HunterBuffDpsStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
 		virtual string getName() { return "bdps"; }
 
 	public:
@@ -38,7 +38,7 @@ namespace ai
 	class HunterNatureResistanceStrategy : public NonCombatStrategy
 	{
 	public:
-		HunterNatureResistanceStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+		HunterNatureResistanceStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
 		virtual string getName() { return "rnature"; }
 
 	public:

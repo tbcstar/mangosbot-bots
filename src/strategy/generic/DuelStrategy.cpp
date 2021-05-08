@@ -19,6 +19,6 @@ void DuelStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 
 
 
-DuelStrategy::DuelStrategy(PlayerbotAI* ai) : PassTroughStrategy(ai)
+DuelStrategy::DuelStrategy(PlayerbotAI* botAI) : PassTroughStrategy(botAI)
 {
 }

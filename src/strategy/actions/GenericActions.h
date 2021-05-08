@@ -11,7 +11,7 @@ namespace ai
     class MeleeAction : public AttackAction 
     {
     public:
-        MeleeAction(PlayerbotAI* ai) : AttackAction(ai, "melee") {}
+        MeleeAction(PlayerbotAI* botAI) : AttackAction(ai, "melee") {}
 
         virtual string GetTargetName() { return "current target"; }
     };

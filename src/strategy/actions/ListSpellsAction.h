@@ -8,7 +8,7 @@ namespace ai
 {
     class ListSpellsAction : public InventoryAction {
     public:
-        ListSpellsAction(PlayerbotAI* ai) : InventoryAction(ai, "spells") {}
+        ListSpellsAction(PlayerbotAI* botAI) : InventoryAction(ai, "spells") {}
 
         virtual bool Execute(Event event);
 

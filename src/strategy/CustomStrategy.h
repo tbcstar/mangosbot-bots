@@ -6,7 +6,7 @@ namespace ai
     class CustomStrategy : public Strategy, public Qualified
     {
     public:
-        CustomStrategy(PlayerbotAI* ai);
+        CustomStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

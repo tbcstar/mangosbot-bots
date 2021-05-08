@@ -7,7 +7,7 @@ namespace ai
 {
     class SellAction : public InventoryAction {
     public:
-        SellAction(PlayerbotAI* ai) : InventoryAction(ai, "sell") {}
+        SellAction(PlayerbotAI* botAI) : InventoryAction(ai, "sell") {}
         virtual bool Execute(Event event);
 
         void Sell(FindItemVisitor* visitor);

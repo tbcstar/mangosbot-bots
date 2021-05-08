@@ -15,21 +15,21 @@ public:
         creators["death wish"] = &death_wish;
     }
 private:
-    static ActionNode* charge(PlayerbotAI* ai)
+    static ActionNode* charge(PlayerbotAI* botAI)
     {
         return new ActionNode ("charge",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("reach melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* bloodthirst(PlayerbotAI* ai)
+    static ActionNode* bloodthirst(PlayerbotAI* botAI)
     {
         return new ActionNode ("bloodthirst",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("heroic strike"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* death_wish(PlayerbotAI* ai)
+    static ActionNode* death_wish(PlayerbotAI* botAI)
     {
         return new ActionNode ("death wish",
             /*P*/ NULL,
@@ -38,7 +38,7 @@ private:
     }
 };
 
-DpsWarriorStrategy::DpsWarriorStrategy(PlayerbotAI* ai) : GenericWarriorStrategy(ai)
+DpsWarriorStrategy::DpsWarriorStrategy(PlayerbotAI* botAI) : GenericWarriorStrategy(botAI)
 {
     actionNodeFactories.Add(new DpsWarriorStrategyActionNodeFactory());
 }

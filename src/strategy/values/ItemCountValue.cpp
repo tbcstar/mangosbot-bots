@@ -8,7 +8,7 @@ list<Item*> InventoryItemValueBase::Find(string qualifier)
 {
     list<Item*> result;
 
-    Player* bot = InventoryAction::ai->GetBot();
+    Player* bot = InventoryAction::botAI->GetBot();
 
     list<Item*> items = InventoryAction::parseItems(qualifier);
     for (list<Item*>::iterator i = items.begin(); i != items.end(); i++)

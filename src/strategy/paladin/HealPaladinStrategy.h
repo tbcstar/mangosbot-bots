@@ -7,7 +7,7 @@ namespace ai
     class HealPaladinStrategy : public GenericPaladinStrategy
     {
     public:
-        HealPaladinStrategy(PlayerbotAI* ai);
+        HealPaladinStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

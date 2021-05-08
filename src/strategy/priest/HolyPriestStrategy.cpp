@@ -13,7 +13,7 @@ namespace ai
             creators["smite"] = &smite;
         }
     private:
-        static ActionNode* smite(PlayerbotAI* ai)
+        static ActionNode* smite(PlayerbotAI* botAI)
         {
             return new ActionNode ("smite",
                 /*P*/ NULL,
@@ -25,7 +25,7 @@ namespace ai
 
 using namespace ai;
 
-HolyPriestStrategy::HolyPriestStrategy(PlayerbotAI* ai) : HealPriestStrategy(ai)
+HolyPriestStrategy::HolyPriestStrategy(PlayerbotAI* botAI) : HealPriestStrategy(botAI)
 {
     actionNodeFactories.Add(new HolyPriestStrategyActionNodeFactory());
 }

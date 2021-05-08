@@ -8,8 +8,8 @@ namespace ai
     class PartyMemberWithoutAuraValue : public PartyMemberValue, public Qualified
 	{
 	public:
-        PartyMemberWithoutAuraValue(PlayerbotAI* ai, float range = sPlayerbotAIConfig->sightDistance) :
-          PartyMemberValue(ai) {}
+        PartyMemberWithoutAuraValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) :
+          PartyMemberValue(botAI) {}
 
     protected:
         virtual Unit* Calculate();

@@ -7,8 +7,8 @@ namespace ai
     class PartyMemberToResurrect : public PartyMemberValue
 	{
 	public:
-        PartyMemberToResurrect(PlayerbotAI* ai) : 
-          PartyMemberValue(ai) {}
+        PartyMemberToResurrect(PlayerbotAI* botAI) : 
+          PartyMemberValue(botAI) {}
     
     protected:
         virtual Unit* Calculate();

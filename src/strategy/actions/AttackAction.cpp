@@ -27,11 +27,11 @@ bool AttackMyTargetAction::Execute(Event event)
     ObjectGuid guid = master->GetTarget();
     if (!guid)
     {
-        if (verbose) ai->TellError("You have no target");
+        if (verbose) botAI->TellError("You have no target");
         return false;
     }
 
-    bool result = Attack(ai->GetUnit(guid));
+    bool result = Attack(botAI->GetUnit(guid));
     if (result) context->GetValue<ObjectGuid>("pull target")->Set(guid);
     return result;
 }
@@ -41,13 +41,13 @@ bool AttackAction::Attack(Unit* target)
     MotionMaster &mm = *bot->GetMotionMaster();
     if (mm.GetCurrentMovementGeneratorType() == FLIGHT_MOTION_TYPE || bot->IsTaxiFlying())
     {
-        if (verbose) ai->TellError("I cannot attack in flight");
+        if (verbose) botAI->TellError("I cannot attack in flight");
         return false;
     }
 
     if (!target)
     {
-        if (verbose) ai->TellError("I have no target");
+        if (verbose) botAI->TellError("I have no target");
         return false;
     }
 
@@ -56,19 +56,19 @@ bool AttackAction::Attack(Unit* target)
     if (sServerFacade->IsFriendlyTo(bot, target))
     {
         msg << " is friendly to me";
-        if (verbose) ai->TellError(msg.str());
+        if (verbose) botAI->TellError(msg.str());
         return false;
     }
     if (!sServerFacade->IsWithinLOSInMap(bot, target))
     {
         msg << " is not on my sight";
-        if (verbose) ai->TellError(msg.str());
+        if (verbose) botAI->TellError(msg.str());
         return false;
     }
     if (sServerFacade->UnitIsDead(target))
     {
         msg << " is dead";
-        if (verbose) ai->TellError(msg.str());
+        if (verbose) botAI->TellError(msg.str());
         return false;
     }
 
@@ -95,7 +95,7 @@ bool AttackAction::Attack(Unit* target)
         {
             pet->GetCharmInfo()->SetReactState(REACT_PASSIVE);
             pet->GetCharmInfo()->SetCommandState(COMMAND_ATTACK);
-            creatureAI->AttackStart(target);
+            creaturebotAI->AttackStart(target);
         }
     }
 
@@ -105,14 +105,14 @@ bool AttackAction::Attack(Unit* target)
         sounds.push_back(TEXTEMOTE_OPENFIRE);
         sounds.push_back(305);
         sounds.push_back(307);
-        ai->PlaySound(sounds[urand(0, sounds.size() - 1)]);
+        botAI->PlaySound(sounds[urand(0, sounds.size() - 1)]);
     }
 
     if (!sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
         sServerFacade->SetFacingTo(bot, target);
 
-    bot->Attack(target, !ai->IsRanged(bot) || sServerFacade->GetDistance2d(bot, target) <= sPlayerbotAIConfig->tooCloseDistance);
-    ai->ChangeEngine(BOT_STATE_COMBAT);
+    bot->Attack(target, !botAI->IsRanged(bot) || sServerFacade->GetDistance2d(bot, target) <= sPlayerbotAIConfig->tooCloseDistance);
+    botAI->ChangeEngine(BOT_STATE_COMBAT);
     return true;
 }
 

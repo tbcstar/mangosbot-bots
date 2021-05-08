@@ -7,7 +7,7 @@ namespace ai
 {
     class BankAction : public InventoryAction {
     public:
-        BankAction(PlayerbotAI* ai) : InventoryAction(ai, "bank") {}
+        BankAction(PlayerbotAI* botAI) : InventoryAction(ai, "bank") {}
         virtual bool Execute(Event event);
 
     private:

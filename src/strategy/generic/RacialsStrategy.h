@@ -5,7 +5,7 @@ namespace ai
     class RacialsStrategy : public Strategy
     {
     public:
-        RacialsStrategy(PlayerbotAI* ai);
+        RacialsStrategy(PlayerbotAI* botAI);
         virtual string getName() { return "racials"; }
     
     public:

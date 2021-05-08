@@ -8,8 +8,8 @@ using namespace ai;
 class PartyMemberToDispelPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {
 public:
-    PartyMemberToDispelPredicate(PlayerbotAI* ai, uint32 dispelType) :
-        PlayerbotAIAware(ai), FindPlayerPredicate(), dispelType(dispelType) {}
+    PartyMemberToDispelPredicate(PlayerbotAI* botAI, uint32 dispelType) :
+        PlayerbotAIAware(botAI), FindPlayerPredicate(), dispelType(dispelType) {}
 
 public:
     virtual bool Check(Unit* unit)
@@ -18,7 +18,7 @@ public:
         if (pet && (pet->getPetType() == MINI_PET || pet->getPetType() == SUMMON_PET))
             return false;
 
-        return sServerFacade->IsAlive(unit) && ai->HasAuraToDispel(unit, dispelType);
+        return sServerFacade->IsAlive(unit) && botAI->HasAuraToDispel(unit, dispelType);
     }
 
 private:

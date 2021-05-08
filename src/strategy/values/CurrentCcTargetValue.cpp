@@ -7,7 +7,7 @@ using namespace ai;
 class FindCurrentCcTargetStrategy : public FindTargetStrategy
 {
 public:
-    FindCurrentCcTargetStrategy(PlayerbotAI* ai, string spell) : FindTargetStrategy(ai)
+    FindCurrentCcTargetStrategy(PlayerbotAI* botAI, string spell) : FindTargetStrategy(botAI)
     {
         this->spell = spell;
     }
@@ -15,7 +15,7 @@ public:
 public:
     virtual void CheckAttacker(Unit* attacker, ThreatManager* threatManager)
     {
-        if (ai->HasAura(spell, attacker))
+        if (botAI->HasAura(spell, attacker))
             result = attacker;
     }
 

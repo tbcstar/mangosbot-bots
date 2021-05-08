@@ -7,6 +7,6 @@ namespace ai
     class PaladinAiObjectContext : public AiObjectContext
     {
     public:
-        PaladinAiObjectContext(PlayerbotAI* ai);
+        PaladinAiObjectContext(PlayerbotAI* botAI);
     };
 }

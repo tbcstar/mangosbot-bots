@@ -7,7 +7,7 @@ namespace ai
     class GenericWarlockNonCombatStrategy : public NonCombatStrategy
     {
     public:
-        GenericWarlockNonCombatStrategy(PlayerbotAI* ai);
+        GenericWarlockNonCombatStrategy(PlayerbotAI* botAI);
         virtual string getName() { return "nc"; }
 
     public:
@@ -17,7 +17,7 @@ namespace ai
     class WarlockPetStrategy : public Strategy
     {
     public:
-        WarlockPetStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        WarlockPetStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
         virtual string getName() { return "pet"; }
 
     public:

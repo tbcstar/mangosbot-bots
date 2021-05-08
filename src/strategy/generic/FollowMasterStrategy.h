@@ -6,7 +6,7 @@ namespace ai
     class FollowMasterStrategy : public NonCombatStrategy
     {
     public:
-        FollowMasterStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        FollowMasterStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "follow"; }
         virtual NextAction** getDefaultActions();
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

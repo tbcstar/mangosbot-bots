@@ -7,8 +7,8 @@ namespace ai
     class PartyMemberToDispel : public PartyMemberValue, public Qualified
 	{
 	public:
-        PartyMemberToDispel(PlayerbotAI* ai) :
-          PartyMemberValue(ai), Qualified() {}
+        PartyMemberToDispel(PlayerbotAI* botAI) :
+          PartyMemberValue(botAI), Qualified() {}
 
     protected:
         virtual Unit* Calculate();

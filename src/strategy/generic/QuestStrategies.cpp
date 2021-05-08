@@ -4,7 +4,7 @@
 
 using namespace ai;
 
-QuestStrategy::QuestStrategy(PlayerbotAI* ai) : PassTroughStrategy(ai)
+QuestStrategy::QuestStrategy(PlayerbotAI* botAI) : PassTroughStrategy(botAI)
 {
     supported.push_back("accept quest");
 }
@@ -38,7 +38,7 @@ void DefaultQuestStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("talk to quest giver", relevance), NULL)));
 }
 
-DefaultQuestStrategy::DefaultQuestStrategy(PlayerbotAI* ai) : QuestStrategy(ai)
+DefaultQuestStrategy::DefaultQuestStrategy(PlayerbotAI* botAI) : QuestStrategy(botAI)
 {
 }
 
@@ -64,6 +64,6 @@ void AcceptAllQuestsStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
             new NextAction("talk to quest giver", relevance), new NextAction("accept all quests", relevance), NULL)));
 }
 
-AcceptAllQuestsStrategy::AcceptAllQuestsStrategy(PlayerbotAI* ai) : QuestStrategy(ai)
+AcceptAllQuestsStrategy::AcceptAllQuestsStrategy(PlayerbotAI* botAI) : QuestStrategy(botAI)
 {
 }

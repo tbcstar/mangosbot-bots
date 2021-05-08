@@ -54,12 +54,12 @@ Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate &predicate)
     if (master) masters.push_back(master);
     for (list<ObjectGuid>::iterator i = nearestPlayers.begin(); i != nearestPlayers.end(); ++i)
     {
-        Player* player = dynamic_cast<Player*>(ai->GetUnit(*i));
+        Player* player = dynamic_cast<Player*>(botAI->GetUnit(*i));
         if (!player || player == bot) continue;
 
-        if (ai->IsHeal(player))
+        if (botAI->IsHeal(player))
             healers.push_back(player);
-        else if (ai->IsTank(player))
+        else if (botAI->IsTank(player))
             tanks.push_back(player);
         else if (player != master)
             others.push_back(player);
@@ -97,7 +97,7 @@ bool PartyMemberValue::IsTargetOfSpellCast(Player* target, SpellEntryPredicate &
 
     for (list<ObjectGuid>::iterator i = nearestPlayers.begin(); i != nearestPlayers.end(); ++i)
     {
-        Player* player = dynamic_cast<Player*>(ai->GetUnit(*i));
+        Player* player = dynamic_cast<Player*>(botAI->GetUnit(*i));
         if (!player || player == bot)
             continue;
 

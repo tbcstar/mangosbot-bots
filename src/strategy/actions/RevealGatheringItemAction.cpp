@@ -54,7 +54,7 @@ bool RevealGatheringItemAction::Execute(Event event)
                     uint32 skillId = SkillByLockType(LockType(lockInfo->Index[i]));
                     uint32 reqSkillValue = max((uint32)2, lockInfo->Skill[i]);
                     if ((skillId == SKILL_MINING || skillId == SKILL_HERBALISM) &&
-                            ai->HasSkill((SkillType)skillId) && uint32(bot->GetSkillValue(skillId)) >= reqSkillValue)
+                            botAI->HasSkill((SkillType)skillId) && uint32(bot->GetSkillValue(skillId)) >= reqSkillValue)
                     {
                         result.push_back(go);
                         break;
@@ -63,7 +63,7 @@ bool RevealGatheringItemAction::Execute(Event event)
             }
         }
 
-        if (go->GetGoType() == GAMEOBJECT_TYPE_FISHINGNODE && ai->HasSkill(SKILL_FISHING))
+        if (go->GetGoType() == GAMEOBJECT_TYPE_FISHINGNODE && botAI->HasSkill(SKILL_FISHING))
             result.push_back(go);
     }
 
@@ -88,7 +88,7 @@ bool RevealGatheringItemAction::Execute(Event event)
     }
 
     // everything is fine, do it
-    ai->Ping(go->GetPositionX(), go->GetPositionY());
+    botAI->Ping(go->GetPositionX(), go->GetPositionY());
     bot->Say(msg.str(), LANG_UNIVERSAL);
     return true;
 }

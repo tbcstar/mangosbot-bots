@@ -9,14 +9,14 @@ namespace ai
     class LootAction : public MovementAction
     {
     public:
-        LootAction(PlayerbotAI* ai) : MovementAction(ai, "loot") {}
+        LootAction(PlayerbotAI* botAI) : MovementAction(ai, "loot") {}
         virtual bool Execute(Event event);
     };
 
     class OpenLootAction : public MovementAction
     {
     public:
-        OpenLootAction(PlayerbotAI* ai) : MovementAction(ai, "open loot") {}
+        OpenLootAction(PlayerbotAI* botAI) : MovementAction(ai, "open loot") {}
         virtual bool Execute(Event event);
 
     private:
@@ -30,7 +30,7 @@ namespace ai
     class StoreLootAction : public MovementAction
     {
     public:
-        StoreLootAction(PlayerbotAI* ai) : MovementAction(ai, "store loot") {}
+        StoreLootAction(PlayerbotAI* botAI) : MovementAction(ai, "store loot") {}
         virtual bool Execute(Event event);
         static bool IsLootAllowed(uint32 itemid, PlayerbotAI *ai);
     };
@@ -38,7 +38,7 @@ namespace ai
     class ReleaseLootAction : public MovementAction
     {
     public:
-        ReleaseLootAction(PlayerbotAI* ai) : MovementAction(ai, "release loot") {}
+        ReleaseLootAction(PlayerbotAI* botAI) : MovementAction(ai, "release loot") {}
         virtual bool Execute(Event event);
     };
 }

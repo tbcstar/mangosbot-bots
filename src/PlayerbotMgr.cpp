@@ -77,13 +77,13 @@ Player* PlayerbotHolder::GetPlayerBot(ObjectGuid playerGuid) const
 
 void PlayerbotHolder::OnBotLogin(Player * const bot)
 {
-	PlayerbotAI* ai = new PlayerbotAI(bot);
-	bot->SetPlayerbotAI(ai);
+	PlayerbotAI* botAI = new PlayerbotAI(bot);
+	bot->SetPlayerbotAI(botAI);
 	OnBotLoginInternal(bot);
 
     playerBots[bot->GetGUID().GetRawValue()] = bot;
 
-    Player* master = ai->GetMaster();
+    Player* master = botAI->GetMaster();
     if (master)
     {
         ObjectGuid masterGuid = master->GetGUID();
@@ -92,7 +92,7 @@ void PlayerbotHolder::OnBotLogin(Player * const bot)
             master->GetGroup()->ChangeLeader(masterGuid);
     }
 
-    Group *group = bot->GetGroup();
+    Group* group = bot->GetGroup();
     if (group)
     {
         bool groupValid = false;
@@ -117,8 +117,8 @@ void PlayerbotHolder::OnBotLogin(Player * const bot)
         }
     }
 
-    ai->ResetStrategies();
-    ai->TellMaster("Hello!");
+    botAI->ResetStrategies();
+    botAI->TellMaster("Hello!");
 }
 
 string PlayerbotHolder::ProcessBotCommand(string cmd, ObjectGuid guid, bool admin, uint32 masterAccountId, uint32 masterGuildId)

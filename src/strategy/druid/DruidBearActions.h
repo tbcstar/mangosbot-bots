@@ -4,61 +4,61 @@ namespace ai {
 	class CastFeralChargeBearAction : public CastReachTargetSpellAction
 	{
 	public:
-		CastFeralChargeBearAction(PlayerbotAI* ai) : CastReachTargetSpellAction(ai, "feral charge - bear", 1.5f) {}
+		CastFeralChargeBearAction(PlayerbotAI* botAI) : CastReachTargetSpellAction(ai, "feral charge - bear", 1.5f) {}
 	};
 
 	class CastGrowlAction : public CastSpellAction
 	{
 	public:
-		CastGrowlAction(PlayerbotAI* ai) : CastSpellAction(ai, "growl") {}
+		CastGrowlAction(PlayerbotAI* botAI) : CastSpellAction(ai, "growl") {}
 	};
 
 	class CastMaulAction : public CastMeleeSpellAction
 	{
 	public:
-		CastMaulAction(PlayerbotAI* ai) : CastMeleeSpellAction(ai, "maul") {}
+		CastMaulAction(PlayerbotAI* botAI) : CastMeleeSpellAction(ai, "maul") {}
 		virtual bool isUseful() { return CastMeleeSpellAction::isUseful() && AI_VALUE2(uint8, "rage", "self target") >= 45; }
 	};
 
 	class CastBashAction : public CastMeleeSpellAction
 	{
 	public:
-		CastBashAction(PlayerbotAI* ai) : CastMeleeSpellAction(ai, "bash") {}
+		CastBashAction(PlayerbotAI* botAI) : CastMeleeSpellAction(ai, "bash") {}
 	};
 
 	class CastSwipeAction : public CastMeleeSpellAction
 	{
 	public:
-		CastSwipeAction(PlayerbotAI* ai) : CastMeleeSpellAction(ai, "swipe") {}
+		CastSwipeAction(PlayerbotAI* botAI) : CastMeleeSpellAction(ai, "swipe") {}
 	};
 
 	class CastDemoralizingRoarAction : public CastDebuffSpellAction
 	{
 	public:
-		CastDemoralizingRoarAction(PlayerbotAI* ai) : CastDebuffSpellAction(ai, "demoralizing roar") {}
+		CastDemoralizingRoarAction(PlayerbotAI* botAI) : CastDebuffSpellAction(ai, "demoralizing roar") {}
 	};
 
 	class CastMangleBearAction : public CastMeleeSpellAction
 	{
 	public:
-		CastMangleBearAction(PlayerbotAI* ai) : CastMeleeSpellAction(ai, "mangle (bear)") {}
+		CastMangleBearAction(PlayerbotAI* botAI) : CastMeleeSpellAction(ai, "mangle (bear)") {}
 	};
 
 	class CastSwipeBearAction : public CastMeleeSpellAction
 	{
 	public:
-		CastSwipeBearAction(PlayerbotAI* ai) : CastMeleeSpellAction(ai, "swipe (bear)") {}
+		CastSwipeBearAction(PlayerbotAI* botAI) : CastMeleeSpellAction(ai, "swipe (bear)") {}
 	};
 
     class CastLacerateAction : public CastMeleeSpellAction
     {
     public:
-        CastLacerateAction(PlayerbotAI* ai) : CastMeleeSpellAction(ai, "lacerate") {}
+        CastLacerateAction(PlayerbotAI* botAI) : CastMeleeSpellAction(ai, "lacerate") {}
     };
 
     class CastBashOnEnemyHealerAction : public CastSpellOnEnemyHealerAction
     {
     public:
-        CastBashOnEnemyHealerAction(PlayerbotAI* ai) : CastSpellOnEnemyHealerAction(ai, "bash") {}
+        CastBashOnEnemyHealerAction(PlayerbotAI* botAI) : CastSpellOnEnemyHealerAction(ai, "bash") {}
     };
 }

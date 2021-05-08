@@ -25,7 +25,7 @@ bool GoAction::Execute(Event event)
         Map2ZoneCoordinates(x, y, bot->GetZoneId());
         ostringstream out;
         out << "I am at " << x << "," << y;
-        ai->TellMaster(out.str());
+        botAI->TellMaster(out.str());
         return true;
     }
 
@@ -34,17 +34,17 @@ bool GoAction::Execute(Event event)
     {
         for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); ++i)
         {
-            GameObject* go = ai->GetGameObject(*i);
+            GameObject* go = botAI->GetGameObject(*i);
             if (go && sServerFacade->isSpawned(go))
             {
                 if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, go), sPlayerbotAIConfig->reactDistance))
                 {
-                    ai->TellError("It is too far away");
+                    botAI->TellError("It is too far away");
                     return false;
                 }
 
                 ostringstream out; out << "Moving to " << ChatHelper::formatGameobject(go);
-                ai->TellMasterNoFacing(out.str());
+                botAI->TellMasterNoFacing(out.str());
                 return MoveNear(bot->GetMapId(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ() + 0.5f, sPlayerbotAIConfig->followDistance);
             }
         }
@@ -58,11 +58,11 @@ bool GoAction::Execute(Event event)
     units.insert(units.end(), players.begin(), players.end());
     for (list<ObjectGuid>::iterator i = units.begin(); i != units.end(); i++)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (unit && strstri(unit->GetName(), param.c_str()))
         {
             ostringstream out; out << "Moving to " << unit->GetName();
-            ai->TellMasterNoFacing(out.str());
+            botAI->TellMasterNoFacing(out.str());
             return MoveNear(bot->GetMapId(), unit->GetPositionX(), unit->GetPositionY(), unit->GetPositionZ() + 0.5f, sPlayerbotAIConfig->followDistance);
         }
     }
@@ -80,28 +80,28 @@ bool GoAction::Execute(Event event)
 
         if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, x, y), sPlayerbotAIConfig->reactDistance))
         {
-            ai->TellMaster("It is too far away");
+            botAI->TellMaster("It is too far away");
             return false;
         }
 
         const TerrainInfo* terrain = map->GetTerrain();
         if (terrain->IsUnderWater(x, y, z) || terrain->IsInWater(x, y, z))
         {
-            ai->TellError("It is under water");
+            botAI->TellError("It is under water");
             return false;
         }
 
         float ground = map->GetHeight(x, y, z + 0.5f);
         if (ground <= INVALID_HEIGHT)
         {
-            ai->TellError("I can't go there");
+            botAI->TellError("I can't go there");
             return false;
         }
 
         float x1 = x, y1 = y;
         Map2ZoneCoordinates(x1, y1, bot->GetZoneId());
         ostringstream out; out << "Moving to " << x1 << "," << y1;
-        ai->TellMasterNoFacing(out.str());
+        botAI->TellMasterNoFacing(out.str());
         return MoveNear(bot->GetMapId(), x, y, z + 0.5f, sPlayerbotAIConfig->followDistance);
     }
 
@@ -110,15 +110,15 @@ bool GoAction::Execute(Event event)
     {
         if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, pos.x, pos.y), sPlayerbotAIConfig->reactDistance))
         {
-            ai->TellError("It is too far away");
+            botAI->TellError("It is too far away");
             return false;
         }
 
         ostringstream out; out << "Moving to position " << param;
-        ai->TellMasterNoFacing(out.str());
+        botAI->TellMasterNoFacing(out.str());
         return MoveNear(bot->GetMapId(), pos.x, pos.y, pos.z + 0.5f, sPlayerbotAIConfig->followDistance);
     }
 
-    ai->TellMaster("Whisper 'go x,y', 'go [game object]', 'go unit' or 'go position' and I will go there");
+    botAI->TellMaster("Whisper 'go x,y', 'go [game object]', 'go unit' or 'go position' and I will go there");
     return false;
 }

@@ -6,7 +6,7 @@ namespace ai
 {
 	class UseItemAction : public Action {
 	public:
-		UseItemAction(PlayerbotAI* ai, string name = "use", bool selfOnly = false) : Action(ai, name), selfOnly(selfOnly) {}
+		UseItemAction(PlayerbotAI* botAI, string name = "use", bool selfOnly = false) : Action(ai, name), selfOnly(selfOnly) {}
 
     public:
         virtual bool Execute(Event event);
@@ -26,7 +26,7 @@ namespace ai
 
     class UseSpellItemAction : public UseItemAction {
     public:
-        UseSpellItemAction(PlayerbotAI* ai, string name, bool selfOnly = false) : UseItemAction(ai, name, selfOnly) {}
+        UseSpellItemAction(PlayerbotAI* botAI, string name, bool selfOnly = false) : UseItemAction(ai, name, selfOnly) {}
 
     public:
         virtual bool isUseful();
@@ -34,14 +34,14 @@ namespace ai
 
     class UseHealingPotion : public UseItemAction {
     public:
-        UseHealingPotion(PlayerbotAI* ai) : UseItemAction(ai, "healing potion") {}
+        UseHealingPotion(PlayerbotAI* botAI) : UseItemAction(ai, "healing potion") {}
         virtual bool isUseful() { return AI_VALUE2(bool, "combat", "self target"); }
     };
 
     class UseManaPotion : public UseItemAction
     {
     public:
-        UseManaPotion(PlayerbotAI* ai) : UseItemAction(ai, "mana potion") {}
+        UseManaPotion(PlayerbotAI* botAI) : UseItemAction(ai, "mana potion") {}
         virtual bool isUseful() { return AI_VALUE2(bool, "combat", "self target"); }
     };
 }

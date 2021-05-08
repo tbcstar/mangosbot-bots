@@ -25,11 +25,11 @@ bool QuestAction::Execute(Event event)
 
 bool QuestAction::ProcessQuests(ObjectGuid questGiver)
 {
-    GameObject *gameObject = ai->GetGameObject(questGiver);
+    GameObject *gameObject = botAI->GetGameObject(questGiver);
     if (gameObject && gameObject->GetGoType() == GAMEOBJECT_TYPE_QUESTGIVER)
         return ProcessQuests(gameObject);
 
-    Creature* creature = ai->GetCreature(questGiver);
+    Creature* creature = botAI->GetCreature(questGiver);
     if (creature)
         return ProcessQuests(creature);
 
@@ -42,7 +42,7 @@ bool QuestAction::ProcessQuests(WorldObject* questGiver)
 
     if (bot->GetDistance(questGiver) > INTERACTION_DISTANCE)
     {
-        ai->TellError("Cannot talk to quest giver");
+        botAI->TellError("Cannot talk to quest giver");
         return false;
     }
 
@@ -97,13 +97,13 @@ bool QuestAction::AcceptQuest(Quest const* quest, ObjectGuid questGiver)
         if (bot->GetQuestStatus(questId) != QUEST_STATUS_NONE && bot->GetQuestStatus(questId) != QUEST_STATUS_AVAILABLE)
         {
             out << "Accepted " << chat->formatQuest(quest);
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
             return true;
         }
     }
 
     out << " " << chat->formatQuest(quest);
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
     return false;
 }
 
@@ -121,13 +121,13 @@ bool QuestObjectiveCompletedAction::Execute(Event event)
         entry &= 0x7FFFFFFF;
         GameObjectInfo const* info = sObjectMgr->GetGameObjectInfo(entry);
         if (info)
-            ai->TellMaster(chat->formatQuestObjective(info->name, available, required));
+            botAI->TellMaster(chat->formatQuestObjective(info->name, available, required));
     }
     else
     {
         CreatureInfo const* info = sObjectMgr->GetCreatureTemplate(entry);
         if (info)
-            ai->TellMaster(chat->formatQuestObjective(info->Name, available, required));
+            botAI->TellMaster(chat->formatQuestObjective(info->Name, available, required));
     }
 
     return true;

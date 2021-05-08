@@ -7,9 +7,9 @@ namespace ai
 {
     class MovementAction : public Action {
     public:
-        MovementAction(PlayerbotAI* ai, string name) : Action(ai, name)
+        MovementAction(PlayerbotAI* botAI, string name) : Action(ai, name)
         {
-            bot = ai->GetBot();
+            bot = botAI->GetBot();
         }
 
     protected:
@@ -32,7 +32,7 @@ namespace ai
     class FleeAction : public MovementAction
     {
     public:
-        FleeAction(PlayerbotAI* ai, float distance = sPlayerbotAIConfig->spellDistance) : MovementAction(ai, "flee")
+        FleeAction(PlayerbotAI* botAI, float distance = sPlayerbotAIConfig->spellDistance) : MovementAction(ai, "flee")
         {
 			this->distance = distance;
 		}
@@ -46,7 +46,7 @@ namespace ai
     class FleeWithPetAction : public MovementAction
     {
     public:
-        FleeWithPetAction(PlayerbotAI* ai) : MovementAction(ai, "flee with pet") {}
+        FleeWithPetAction(PlayerbotAI* botAI) : MovementAction(ai, "flee with pet") {}
 
         virtual bool Execute(Event event);
     };
@@ -54,21 +54,21 @@ namespace ai
     class RunAwayAction : public MovementAction
     {
     public:
-        RunAwayAction(PlayerbotAI* ai) : MovementAction(ai, "runaway") {}
+        RunAwayAction(PlayerbotAI* botAI) : MovementAction(ai, "runaway") {}
         virtual bool Execute(Event event);
     };
 
     class MoveToLootAction : public MovementAction
     {
     public:
-        MoveToLootAction(PlayerbotAI* ai) : MovementAction(ai, "move to loot") {}
+        MoveToLootAction(PlayerbotAI* botAI) : MovementAction(ai, "move to loot") {}
         virtual bool Execute(Event event);
     };
 
     class MoveOutOfEnemyContactAction : public MovementAction
     {
     public:
-        MoveOutOfEnemyContactAction(PlayerbotAI* ai) : MovementAction(ai, "move out of enemy contact") {}
+        MoveOutOfEnemyContactAction(PlayerbotAI* botAI) : MovementAction(ai, "move out of enemy contact") {}
         virtual bool Execute(Event event);
         virtual bool isUseful();
     };
@@ -76,7 +76,7 @@ namespace ai
     class SetFacingTargetAction : public MovementAction
     {
     public:
-        SetFacingTargetAction(PlayerbotAI* ai) : MovementAction(ai, "set facing") {}
+        SetFacingTargetAction(PlayerbotAI* botAI) : MovementAction(ai, "set facing") {}
         virtual bool Execute(Event event);
         virtual bool isUseful();
     };
@@ -84,7 +84,7 @@ namespace ai
     class SetBehindTargetAction : public MovementAction
     {
     public:
-        SetBehindTargetAction(PlayerbotAI* ai) : MovementAction(ai, "set behind") {}
+        SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(ai, "set behind") {}
         virtual bool Execute(Event event);
         virtual bool isUseful();
     };
@@ -92,7 +92,7 @@ namespace ai
     class MoveOutOfCollisionAction : public MovementAction
     {
     public:
-        MoveOutOfCollisionAction(PlayerbotAI* ai) : MovementAction(ai, "move out of collision") {}
+        MoveOutOfCollisionAction(PlayerbotAI* botAI) : MovementAction(ai, "move out of collision") {}
         virtual bool Execute(Event event);
         virtual bool isUseful();
     };

@@ -6,7 +6,7 @@
 #include "../../ServerFacade.h"
 using namespace ai;
 
-CheckValuesAction::CheckValuesAction(PlayerbotAI* ai) : Action(ai, "check values")
+CheckValuesAction::CheckValuesAction(PlayerbotAI* botAI) : Action(ai, "check values")
 {
 }
 

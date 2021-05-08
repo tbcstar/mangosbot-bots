@@ -4,7 +4,7 @@ namespace ai
 {
 	class ReviveFromCorpseAction : public Action {
 	public:
-		ReviveFromCorpseAction(PlayerbotAI* ai) : Action(ai, "revive") {}
+		ReviveFromCorpseAction(PlayerbotAI* botAI) : Action(ai, "revive") {}
 
     public:
         virtual bool Execute(Event event);
@@ -12,7 +12,7 @@ namespace ai
 
 	class SpiritHealerAction : public Action {
 	public:
-	    SpiritHealerAction(PlayerbotAI* ai) : Action(ai, "spirit healer") {}
+	    SpiritHealerAction(PlayerbotAI* botAI) : Action(ai, "spirit healer") {}
 
     public:
         virtual bool Execute(Event event);

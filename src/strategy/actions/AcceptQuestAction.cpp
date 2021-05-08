@@ -16,7 +16,7 @@ bool AcceptQuestAction::Execute(Event event)
     if (!master)
         return false;
 
-    Player *bot = ai->GetBot();
+    Player *bot = botAI->GetBot();
     ObjectGuid guid;
     uint32 quest = 0;
 
@@ -29,7 +29,7 @@ bool AcceptQuestAction::Execute(Event event)
         list<ObjectGuid> npcs = AI_VALUE(list<ObjectGuid>, "nearest npcs");
         for (list<ObjectGuid>::iterator i = npcs.begin(); i != npcs.end(); i++)
         {
-            Unit* unit = ai->GetUnit(*i);
+            Unit* unit = botAI->GetUnit(*i);
             if (unit && quest && unit->HasQuest(quest))
             {
                 guid = unit->GetGUID();
@@ -41,7 +41,7 @@ bool AcceptQuestAction::Execute(Event event)
         list<ObjectGuid> gos = AI_VALUE(list<ObjectGuid>, "nearest game objects");
         for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); i++)
         {
-            GameObject* go = ai->GetGameObject(*i);
+            GameObject* go = botAI->GetGameObject(*i);
             if (go && quest && go->HasQuest(quest))
             {
                 guid = go->GetGUID();
@@ -71,7 +71,7 @@ bool AcceptQuestAction::Execute(Event event)
 bool AcceptQuestShareAction::Execute(Event event)
 {
     Player* master = GetMaster();
-    Player *bot = ai->GetBot();
+    Player *bot = botAI->GetBot();
 
     WorldPacket& p = event.getPacket();
     p.rpos(0);
@@ -87,7 +87,7 @@ bool AcceptQuestShareAction::Execute(Event event)
     {
         // can't take quest
         bot->SetDivider(ObjectGuid::Empty);
-        ai->TellError("I can't take this quest");
+        botAI->TellError("I can't take this quest");
 
         return false;
     }
@@ -115,7 +115,7 @@ bool AcceptQuestShareAction::Execute(Event event)
             bot->CastSpell( bot, qInfo->GetSrcSpell(), true);
         }
 
-        ai->TellMaster("Quest accepted");
+        botAI->TellMaster("Quest accepted");
         return true;
     }
 

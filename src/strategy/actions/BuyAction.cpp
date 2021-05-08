@@ -19,7 +19,7 @@ bool BuyAction::Execute(Event event)
     if (!master)
         return false;
 
-    list<ObjectGuid> vendors = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest npcs")->Get();
+    list<ObjectGuid> vendors = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest npcs")->Get();
     bool vendored = false, result = false;
     for (list<ObjectGuid>::iterator i = vendors.begin(); i != vendors.end(); ++i)
     {
@@ -43,14 +43,14 @@ bool BuyAction::Execute(Event event)
             if (!result)
             {
                 ostringstream out; out << "Nobody sells " << ChatHelper::formatItem(proto) << " nearby";
-                ai->TellMaster(out.str());
+                botAI->TellMaster(out.str());
             }
         }
     }
 
     if (!vendored)
     {
-        ai->TellError("There are no vendors nearby");
+        botAI->TellError("There are no vendors nearby");
         return false;
     }
 
@@ -69,7 +69,7 @@ bool BuyAction::BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, con
         {
             bot->BuyItemFromVendor(vendorguid, itemId, 1, NULL_BAG, NULL_SLOT);
             ostringstream out; out << "Buying " << ChatHelper::formatItem(proto);
-            ai->TellMaster(out.str());
+            botAI->TellMaster(out.str());
             return true;
         }
     }

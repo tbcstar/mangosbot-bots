@@ -6,7 +6,7 @@ namespace ai
 {
     class AcceptInvitationAction : public Action {
     public:
-        AcceptInvitationAction(PlayerbotAI* ai) : Action(ai, "accept invitation") {}
+        AcceptInvitationAction(PlayerbotAI* botAI) : Action(ai, "accept invitation") {}
 
         virtual bool Execute(Event event)
         {
@@ -20,7 +20,7 @@ namespace ai
             if (!inviter)
                 return false;
 
-			if (!ai->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, inviter))
+			if (!botAI->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, inviter))
             {
                 WorldPacket data(SMSG_GROUP_DECLINE, 10);
                 data << bot->GetName();
@@ -37,8 +37,8 @@ namespace ai
             if (sRandomPlayerbotMgr->IsRandomBot(bot))
                 bot->GetPlayerbotAI()->SetMaster(inviter);
 
-            ai->ResetStrategies();
-            ai->TellMaster("Hello");
+            botAI->ResetStrategies();
+            botAI->TellMaster("Hello");
             return true;
         }
     };

@@ -484,18 +484,18 @@ void PlayerbotAI::DoNextAction()
     if (currentEngine == engines[BOT_STATE_DEAD] && sServerFacade->IsAlive(bot))
         ChangeEngine(BOT_STATE_NON_COMBAT);
 
-    Group *group = bot->GetGroup();
+    Group* group = bot->GetGroup();
     if (!master && group)
     {
         for (GroupReference *gref = group->GetFirstMember(); gref; gref = gref->next())
         {
             Player* member = gref->getSource();
-            PlayerbotAI* ai = bot->GetPlayerbotAI();
+            PlayerbotAI* botAI = bot->GetPlayerbotAI();
             if (member && member->IsInWorld() && !member->GetPlayerbotAI() && (!master || master->GetPlayerbotAI()))
             {
-                ai->SetMaster(member);
-                ai->ResetStrategies();
-                ai->TellMaster("Hello");
+                botAI->SetMaster(member);
+                botAI->ResetStrategies();
+                botAI->TellMaster("Hello");
                 break;
             }
         }
@@ -617,7 +617,7 @@ bool PlayerbotAI::IsRanged(Player* player)
 {
     PlayerbotAI* botAi = player->GetPlayerbotAI();
     if (botAi)
-        return botAi->ContainsStrategy(STRATEGY_TYPE_RANGED);
+        return botbotAI->ContainsStrategy(STRATEGY_TYPE_RANGED);
 
     switch (player->getClass())
     {
@@ -635,7 +635,7 @@ bool PlayerbotAI::IsTank(Player* player)
 {
     PlayerbotAI* botAi = player->GetPlayerbotAI();
     if (botAi)
-        return botAi->ContainsStrategy(STRATEGY_TYPE_TANK);
+        return botbotAI->ContainsStrategy(STRATEGY_TYPE_TANK);
 
     switch (player->getClass())
     {
@@ -652,7 +652,7 @@ bool PlayerbotAI::IsHeal(Player* player)
 {
     PlayerbotAI* botAi = player->GetPlayerbotAI();
     if (botAi)
-        return botAi->ContainsStrategy(STRATEGY_TYPE_HEAL);
+        return botbotAI->ContainsStrategy(STRATEGY_TYPE_HEAL);
 
     switch (player->getClass())
     {

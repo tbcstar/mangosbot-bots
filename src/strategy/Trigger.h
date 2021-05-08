@@ -10,7 +10,7 @@
 class clazz : public super \
     { \
     public: \
-        clazz(PlayerbotAI* ai) : super(ai) {} \
+        clazz(PlayerbotAI* botAI) : super(botAI) {} \
     public: \
         virtual bool IsActive();
 
@@ -22,7 +22,7 @@ namespace ai
     class Trigger : public AiNamedObject
 	{
 	public:
-        Trigger(PlayerbotAI* ai, string name = "trigger", int checkInterval = 1) : AiNamedObject(ai, name) {
+        Trigger(PlayerbotAI* botAI, string name = "trigger", int checkInterval = 1) : AiNamedObject(ai, name) {
 			this->checkInterval = checkInterval;
 			lastCheckTime = time(0) - rand() % checkInterval;
 		}

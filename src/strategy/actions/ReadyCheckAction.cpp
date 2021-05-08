@@ -64,8 +64,8 @@ class DistanceChecker : public ReadyChecker
 public:
     virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
     {
-        Player* bot = ai->GetBot();
-        Player* master = ai->GetMaster();
+        Player* bot = botAI->GetBot();
+        Player* master = botAI->GetMaster();
         if (master)
         {
             bool distance = bot->GetDistance(master) <= sPlayerbotAIConfig->sightDistance;
@@ -85,24 +85,24 @@ class HunterChecker : public ReadyChecker
 public:
     virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
     {
-        Player* bot = ai->GetBot();
+        Player* bot = botAI->GetBot();
         if (bot->getClass() == CLASS_HUNTER)
         {
             if (!bot->GetUInt32Value(PLAYER_AMMO_ID))
             {
-                ai->TellError("Out of ammo!");
+                botAI->TellError("Out of ammo!");
                 return false;
             }
 
             if (!bot->GetPet())
             {
-                ai->TellError("No pet!");
+                botAI->TellError("No pet!");
                 return false;
             }
 
             if (bot->GetPet()->GetHappinessState() == UNHAPPY)
             {
-                ai->TellError("Pet is unhappy!");
+                botAI->TellError("Pet is unhappy!");
                 return false;
             }
         }
@@ -197,14 +197,14 @@ bool ReadyCheckAction::ReadyCheck()
         out << formatPercent("Water", water, 100.0 * water / 20);
     }
 
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 
     WorldPacket packet(MSG_RAID_READY_CHECK);
     packet << bot->GetGUID();
     packet << uint8(1);
     bot->GetSession()->HandleRaidReadyCheckOpcode(packet);
 
-    ai->ChangeStrategy("-ready check", BOT_STATE_NON_COMBAT);
+    botAI->ChangeStrategy("-ready check", BOT_STATE_NON_COMBAT);
 
     return true;
 }

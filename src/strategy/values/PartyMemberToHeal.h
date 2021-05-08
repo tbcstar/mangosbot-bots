@@ -7,8 +7,8 @@ namespace ai
     class PartyMemberToHeal : public PartyMemberValue
 	{
 	public:
-        PartyMemberToHeal(PlayerbotAI* ai) :
-          PartyMemberValue(ai) {}
+        PartyMemberToHeal(PlayerbotAI* botAI) :
+          PartyMemberValue(botAI) {}
 
     protected:
         virtual Unit* Calculate();

@@ -7,7 +7,7 @@ using namespace ai;
 map<string, vector<string> > SayAction::stringTable;
 map<string, uint32 > SayAction::probabilityTable;
 
-SayAction::SayAction(PlayerbotAI* ai) : Action(ai, "say"), Qualified()
+SayAction::SayAction(PlayerbotAI* botAI) : Action(ai, "say"), Qualified()
 {
 }
 
@@ -63,7 +63,7 @@ bool SayAction::Execute(Event event)
 
     time_t lastSaid = AI_VALUE2(time_t, "last said", qualifier);
     uint32 nextTime = time(0) + urand(1, 30);
-    ai->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(nextTime);
+    botAI->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(nextTime);
 
     Group* group = bot->GetGroup();
     if (group)
@@ -94,7 +94,7 @@ bool SayAction::Execute(Event event)
         for (vector<Player*>::iterator i = members.begin(); i != members.end(); ++i)
         {
             PlayerbotAI* memberAi = (*i)->GetPlayerbotAI();
-            memberAi->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(nextTime + (20 * ++index) + urand(1, 15));
+            memberbotAI->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(nextTime + (20 * ++index) + urand(1, 15));
         }
     }
 

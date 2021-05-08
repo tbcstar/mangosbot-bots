@@ -8,7 +8,7 @@ namespace ai
 {
     class RevealGatheringItemAction : public Action {
     public:
-        RevealGatheringItemAction(PlayerbotAI* ai) : Action(ai, "reveal gathering item") {}
+        RevealGatheringItemAction(PlayerbotAI* botAI) : Action(ai, "reveal gathering item") {}
 
         virtual bool Execute(Event event);
     };

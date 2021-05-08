@@ -30,11 +30,11 @@ namespace ai
             }
 
         private:
-            static Strategy* boost(PlayerbotAI* ai) { return new RogueBoostStrategy(ai); }
-            static Strategy* aoe(PlayerbotAI* ai) { return new RogueAoeStrategy(ai); }
-            static Strategy* dps(PlayerbotAI* ai) { return new DpsRogueStrategy(ai); }
-            static Strategy* nc(PlayerbotAI* ai) { return new GenericRogueNonCombatStrategy(ai); }
-            static Strategy* pull(PlayerbotAI* ai) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* boost(PlayerbotAI* botAI) { return new RogueBoostStrategy(botAI); }
+            static Strategy* aoe(PlayerbotAI* botAI) { return new RogueAoeStrategy(botAI); }
+            static Strategy* dps(PlayerbotAI* botAI) { return new DpsRogueStrategy(botAI); }
+            static Strategy* nc(PlayerbotAI* botAI) { return new GenericRogueNonCombatStrategy(botAI); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
         };
     };
 };
@@ -60,12 +60,12 @@ namespace ai
             }
 
         private:
-            static Trigger* adrenaline_rush(PlayerbotAI* ai) { return new AdrenalineRushTrigger(ai); }
-            static Trigger* kick(PlayerbotAI* ai) { return new KickInterruptSpellTrigger(ai); }
-            static Trigger* rupture(PlayerbotAI* ai) { return new RuptureTrigger(ai); }
-            static Trigger* slice_and_dice(PlayerbotAI* ai) { return new SliceAndDiceTrigger(ai); }
-            static Trigger* expose_armor(PlayerbotAI* ai) { return new ExposeArmorTrigger(ai); }
-            static Trigger* kick_on_enemy_healer(PlayerbotAI* ai) { return new KickInterruptEnemyHealerSpellTrigger(ai); }
+            static Trigger* adrenaline_rush(PlayerbotAI* botAI) { return new AdrenalineRushTrigger(botAI); }
+            static Trigger* kick(PlayerbotAI* botAI) { return new KickInterruptSpellTrigger(botAI); }
+            static Trigger* rupture(PlayerbotAI* botAI) { return new RuptureTrigger(botAI); }
+            static Trigger* slice_and_dice(PlayerbotAI* botAI) { return new SliceAndDiceTrigger(botAI); }
+            static Trigger* expose_armor(PlayerbotAI* botAI) { return new ExposeArmorTrigger(botAI); }
+            static Trigger* kick_on_enemy_healer(PlayerbotAI* botAI) { return new KickInterruptEnemyHealerSpellTrigger(botAI); }
         };
     };
 };
@@ -101,27 +101,27 @@ namespace ai
             }
 
         private:
-            static Action* adrenaline_rush(PlayerbotAI* ai) { return new CastAdrenalineRushAction(ai); }
-            static Action* blade_flurry(PlayerbotAI* ai) { return new CastBladeFlurryAction(ai); }
-            static Action* riposte(PlayerbotAI* ai) { return new CastRiposteAction(ai); }
-            static Action* mutilate(PlayerbotAI* ai) { return new CastMutilateAction(ai); }
-            static Action* sinister_strike(PlayerbotAI* ai) { return new CastSinisterStrikeAction(ai); }
-            static Action* kidney_shot(PlayerbotAI* ai) { return new CastKidneyShotAction(ai); }
-            static Action* rupture(PlayerbotAI* ai) { return new CastRuptureAction(ai); }
-            static Action* slice_and_dice(PlayerbotAI* ai) { return new CastSliceAndDiceAction(ai); }
-            static Action* eviscerate(PlayerbotAI* ai) { return new CastEviscerateAction(ai); }
-            static Action* vanish(PlayerbotAI* ai) { return new CastVanishAction(ai); }
-            static Action* evasion(PlayerbotAI* ai) { return new CastEvasionAction(ai); }
-            static Action* kick(PlayerbotAI* ai) { return new CastKickAction(ai); }
-            static Action* feint(PlayerbotAI* ai) { return new CastFeintAction(ai); }
-            static Action* backstab(PlayerbotAI* ai) { return new CastBackstabAction(ai); }
-            static Action* expose_armor(PlayerbotAI* ai) { return new CastExposeArmorAction(ai); }
-            static Action* kick_on_enemy_healer(PlayerbotAI* ai) { return new CastKickOnEnemyHealerAction(ai); }
+            static Action* adrenaline_rush(PlayerbotAI* botAI) { return new CastAdrenalineRushAction(botAI); }
+            static Action* blade_flurry(PlayerbotAI* botAI) { return new CastBladeFlurryAction(botAI); }
+            static Action* riposte(PlayerbotAI* botAI) { return new CastRiposteAction(botAI); }
+            static Action* mutilate(PlayerbotAI* botAI) { return new CastMutilateAction(botAI); }
+            static Action* sinister_strike(PlayerbotAI* botAI) { return new CastSinisterStrikeAction(botAI); }
+            static Action* kidney_shot(PlayerbotAI* botAI) { return new CastKidneyShotAction(botAI); }
+            static Action* rupture(PlayerbotAI* botAI) { return new CastRuptureAction(botAI); }
+            static Action* slice_and_dice(PlayerbotAI* botAI) { return new CastSliceAndDiceAction(botAI); }
+            static Action* eviscerate(PlayerbotAI* botAI) { return new CastEviscerateAction(botAI); }
+            static Action* vanish(PlayerbotAI* botAI) { return new CastVanishAction(botAI); }
+            static Action* evasion(PlayerbotAI* botAI) { return new CastEvasionAction(botAI); }
+            static Action* kick(PlayerbotAI* botAI) { return new CastKickAction(botAI); }
+            static Action* feint(PlayerbotAI* botAI) { return new CastFeintAction(botAI); }
+            static Action* backstab(PlayerbotAI* botAI) { return new CastBackstabAction(botAI); }
+            static Action* expose_armor(PlayerbotAI* botAI) { return new CastExposeArmorAction(botAI); }
+            static Action* kick_on_enemy_healer(PlayerbotAI* botAI) { return new CastKickOnEnemyHealerAction(botAI); }
         };
     };
 };
 
-RogueAiObjectContext::RogueAiObjectContext(PlayerbotAI* ai) : AiObjectContext(ai)
+RogueAiObjectContext::RogueAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
     strategyContexts.Add(new ai::rogue::StrategyFactoryInternal());
     actionContexts.Add(new ai::rogue::AiObjectContextInternal());

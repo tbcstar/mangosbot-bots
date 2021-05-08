@@ -16,21 +16,21 @@ public:
         creators["feign death"] = &feign_death;
     }
 private:
-    static ActionNode* rapid_fire(PlayerbotAI* ai)
+    static ActionNode* rapid_fire(PlayerbotAI* botAI)
     {
         return new ActionNode ("rapid fire",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("readiness"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* aspect_of_the_pack(PlayerbotAI* ai)
+    static ActionNode* aspect_of_the_pack(PlayerbotAI* botAI)
     {
         return new ActionNode ("aspect of the pack",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("aspect of the cheetah"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* feign_death(PlayerbotAI* ai)
+    static ActionNode* feign_death(PlayerbotAI* botAI)
     {
         return new ActionNode ("feign death",
             /*P*/ NULL,
@@ -39,7 +39,7 @@ private:
     }
 };
 
-GenericHunterStrategy::GenericHunterStrategy(PlayerbotAI* ai) : CombatStrategy(ai)
+GenericHunterStrategy::GenericHunterStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericHunterStrategyActionNodeFactory());
 }

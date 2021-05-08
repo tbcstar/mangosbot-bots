@@ -19,7 +19,7 @@ bool RewardAction::Execute(Event event)
     list<ObjectGuid> npcs = AI_VALUE(list<ObjectGuid>, "nearest npcs");
     for (list<ObjectGuid>::iterator i = npcs.begin(); i != npcs.end(); i++)
     {
-        Unit* npc = ai->GetUnit(*i);
+        Unit* npc = botAI->GetUnit(*i);
         if (npc && Reward(itemId, npc))
             return true;
     }
@@ -27,12 +27,12 @@ bool RewardAction::Execute(Event event)
     list<ObjectGuid> gos = AI_VALUE(list<ObjectGuid>, "nearest game objects");
     for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); i++)
     {
-        GameObject* go = ai->GetGameObject(*i);
+        GameObject* go = botAI->GetGameObject(*i);
         if (go && Reward(itemId, go))
             return true;
     }
 
-    ai->TellError("Cannot talk to quest giver");
+    botAI->TellError("Cannot talk to quest giver");
     return false;
 }
 
@@ -64,7 +64,7 @@ bool RewardAction::Reward(uint32 itemId, Object* questGiver)
                     string itemName = pRewardItem->Name1;
 
                     ostringstream out; out << chat->formatItem(pRewardItem) << " rewarded";
-                    ai->TellMaster(out);
+                    botAI->TellMaster(out);
                     return true;
                 }
             }

@@ -10,7 +10,7 @@ namespace ai
     class DistanceValue : public FloatCalculatedValue, public Qualified
 	{
 	public:
-        DistanceValue(PlayerbotAI* ai) : FloatCalculatedValue(ai) {}
+        DistanceValue(PlayerbotAI* botAI) : FloatCalculatedValue(botAI) {}
 
     public:
         float Calculate()
@@ -25,7 +25,7 @@ namespace ai
                 if (!obj)
                     return 0.0f;
 
-                return sServerFacade->GetDistance2d(ai->GetBot(), obj);
+                return sServerFacade->GetDistance2d(botAI->GetBot(), obj);
             }
 
             if (qualifier.find("position_") == 0)
@@ -33,21 +33,21 @@ namespace ai
                 string position = qualifier.substr(9);
                 ai::Position pos = context->GetValue<ai::PositionMap&>("position")->Get()[position];
                 if (!pos.isSet()) return 0.0f;
-                if (ai->GetBot()->GetMapId() != pos.mapId) return 0.0f;
-                return sServerFacade->GetDistance2d(ai->GetBot(), pos.x, pos.y);
+                if (botAI->GetBot()->GetMapId() != pos.mapId) return 0.0f;
+                return sServerFacade->GetDistance2d(botAI->GetBot(), pos.x, pos.y);
             }
 
             Unit* target = NULL;
             if (qualifier == "rpg target")
             {
                 ObjectGuid rpgTarget = AI_VALUE(ObjectGuid, qualifier);
-                target = ai->GetUnit(rpgTarget);
+                target = botAI->GetUnit(rpgTarget);
             }
             else if (qualifier == "current target")
             {
                 Stance* stance = AI_VALUE(Stance*, "stance");
                 WorldLocation loc = stance->GetLocation();
-                return sServerFacade->GetDistance2d(ai->GetBot(), loc.coord_x, loc.coord_y);
+                return sServerFacade->GetDistance2d(botAI->GetBot(), loc.coord_x, loc.coord_y);
             }
             else
             {
@@ -56,34 +56,34 @@ namespace ai
                 {
                     Formation* formation = AI_VALUE(Formation*, "formation");
                     WorldLocation loc = formation->GetLocation();
-                    return sServerFacade->GetDistance2d(ai->GetBot(), loc.coord_x, loc.coord_y);
+                    return sServerFacade->GetDistance2d(botAI->GetBot(), loc.coord_x, loc.coord_y);
                 }
             }
 
             if (!target || !target->IsInWorld())
                 return 0.0f;
 
-            if (target == ai->GetBot())
+            if (target == botAI->GetBot())
                 return 0.0f;
 
-            return sServerFacade->GetDistance2d(ai->GetBot(), target);
+            return sServerFacade->GetDistance2d(botAI->GetBot(), target);
         }
     };
 
     class InsideTargetValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        InsideTargetValue(PlayerbotAI* ai) : BoolCalculatedValue(ai) {}
+        InsideTargetValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
 
     public:
         bool Calculate()
         {
             Unit* target = AI_VALUE(Unit*, qualifier);
 
-            if (!target || !target->IsInWorld() || target == ai->GetBot())
+            if (!target || !target->IsInWorld() || target == botAI->GetBot())
                 return false;
 
-            float dist = sServerFacade->GetDistance2d(ai->GetBot(), target->GetPositionX(), target->GetPositionY());
+            float dist = sServerFacade->GetDistance2d(botAI->GetBot(), target->GetPositionX(), target->GetPositionY());
             return sServerFacade->IsDistanceLessThan(dist, target->GetObjectBoundingRadius());
         }
     };

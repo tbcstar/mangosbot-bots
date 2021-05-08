@@ -60,7 +60,7 @@ namespace ai
     class Engine : public PlayerbotAIAware
     {
     public:
-        Engine(PlayerbotAI* ai, AiObjectContext *factory);
+        Engine(PlayerbotAI* botAI, AiObjectContext *factory);
 
 	    void Init();
         void addStrategy(string name);

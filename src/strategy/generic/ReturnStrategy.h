@@ -6,7 +6,7 @@ namespace ai
     class ReturnStrategy : public NonCombatStrategy
     {
     public:
-        ReturnStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        ReturnStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "return"; }
 
     public:

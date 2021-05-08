@@ -5,7 +5,7 @@ namespace ai
     class ThreatMultiplier : public Multiplier
     {
     public:
-        ThreatMultiplier(PlayerbotAI* ai) : Multiplier(ai, "threat") {}
+        ThreatMultiplier(PlayerbotAI* botAI) : Multiplier(ai, "threat") {}
 
     public:
         virtual float GetValue(Action* action);
@@ -14,7 +14,7 @@ namespace ai
     class ThreatStrategy : public Strategy
     {
     public:
-        ThreatStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        ThreatStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitMultipliers(std::list<Multiplier*> &multipliers);

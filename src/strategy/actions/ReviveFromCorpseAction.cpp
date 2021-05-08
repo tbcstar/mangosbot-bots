@@ -13,7 +13,7 @@ bool ReviveFromCorpseAction::Execute(Event event)
         return false;
 
     time_t reclaimTime = corpse->GetGhostTime() + bot->GetCorpseReclaimDelay( corpse->GetType()==CORPSE_RESURRECTABLE_PVP );
-    if (reclaimTime > time(0) || corpse->GetDistance(bot) > ai->GetRange("spell"))
+    if (reclaimTime > time(0) || corpse->GetDistance(bot) > botAI->GetRange("spell"))
         return false;
 
     bot->ResurrectPlayer(0.5f);
@@ -29,14 +29,14 @@ bool SpiritHealerAction::Execute(Event event)
     Corpse* corpse = bot->GetCorpse();
     if (!corpse)
     {
-        ai->TellError("I am not a spirit");
+        botAI->TellError("I am not a spirit");
         return false;
     }
 
     list<ObjectGuid> npcs = AI_VALUE(list<ObjectGuid>, "nearest npcs");
     for (list<ObjectGuid>::iterator i = npcs.begin(); i != npcs.end(); i++)
     {
-        Unit* unit = ai->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(*i);
         if (unit && unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITHEALER))
         {
             PlayerbotChatHandler ch(bot);
@@ -45,11 +45,11 @@ bool SpiritHealerAction::Execute(Event event)
             bot->SaveToDB();
             context->GetValue<Unit*>("current target")->Set(NULL);
             bot->SetTarget(ObjectGuid::Empty);
-            ai->TellMaster("Hello");
+            botAI->TellMaster("Hello");
             return true;
         }
     }
 
-    ai->TellError("Cannot find any spirit healer nearby");
+    botAI->TellError("Cannot find any spirit healer nearby");
     return false;
 }

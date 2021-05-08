@@ -15,21 +15,21 @@ public:
         creators["innervate"] = &innervate;
     }
 private:
-    static ActionNode* mark_of_the_wild(PlayerbotAI* ai)
+    static ActionNode* mark_of_the_wild(PlayerbotAI* botAI)
     {
         return new ActionNode ("mark of the wild",
             /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* mark_of_the_wild_on_party(PlayerbotAI* ai)
+    static ActionNode* mark_of_the_wild_on_party(PlayerbotAI* botAI)
     {
         return new ActionNode ("mark of the wild on party",
             /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* innervate(PlayerbotAI* ai)
+    static ActionNode* innervate(PlayerbotAI* botAI)
     {
         return new ActionNode ("innervate",
             /*P*/ NULL,
@@ -38,7 +38,7 @@ private:
     }
 };
 
-GenericDruidNonCombatStrategy::GenericDruidNonCombatStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai)
+GenericDruidNonCombatStrategy::GenericDruidNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI)
 {
     actionNodeFactories.Add(new GenericDruidNonCombatStrategyActionNodeFactory());
 }

@@ -8,7 +8,7 @@
 using namespace ai;
 using namespace std;
 
-Engine::Engine(PlayerbotAI* ai, AiObjectContext *factory) : PlayerbotAIAware(ai), aiObjectContext(factory)
+Engine::Engine(PlayerbotAI* botAI, AiObjectContext *factory) : PlayerbotAIAware(botAI), aiObjectContext(factory)
 {
     lastRelevance = 0.0f;
     testMode = false;
@@ -533,7 +533,7 @@ void Engine::LogAction(const char* format, ...)
     }
     else
     {
-        Player* bot = ai->GetBot();
+        Player* bot = botAI->GetBot();
         if (sPlayerbotAIConfig->logInGroupOnly && !bot->GetGroup())
             return;
 
@@ -559,7 +559,7 @@ void Engine::ChangeStrategy(string names)
             toggleStrategy(name+1);
             break;
         case '?':
-            ai->TellMaster(ListStrategies());
+            botAI->TellMaster(ListStrategies());
             break;
         }
     }
@@ -570,10 +570,10 @@ void Engine::LogValues()
     if (testMode)
         return;
 
-    Player* bot = ai->GetBot();
+    Player* bot = botAI->GetBot();
     if (sPlayerbotAIConfig->logInGroupOnly && !bot->GetGroup())
         return;
 
-    string text = ai->GetAiObjectContext()->FormatValues();
+    string text = botAI->GetAiObjectContext()->FormatValues();
     sLog->outDebug( "Values for %s: %s", bot->GetName(), text.c_str());
 }

@@ -5,7 +5,7 @@ namespace ai
     class NonCombatStrategy : public Strategy
     {
     public:
-        NonCombatStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        NonCombatStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 		virtual int GetType() { return STRATEGY_TYPE_NONCOMBAT; }
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
     };
@@ -13,7 +13,7 @@ namespace ai
     class LfgStrategy : public Strategy
     {
     public:
-        LfgStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        LfgStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 		virtual int GetType() { return STRATEGY_TYPE_NONCOMBAT; }
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
         virtual string getName() { return "lfg"; }
@@ -22,7 +22,7 @@ namespace ai
     class CollisionStrategy : public Strategy
     {
     public:
-        CollisionStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        CollisionStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 		virtual int GetType() { return STRATEGY_TYPE_NONCOMBAT; }
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
         virtual string getName() { return "collision"; }

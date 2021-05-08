@@ -50,7 +50,7 @@ void CustomStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
     {
         if (actionLinesCache[qualifier].empty())
         {
-            LoadActionLines((uint32)ai->GetBot()->GetGUIDLow());
+            LoadActionLines((uint32)botAI->GetBot()->GetGUIDLow());
             if (this->actionLines.empty())
                 LoadActionLines(0);
         }
@@ -103,6 +103,6 @@ void CustomStrategy::Reset()
     actionLinesCache[qualifier].clear();
 }
 
-CustomStrategy::CustomStrategy(PlayerbotAI* ai) : Strategy(ai), Qualified()
+CustomStrategy::CustomStrategy(PlayerbotAI* botAI) : Strategy(botAI), Qualified()
 {
 }

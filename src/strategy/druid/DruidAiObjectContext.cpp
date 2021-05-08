@@ -37,15 +37,15 @@ namespace ai
             }
 
         private:
-            static Strategy* nc(PlayerbotAI* ai) { return new GenericDruidNonCombatStrategy(ai); }
-            static Strategy* cat_aoe(PlayerbotAI* ai) { return new CatAoeDruidStrategy(ai); }
-            static Strategy* caster_aoe(PlayerbotAI* ai) { return new CasterDruidAoeStrategy(ai); }
-            static Strategy* caster_debuff(PlayerbotAI* ai) { return new CasterDruidDebuffStrategy(ai); }
-            static Strategy* cure(PlayerbotAI* ai) { return new DruidCureStrategy(ai); }
-            static Strategy* melee(PlayerbotAI* ai) { return new MeleeDruidStrategy(ai); }
-            static Strategy* buff(PlayerbotAI* ai) { return new GenericDruidBuffStrategy(ai); }
-            static Strategy* boost(PlayerbotAI* ai) { return new DruidBoostStrategy(ai); }
-            static Strategy* cc(PlayerbotAI* ai) { return new DruidCcStrategy(ai); }
+            static Strategy* nc(PlayerbotAI* botAI) { return new GenericDruidNonCombatStrategy(botAI); }
+            static Strategy* cat_aoe(PlayerbotAI* botAI) { return new CatAoeDruidStrategy(botAI); }
+            static Strategy* caster_aoe(PlayerbotAI* botAI) { return new CasterDruidAoeStrategy(botAI); }
+            static Strategy* caster_debuff(PlayerbotAI* botAI) { return new CasterDruidDebuffStrategy(botAI); }
+            static Strategy* cure(PlayerbotAI* botAI) { return new DruidCureStrategy(botAI); }
+            static Strategy* melee(PlayerbotAI* botAI) { return new MeleeDruidStrategy(botAI); }
+            static Strategy* buff(PlayerbotAI* botAI) { return new GenericDruidBuffStrategy(botAI); }
+            static Strategy* boost(PlayerbotAI* botAI) { return new DruidBoostStrategy(botAI); }
+            static Strategy* cc(PlayerbotAI* botAI) { return new DruidCcStrategy(botAI); }
         };
 
         class DruidStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -62,10 +62,10 @@ namespace ai
             }
 
         private:
-            static Strategy* bear(PlayerbotAI* ai) { return new BearTankDruidStrategy(ai); }
-            static Strategy* cat(PlayerbotAI* ai) { return new CatDpsDruidStrategy(ai); }
-            static Strategy* caster(PlayerbotAI* ai) { return new CasterDruidStrategy(ai); }
-            static Strategy* heal(PlayerbotAI* ai) { return new HealDruidStrategy(ai); }
+            static Strategy* bear(PlayerbotAI* botAI) { return new BearTankDruidStrategy(botAI); }
+            static Strategy* cat(PlayerbotAI* botAI) { return new CatDpsDruidStrategy(botAI); }
+            static Strategy* caster(PlayerbotAI* botAI) { return new CasterDruidStrategy(botAI); }
+            static Strategy* heal(PlayerbotAI* botAI) { return new HealDruidStrategy(botAI); }
         };
     };
 };
@@ -107,29 +107,29 @@ namespace ai
             }
 
         private:
-            static Trigger* natures_swiftness(PlayerbotAI* ai) { return new NaturesSwiftnessTrigger(ai); }
-            static Trigger* eclipse_solar(PlayerbotAI* ai) { return new EclipseSolarTrigger(ai); }
-            static Trigger* eclipse_lunar(PlayerbotAI* ai) { return new EclipseLunarTrigger(ai); }
-            static Trigger* Thorns(PlayerbotAI* ai) { return new ThornsTrigger(ai); }
-            static Trigger* bash(PlayerbotAI* ai) { return new BashInterruptSpellTrigger(ai); }
-            static Trigger* faerie_fire_feral(PlayerbotAI* ai) { return new FaerieFireFeralTrigger(ai); }
-            static Trigger* insect_swarm(PlayerbotAI* ai) { return new InsectSwarmTrigger(ai); }
-            static Trigger* moonfire(PlayerbotAI* ai) { return new MoonfireTrigger(ai); }
-            static Trigger* faerie_fire(PlayerbotAI* ai) { return new FaerieFireTrigger(ai); }
-            static Trigger* natures_grasp(PlayerbotAI* ai) { return new NaturesGraspTrigger(ai); }
-            static Trigger* tigers_fury(PlayerbotAI* ai) { return new TigersFuryTrigger(ai); }
-            static Trigger* rake(PlayerbotAI* ai) { return new RakeTrigger(ai); }
-            static Trigger* mark_of_the_wild(PlayerbotAI* ai) { return new MarkOfTheWildTrigger(ai); }
-            static Trigger* mark_of_the_wild_on_party(PlayerbotAI* ai) { return new MarkOfTheWildOnPartyTrigger(ai); }
-            static Trigger* cure_poison(PlayerbotAI* ai) { return new CurePoisonTrigger(ai); }
-            static Trigger* party_member_cure_poison(PlayerbotAI* ai) { return new PartyMemberCurePoisonTrigger(ai); }
-            static Trigger* entangling_roots(PlayerbotAI* ai) { return new EntanglingRootsTrigger(ai); }
-            static Trigger* hibernate(PlayerbotAI* ai) { return new HibernateTrigger(ai); }
-            static Trigger* bear_form(PlayerbotAI* ai) { return new BearFormTrigger(ai); }
-            static Trigger* cat_form(PlayerbotAI* ai) { return new CatFormTrigger(ai); }
-            static Trigger* tree_form(PlayerbotAI* ai) { return new TreeFormTrigger(ai); }
-            static Trigger* bash_on_enemy_healer(PlayerbotAI* ai) { return new BashInterruptEnemyHealerSpellTrigger(ai); }
-            static Trigger* omen_of_clarity(PlayerbotAI* ai) { return new OmenOfClarityTrigger(ai); }
+            static Trigger* natures_swiftness(PlayerbotAI* botAI) { return new NaturesSwiftnessTrigger(botAI); }
+            static Trigger* eclipse_solar(PlayerbotAI* botAI) { return new EclipseSolarTrigger(botAI); }
+            static Trigger* eclipse_lunar(PlayerbotAI* botAI) { return new EclipseLunarTrigger(botAI); }
+            static Trigger* Thorns(PlayerbotAI* botAI) { return new ThornsTrigger(botAI); }
+            static Trigger* bash(PlayerbotAI* botAI) { return new BashInterruptSpellTrigger(botAI); }
+            static Trigger* faerie_fire_feral(PlayerbotAI* botAI) { return new FaerieFireFeralTrigger(botAI); }
+            static Trigger* insect_swarm(PlayerbotAI* botAI) { return new InsectSwarmTrigger(botAI); }
+            static Trigger* moonfire(PlayerbotAI* botAI) { return new MoonfireTrigger(botAI); }
+            static Trigger* faerie_fire(PlayerbotAI* botAI) { return new FaerieFireTrigger(botAI); }
+            static Trigger* natures_grasp(PlayerbotAI* botAI) { return new NaturesGraspTrigger(botAI); }
+            static Trigger* tigers_fury(PlayerbotAI* botAI) { return new TigersFuryTrigger(botAI); }
+            static Trigger* rake(PlayerbotAI* botAI) { return new RakeTrigger(botAI); }
+            static Trigger* mark_of_the_wild(PlayerbotAI* botAI) { return new MarkOfTheWildTrigger(botAI); }
+            static Trigger* mark_of_the_wild_on_party(PlayerbotAI* botAI) { return new MarkOfTheWildOnPartyTrigger(botAI); }
+            static Trigger* cure_poison(PlayerbotAI* botAI) { return new CurePoisonTrigger(botAI); }
+            static Trigger* party_member_cure_poison(PlayerbotAI* botAI) { return new PartyMemberCurePoisonTrigger(botAI); }
+            static Trigger* entangling_roots(PlayerbotAI* botAI) { return new EntanglingRootsTrigger(botAI); }
+            static Trigger* hibernate(PlayerbotAI* botAI) { return new HibernateTrigger(botAI); }
+            static Trigger* bear_form(PlayerbotAI* botAI) { return new BearFormTrigger(botAI); }
+            static Trigger* cat_form(PlayerbotAI* botAI) { return new CatFormTrigger(botAI); }
+            static Trigger* tree_form(PlayerbotAI* botAI) { return new TreeFormTrigger(botAI); }
+            static Trigger* bash_on_enemy_healer(PlayerbotAI* botAI) { return new BashInterruptEnemyHealerSpellTrigger(botAI); }
+            static Trigger* omen_of_clarity(PlayerbotAI* botAI) { return new OmenOfClarityTrigger(botAI); }
         };
     };
 };
@@ -209,71 +209,71 @@ namespace ai
             }
 
         private:
-            static Action* natures_swiftness(PlayerbotAI* ai) { return new CastNaturesSwiftnessAction(ai); }
-            static Action* omen_of_clarity(PlayerbotAI* ai) { return new CastOmenOfClarityAction(ai); }
-            static Action* tranquility(PlayerbotAI* ai) { return new CastTranquilityAction(ai); }
-            static Action* feral_charge_bear(PlayerbotAI* ai) { return new CastFeralChargeBearAction(ai); }
-            static Action* feral_charge_cat(PlayerbotAI* ai) { return new CastFeralChargeCatAction(ai); }
-            static Action* swipe_bear(PlayerbotAI* ai) { return new CastSwipeBearAction(ai); }
-            static Action* faerie_fire_feral(PlayerbotAI* ai) { return new CastFaerieFireFeralAction(ai); }
-            static Action* faerie_fire(PlayerbotAI* ai) { return new CastFaerieFireAction(ai); }
-            static Action* bear_form(PlayerbotAI* ai) { return new CastBearFormAction(ai); }
-            static Action* dire_bear_form(PlayerbotAI* ai) { return new CastDireBearFormAction(ai); }
-            static Action* cat_form(PlayerbotAI* ai) { return new CastCatFormAction(ai); }
-            static Action* tree_form(PlayerbotAI* ai) { return new CastTreeFormAction(ai); }
-            static Action* caster_form(PlayerbotAI* ai) { return new CastCasterFormAction(ai); }
-            static Action* mangle_bear(PlayerbotAI* ai) { return new CastMangleBearAction(ai); }
-            static Action* maul(PlayerbotAI* ai) { return new CastMaulAction(ai); }
-            static Action* bash(PlayerbotAI* ai) { return new CastBashAction(ai); }
-            static Action* swipe(PlayerbotAI* ai) { return new CastSwipeAction(ai); }
-            static Action* growl(PlayerbotAI* ai) { return new CastGrowlAction(ai); }
-            static Action* demoralizing_roar(PlayerbotAI* ai) { return new CastDemoralizingRoarAction(ai); }
-            static Action* moonkin_form(PlayerbotAI* ai) { return new CastMoonkinFormAction(ai); }
-            static Action* hibernate(PlayerbotAI* ai) { return new CastHibernateAction(ai); }
-            static Action* entangling_roots(PlayerbotAI* ai) { return new CastEntanglingRootsAction(ai); }
-            static Action* hibernate_on_cc(PlayerbotAI* ai) { return new CastHibernateCcAction(ai); }
-            static Action* entangling_roots_on_cc(PlayerbotAI* ai) { return new CastEntanglingRootsCcAction(ai); }
-            static Action* wrath(PlayerbotAI* ai) { return new CastWrathAction(ai); }
-            static Action* starfall(PlayerbotAI* ai) { return new CastStarfallAction(ai); }
-            static Action* insect_swarm(PlayerbotAI* ai) { return new CastInsectSwarmAction(ai); }
-            static Action* moonfire(PlayerbotAI* ai) { return new CastMoonfireAction(ai); }
-            static Action* starfire(PlayerbotAI* ai) { return new CastStarfireAction(ai); }
-            static Action* natures_grasp(PlayerbotAI* ai) { return new CastNaturesGraspAction(ai); }
-            static Action* claw(PlayerbotAI* ai) { return new CastClawAction(ai); }
-            static Action* mangle_cat(PlayerbotAI* ai) { return new CastMangleCatAction(ai); }
-            static Action* swipe_cat(PlayerbotAI* ai) { return new CastSwipeCatAction(ai); }
-            static Action* rake(PlayerbotAI* ai) { return new CastRakeAction(ai); }
-            static Action* ferocious_bite(PlayerbotAI* ai) { return new CastFerociousBiteAction(ai); }
-            static Action* rip(PlayerbotAI* ai) { return new CastRipAction(ai); }
-            static Action* cower(PlayerbotAI* ai) { return new CastCowerAction(ai); }
-            static Action* survival_instincts(PlayerbotAI* ai) { return new CastSurvivalInstinctsAction(ai); }
-            static Action* thorns(PlayerbotAI* ai) { return new CastThornsAction(ai); }
-            static Action* cure_poison(PlayerbotAI* ai) { return new CastCurePoisonAction(ai); }
-            static Action* cure_poison_on_party(PlayerbotAI* ai) { return new CastCurePoisonOnPartyAction(ai); }
-            static Action* abolish_poison(PlayerbotAI* ai) { return new CastAbolishPoisonAction(ai); }
-            static Action* abolish_poison_on_party(PlayerbotAI* ai) { return new CastAbolishPoisonOnPartyAction(ai); }
-            static Action* berserk(PlayerbotAI* ai) { return new CastBerserkAction(ai); }
-            static Action* tigers_fury(PlayerbotAI* ai) { return new CastTigersFuryAction(ai); }
-            static Action* mark_of_the_wild(PlayerbotAI* ai) { return new CastMarkOfTheWildAction(ai); }
-            static Action* mark_of_the_wild_on_party(PlayerbotAI* ai) { return new CastMarkOfTheWildOnPartyAction(ai); }
-            static Action* regrowth(PlayerbotAI* ai) { return new CastRegrowthAction(ai); }
-            static Action* rejuvenation(PlayerbotAI* ai) { return new CastRejuvenationAction(ai); }
-            static Action* healing_touch(PlayerbotAI* ai) { return new CastHealingTouchAction(ai); }
-            static Action* regrowth_on_party(PlayerbotAI* ai) { return new CastRegrowthOnPartyAction(ai); }
-            static Action* rejuvenation_on_party(PlayerbotAI* ai) { return new CastRejuvenationOnPartyAction(ai); }
-            static Action* healing_touch_on_party(PlayerbotAI* ai) { return new CastHealingTouchOnPartyAction(ai); }
-            static Action* rebirth(PlayerbotAI* ai) { return new CastRebirthAction(ai); }
-            static Action* revive(PlayerbotAI* ai) { return new CastReviveAction(ai); }
-            static Action* barskin(PlayerbotAI* ai) { return new CastBarskinAction(ai); }
-            static Action* lacerate(PlayerbotAI* ai) { return new CastLacerateAction(ai); }
-            static Action* hurricane(PlayerbotAI* ai) { return new CastHurricaneAction(ai); }
-            static Action* innervate(PlayerbotAI* ai) { return new CastInnervateAction(ai); }
-            static Action* bash_on_enemy_healer(PlayerbotAI* ai) { return new CastBashOnEnemyHealerAction(ai); }
+            static Action* natures_swiftness(PlayerbotAI* botAI) { return new CastNaturesSwiftnessAction(botAI); }
+            static Action* omen_of_clarity(PlayerbotAI* botAI) { return new CastOmenOfClarityAction(botAI); }
+            static Action* tranquility(PlayerbotAI* botAI) { return new CastTranquilityAction(botAI); }
+            static Action* feral_charge_bear(PlayerbotAI* botAI) { return new CastFeralChargeBearAction(botAI); }
+            static Action* feral_charge_cat(PlayerbotAI* botAI) { return new CastFeralChargeCatAction(botAI); }
+            static Action* swipe_bear(PlayerbotAI* botAI) { return new CastSwipeBearAction(botAI); }
+            static Action* faerie_fire_feral(PlayerbotAI* botAI) { return new CastFaerieFireFeralAction(botAI); }
+            static Action* faerie_fire(PlayerbotAI* botAI) { return new CastFaerieFireAction(botAI); }
+            static Action* bear_form(PlayerbotAI* botAI) { return new CastBearFormAction(botAI); }
+            static Action* dire_bear_form(PlayerbotAI* botAI) { return new CastDireBearFormAction(botAI); }
+            static Action* cat_form(PlayerbotAI* botAI) { return new CastCatFormAction(botAI); }
+            static Action* tree_form(PlayerbotAI* botAI) { return new CastTreeFormAction(botAI); }
+            static Action* caster_form(PlayerbotAI* botAI) { return new CastCasterFormAction(botAI); }
+            static Action* mangle_bear(PlayerbotAI* botAI) { return new CastMangleBearAction(botAI); }
+            static Action* maul(PlayerbotAI* botAI) { return new CastMaulAction(botAI); }
+            static Action* bash(PlayerbotAI* botAI) { return new CastBashAction(botAI); }
+            static Action* swipe(PlayerbotAI* botAI) { return new CastSwipeAction(botAI); }
+            static Action* growl(PlayerbotAI* botAI) { return new CastGrowlAction(botAI); }
+            static Action* demoralizing_roar(PlayerbotAI* botAI) { return new CastDemoralizingRoarAction(botAI); }
+            static Action* moonkin_form(PlayerbotAI* botAI) { return new CastMoonkinFormAction(botAI); }
+            static Action* hibernate(PlayerbotAI* botAI) { return new CastHibernateAction(botAI); }
+            static Action* entangling_roots(PlayerbotAI* botAI) { return new CastEntanglingRootsAction(botAI); }
+            static Action* hibernate_on_cc(PlayerbotAI* botAI) { return new CastHibernateCcAction(botAI); }
+            static Action* entangling_roots_on_cc(PlayerbotAI* botAI) { return new CastEntanglingRootsCcAction(botAI); }
+            static Action* wrath(PlayerbotAI* botAI) { return new CastWrathAction(botAI); }
+            static Action* starfall(PlayerbotAI* botAI) { return new CastStarfallAction(botAI); }
+            static Action* insect_swarm(PlayerbotAI* botAI) { return new CastInsectSwarmAction(botAI); }
+            static Action* moonfire(PlayerbotAI* botAI) { return new CastMoonfireAction(botAI); }
+            static Action* starfire(PlayerbotAI* botAI) { return new CastStarfireAction(botAI); }
+            static Action* natures_grasp(PlayerbotAI* botAI) { return new CastNaturesGraspAction(botAI); }
+            static Action* claw(PlayerbotAI* botAI) { return new CastClawAction(botAI); }
+            static Action* mangle_cat(PlayerbotAI* botAI) { return new CastMangleCatAction(botAI); }
+            static Action* swipe_cat(PlayerbotAI* botAI) { return new CastSwipeCatAction(botAI); }
+            static Action* rake(PlayerbotAI* botAI) { return new CastRakeAction(botAI); }
+            static Action* ferocious_bite(PlayerbotAI* botAI) { return new CastFerociousBiteAction(botAI); }
+            static Action* rip(PlayerbotAI* botAI) { return new CastRipAction(botAI); }
+            static Action* cower(PlayerbotAI* botAI) { return new CastCowerAction(botAI); }
+            static Action* survival_instincts(PlayerbotAI* botAI) { return new CastSurvivalInstinctsAction(botAI); }
+            static Action* thorns(PlayerbotAI* botAI) { return new CastThornsAction(botAI); }
+            static Action* cure_poison(PlayerbotAI* botAI) { return new CastCurePoisonAction(botAI); }
+            static Action* cure_poison_on_party(PlayerbotAI* botAI) { return new CastCurePoisonOnPartyAction(botAI); }
+            static Action* abolish_poison(PlayerbotAI* botAI) { return new CastAbolishPoisonAction(botAI); }
+            static Action* abolish_poison_on_party(PlayerbotAI* botAI) { return new CastAbolishPoisonOnPartyAction(botAI); }
+            static Action* berserk(PlayerbotAI* botAI) { return new CastBerserkAction(botAI); }
+            static Action* tigers_fury(PlayerbotAI* botAI) { return new CastTigersFuryAction(botAI); }
+            static Action* mark_of_the_wild(PlayerbotAI* botAI) { return new CastMarkOfTheWildAction(botAI); }
+            static Action* mark_of_the_wild_on_party(PlayerbotAI* botAI) { return new CastMarkOfTheWildOnPartyAction(botAI); }
+            static Action* regrowth(PlayerbotAI* botAI) { return new CastRegrowthAction(botAI); }
+            static Action* rejuvenation(PlayerbotAI* botAI) { return new CastRejuvenationAction(botAI); }
+            static Action* healing_touch(PlayerbotAI* botAI) { return new CastHealingTouchAction(botAI); }
+            static Action* regrowth_on_party(PlayerbotAI* botAI) { return new CastRegrowthOnPartyAction(botAI); }
+            static Action* rejuvenation_on_party(PlayerbotAI* botAI) { return new CastRejuvenationOnPartyAction(botAI); }
+            static Action* healing_touch_on_party(PlayerbotAI* botAI) { return new CastHealingTouchOnPartyAction(botAI); }
+            static Action* rebirth(PlayerbotAI* botAI) { return new CastRebirthAction(botAI); }
+            static Action* revive(PlayerbotAI* botAI) { return new CastReviveAction(botAI); }
+            static Action* barskin(PlayerbotAI* botAI) { return new CastBarskinAction(botAI); }
+            static Action* lacerate(PlayerbotAI* botAI) { return new CastLacerateAction(botAI); }
+            static Action* hurricane(PlayerbotAI* botAI) { return new CastHurricaneAction(botAI); }
+            static Action* innervate(PlayerbotAI* botAI) { return new CastInnervateAction(botAI); }
+            static Action* bash_on_enemy_healer(PlayerbotAI* botAI) { return new CastBashOnEnemyHealerAction(botAI); }
         };
     };
 };
 
-DruidAiObjectContext::DruidAiObjectContext(PlayerbotAI* ai) : AiObjectContext(ai)
+DruidAiObjectContext::DruidAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
     strategyContexts.Add(new ai::druid::StrategyFactoryInternal());
     strategyContexts.Add(new ai::druid::DruidStrategyFactoryInternal());

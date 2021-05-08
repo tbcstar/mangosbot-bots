@@ -8,7 +8,7 @@ namespace ai
     class GenericShamanStrategy : public CombatStrategy
     {
     public:
-        GenericShamanStrategy(PlayerbotAI* ai);
+        GenericShamanStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -18,7 +18,7 @@ namespace ai
     class ShamanBuffDpsStrategy : public Strategy
     {
     public:
-        ShamanBuffDpsStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        ShamanBuffDpsStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -29,7 +29,7 @@ namespace ai
     class ShamanBuffManaStrategy : public Strategy
     {
     public:
-        ShamanBuffManaStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        ShamanBuffManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -40,7 +40,7 @@ namespace ai
     class ShamanCureStrategy : public Strategy
     {
     public:
-        ShamanCureStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        ShamanCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

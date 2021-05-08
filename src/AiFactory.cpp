@@ -15,40 +15,40 @@
 #include "strategy/hunter/HunterAiObjectContext.h"
 #include "strategy/rogue/RogueAiObjectContext.h"
 
-AiObjectContext* AiFactory::createAiObjectContext(Player* player, PlayerbotAI* ai)
+AiObjectContext* AiFactory::createAiObjectContext(Player* player, PlayerbotAI* botAI)
 {
     switch (player->getClass())
     {
         case CLASS_PRIEST:
-            return new PriestAiObjectContext(ai);
+            return new PriestAiObjectContext(botAI);
             break;
         case CLASS_MAGE:
-            return new MageAiObjectContext(ai);
+            return new MageAiObjectContext(botAI);
             break;
         case CLASS_WARLOCK:
-            return new WarlockAiObjectContext(ai);
+            return new WarlockAiObjectContext(botAI);
             break;
         case CLASS_WARRIOR:
-            return new WarriorAiObjectContext(ai);
+            return new WarriorAiObjectContext(botAI);
             break;
         case CLASS_SHAMAN:
-            return new ShamanAiObjectContext(ai);
+            return new ShamanAiObjectContext(botAI);
             break;
         case CLASS_PALADIN:
-            return new PaladinAiObjectContext(ai);
+            return new PaladinAiObjectContext(botAI);
             break;
         case CLASS_DRUID:
-            return new DruidAiObjectContext(ai);
+            return new DruidAiObjectContext(botAI);
             break;
         case CLASS_HUNTER:
-            return new HunterAiObjectContext(ai);
+            return new HunterAiObjectContext(botAI);
             break;
         case CLASS_ROGUE:
-            return new RogueAiObjectContext(ai);
+            return new RogueAiObjectContext(botAI);
             break;
     }
 
-    return new AiObjectContext(ai);
+    return new AiObjectContext(botAI);
 }
 
 uint8 AiFactory::GetPlayerSpecTab(Player* bot)

@@ -32,17 +32,17 @@ void ListQuestsAction::ListQuests(QuestListFilter filter)
     bool showCompleted = filter & QUEST_LIST_FILTER_COMPLETED;
 
     if (showIncompleted)
-        ai->TellMaster("--- Incompleted quests ---");
+        botAI->TellMaster("--- Incompleted quests ---");
     int incompleteCount = ListQuests(false, !showIncompleted);
 
     if (showCompleted)
-        ai->TellMaster("--- Completed quests ---");
+        botAI->TellMaster("--- Completed quests ---");
     int completeCount = ListQuests(true, !showCompleted);
 
-    ai->TellMaster("--- Summary ---");
+    botAI->TellMaster("--- Summary ---");
     std::ostringstream out;
     out << "Total: " << (completeCount + incompleteCount) << " / 25 (incompleted: " << incompleteCount << ", completed: " << completeCount << ")";
-    ai->TellMaster(out);
+    botAI->TellMaster(out);
 }
 
 int ListQuestsAction::ListQuests(bool completed, bool silent)
@@ -64,7 +64,7 @@ int ListQuestsAction::ListQuests(bool completed, bool silent)
         if (silent)
             continue;
 
-        ai->TellMaster(chat->formatQuest(pQuest));
+        botAI->TellMaster(chat->formatQuest(pQuest));
     }
 
     return count;

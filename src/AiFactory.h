@@ -12,7 +12,7 @@ class PlayerbotAI;
 class AiFactory
 {
     public:
-        static AiObjectContext* createAiObjectContext(Player* player, PlayerbotAI* ai);
+        static AiObjectContext* createAiObjectContext(Player* player, PlayerbotAI* botAI);
 	    static Engine* createCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext);
 	    static Engine* createNonCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext);
         static Engine* createDeadEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext);

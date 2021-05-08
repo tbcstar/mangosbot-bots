@@ -7,7 +7,7 @@ namespace ai
     class GenericRogueNonCombatStrategy : public NonCombatStrategy
     {
     public:
-        GenericRogueNonCombatStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        GenericRogueNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "nc"; }
     
     public:

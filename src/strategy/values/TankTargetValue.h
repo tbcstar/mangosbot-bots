@@ -8,7 +8,7 @@ namespace ai
     class TankTargetValue : public TargetValue
 	{
 	public:
-        TankTargetValue(PlayerbotAI* ai) : TargetValue(ai) {}
+        TankTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
 
     public:
         Unit* Calculate();

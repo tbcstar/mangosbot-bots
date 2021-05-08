@@ -25,7 +25,7 @@ bool CastCustomSpellAction::Execute(Event event)
 
     Player* master = GetMaster();
     if (master && master->GetTarget())
-        target = ai->GetUnit(master->GetTarget());
+        target = botAI->GetUnit(master->GetTarget());
 
     if (!target)
         target = bot;
@@ -55,7 +55,7 @@ bool CastCustomSpellAction::Execute(Event event)
     if (!spell)
     {
         msg << "Unknown spell " << text;
-        ai->TellError(msg.str());
+        botAI->TellError(msg.str());
         return false;
     }
 
@@ -63,16 +63,16 @@ bool CastCustomSpellAction::Execute(Event event)
     if (!pSpellInfo)
     {
         msg << "Unknown spell " << text;
-        ai->TellError(msg.str());
+        botAI->TellError(msg.str());
         return false;
     }
 
     if (target != bot && !sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
     {
         sServerFacade->SetFacingTo(bot, target);
-        ai->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
         msg << "cast " << text;
-        ai->HandleCommand(CHAT_MSG_WHISPER, msg.str(), *master);
+        botAI->HandleCommand(CHAT_MSG_WHISPER, msg.str(), *master);
         return true;
     }
 
@@ -83,16 +83,16 @@ bool CastCustomSpellAction::Execute(Event event)
     else if (target == bot) spellName << "self";
     else spellName << target->GetName();
 
-    if (!bot->GetTrader() && !ai->CanCastSpell(spell, target, true, itemTarget))
+    if (!bot->GetTrader() && !botAI->CanCastSpell(spell, target, true, itemTarget))
     {
         msg << "Cannot cast " << spellName.str();
-        ai->TellError(msg.str());
+        botAI->TellError(msg.str());
         return false;
     }
 
     MotionMaster &mm = *bot->GetMotionMaster();
 
-    bool result = spell ? ai->CastSpell(spell, target, itemTarget) : ai->CastSpell(text, target, itemTarget);
+    bool result = spell ? botAI->CastSpell(spell, target, itemTarget) : botAI->CastSpell(text, target, itemTarget);
     if (result)
     {
         msg << "Casting " << spellName.str();
@@ -101,15 +101,15 @@ bool CastCustomSpellAction::Execute(Event event)
         {
             ostringstream cmd;
             cmd << "cast " << text << " " << (castCount - 1);
-            ai->HandleCommand(CHAT_MSG_WHISPER, cmd.str(), *master);
+            botAI->HandleCommand(CHAT_MSG_WHISPER, cmd.str(), *master);
             msg << "|cffffff00(x" << (castCount-1) << " left)|r";
         }
-        ai->TellMasterNoFacing(msg.str());
+        botAI->TellMasterNoFacing(msg.str());
     }
     else
     {
         msg << "Cast " << spellName.str() << " is failed";
-        ai->TellError(msg.str());
+        botAI->TellError(msg.str());
     }
 
     return result;

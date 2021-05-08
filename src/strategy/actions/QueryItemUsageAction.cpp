@@ -44,7 +44,7 @@ bool QueryItemUsageAction::Execute(Event event)
         if (!item)
             return false;
 
-        ai->TellMaster(QueryItem(item, count, GetCount(item)));
+        botAI->TellMaster(QueryItem(item, count, GetCount(item)));
         return true;
     }
 
@@ -55,7 +55,7 @@ bool QueryItemUsageAction::Execute(Event event)
         ItemPrototype const *item = sItemStorage.LookupEntry<ItemPrototype>(*i);
         if (!item) continue;
 
-        ai->TellMaster(QueryItem(item, 0, GetCount(item)));
+        botAI->TellMaster(QueryItem(item, 0, GetCount(item)));
     }
     return true;
 }
@@ -153,7 +153,7 @@ string QueryItemUsageAction::QueryItemPrice(ItemPrototype const *item)
 
 string QueryItemUsageAction::QueryQuestItem(uint32 itemId)
 {
-    Player *bot = ai->GetBot();
+    Player *bot = botAI->GetBot();
     QuestStatusMap& questMap = bot->getQuestStatusMap();
     for (QuestStatusMap::const_iterator i = questMap.begin(); i != questMap.end(); i++)
     {

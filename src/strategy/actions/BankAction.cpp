@@ -14,14 +14,14 @@ bool BankAction::Execute(Event event)
     list<ObjectGuid> npcs = AI_VALUE(list<ObjectGuid>, "nearest npcs");
     for (list<ObjectGuid>::iterator i = npcs.begin(); i != npcs.end(); i++)
     {
-        Unit* npc = ai->GetUnit(*i);
+        Unit* npc = botAI->GetUnit(*i);
         if (!npc || !npc->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_BANKER))
             continue;
 
         return Execute(text, npc);
     }
 
-    ai->TellError("Cannot find banker nearby");
+    botAI->TellError("Cannot find banker nearby");
     return false;
 }
 
@@ -81,7 +81,7 @@ bool BankAction::Withdraw(const uint32 itemid)
 
     std::ostringstream out;
     out << "got " << chat->formatItem(pItem->GetProto(), pItem->GetCount()) << " from bank";
-    ai->TellMaster(out.str());
+    botAI->TellMaster(out.str());
     return true;
 }
 
@@ -101,13 +101,13 @@ bool BankAction::Deposit(Item* pItem)
     bot->BankItem(dest, pItem, true);
 
     out << "put " << chat->formatItem(pItem->GetProto(), pItem->GetCount()) << " to bank";
-    ai->TellMaster(out.str());
+    botAI->TellMaster(out.str());
 	return true;
 }
 
 void BankAction::ListItems()
 {
-    ai->TellMaster("=== Bank ===");
+    botAI->TellMaster("=== Bank ===");
 
     map<uint32, int> items;
     map<uint32, bool> soulbound;

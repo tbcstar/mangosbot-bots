@@ -13,7 +13,7 @@ public:
         creators["magma totem"] = &magma_totem;
     }
 private:
-    static ActionNode* magma_totem(PlayerbotAI* ai)
+    static ActionNode* magma_totem(PlayerbotAI* botAI)
     {
         return new ActionNode ("magma totem",
             /*P*/ NULL,
@@ -22,7 +22,7 @@ private:
     }
 };
 
-CasterShamanStrategy::CasterShamanStrategy(PlayerbotAI* ai) : GenericShamanStrategy(ai)
+CasterShamanStrategy::CasterShamanStrategy(PlayerbotAI* botAI) : GenericShamanStrategy(botAI)
 {
     actionNodeFactories.Add(new CasterShamanStrategyActionNodeFactory());
 }

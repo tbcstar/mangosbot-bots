@@ -7,7 +7,7 @@ namespace ai
 {
     class SetCraftAction : public Action {
     public:
-        SetCraftAction(PlayerbotAI* ai) : Action(ai, "craft") {}
+        SetCraftAction(PlayerbotAI* botAI) : Action(ai, "craft") {}
         virtual bool Execute(Event event);
 
     public:

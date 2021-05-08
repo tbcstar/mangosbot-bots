@@ -36,14 +36,14 @@ namespace ai
             }
 
         private:
-            static Strategy* nc(PlayerbotAI* ai) { return new GenericMageNonCombatStrategy(ai); }
-            static Strategy* pull(PlayerbotAI* ai) { return new PullStrategy(ai, "shoot"); }
-            static Strategy* fire_aoe(PlayerbotAI* ai) { return new FireMageAoeStrategy(ai); }
-            static Strategy* frost_aoe(PlayerbotAI* ai) { return new FrostMageAoeStrategy(ai); }
-            static Strategy* cure(PlayerbotAI* ai) { return new MageCureStrategy(ai); }
-            static Strategy* buff(PlayerbotAI* ai) { return new MageBuffStrategy(ai); }
-            static Strategy* boost(PlayerbotAI* ai) { return new MageBoostStrategy(ai); }
-            static Strategy* cc(PlayerbotAI* ai) { return new MageCcStrategy(ai); }
+            static Strategy* nc(PlayerbotAI* botAI) { return new GenericMageNonCombatStrategy(botAI); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* fire_aoe(PlayerbotAI* botAI) { return new FireMageAoeStrategy(botAI); }
+            static Strategy* frost_aoe(PlayerbotAI* botAI) { return new FrostMageAoeStrategy(botAI); }
+            static Strategy* cure(PlayerbotAI* botAI) { return new MageCureStrategy(botAI); }
+            static Strategy* buff(PlayerbotAI* botAI) { return new MageBuffStrategy(botAI); }
+            static Strategy* boost(PlayerbotAI* botAI) { return new MageBoostStrategy(botAI); }
+            static Strategy* cc(PlayerbotAI* botAI) { return new MageCcStrategy(botAI); }
         };
 
         class MageStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -57,9 +57,9 @@ namespace ai
             }
 
         private:
-            static Strategy* frost(PlayerbotAI* ai) { return new FrostMageStrategy(ai); }
-            static Strategy* fire(PlayerbotAI* ai) { return new FireMageStrategy(ai); }
-            static Strategy* arcane(PlayerbotAI* ai) { return new ArcaneMageStrategy(ai); }
+            static Strategy* frost(PlayerbotAI* botAI) { return new FrostMageStrategy(botAI); }
+            static Strategy* fire(PlayerbotAI* botAI) { return new FireMageStrategy(botAI); }
+            static Strategy* arcane(PlayerbotAI* botAI) { return new ArcaneMageStrategy(botAI); }
         };
 
         class MageBuffStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -72,8 +72,8 @@ namespace ai
             }
 
         private:
-            static Strategy* bmana(PlayerbotAI* ai) { return new MageBuffManaStrategy(ai); }
-            static Strategy* bdps(PlayerbotAI* ai) { return new MageBuffDpsStrategy(ai); }
+            static Strategy* bmana(PlayerbotAI* botAI) { return new MageBuffManaStrategy(botAI); }
+            static Strategy* bdps(PlayerbotAI* botAI) { return new MageBuffDpsStrategy(botAI); }
         };
     };
 };
@@ -113,25 +113,25 @@ namespace ai
             }
 
         private:
-            static Trigger* presence_of_mind(PlayerbotAI* ai) { return new PresenceOfMindTrigger(ai); }
-            static Trigger* arcane_power(PlayerbotAI* ai) { return new ArcanePowerTrigger(ai); }
-            static Trigger* hot_streak(PlayerbotAI* ai) { return new HotStreakTrigger(ai); }
-            static Trigger* fireball(PlayerbotAI* ai) { return new FireballTrigger(ai); }
-            static Trigger* pyroblast(PlayerbotAI* ai) { return new PyroblastTrigger(ai); }
-            static Trigger* combustion(PlayerbotAI* ai) { return new CombustionTrigger(ai); }
-            static Trigger* icy_veins(PlayerbotAI* ai) { return new IcyVeinsTrigger(ai); }
-            static Trigger* arcane_intellect(PlayerbotAI* ai) { return new ArcaneIntellectTrigger(ai); }
-            static Trigger* arcane_intellect_on_party(PlayerbotAI* ai) { return new ArcaneIntellectOnPartyTrigger(ai); }
-            static Trigger* mage_armor(PlayerbotAI* ai) { return new MageArmorTrigger(ai); }
-            static Trigger* remove_curse(PlayerbotAI* ai) { return new RemoveCurseTrigger(ai); }
-            static Trigger* remove_curse_on_party(PlayerbotAI* ai) { return new PartyMemberRemoveCurseTrigger(ai); }
-            static Trigger* counterspell(PlayerbotAI* ai) { return new CounterspellInterruptSpellTrigger(ai); }
-            static Trigger* polymorph(PlayerbotAI* ai) { return new PolymorphTrigger(ai); }
-            static Trigger* spellsteal(PlayerbotAI* ai) { return new SpellstealTrigger(ai); }
-            static Trigger* living_bomb(PlayerbotAI* ai) { return new LivingBombTrigger(ai); }
-            static Trigger* missile_barrage(PlayerbotAI* ai) { return new MissileBarrageTrigger(ai); }
-            static Trigger* arcane_blast(PlayerbotAI* ai) { return new ArcaneBlastTrigger(ai); }
-            static Trigger* counterspell_enemy_healer(PlayerbotAI* ai) { return new CounterspellEnemyHealerTrigger(ai); }
+            static Trigger* presence_of_mind(PlayerbotAI* botAI) { return new PresenceOfMindTrigger(botAI); }
+            static Trigger* arcane_power(PlayerbotAI* botAI) { return new ArcanePowerTrigger(botAI); }
+            static Trigger* hot_streak(PlayerbotAI* botAI) { return new HotStreakTrigger(botAI); }
+            static Trigger* fireball(PlayerbotAI* botAI) { return new FireballTrigger(botAI); }
+            static Trigger* pyroblast(PlayerbotAI* botAI) { return new PyroblastTrigger(botAI); }
+            static Trigger* combustion(PlayerbotAI* botAI) { return new CombustionTrigger(botAI); }
+            static Trigger* icy_veins(PlayerbotAI* botAI) { return new IcyVeinsTrigger(botAI); }
+            static Trigger* arcane_intellect(PlayerbotAI* botAI) { return new ArcaneIntellectTrigger(botAI); }
+            static Trigger* arcane_intellect_on_party(PlayerbotAI* botAI) { return new ArcaneIntellectOnPartyTrigger(botAI); }
+            static Trigger* mage_armor(PlayerbotAI* botAI) { return new MageArmorTrigger(botAI); }
+            static Trigger* remove_curse(PlayerbotAI* botAI) { return new RemoveCurseTrigger(botAI); }
+            static Trigger* remove_curse_on_party(PlayerbotAI* botAI) { return new PartyMemberRemoveCurseTrigger(botAI); }
+            static Trigger* counterspell(PlayerbotAI* botAI) { return new CounterspellInterruptSpellTrigger(botAI); }
+            static Trigger* polymorph(PlayerbotAI* botAI) { return new PolymorphTrigger(botAI); }
+            static Trigger* spellsteal(PlayerbotAI* botAI) { return new SpellstealTrigger(botAI); }
+            static Trigger* living_bomb(PlayerbotAI* botAI) { return new LivingBombTrigger(botAI); }
+            static Trigger* missile_barrage(PlayerbotAI* botAI) { return new MissileBarrageTrigger(botAI); }
+            static Trigger* arcane_blast(PlayerbotAI* botAI) { return new ArcaneBlastTrigger(botAI); }
+            static Trigger* counterspell_enemy_healer(PlayerbotAI* botAI) { return new CounterspellEnemyHealerTrigger(botAI); }
         };
     };
 };
@@ -188,50 +188,50 @@ namespace ai
             }
 
         private:
-            static Action* presence_of_mind(PlayerbotAI* ai) { return new CastPresenceOfMindAction(ai); }
-            static Action* arcane_power(PlayerbotAI* ai) { return new CastArcanePowerAction(ai); }
-            static Action* arcane_missiles(PlayerbotAI* ai) { return new CastArcaneMissilesAction(ai); }
-            static Action* arcane_barrage(PlayerbotAI* ai) { return new CastArcaneBarrageAction(ai); }
-            static Action* arcane_blast(PlayerbotAI* ai) { return new CastArcaneBlastAction(ai); }
-            static Action* frostbolt(PlayerbotAI* ai) { return new CastFrostboltAction(ai); }
-            static Action* blizzard(PlayerbotAI* ai) { return new CastBlizzardAction(ai); }
-            static Action* frost_nova(PlayerbotAI* ai) { return new CastFrostNovaAction(ai); }
-            static Action* arcane_intellect(PlayerbotAI* ai) { return new CastArcaneIntellectAction(ai); }
-            static Action* arcane_intellect_on_party(PlayerbotAI* ai) { return new CastArcaneIntellectOnPartyAction(ai); }
-            static Action* conjure_water(PlayerbotAI* ai) { return new CastConjureWaterAction(ai); }
-            static Action* conjure_food(PlayerbotAI* ai) { return new CastConjureFoodAction(ai); }
-            static Action* molten_armor(PlayerbotAI* ai) { return new CastMoltenArmorAction(ai); }
-            static Action* mage_armor(PlayerbotAI* ai) { return new CastMageArmorAction(ai); }
-            static Action* ice_armor(PlayerbotAI* ai) { return new CastIceArmorAction(ai); }
-            static Action* frost_armor(PlayerbotAI* ai) { return new CastFrostArmorAction(ai); }
-            static Action* fireball(PlayerbotAI* ai) { return new CastFireballAction(ai); }
-            static Action* pyroblast(PlayerbotAI* ai) { return new CastPyroblastAction(ai); }
-            static Action* flamestrike(PlayerbotAI* ai) { return new CastFlamestrikeAction(ai); }
-            static Action* fire_blast(PlayerbotAI* ai) { return new CastFireBlastAction(ai); }
-            static Action* scorch(PlayerbotAI* ai) { return new CastScorchAction(ai); }
-            static Action* counterspell(PlayerbotAI* ai) { return new CastCounterspellAction(ai); }
-            static Action* remove_curse(PlayerbotAI* ai) { return new CastRemoveCurseAction(ai); }
-            static Action* remove_curse_on_party(PlayerbotAI* ai) { return new CastRemoveCurseOnPartyAction(ai); }
-            static Action* remove_lesser_curse(PlayerbotAI* ai) { return new CastRemoveLesserCurseAction(ai); }
-            static Action* remove_lesser_curse_on_party(PlayerbotAI* ai) { return new CastRemoveLesserCurseOnPartyAction(ai); }
-            static Action* icy_veins(PlayerbotAI* ai) { return new CastIcyVeinsAction(ai); }
-            static Action* combustion(PlayerbotAI* ai) { return new CastCombustionAction(ai); }
-            static Action* ice_block(PlayerbotAI* ai) { return new CastIceBlockAction(ai); }
-            static Action* polymorph(PlayerbotAI* ai) { return new CastPolymorphAction(ai); }
-            static Action* spellsteal(PlayerbotAI* ai) { return new CastSpellstealAction(ai); }
-            static Action* living_bomb(PlayerbotAI* ai) { return new CastLivingBombAction(ai); }
-            static Action* dragons_breath(PlayerbotAI* ai) { return new CastDragonsBreathAction(ai); }
-            static Action* blast_wave(PlayerbotAI* ai) { return new CastBlastWaveAction(ai); }
-            static Action* invisibility(PlayerbotAI* ai) { return new CastInvisibilityAction(ai); }
-            static Action* evocation(PlayerbotAI* ai) { return new CastEvocationAction(ai); }
-            static Action* counterspell_on_enemy_healer(PlayerbotAI* ai) { return new CastCounterspellOnEnemyHealerAction(ai); }
+            static Action* presence_of_mind(PlayerbotAI* botAI) { return new CastPresenceOfMindAction(botAI); }
+            static Action* arcane_power(PlayerbotAI* botAI) { return new CastArcanePowerAction(botAI); }
+            static Action* arcane_missiles(PlayerbotAI* botAI) { return new CastArcaneMissilesAction(botAI); }
+            static Action* arcane_barrage(PlayerbotAI* botAI) { return new CastArcaneBarrageAction(botAI); }
+            static Action* arcane_blast(PlayerbotAI* botAI) { return new CastArcaneBlastAction(botAI); }
+            static Action* frostbolt(PlayerbotAI* botAI) { return new CastFrostboltAction(botAI); }
+            static Action* blizzard(PlayerbotAI* botAI) { return new CastBlizzardAction(botAI); }
+            static Action* frost_nova(PlayerbotAI* botAI) { return new CastFrostNovaAction(botAI); }
+            static Action* arcane_intellect(PlayerbotAI* botAI) { return new CastArcaneIntellectAction(botAI); }
+            static Action* arcane_intellect_on_party(PlayerbotAI* botAI) { return new CastArcaneIntellectOnPartyAction(botAI); }
+            static Action* conjure_water(PlayerbotAI* botAI) { return new CastConjureWaterAction(botAI); }
+            static Action* conjure_food(PlayerbotAI* botAI) { return new CastConjureFoodAction(botAI); }
+            static Action* molten_armor(PlayerbotAI* botAI) { return new CastMoltenArmorAction(botAI); }
+            static Action* mage_armor(PlayerbotAI* botAI) { return new CastMageArmorAction(botAI); }
+            static Action* ice_armor(PlayerbotAI* botAI) { return new CastIceArmorAction(botAI); }
+            static Action* frost_armor(PlayerbotAI* botAI) { return new CastFrostArmorAction(botAI); }
+            static Action* fireball(PlayerbotAI* botAI) { return new CastFireballAction(botAI); }
+            static Action* pyroblast(PlayerbotAI* botAI) { return new CastPyroblastAction(botAI); }
+            static Action* flamestrike(PlayerbotAI* botAI) { return new CastFlamestrikeAction(botAI); }
+            static Action* fire_blast(PlayerbotAI* botAI) { return new CastFireBlastAction(botAI); }
+            static Action* scorch(PlayerbotAI* botAI) { return new CastScorchAction(botAI); }
+            static Action* counterspell(PlayerbotAI* botAI) { return new CastCounterspellAction(botAI); }
+            static Action* remove_curse(PlayerbotAI* botAI) { return new CastRemoveCurseAction(botAI); }
+            static Action* remove_curse_on_party(PlayerbotAI* botAI) { return new CastRemoveCurseOnPartyAction(botAI); }
+            static Action* remove_lesser_curse(PlayerbotAI* botAI) { return new CastRemoveLesserCurseAction(botAI); }
+            static Action* remove_lesser_curse_on_party(PlayerbotAI* botAI) { return new CastRemoveLesserCurseOnPartyAction(botAI); }
+            static Action* icy_veins(PlayerbotAI* botAI) { return new CastIcyVeinsAction(botAI); }
+            static Action* combustion(PlayerbotAI* botAI) { return new CastCombustionAction(botAI); }
+            static Action* ice_block(PlayerbotAI* botAI) { return new CastIceBlockAction(botAI); }
+            static Action* polymorph(PlayerbotAI* botAI) { return new CastPolymorphAction(botAI); }
+            static Action* spellsteal(PlayerbotAI* botAI) { return new CastSpellstealAction(botAI); }
+            static Action* living_bomb(PlayerbotAI* botAI) { return new CastLivingBombAction(botAI); }
+            static Action* dragons_breath(PlayerbotAI* botAI) { return new CastDragonsBreathAction(botAI); }
+            static Action* blast_wave(PlayerbotAI* botAI) { return new CastBlastWaveAction(botAI); }
+            static Action* invisibility(PlayerbotAI* botAI) { return new CastInvisibilityAction(botAI); }
+            static Action* evocation(PlayerbotAI* botAI) { return new CastEvocationAction(botAI); }
+            static Action* counterspell_on_enemy_healer(PlayerbotAI* botAI) { return new CastCounterspellOnEnemyHealerAction(botAI); }
         };
     };
 };
 
 
 
-MageAiObjectContext::MageAiObjectContext(PlayerbotAI* ai) : AiObjectContext(ai)
+MageAiObjectContext::MageAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
     strategyContexts.Add(new ai::mage::StrategyFactoryInternal());
     strategyContexts.Add(new ai::mage::MageStrategyFactoryInternal());

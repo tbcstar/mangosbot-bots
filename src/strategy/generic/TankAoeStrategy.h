@@ -6,7 +6,7 @@ namespace ai
     class TankAoeStrategy : public NonCombatStrategy
     {
     public:
-        TankAoeStrategy(PlayerbotAI* ai) : NonCombatStrategy(ai) {}
+        TankAoeStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
         virtual string getName() { return "tank aoe"; }
         virtual int GetType() { return STRATEGY_TYPE_TANK; }
 

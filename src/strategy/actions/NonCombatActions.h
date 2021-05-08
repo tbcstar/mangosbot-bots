@@ -10,7 +10,7 @@ namespace ai
     class DrinkAction : public UseItemAction
     {
     public:
-        DrinkAction(PlayerbotAI* ai) : UseItemAction(ai, "drink") {}
+        DrinkAction(PlayerbotAI* botAI) : UseItemAction(ai, "drink") {}
 
         virtual bool Execute(Event event)
         {
@@ -29,7 +29,7 @@ namespace ai
     class EatAction : public UseItemAction
     {
     public:
-        EatAction(PlayerbotAI* ai) : UseItemAction(ai, "food") {}
+        EatAction(PlayerbotAI* botAI) : UseItemAction(ai, "food") {}
 
         virtual bool Execute(Event event)
         {

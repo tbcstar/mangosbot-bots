@@ -6,7 +6,7 @@ namespace ai
     class LogLevelValue : public ManualSetValue<LogLevel>
 	{
 	public:
-        LogLevelValue(PlayerbotAI* ai) :
+        LogLevelValue(PlayerbotAI* botAI) :
             ManualSetValue<LogLevel>(ai, LOG_LVL_DEBUG) {}
 	};
 }

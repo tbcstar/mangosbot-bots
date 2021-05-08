@@ -7,7 +7,7 @@ namespace ai
     class DuelTargetValue : public TargetValue
 	{
 	public:
-        DuelTargetValue(PlayerbotAI* ai) : TargetValue(ai) {}
+        DuelTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
 
     public:
         Unit* Calculate();

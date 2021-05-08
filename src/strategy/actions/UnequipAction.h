@@ -7,7 +7,7 @@ namespace ai
 {
     class UnequipAction : public InventoryAction {
     public:
-        UnequipAction(PlayerbotAI* ai) : InventoryAction(ai, "unequip") {}
+        UnequipAction(PlayerbotAI* botAI) : InventoryAction(ai, "unequip") {}
         virtual bool Execute(Event event);
 
     private:

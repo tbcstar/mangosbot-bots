@@ -15,7 +15,7 @@ using namespace ai;
 map<string, int> SuggestWhatToDoAction::instances;
 map<string, int> SuggestWhatToDoAction::factions;
 
-SuggestWhatToDoAction::SuggestWhatToDoAction(PlayerbotAI* ai, string name) : InventoryAction(ai, name)
+SuggestWhatToDoAction::SuggestWhatToDoAction(PlayerbotAI* botAI, string name) : InventoryAction(ai, name)
 {
     suggestions.push_back(&SuggestWhatToDoAction::instance);
     suggestions.push_back(&SuggestWhatToDoAction::specificQuest);
@@ -34,7 +34,7 @@ bool SuggestWhatToDoAction::Execute(Event event)
 
     string qualifier = "suggest what to do";
     time_t lastSaid = AI_VALUE2(time_t, "last said", qualifier);
-    ai->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(time(0) + urand(1, 60));
+    botAI->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(time(0) + urand(1, 60));
 
     return true;
 }
@@ -330,7 +330,7 @@ private:
 };
 
 
-SuggestTradeAction::SuggestTradeAction(PlayerbotAI* ai) : SuggestWhatToDoAction(ai, "suggest trade")
+SuggestTradeAction::SuggestTradeAction(PlayerbotAI* botAI) : SuggestWhatToDoAction(ai, "suggest trade")
 {
 }
 

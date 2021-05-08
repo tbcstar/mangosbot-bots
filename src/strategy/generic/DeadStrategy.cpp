@@ -18,6 +18,6 @@ void DeadStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("accept resurrect", relevance), NULL)));
 }
 
-DeadStrategy::DeadStrategy(PlayerbotAI* ai) : PassTroughStrategy(ai)
+DeadStrategy::DeadStrategy(PlayerbotAI* botAI) : PassTroughStrategy(botAI)
 {
 }

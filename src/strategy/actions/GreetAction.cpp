@@ -6,7 +6,7 @@
 #include "../../ServerFacade.h"
 using namespace ai;
 
-GreetAction::GreetAction(PlayerbotAI* ai) : Action(ai, "greet")
+GreetAction::GreetAction(PlayerbotAI* botAI) : Action(ai, "greet")
 {
 }
 
@@ -15,7 +15,7 @@ bool GreetAction::Execute(Event event)
     ObjectGuid guid = AI_VALUE(ObjectGuid, "new player nearby");
     if (!guid || !guid.IsPlayer()) return false;
 
-    Player* player = dynamic_cast<Player*>(ai->GetUnit(guid));
+    Player* player = dynamic_cast<Player*>(botAI->GetUnit(guid));
     if (!player) return false;
 
     if (!sServerFacade->IsInFront(bot, player, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
@@ -24,13 +24,13 @@ bool GreetAction::Execute(Event event)
     ObjectGuid oldSel = bot->GetTarget();
     bot->SetTarget(guid);
     bot->HandleEmote(EMOTE_ONESHOT_WAVE);
-    ai->PlaySound(TEXTEMOTE_HELLO);
+    botAI->PlaySound(TEXTEMOTE_HELLO);
     bot->SetTarget(oldSel);
 
-    set<ObjectGuid>& alreadySeenPlayers = ai->GetAiObjectContext()->GetValue<set<ObjectGuid>& >("already seen players")->Get();
+    set<ObjectGuid>& alreadySeenPlayers = botAI->GetAiObjectContext()->GetValue<set<ObjectGuid>& >("already seen players")->Get();
     alreadySeenPlayers.insert(guid);
 
-    list<ObjectGuid> nearestPlayers = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest friendly players")->Get();
+    list<ObjectGuid> nearestPlayers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest friendly players")->Get();
     for (list<ObjectGuid>::iterator i = nearestPlayers.begin(); i != nearestPlayers.end(); ++i) {
         alreadySeenPlayers.insert(*i);
     }

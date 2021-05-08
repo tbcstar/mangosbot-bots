@@ -21,63 +21,63 @@ public:
         creators["rip"] = &rip;
     }
 private:
-    static ActionNode* faerie_fire_feral(PlayerbotAI* ai)
+    static ActionNode* faerie_fire_feral(PlayerbotAI* botAI)
     {
         return new ActionNode ("faerie fire (feral)",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* melee(PlayerbotAI* ai)
+    static ActionNode* melee(PlayerbotAI* botAI)
     {
         return new ActionNode ("melee",
             /*P*/ NextAction::array(0, new NextAction("feral charge - cat"), NULL),
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* feral_charge_cat(PlayerbotAI* ai)
+    static ActionNode* feral_charge_cat(PlayerbotAI* botAI)
     {
         return new ActionNode ("feral charge - cat",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("reach melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* cat_form(PlayerbotAI* ai)
+    static ActionNode* cat_form(PlayerbotAI* botAI)
     {
         return new ActionNode ("cat form",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* claw(PlayerbotAI* ai)
+    static ActionNode* claw(PlayerbotAI* botAI)
     {
         return new ActionNode ("claw",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("melee"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* mangle_cat(PlayerbotAI* ai)
+    static ActionNode* mangle_cat(PlayerbotAI* botAI)
     {
         return new ActionNode ("mangle (cat)",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("claw"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* rake(PlayerbotAI* ai)
+    static ActionNode* rake(PlayerbotAI* botAI)
     {
         return new ActionNode ("rake",
             /*P*/ NULL,
             /*A*/ NULL,
             /*C*/ NULL);
     }
-    static ActionNode* ferocious_bite(PlayerbotAI* ai)
+    static ActionNode* ferocious_bite(PlayerbotAI* botAI)
     {
         return new ActionNode ("ferocious bite",
             /*P*/ NULL,
             /*A*/ NextAction::array(0, new NextAction("rip"), NULL),
             /*C*/ NULL);
     }
-    static ActionNode* rip(PlayerbotAI* ai)
+    static ActionNode* rip(PlayerbotAI* botAI)
     {
         return new ActionNode ("rip",
             /*P*/ NULL,
@@ -86,7 +86,7 @@ private:
     }
 };
 
-CatDpsDruidStrategy::CatDpsDruidStrategy(PlayerbotAI* ai) : FeralDruidStrategy(ai)
+CatDpsDruidStrategy::CatDpsDruidStrategy(PlayerbotAI* botAI) : FeralDruidStrategy(botAI)
 {
     actionNodeFactories.Add(new CatDpsDruidStrategyActionNodeFactory());
 }

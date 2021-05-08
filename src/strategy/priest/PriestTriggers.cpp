@@ -8,5 +8,5 @@ using namespace ai;
 bool InnerFireTrigger::IsActive()
 {
     Unit* target = GetTarget();
-    return SpellTrigger::IsActive() && !ai->HasAura(spell, target);
+    return SpellTrigger::IsActive() && !botAI->HasAura(spell, target);
 }

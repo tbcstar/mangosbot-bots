@@ -10,7 +10,7 @@
 
 vector<uint32> PossibleRpgTargetsValue::allowedNpcFlags;
 
-PossibleRpgTargetsValue::PossibleRpgTargetsValue(PlayerbotAI* ai, float range) :
+PossibleRpgTargetsValue::PossibleRpgTargetsValue(PlayerbotAI* botAI, float range) :
         NearestUnitsValue(ai, "possible rpg targets", range, true)
 {
     if (allowedNpcFlags.empty())

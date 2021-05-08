@@ -4,7 +4,7 @@
 
 using namespace ai;
 
-RpgStrategy::RpgStrategy(PlayerbotAI* ai) : Strategy(ai)
+RpgStrategy::RpgStrategy(PlayerbotAI* botAI) : Strategy(botAI)
 {
 }
 

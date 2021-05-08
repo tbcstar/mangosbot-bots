@@ -8,7 +8,7 @@ namespace ai
     class DpsHunterStrategy : public GenericHunterStrategy
     {
     public:
-        DpsHunterStrategy(PlayerbotAI* ai);
+        DpsHunterStrategy(PlayerbotAI* botAI);
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -20,7 +20,7 @@ namespace ai
     class DpsAoeHunterStrategy : public CombatStrategy
     {
     public:
-        DpsAoeHunterStrategy(PlayerbotAI* ai) : CombatStrategy(ai) {}
+        DpsAoeHunterStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -30,7 +30,7 @@ namespace ai
     class DpsHunterDebuffStrategy : public CombatStrategy
     {
     public:
-        DpsHunterDebuffStrategy(PlayerbotAI* ai) : CombatStrategy(ai) {}
+        DpsHunterDebuffStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
