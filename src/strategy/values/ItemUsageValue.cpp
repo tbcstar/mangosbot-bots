@@ -13,7 +13,7 @@ ItemUsage ItemUsageValue::Calculate()
     if (!itemId)
         return ITEM_USAGE_NONE;
 
-    const ItemPrototype* proto = sObjectMgr.GetItemPrototype(itemId);
+    const ItemPrototype* proto = sObjectMgr->GetItemPrototype(itemId);
     if (!proto)
         return ITEM_USAGE_NONE;
 
@@ -116,19 +116,10 @@ bool ItemUsageValue::IsItemUsefulForSkill(ItemPrototype const * proto)
                 return true;
             if (ai->HasSkill(SKILL_COOKING) && auctionbot.IsUsedBySkill(proto, SKILL_COOKING))
                 return true;
-#ifdef MANGOSBOT_ONE
             if (ai->HasSkill(SKILL_JEWELCRAFTING) && auctionbot.IsUsedBySkill(proto, SKILL_JEWELCRAFTING))
                 return true;
-#endif
-            if (ai->HasSkill(SKILL_MINING) &&
-                    (
-                            auctionbot.IsUsedBySkill(proto, SKILL_MINING) ||
-                            auctionbot.IsUsedBySkill(proto, SKILL_BLACKSMITHING) ||
-#ifdef MANGOSBOT_ONE
-                            auctionbot.IsUsedBySkill(proto, SKILL_JEWELCRAFTING) ||
-#endif
-                            auctionbot.IsUsedBySkill(proto, SKILL_ENGINEERING)
-                    ))
+            if (ai->HasSkill(SKILL_MINING) && (auctionbot.IsUsedBySkill(proto, SKILL_MINING) || auctionbot.IsUsedBySkill(proto, SKILL_BLACKSMITHING) ||
+                auctionbot.IsUsedBySkill(proto, SKILL_JEWELCRAFTING) || auctionbot.IsUsedBySkill(proto, SKILL_ENGINEERING)))
                 return true;
             if (ai->HasSkill(SKILL_SKINNING) &&
                     (auctionbot.IsUsedBySkill(proto, SKILL_SKINNING) || auctionbot.IsUsedBySkill(proto, SKILL_LEATHERWORKING)))

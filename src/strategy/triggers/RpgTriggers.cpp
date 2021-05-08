@@ -16,5 +16,5 @@ bool FarFromRpgTargetTrigger::IsActive()
     if (!unit) return false;
 
     float distance = AI_VALUE2(float, "distance", "rpg target");
-    return distance > sPlayerbotAIConfig.followDistance;
+    return distance > sPlayerbotAIConfig->followDistance;
 }

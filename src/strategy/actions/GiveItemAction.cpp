@@ -34,7 +34,7 @@ bool GiveItemAction::Execute(Event event)
         if (msg == EQUIP_ERR_OK)
         {
             bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
-            item->SetOwnerGuid(target->GetObjectGuid());
+            item->SetOwnerGuid(target->GetGUID());
             receiver->MoveItemToInventory(dest, item, true);
             moved = true;
 

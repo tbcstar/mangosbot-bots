@@ -34,7 +34,7 @@ public:
             return;
 
         uint8 health = creature->GetHealthPercent();
-        if (health < sPlayerbotAIConfig.mediumHealth)
+        if (health < sPlayerbotAIConfig->mediumHealth)
             return;
 
         float minDistance = ai->GetRange("spell");
@@ -45,7 +45,7 @@ public:
         if (*ai->GetAiObjectContext()->GetValue<uint8>("aoe count") > 2)
         {
             WorldLocation aoe = *ai->GetAiObjectContext()->GetValue<WorldLocation>("aoe position");
-            if (sServerFacade.IsDistanceLessOrEqualThan(sServerFacade.GetDistance2d(creature, aoe.coord_x, aoe.coord_y), sPlayerbotAIConfig.aoeRadius))
+            if (sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(creature, aoe.coord_x, aoe.coord_y), sPlayerbotAIConfig->aoeRadius))
                 return;
         }
 
@@ -60,8 +60,8 @@ public:
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
-            Player *member = sObjectMgr.GetPlayer(itr->guid);
-            if( !member || !sServerFacade.IsAlive(member) || member == bot)
+            Player *member = sObjectMgr->GetPlayer(itr->guid);
+            if( !member || !sServerFacade->IsAlive(member) || member == bot)
                 continue;
 
             if (!ai->IsTank(member))

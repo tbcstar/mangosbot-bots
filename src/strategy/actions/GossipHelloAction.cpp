@@ -15,7 +15,7 @@ bool GossipHelloAction::Execute(Event event)
 	{
 		Player* master = GetMaster();
 		if (master)
-			guid = master->GetSelectionGuid();
+			guid = master->GetTarget();
 	}
 	else
 	{
@@ -33,7 +33,7 @@ bool GossipHelloAction::Execute(Event event)
 		return false;
 	}
 
-	GossipMenuItemsMapBounds pMenuItemBounds = sObjectMgr.GetGossipMenuItemsMapBounds(pCreature->GetCreatureInfo()->GossipMenuId);
+	GossipMenuItemsMapBounds pMenuItemBounds = sObjectMgr->GetGossipMenuItemsMapBounds(pCreature->GetCreatureInfo()->GossipMenuId);
 	if (pMenuItemBounds.first == pMenuItemBounds.second)
 		return false;
 
@@ -44,7 +44,7 @@ bool GossipHelloAction::Execute(Event event)
         WorldPacket p1;
         p1 << guid;
         bot->GetSession()->HandleGossipHelloOpcode(p1);
-        sServerFacade.SetFacingTo(bot, pCreature);
+        sServerFacade->SetFacingTo(bot, pCreature);
 
         ostringstream out; out << "--- " << pCreature->GetName() << " ---";
         ai->TellMasterNoFacing(out.str());
@@ -63,7 +63,7 @@ bool GossipHelloAction::Execute(Event event)
         ProcessGossip(menuToSelect);
 	}
 
-	bot->TalkedToCreature(pCreature->GetEntry(), pCreature->GetObjectGuid());
+	bot->TalkedToCreature(pCreature->GetEntry(), pCreature->GetGUID());
 	return true;
 }
 
@@ -72,7 +72,7 @@ void GossipHelloAction::TellGossipText(uint32 textId)
     if (!textId)
         return;
 
-    GossipText const* text = sObjectMgr.GetGossipText(textId);
+    GossipText const* text = sObjectMgr->GetGossipText(textId);
     if (text)
     {
         for (int i = 0; i < MAX_GOSSIP_TEXT_OPTIONS; i++)
@@ -90,7 +90,7 @@ void GossipHelloAction::TellGossipMenus()
     if (!bot->PlayerTalkClass)
         return;
 
-    Creature *pCreature = bot->GetNPCIfCanInteractWith(GetMaster()->GetSelectionGuid(), UNIT_NPC_FLAG_NONE);
+    Creature *pCreature = bot->GetNPCIfCanInteractWith(GetMaster()->GetTarget(), UNIT_NPC_FLAG_NONE);
     GossipMenu& menu = bot->PlayerTalkClass->GetGossipMenu();
     if (pCreature)
     {
@@ -118,13 +118,8 @@ bool GossipHelloAction::ProcessGossip(int menuToSelect)
     GossipMenuItem const& item = menu.GetItem(menuToSelect);
     WorldPacket p;
     std::string code;
-    p << GetMaster()->GetSelectionGuid();
-#ifdef MANGOSBOT_ZERO
-    p << menuToSelect;
-#endif
-#ifdef MANGOSBOT_ONE
+    p << GetMaster()->GetTarget();
     p << menu.GetMenuId() << menuToSelect;
-#endif
     p << code;
     bot->GetSession()->HandleGossipSelectOptionOpcode(p);
 

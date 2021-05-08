@@ -40,11 +40,11 @@ Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate &predicate)
             {
                 if (ref->getSubGroup() != bot->GetSubGroup())
                 {
-                    nearestPlayers.push_back(ref->getSource()->GetObjectGuid());
+                    nearestPlayers.push_back(ref->getSource()->GetGUID());
                 }
                 else
                 {
-                    nearestPlayers.push_front(ref->getSource()->GetObjectGuid());
+                    nearestPlayers.push_front(ref->getSource()->GetGUID());
                 }
             }
         }
@@ -85,15 +85,15 @@ Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate &predicate)
 bool PartyMemberValue::Check(Unit* player)
 {
     return player && player != bot && player->GetMapId() == bot->GetMapId() &&
-        bot->GetDistance(player) < sPlayerbotAIConfig.spellDistance &&
+        bot->GetDistance(player) < sPlayerbotAIConfig->spellDistance &&
         bot->IsWithinLOS(player->GetPositionX(), player->GetPositionY(), player->GetPositionZ());
 }
 
 bool PartyMemberValue::IsTargetOfSpellCast(Player* target, SpellEntryPredicate &predicate)
 {
     list<ObjectGuid> nearestPlayers = AI_VALUE(list<ObjectGuid>, "nearest friendly players");
-    ObjectGuid targetGuid = target ? target->GetObjectGuid() : bot->GetObjectGuid();
-    ObjectGuid corpseGuid = target && target->GetCorpse() ? target->GetCorpse()->GetObjectGuid() : ObjectGuid();
+    ObjectGuid targetGuid = target ? target->GetGUID() : bot->GetGUID();
+    ObjectGuid corpseGuid = target && target->GetCorpse() ? target->GetCorpse()->GetGUID() : ObjectGuid::Empty;
 
     for (list<ObjectGuid>::iterator i = nearestPlayers.begin(); i != nearestPlayers.end(); ++i)
     {

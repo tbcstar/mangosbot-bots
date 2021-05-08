@@ -15,7 +15,7 @@ bool QuestAction::Execute(Event event)
         return false;
 
     if (!guid)
-        guid = master->GetSelectionGuid();
+        guid = master->GetTarget();
 
     if (!guid)
         return false;
@@ -38,7 +38,7 @@ bool QuestAction::ProcessQuests(ObjectGuid questGiver)
 
 bool QuestAction::ProcessQuests(WorldObject* questGiver)
 {
-    ObjectGuid guid = questGiver->GetObjectGuid();
+    ObjectGuid guid = questGiver->GetGUID();
 
     if (bot->GetDistance(questGiver) > INTERACTION_DISTANCE)
     {
@@ -46,17 +46,17 @@ bool QuestAction::ProcessQuests(WorldObject* questGiver)
         return false;
     }
 
-    if (!sServerFacade.IsInFront(bot, questGiver, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT))
-        sServerFacade.SetFacingTo(bot, questGiver);
+    if (!sServerFacade->IsInFront(bot, questGiver, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
+        sServerFacade->SetFacingTo(bot, questGiver);
 
-    bot->SetSelectionGuid(guid);
+    bot->SetTarget(guid);
     bot->PrepareQuestMenu(guid);
     QuestMenu& questMenu = bot->PlayerTalkClass->GetQuestMenu();
     for (uint32 i = 0; i < questMenu.MenuItemCount(); ++i)
     {
         QuestMenuItem const& menuItem = questMenu.GetItem(i);
         uint32 questID = menuItem.m_qId;
-        Quest const* quest = sObjectMgr.GetQuestTemplate(questID);
+        Quest const* quest = sObjectMgr->GetQuestTemplate(questID);
         if (!quest)
             continue;
 
@@ -66,7 +66,7 @@ bool QuestAction::ProcessQuests(WorldObject* questGiver)
     return true;
 }
 
-bool QuestAction::AcceptQuest(Quest const* quest, uint64 questGiver)
+bool QuestAction::AcceptQuest(Quest const* quest, ObjectGuid questGiver)
 {
     std::ostringstream out;
 
@@ -119,13 +119,13 @@ bool QuestObjectiveCompletedAction::Execute(Event event)
     if (entry & 0x80000000)
     {
         entry &= 0x7FFFFFFF;
-        GameObjectInfo const* info = sObjectMgr.GetGameObjectInfo(entry);
+        GameObjectInfo const* info = sObjectMgr->GetGameObjectInfo(entry);
         if (info)
             ai->TellMaster(chat->formatQuestObjective(info->name, available, required));
     }
     else
     {
-        CreatureInfo const* info = sObjectMgr.GetCreatureTemplate(entry);
+        CreatureInfo const* info = sObjectMgr->GetCreatureTemplate(entry);
         if (info)
             ai->TellMaster(chat->formatQuestObjective(info->Name, available, required));
     }

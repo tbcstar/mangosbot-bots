@@ -11,7 +11,7 @@ Unit* CurrentTargetValue::Get()
         return NULL;
 
     Unit* unit = sObjectAccessor.GetUnit(*bot, selection);
-    if (unit && !sServerFacade.IsWithinLOSInMap(bot, unit))
+    if (unit && !sServerFacade->IsWithinLOSInMap(bot, unit))
         return NULL;
 
     return unit;
@@ -19,5 +19,5 @@ Unit* CurrentTargetValue::Get()
 
 void CurrentTargetValue::Set(Unit* target)
 {
-    selection = target ? target->GetObjectGuid() : ObjectGuid();
+    selection = target ? target->GetGUID() : ObjectGuid::Empty;
 }

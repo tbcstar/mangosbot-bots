@@ -1,4 +1,7 @@
-#include "../botpch.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "playerbot.h"
 #include "ChatFilter.h"
 #include "strategy/values/RtiTargetValue.h"
@@ -165,14 +168,14 @@ public:
                 continue;
 
             ObjectGuid rtiTarget = group->GetTargetIcon(RtiTargetValue::GetRtiIndex(rti.substr(1)));
-            if (bot->GetObjectGuid() == rtiTarget)
+            if (bot->GetGUID() == rtiTarget)
                 return ChatFilter::Filter(message);
 
             Unit* target = *ai->GetAiObjectContext()->GetValue<Unit*>("current target");
             if (!target)
                 return "";
 
-            if (target->GetObjectGuid() != rtiTarget)
+            if (target->GetGUID() != rtiTarget)
                 return "";
 
             if (found |= isRti)

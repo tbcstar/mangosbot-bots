@@ -24,15 +24,15 @@ WorldLocation ArrowFormation::GetLocationInternal()
     tanks.PlaceUnits(&placer);
     tanks.Move(-cos(orientation) * offset, -sin(orientation) * offset);
 
-    offset += tankLines * sPlayerbotAIConfig.followDistance;
+    offset += tankLines * sPlayerbotAIConfig->followDistance;
     melee.PlaceUnits(&placer);
     melee.Move(-cos(orientation) * offset, -sin(orientation) * offset);
 
-    offset += meleeLines * sPlayerbotAIConfig.followDistance;
+    offset += meleeLines * sPlayerbotAIConfig->followDistance;
     ranged.PlaceUnits(&placer);
     ranged.Move(-cos(orientation) * offset, -sin(orientation) * offset);
 
-    offset += rangedLines * sPlayerbotAIConfig.followDistance;
+    offset += rangedLines * sPlayerbotAIConfig->followDistance;
     healers.PlaceUnits(&placer);
     healers.Move(-cos(orientation) * offset, -sin(orientation) * offset);
 
@@ -132,16 +132,16 @@ UnitPosition MultiLineUnitPlacer::Place(FormationUnit *unit, uint32 index, uint3
     int lineNo = index / 6;
     int indexInLine = index % 6;
     int lineSize = max(count - lineNo * 6, uint32(6));
-    float x = cos(orientation) * sPlayerbotAIConfig.followDistance * lineNo;
-    float y = sin(orientation) * sPlayerbotAIConfig.followDistance * lineNo;
+    float x = cos(orientation) * sPlayerbotAIConfig->followDistance * lineNo;
+    float y = sin(orientation) * sPlayerbotAIConfig->followDistance * lineNo;
     return placer.Place(unit, indexInLine, lineSize);
 }
 
 UnitPosition SingleLineUnitPlacer::Place(FormationUnit *unit, uint32 index, uint32 count)
 {
     float angle = orientation - M_PI / 2.0f;
-    float x = cos(angle) * sPlayerbotAIConfig.followDistance * ((float)index - (float)count / 2);
-    float y = sin(angle) * sPlayerbotAIConfig.followDistance * ((float)index - (float)count / 2);
+    float x = cos(angle) * sPlayerbotAIConfig->followDistance * ((float)index - (float)count / 2);
+    float y = sin(angle) * sPlayerbotAIConfig->followDistance * ((float)index - (float)count / 2);
     return UnitPosition(x, y);
 }
 

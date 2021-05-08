@@ -30,14 +30,14 @@ bool TellAttackersAction::Execute(Event event)
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
     {
         Unit* unit = ai->GetUnit(*i);
-        if (!unit || !sServerFacade.IsAlive(unit))
+        if (!unit || !sServerFacade->IsAlive(unit))
             continue;
 
         ai->TellMaster(unit->GetName());
     }
 
     ai->TellMaster("--- Threat ---");
-    HostileReference *ref = sServerFacade.GetHostileRefManager(bot).getFirst();
+    HostileReference *ref = sServerFacade->GetHostileRefManager(bot).getFirst();
     if (!ref)
         return true;
 

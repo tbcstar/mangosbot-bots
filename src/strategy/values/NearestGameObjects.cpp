@@ -7,9 +7,6 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-using namespace ai;
-using namespace MaNGOS;
-
 class AnyGameObjectInObjectRangeCheck
 {
 public:
@@ -17,7 +14,7 @@ public:
     WorldObject const& GetFocusObject() const { return *i_obj; }
     bool operator()(GameObject* u)
     {
-        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade.isSpawned(u) && u->GetGOInfo())
+        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade->isSpawned(u) && u->GetGOInfo())
             return true;
 
         return false;
@@ -40,8 +37,8 @@ list<ObjectGuid> NearestGameObjects::Calculate()
     for(list<GameObject*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
     {
 		GameObject* go = *tIter;
-        if(sServerFacade.IsWithinLOSInMap(bot, go))
-			result.push_back(go->GetObjectGuid());
+        if(sServerFacade->IsWithinLOSInMap(bot, go))
+			result.push_back(go->GetGUID());
     }
 
     return result;

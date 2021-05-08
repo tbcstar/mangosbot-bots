@@ -14,23 +14,23 @@ bool RpgAction::Execute(Event event)
     if (!target)
         return false;
 
-    if (sServerFacade.isMoving(bot))
+    if (sServerFacade->isMoving(bot))
         return false;
 
     if (bot->GetMapId() != target->GetMapId())
     {
-        context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid());
+        context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid::Empty);
         return false;
     }
 
-    if (!sServerFacade.IsInFront(bot, target, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT) && !bot->IsTaxiFlying() && !bot->IsFlying())
+    if (!sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT) && !bot->IsTaxiFlying() && !bot->IsFlying())
     {
-        sServerFacade.SetFacingTo(bot, target, true);
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.globalCoolDown);
+        sServerFacade->SetFacingTo(bot, target, true);
+        ai->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
         return false;
     }
 
-    if (!bot->GetNPCIfCanInteractWith(target->GetObjectGuid(), UNIT_NPC_FLAG_NONE))
+    if (!bot->GetNPCIfCanInteractWith(target->GetGUID(), UNIT_NPC_FLAG_NONE))
         return false;
 
     if (target->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_FLIGHTMASTER))
@@ -53,44 +53,44 @@ bool RpgAction::Execute(Event event)
 void RpgAction::stay(Unit* unit)
 {
     if (bot->PlayerTalkClass) bot->PlayerTalkClass->CloseGossip();
-    ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    ai->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::work(Unit* unit)
 {
     bot->HandleEmoteCommand(EMOTE_STATE_USESTANDING);
-    ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    ai->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::emote(Unit* unit)
 {
     uint32 type = TalkAction::GetRandomEmote(unit);
 
-    ObjectGuid oldSelection = bot->GetSelectionGuid();
+    ObjectGuid oldSelection = bot->GetTarget();
 
-    bot->SetSelectionGuid(unit->GetObjectGuid());
+    bot->SetTarget(unit->GetGUID());
 
     WorldPacket p1;
-    p1 << unit->GetObjectGuid();
+    p1 << unit->GetGUID();
     bot->GetSession()->HandleGossipHelloOpcode(p1);
 
     bot->HandleEmoteCommand(type);
     unit->SetFacingTo(unit->GetAngle(bot));
 
     if (oldSelection)
-        bot->SetSelectionGuid(oldSelection);
+        bot->SetTarget(oldSelection);
 
-    ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    ai->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::cancel(Unit* unit)
 {
-    context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid());
+    context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid::Empty);
 }
 
 void RpgAction::taxi(Unit* unit)
 {
-    uint32 curloc = sObjectMgr.GetNearestTaxiNode(unit->GetPositionX(), unit->GetPositionY(), unit->GetPositionZ(), unit->GetMapId(), bot->GetTeam());
+    uint32 curloc = sObjectMgr->GetNearestTaxiNode(unit->GetPositionX(), unit->GetPositionY(), unit->GetPositionZ(), unit->GetMapId(), bot->GetTeam());
 
     vector<uint32> nodes;
     for (uint32 i = 0; i < sTaxiPathStore.GetNumRows(); ++i)
@@ -105,11 +105,11 @@ void RpgAction::taxi(Unit* unit)
 
     if (nodes.empty())
     {
-        sLog.outDetail("Bot %s - No flight paths available", bot->GetName());
+        sLog->outDetail("Bot %s - No flight paths available", bot->GetName());
         return;
     }
 
-    context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid());
+    context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid::Empty);
 
     uint32 path = nodes[urand(0, nodes.size() - 1)];
     bot->m_taxi.SetTaximaskNode(path);
@@ -120,19 +120,19 @@ void RpgAction::taxi(Unit* unit)
     if (!entry)
         return;
 
-    Creature* flightMaster = bot->GetNPCIfCanInteractWith(unit->GetObjectGuid(), UNIT_NPC_FLAG_FLIGHTMASTER);
+    Creature* flightMaster = bot->GetNPCIfCanInteractWith(unit->GetGUID(), UNIT_NPC_FLAG_FLIGHTMASTER);
     if (!flightMaster)
     {
-        sLog.outDetail("Bot %s cannot talk to flightmaster (%d location available)", bot->GetName(), nodes.size());
+        sLog->outDetail("Bot %s cannot talk to flightmaster (%d location available)", bot->GetName(), nodes.size());
         return;
     }
 
     if (!bot->ActivateTaxiPathTo({ entry->from, entry->to }, flightMaster, 0))
     {
-        sLog.outDetail("Bot %s cannot fly (%d location available)", bot->GetName(), nodes.size());
+        sLog->outDetail("Bot %s cannot fly (%d location available)", bot->GetName(), nodes.size());
         return;
     }
-    sLog.outDetail("Bot %s is flying to %u (%d location available)", bot->GetName(), path, nodes.size());
+    sLog->outDetail("Bot %s is flying to %u (%d location available)", bot->GetName(), path, nodes.size());
     bot->SetMoney(money);
 }
 

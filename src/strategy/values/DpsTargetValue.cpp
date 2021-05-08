@@ -18,8 +18,8 @@ public:
         Group* group = ai->GetBot()->GetGroup();
         if (group)
         {
-            uint64 guid = group->GetTargetIcon(4);
-            if (guid && attacker->GetObjectGuid() == ObjectGuid(guid))
+            ObjectGuid guid = group->GetTargetIcon(4);
+            if (guid && attacker->GetGUID() == guid)
                 return;
         }
         if (!result || result->GetHealth() > attacker->GetHealth())
@@ -53,8 +53,8 @@ public:
         Group* group = ai->GetBot()->GetGroup();
         if (group)
         {
-            uint64 guid = group->GetTargetIcon(4);
-            if (guid && attacker->GetObjectGuid() == ObjectGuid(guid))
+            ObjectGuid guid = group->GetTargetIcon(4);
+            if (guid && attacker->GetGUID() == guid)
                 return;
         }
         if (!result || result->GetHealth() < attacker->GetHealth())

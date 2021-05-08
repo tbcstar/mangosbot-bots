@@ -25,7 +25,7 @@ namespace ai
                 if (!obj)
                     return 0.0f;
 
-                return sServerFacade.GetDistance2d(ai->GetBot(), obj);
+                return sServerFacade->GetDistance2d(ai->GetBot(), obj);
             }
 
             if (qualifier.find("position_") == 0)
@@ -34,7 +34,7 @@ namespace ai
                 ai::Position pos = context->GetValue<ai::PositionMap&>("position")->Get()[position];
                 if (!pos.isSet()) return 0.0f;
                 if (ai->GetBot()->GetMapId() != pos.mapId) return 0.0f;
-                return sServerFacade.GetDistance2d(ai->GetBot(), pos.x, pos.y);
+                return sServerFacade->GetDistance2d(ai->GetBot(), pos.x, pos.y);
             }
 
             Unit* target = NULL;
@@ -47,7 +47,7 @@ namespace ai
             {
                 Stance* stance = AI_VALUE(Stance*, "stance");
                 WorldLocation loc = stance->GetLocation();
-                return sServerFacade.GetDistance2d(ai->GetBot(), loc.coord_x, loc.coord_y);
+                return sServerFacade->GetDistance2d(ai->GetBot(), loc.coord_x, loc.coord_y);
             }
             else
             {
@@ -56,7 +56,7 @@ namespace ai
                 {
                     Formation* formation = AI_VALUE(Formation*, "formation");
                     WorldLocation loc = formation->GetLocation();
-                    return sServerFacade.GetDistance2d(ai->GetBot(), loc.coord_x, loc.coord_y);
+                    return sServerFacade->GetDistance2d(ai->GetBot(), loc.coord_x, loc.coord_y);
                 }
             }
 
@@ -66,7 +66,7 @@ namespace ai
             if (target == ai->GetBot())
                 return 0.0f;
 
-            return sServerFacade.GetDistance2d(ai->GetBot(), target);
+            return sServerFacade->GetDistance2d(ai->GetBot(), target);
         }
     };
 
@@ -83,8 +83,8 @@ namespace ai
             if (!target || !target->IsInWorld() || target == ai->GetBot())
                 return false;
 
-            float dist = sServerFacade.GetDistance2d(ai->GetBot(), target->GetPositionX(), target->GetPositionY());
-            return sServerFacade.IsDistanceLessThan(dist, target->GetObjectBoundingRadius());
+            float dist = sServerFacade->GetDistance2d(ai->GetBot(), target->GetPositionX(), target->GetPositionY());
+            return sServerFacade->IsDistanceLessThan(dist, target->GetObjectBoundingRadius());
         }
     };
 }

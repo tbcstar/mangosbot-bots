@@ -17,7 +17,7 @@ bool HasAggroValue::Calculate()
     if (!target)
         return true;
 
-    HostileReference *ref = sServerFacade.GetHostileRefManager(bot).getFirst();
+    HostileReference *ref = sServerFacade->GetHostileRefManager(bot).getFirst();
     if (!ref)
         return true; // simulate as target is not atacking anybody yet
 
@@ -48,13 +48,13 @@ bool HasAggroValue::Calculate()
 uint8 AttackerCountValue::Calculate()
 {
     int count = 0;
-    float range = sPlayerbotAIConfig.sightDistance;
+    float range = sPlayerbotAIConfig->sightDistance;
 
     list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
     {
         Unit* unit = ai->GetUnit(*i);
-        if (!unit || !sServerFacade.IsAlive(unit))
+        if (!unit || !sServerFacade->IsAlive(unit))
             continue;
 
         float distance = bot->GetDistance(unit);
@@ -76,8 +76,8 @@ uint8 BalancePercentValue::Calculate()
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
-            Player *player = sObjectMgr.GetPlayer(itr->guid);
-            if( !player || !sServerFacade.IsAlive(player))
+            Player *player = sObjectMgr->GetPlayer(itr->guid);
+            if( !player || !sServerFacade->IsAlive(player))
                 continue;
 
             playerLevel += player->getLevel();
@@ -89,7 +89,7 @@ uint8 BalancePercentValue::Calculate()
     for (list<ObjectGuid>::iterator i = v.begin(); i!=v.end(); i++)
     {
         Creature* creature = ai->GetCreature((*i));
-        if (!creature || !sServerFacade.IsAlive(creature))
+        if (!creature || !sServerFacade->IsAlive(creature))
             continue;
 
         uint32 level = creature->getLevel();

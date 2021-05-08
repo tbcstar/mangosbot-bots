@@ -12,10 +12,10 @@ class PlayerbotDbStore
 public:
     PlayerbotDbStore() {}
     virtual ~PlayerbotDbStore() {}
-    static PlayerbotDbStore& instance()
+    static PlayerbotDbStore* instance()
     {
         static PlayerbotDbStore instance;
-        return instance;
+        return &instance;
     }
 
     void Save(PlayerbotAI *ai);
@@ -23,7 +23,7 @@ public:
     void Reset(PlayerbotAI *ai);
 
 private:
-    void SaveValue(uint64 guid, string key, string value);
+    void SaveValue(uint32 guid, string key, string value);
     string FormatStrategies(string type, list<string> strategies);
 };
 

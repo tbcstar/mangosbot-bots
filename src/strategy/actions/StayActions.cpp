@@ -17,7 +17,7 @@ bool StayActionBase::Stay()
     if (mm.GetCurrentMovementGeneratorType() == FLIGHT_MOTION_TYPE || bot->IsFlying())
         return false;
 
-    uint32 sitDelay = sPlayerbotAIConfig.sitDelay / 1000;
+    uint32 sitDelay = sPlayerbotAIConfig->sitDelay / 1000;
     time_t stayTime = AI_VALUE(time_t, "stay time");
     time_t now = time(0);
     if (!stayTime)
@@ -26,7 +26,7 @@ bool StayActionBase::Stay()
         context->GetValue<time_t>("stay time")->Set(stayTime);
     }
 
-    if (!sServerFacade.isMoving(bot))
+    if (!sServerFacade->isMoving(bot))
         return false;
 
     bot->StopMoving();
@@ -48,7 +48,7 @@ bool StayAction::isUseful()
 
 bool SitAction::Execute(Event event)
 {
-    if (sServerFacade.isMoving(bot))
+    if (sServerFacade->isMoving(bot))
         return false;
 
     bot->SetStandState(UNIT_STAND_STATE_SIT);

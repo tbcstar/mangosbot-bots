@@ -21,14 +21,14 @@ bool ChooseRpgTargetAction::Execute(Event event)
 
     if (units.empty())
     {
-        sLog.outDetail("%s can't choose RPG target: all %d are not available", bot->GetName(), possibleTargets.size());
+        sLog->outDetail("%s can't choose RPG target: all %d are not available", bot->GetName(), possibleTargets.size());
         return false;
     }
 
     Unit* target = units[urand(0, units.size() - 1)];
     if (!target) return false;
 
-    context->GetValue<ObjectGuid>("rpg target")->Set(target->GetObjectGuid());
+    context->GetValue<ObjectGuid>("rpg target")->Set(target->GetGUID());
     return true;
 }
 

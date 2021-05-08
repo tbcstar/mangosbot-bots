@@ -10,11 +10,6 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-using namespace ai;
-using namespace MaNGOS;
-
-using namespace ai;
-
 bool AddLootAction::Execute(Event event)
 {
     ObjectGuid guid = event.getObject();
@@ -62,7 +57,7 @@ bool AddGatheringLootAction::AddLoot(ObjectGuid guid)
     if (loot.IsEmpty() || !wo)
         return false;
 
-    if (!sServerFacade.IsWithinLOSInMap(bot, wo))
+    if (!sServerFacade->IsWithinLOSInMap(bot, wo))
         return false;
 
     if (loot.skillId == SKILL_NONE)
@@ -71,12 +66,12 @@ bool AddGatheringLootAction::AddLoot(ObjectGuid guid)
     if (!loot.IsLootPossible(bot))
         return false;
 
-    if (sServerFacade.IsDistanceGreaterThan(sServerFacade.GetDistance2d(bot, wo), INTERACTION_DISTANCE))
+    if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, wo), INTERACTION_DISTANCE))
     {
         list<Unit*> targets;
-        MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck u_check(bot, sPlayerbotAIConfig.lootDistance);
-        MaNGOS::UnitListSearcher<MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck> searcher(targets, u_check);
-        Cell::VisitAllObjects(wo, searcher, sPlayerbotAIConfig.spellDistance);
+        acore::AnyUnfriendlyUnitInObjectRangeCheck u_check(bot, sPlayerbotAIConfig->lootDistance);
+        acore::UnitListSearcher<acore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(targets, u_check);
+        Cell::VisitAllObjects(wo, searcher, sPlayerbotAIConfig->spellDistance);
         if (!targets.empty())
         {
             ostringstream out;

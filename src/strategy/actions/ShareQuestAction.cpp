@@ -16,7 +16,7 @@ bool ShareQuestAction::Execute(Event event)
     if (!entry)
         return false;
 
-    Quest const* quest = sObjectMgr.GetQuestTemplate(entry);
+    Quest const* quest = sObjectMgr->GetQuestTemplate(entry);
     if (!quest)
         return false;
 

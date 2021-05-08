@@ -115,7 +115,7 @@ void InventoryAction::TellItems(map<uint32, int> itemMap, map<uint32, bool> soul
     list<ItemPrototype const*> items;
     for (map<uint32, int>::iterator i = itemMap.begin(); i != itemMap.end(); i++)
     {
-        items.push_back(sObjectMgr.GetItemPrototype(i->first));
+        items.push_back(sObjectMgr->GetItemPrototype(i->first));
     }
 
     items.sort(compare_items);

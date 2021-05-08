@@ -24,8 +24,8 @@ bool CastCustomSpellAction::Execute(Event event)
     Unit* target = NULL;
 
     Player* master = GetMaster();
-    if (master && master->GetSelectionGuid())
-        target = ai->GetUnit(master->GetSelectionGuid());
+    if (master && master->GetTarget())
+        target = ai->GetUnit(master->GetTarget());
 
     if (!target)
         target = bot;
@@ -59,7 +59,7 @@ bool CastCustomSpellAction::Execute(Event event)
         return false;
     }
 
-    SpellEntry const *pSpellInfo = sServerFacade.LookupSpellInfo(spell);
+    SpellEntry const *pSpellInfo = sServerFacade->LookupSpellInfo(spell);
     if (!pSpellInfo)
     {
         msg << "Unknown spell " << text;
@@ -67,10 +67,10 @@ bool CastCustomSpellAction::Execute(Event event)
         return false;
     }
 
-    if (target != bot && !sServerFacade.IsInFront(bot, target, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT))
+    if (target != bot && !sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
     {
-        sServerFacade.SetFacingTo(bot, target);
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.globalCoolDown);
+        sServerFacade->SetFacingTo(bot, target);
+        ai->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
         msg << "cast " << text;
         ai->HandleCommand(CHAT_MSG_WHISPER, msg.str(), *master);
         return true;

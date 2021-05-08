@@ -25,7 +25,7 @@ bool TradeStatusAction::Execute(Event event)
 
     if (trader != master)
     {
-		bot->Whisper("I'm kind of busy now", LANG_UNIVERSAL, trader->GetObjectGuid());
+		bot->Whisper("I'm kind of busy now", LANG_UNIVERSAL, trader->GetGUID());
     }
 
     if (trader != master || !ai->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_ALLOW_ALL, true, master))
@@ -48,7 +48,7 @@ bool TradeStatusAction::Execute(Event event)
         uint32 status = 0;
         p << status;
 
-        uint32 discount = sRandomPlayerbotMgr.GetTradeDiscount(bot, master);
+        uint32 discount = sRandomPlayerbotMgr->GetTradeDiscount(bot, master);
         if (CheckTrade())
         {
             int32 botMoney = CalculateCost(bot, true);
@@ -68,7 +68,7 @@ bool TradeStatusAction::Execute(Event event)
             bot->GetSession()->HandleAcceptTradeOpcode(p);
             if (bot->GetTradeData())
             {
-                sRandomPlayerbotMgr.SetTradeDiscount(bot, master, discount);
+                sRandomPlayerbotMgr->SetTradeDiscount(bot, master, discount);
                 return false;
             }
 
@@ -104,8 +104,8 @@ bool TradeStatusAction::Execute(Event event)
     }
     else if (status == TRADE_STATUS_BEGIN_TRADE)
     {
-        if (!sServerFacade.IsInFront(bot, trader, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT))
-            sServerFacade.SetFacingTo(bot, trader);
+        if (!sServerFacade->IsInFront(bot, trader, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
+            sServerFacade->SetFacingTo(bot, trader);
         BeginTrade();
         return true;
     }
@@ -125,9 +125,9 @@ void TradeStatusAction::BeginTrade()
     ai->TellMaster("=== Inventory ===");
     TellItems(visitor.items, visitor.soulbound);
 
-    if (sRandomPlayerbotMgr.IsRandomBot(bot))
+    if (sRandomPlayerbotMgr->IsRandomBot(bot))
     {
-        uint32 discount = sRandomPlayerbotMgr.GetTradeDiscount(bot, ai->GetMaster());
+        uint32 discount = sRandomPlayerbotMgr->GetTradeDiscount(bot, ai->GetMaster());
         if (discount)
         {
             ostringstream out; out << "Discount up to: " << chat->formatMoney(discount);
@@ -142,7 +142,7 @@ bool TradeStatusAction::CheckTrade()
     if (!bot->GetTradeData() || !master->GetTradeData())
         return false;
 
-    if (!sRandomPlayerbotMgr.IsRandomBot(bot))
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot))
     {
         int32 botItemsMoney = CalculateCost(bot, true);
         int32 botMoney = bot->GetTradeData()->GetMoney() + botItemsMoney;
@@ -195,7 +195,7 @@ bool TradeStatusAction::CheckTrade()
         return false;
     }
 
-    int32 discount = (int32)sRandomPlayerbotMgr.GetTradeDiscount(bot, master);
+    int32 discount = (int32)sRandomPlayerbotMgr->GetTradeDiscount(bot, master);
     int32 delta = playerMoney - botMoney;
     int32 moneyDelta = (int32)master->GetTradeData()->GetMoney() - (int32)bot->GetTradeData()->GetMoney();
     bool success = false;
@@ -219,7 +219,7 @@ bool TradeStatusAction::CheckTrade()
 
     if (success)
     {
-        sRandomPlayerbotMgr.AddTradeDiscount(bot, master, delta);
+        sRandomPlayerbotMgr->AddTradeDiscount(bot, master, delta);
         switch (urand(0, 4)) {
         case 0:
             ai->TellMaster("A pleasure doing business with you");
@@ -283,11 +283,11 @@ int32 TradeStatusAction::CalculateCost(Player* player, bool sell)
 
         if (sell)
         {
-            sum += item->GetCount() * auctionbot.GetSellPrice(proto) * sRandomPlayerbotMgr.GetSellMultiplier(bot);
+            sum += item->GetCount() * auctionbot.GetSellPrice(proto) * sRandomPlayerbotMgr->GetSellMultiplier(bot);
         }
         else
         {
-            sum += item->GetCount() * auctionbot.GetBuyPrice(proto) * sRandomPlayerbotMgr.GetBuyMultiplier(bot);
+            sum += item->GetCount() * auctionbot.GetBuyPrice(proto) * sRandomPlayerbotMgr->GetBuyMultiplier(bot);
         }
     }
 

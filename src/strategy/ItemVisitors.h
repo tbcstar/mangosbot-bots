@@ -288,7 +288,7 @@ namespace ai
             {
                 for (int j = 0; j < MAX_ITEM_PROTO_SPELLS; j++)
                 {
-                    const SpellEntry* const spellInfo = sServerFacade.LookupSpellInfo(proto->Spells[j].SpellId);
+                    const SpellEntry* const spellInfo = sServerFacade->LookupSpellInfo(proto->Spells[j].SpellId);
                     if (!spellInfo)
                         return false;
 
@@ -337,7 +337,7 @@ namespace ai
         {
             for (int j = 0; j < MAX_ITEM_PROTO_SPELLS; j++)
             {
-                const SpellEntry* const spellInfo = sServerFacade.LookupSpellInfo(proto->Spells[j].SpellId);
+                const SpellEntry* const spellInfo = sServerFacade->LookupSpellInfo(proto->Spells[j].SpellId);
                 if (!spellInfo)
                     return false;
 
@@ -364,7 +364,7 @@ namespace ai
             {
                 for (int j = 0; j < MAX_ITEM_PROTO_SPELLS; j++)
                 {
-                    const SpellEntry* const spellInfo = sServerFacade.LookupSpellInfo(proto->Spells[j].SpellId);
+                    const SpellEntry* const spellInfo = sServerFacade->LookupSpellInfo(proto->Spells[j].SpellId);
                     if (!spellInfo)
                         return false;
 

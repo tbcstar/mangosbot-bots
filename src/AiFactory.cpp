@@ -1,8 +1,10 @@
-#include "../botpch.h"
-#include "playerbot.h"
-#include "AiFactory.h"
-#include "strategy/Engine.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
+#include "AiFactory.h"
+#include "Playerbot.h"
+#include "strategy/Engine.h"
 #include "strategy/priest/PriestAiObjectContext.h"
 #include "strategy/mage/MageAiObjectContext.h"
 #include "strategy/warlock/WarlockAiObjectContext.h"
@@ -12,52 +14,50 @@
 #include "strategy/druid/DruidAiObjectContext.h"
 #include "strategy/hunter/HunterAiObjectContext.h"
 #include "strategy/rogue/RogueAiObjectContext.h"
-#include "Player.h"
-#include "PlayerbotAIConfig.h"
-#include "RandomPlayerbotMgr.h"
-
 
 AiObjectContext* AiFactory::createAiObjectContext(Player* player, PlayerbotAI* ai)
 {
     switch (player->getClass())
     {
-    case CLASS_PRIEST:
-        return new PriestAiObjectContext(ai);
-        break;
-    case CLASS_MAGE:
-        return new MageAiObjectContext(ai);
-        break;
-    case CLASS_WARLOCK:
-        return new WarlockAiObjectContext(ai);
-        break;
-    case CLASS_WARRIOR:
-        return new WarriorAiObjectContext(ai);
-        break;
-    case CLASS_SHAMAN:
-        return new ShamanAiObjectContext(ai);
-        break;
-    case CLASS_PALADIN:
-        return new PaladinAiObjectContext(ai);
-        break;
-    case CLASS_DRUID:
-        return new DruidAiObjectContext(ai);
-        break;
-    case CLASS_HUNTER:
-        return new HunterAiObjectContext(ai);
-        break;
-    case CLASS_ROGUE:
-        return new RogueAiObjectContext(ai);
-        break;
+        case CLASS_PRIEST:
+            return new PriestAiObjectContext(ai);
+            break;
+        case CLASS_MAGE:
+            return new MageAiObjectContext(ai);
+            break;
+        case CLASS_WARLOCK:
+            return new WarlockAiObjectContext(ai);
+            break;
+        case CLASS_WARRIOR:
+            return new WarriorAiObjectContext(ai);
+            break;
+        case CLASS_SHAMAN:
+            return new ShamanAiObjectContext(ai);
+            break;
+        case CLASS_PALADIN:
+            return new PaladinAiObjectContext(ai);
+            break;
+        case CLASS_DRUID:
+            return new DruidAiObjectContext(ai);
+            break;
+        case CLASS_HUNTER:
+            return new HunterAiObjectContext(ai);
+            break;
+        case CLASS_ROGUE:
+            return new RogueAiObjectContext(ai);
+            break;
     }
+
     return new AiObjectContext(ai);
 }
 
-int AiFactory::GetPlayerSpecTab(Player* bot)
+uint8 AiFactory::GetPlayerSpecTab(Player* bot)
 {
-    map<uint32, int32> tabs = GetPlayerSpecTabs(bot);
+    std::map<uint8, uint32> tabs = GetPlayerSpecTabs(bot);
 
-    int tab = -1, max = 0;
-    for (uint32 i = 0; i < uint32(3); i++)
+    int32 tab = -1;
+    uint32 max = 0;
+    for (uint32 i = 0; i < 3; i++)
     {
         if (tab == -1 || max < tabs[i])
         {
@@ -69,10 +69,10 @@ int AiFactory::GetPlayerSpecTab(Player* bot)
     return tab;
 }
 
-map<uint32, int32> AiFactory::GetPlayerSpecTabs(Player* bot)
+std::map<uint8, uint32> AiFactory::GetPlayerSpecTabs(Player* bot)
 {
-    map<uint32, int32> tabs;
-    for (uint32 i = 0; i < uint32(3); i++)
+    std::map<uint8, uint32> tabs;
+    for (uint32 i = 0; i < 3; i++)
         tabs[i] = 0;
 
     uint32 classMask = bot->getClassMask();
@@ -89,8 +89,8 @@ map<uint32, int32> AiFactory::GetPlayerSpecTabs(Player* bot)
         if ((classMask & talentTabInfo->ClassMask) == 0)
             continue;
 
-        int maxRank = 0;
-        for (int rank = MAX_TALENT_RANK - 1; rank >= 0; --rank)
+        uint32 maxRank = 0;
+        for (uint32 rank = MAX_TALENT_RANK - 1; rank >= 0; --rank)
         {
             if (!talentInfo->RankID[rank])
                 continue;
@@ -100,6 +100,7 @@ map<uint32, int32> AiFactory::GetPlayerSpecTabs(Player* bot)
                 maxRank = rank + 1;
 
         }
+
         tabs[talentTabInfo->tabpage] += maxRank;
     }
 
@@ -108,7 +109,7 @@ map<uint32, int32> AiFactory::GetPlayerSpecTabs(Player* bot)
 
 void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const facade, Engine* engine)
 {
-    int tab = GetPlayerSpecTab(player);
+    uint8 tab = GetPlayerSpecTab(player);
 
     engine->addStrategies("racials", "chat", "default", "aoe", "potions", "cast time", "conserve mana", "duel", "pvp", "stay", NULL);
 
@@ -191,11 +192,11 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
             break;
     }
 
-    if (sRandomPlayerbotMgr.IsRandomBot(player))
+    if (sRandomPlayerbotMgr->IsRandomBot(player))
     {
         if (!player->GetGroup())
         {
-            engine->ChangeStrategy(sPlayerbotAIConfig.randomBotCombatStrategies);
+            engine->ChangeStrategy(sPlayerbotAIConfig->randomBotCombatStrategies);
             if (player->getClass() == CLASS_DRUID && player->getLevel() < 20)
             {
                 engine->addStrategies("bear", "close", NULL);
@@ -204,11 +205,12 @@ void AiFactory::AddDefaultCombatStrategies(Player* player, PlayerbotAI* const fa
     }
     else
     {
-        engine->ChangeStrategy(sPlayerbotAIConfig.combatStrategies);
+        engine->ChangeStrategy(sPlayerbotAIConfig->combatStrategies);
     }
 }
 
-Engine* AiFactory::createCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext) {
+Engine* AiFactory::createCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext)
+{
 	Engine* engine = new Engine(facade, AiObjectContext);
     AddDefaultCombatStrategies(player, facade, engine);
     return engine;
@@ -216,9 +218,10 @@ Engine* AiFactory::createCombatEngine(Player* player, PlayerbotAI* const facade,
 
 void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const facade, Engine* nonCombatEngine)
 {
-    int tab = GetPlayerSpecTab(player);
+    uint8 tab = GetPlayerSpecTab(player);
 
-    switch (player->getClass()){
+    switch (player->getClass())
+    {
         case CLASS_PRIEST:
             nonCombatEngine->addStrategies("dps assist", "cure", NULL);
             break;
@@ -265,23 +268,24 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
             nonCombatEngine->addStrategy("dps assist");
             break;
     }
-    nonCombatEngine->addStrategies("nc", "food", "stay", "sit", "chat",
-            "default", "quest", "loot", "gather", "duel", "emote", "conserve mana", "buff", NULL);
 
-    if (sRandomPlayerbotMgr.IsRandomBot(player))
+    nonCombatEngine->addStrategies("nc", "food", "stay", "sit", "chat", "default", "quest", "loot", "gather", "duel", "emote", "conserve mana", "buff", NULL);
+
+    if (sRandomPlayerbotMgr->IsRandomBot(player))
     {
         if (!player->GetGroup())
         {
-            nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig.randomBotNonCombatStrategies);
+            nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig->randomBotNonCombatStrategies);
         }
     }
     else
     {
-        nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig.nonCombatStrategies);
+        nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig->nonCombatStrategies);
     }
 }
 
-Engine* AiFactory::createNonCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext) {
+Engine* AiFactory::createNonCombatEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext)
+{
 	Engine* nonCombatEngine = new Engine(facade, AiObjectContext);
 
     AddDefaultNonCombatStrategies(player, facade, nonCombatEngine);
@@ -291,13 +295,15 @@ Engine* AiFactory::createNonCombatEngine(Player* player, PlayerbotAI* const faca
 void AiFactory::AddDefaultDeadStrategies(Player* player, PlayerbotAI* const facade, Engine* deadEngine)
 {
     deadEngine->addStrategies("dead", "stay", "chat", "default", "follow", NULL);
-    if (sRandomPlayerbotMgr.IsRandomBot(player) && !player->GetGroup())
+
+    if (sRandomPlayerbotMgr->IsRandomBot(player) && !player->GetGroup())
     {
         deadEngine->removeStrategy("follow");
     }
 }
 
-Engine* AiFactory::createDeadEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext) {
+Engine* AiFactory::createDeadEngine(Player* player, PlayerbotAI* const facade, AiObjectContext* AiObjectContext)
+{
     Engine* deadEngine = new Engine(facade, AiObjectContext);
     AddDefaultDeadStrategies(player, facade, deadEngine);
     return deadEngine;

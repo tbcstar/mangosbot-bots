@@ -19,7 +19,7 @@ void FleeManager::calculateDistanceToCreatures(FleePoint *point)
 		if (!unit)
 		    continue;
 
-		float d = sServerFacade.GetDistance2d(unit, point->x, point->y);
+		float d = sServerFacade->GetDistance2d(unit, point->x, point->y);
 		point->sumDistance += d;
 		if (point->minDistance < 0 || point->minDistance > d) point->minDistance = d;
 	}
@@ -59,10 +59,10 @@ void FleeManager::calculatePossibleDestinations(list<FleePoint*> &points)
         enemyOri.push_back(ori);
     }
 
-    float distIncrement = max(sPlayerbotAIConfig.followDistance, (maxAllowedDistance - sPlayerbotAIConfig.tooCloseDistance) / 10.0f);
-    for (float dist = maxAllowedDistance; dist >= sPlayerbotAIConfig.tooCloseDistance ; dist -= distIncrement)
+    float distIncrement = max(sPlayerbotAIConfig->followDistance, (maxAllowedDistance - sPlayerbotAIConfig->tooCloseDistance) / 10.0f);
+    for (float dist = maxAllowedDistance; dist >= sPlayerbotAIConfig->tooCloseDistance ; dist -= distIncrement)
     {
-        float angleIncrement = max(M_PI / 20, M_PI / 4 / (1.0 + dist - sPlayerbotAIConfig.tooCloseDistance));
+        float angleIncrement = max(M_PI / 20, M_PI / 4 / (1.0 + dist - sPlayerbotAIConfig->tooCloseDistance));
         for (float add = 0.0f; add < M_PI / 4 + angleIncrement; add += angleIncrement)
         {
             for (float angle = add; angle < add + 2 * M_PI + angleIncrement; angle += M_PI / 4)
@@ -71,7 +71,7 @@ void FleeManager::calculatePossibleDestinations(list<FleePoint*> &points)
 
                 float x = botPosX + cos(angle) * maxAllowedDistance, y = botPosY + sin(angle) * maxAllowedDistance, z = botPosZ + CONTACT_DISTANCE;
 
-                if (forceMaxDistance && sServerFacade.IsDistanceLessThan(sServerFacade.GetDistance2d(bot, x, y), maxAllowedDistance - sPlayerbotAIConfig.tooCloseDistance))
+                if (forceMaxDistance && sServerFacade->IsDistanceLessThan(sServerFacade->GetDistance2d(bot, x, y), maxAllowedDistance - sPlayerbotAIConfig->tooCloseDistance))
                     continue;
 
                 bot->UpdateAllowedPositionZ(x, y, z);
@@ -87,7 +87,7 @@ void FleeManager::calculatePossibleDestinations(list<FleePoint*> &points)
                 FleePoint *point = new FleePoint(bot->GetPlayerbotAI(), x, y, z);
                 calculateDistanceToCreatures(point);
 
-                if (sServerFacade.IsDistanceGreaterOrEqualThan(point->minDistance - start.minDistance, sPlayerbotAIConfig.followDistance))
+                if (sServerFacade->IsDistanceGreaterOrEqualThan(point->minDistance - start.minDistance, sPlayerbotAIConfig->followDistance))
                     points.push_back(point);
             }
         }
@@ -151,8 +151,8 @@ bool FleeManager::isUseful()
         if (!unit)
             continue;
 
-        float d = sServerFacade.GetDistance2d(unit, bot);
-        if (sServerFacade.IsDistanceLessThan(d, sPlayerbotAIConfig.aggroDistance)) return true;
+        float d = sServerFacade->GetDistance2d(unit, bot);
+        if (sServerFacade->IsDistanceLessThan(d, sPlayerbotAIConfig->aggroDistance)) return true;
     }
     return false;
 }

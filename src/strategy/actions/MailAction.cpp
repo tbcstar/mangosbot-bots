@@ -40,7 +40,7 @@ public:
             {
                 Item* item = bot->GetMItem(i->item_guid);
                 int count = item ? item->GetCount() : 1;
-                ItemPrototype const *proto = sObjectMgr.GetItemPrototype(i->item_template);
+                ItemPrototype const *proto = sObjectMgr->GetItemPrototype(i->item_template);
                 if (proto)
                 {
                     out << ChatHelper::formatItem(proto, count);
@@ -96,7 +96,7 @@ public:
             list<uint32> guids;
             for (MailItemInfoVec::iterator i = mail->items.begin(); i != mail->items.end(); ++i)
             {
-                ItemPrototype const *proto = sObjectMgr.GetItemPrototype(i->item_template);
+                ItemPrototype const *proto = sObjectMgr->GetItemPrototype(i->item_template);
                 if (proto)
                     guids.push_back(i->item_guid);
             }
@@ -106,9 +106,7 @@ public:
                 WorldPacket packet;
                 packet << mailbox;
                 packet << mail->messageID;
-#ifdef MANGOSBOT_ONE
                 packet << *i;
-#endif
                 Item* item = bot->GetMItem(*i);
                 ostringstream out;
                 out << mail->subject << ", " << ChatHelper::formatItem(item->GetProto()) << "|cff00ff00 processed";
@@ -174,7 +172,7 @@ public:
         ai->TellMaster(out.str());
         if (mail->itemTextId)
         {
-            body << "\n" << sObjectMgr.GetItemText(mail->itemTextId);
+            body << "\n" << sObjectMgr->GetItemText(mail->itemTextId);
             ai->TellMaster(body.str());
         }
         return true;
@@ -254,9 +252,7 @@ void MailProcessor::RemoveMail(Player* bot, uint32 id, ObjectGuid mailbox)
     WorldPacket packet;
     packet << mailbox;
     packet << id;
-#ifdef MANGOSBOT_ONE
     packet << (uint32)0; //mailTemplateId
-#endif
     bot->GetSession()->HandleMailDelete(packet);
 }
 
@@ -269,7 +265,7 @@ ObjectGuid MailProcessor::FindMailbox(PlayerbotAI* ai)
         GameObject* go = ai->GetGameObject(*i);
         if (go && go->GetGoType() == GAMEOBJECT_TYPE_MAILBOX)
         {
-            mailbox = go->GetObjectGuid();
+            mailbox = go->GetGUID();
             break;
         }
     }

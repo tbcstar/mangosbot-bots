@@ -20,7 +20,7 @@ namespace ai
         }
         virtual bool isUseful()
 		{
-            return sServerFacade.IsDistanceGreaterThan(AI_VALUE2(float, "distance", GetTargetName()), (distance + sPlayerbotAIConfig.contactDistance));
+            return sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", GetTargetName()), (distance + sPlayerbotAIConfig->contactDistance));
         }
         virtual string GetTargetName() { return "current target"; }
 
@@ -37,7 +37,7 @@ namespace ai
         }
 		virtual bool isUseful()
 		{
-			return sServerFacade.IsDistanceGreaterThan(AI_VALUE2(float, "distance", "current target"), (distance + sPlayerbotAIConfig.contactDistance));
+			return sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "current target"), (distance + sPlayerbotAIConfig->contactDistance));
 		}
 
     protected:
@@ -47,7 +47,7 @@ namespace ai
     class ReachMeleeAction : public ReachTargetAction
 	{
     public:
-        ReachMeleeAction(PlayerbotAI* ai) : ReachTargetAction(ai, "reach melee", sPlayerbotAIConfig.meleeDistance) {}
+        ReachMeleeAction(PlayerbotAI* ai) : ReachTargetAction(ai, "reach melee", sPlayerbotAIConfig->meleeDistance) {}
     };
 
     class ReachSpellAction : public ReachTargetAction

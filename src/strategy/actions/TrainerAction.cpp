@@ -15,18 +15,10 @@ void TrainerAction::Learn(uint32 cost, TrainerSpell const* tSpell, ostringstream
 
     bot->ModifyMoney(-int32(cost));
 
-    SpellEntry const* proto = sServerFacade.LookupSpellInfo(tSpell->spell);
+    SpellEntry const* proto = sServerFacade->LookupSpellInfo(tSpell->spell);
     if (!proto)
         return;
 
-#ifdef CMANGOS
-    Spell* spell = new Spell(bot, proto, false);
-    SpellCastTargets targets;
-    targets.setUnitTarget(bot);
-    spell->SpellStart(&targets);
-#endif
-
-#ifdef MANGOS
     bool learned = false;
     for (int j = 0; j < 3; ++j)
     {
@@ -38,7 +30,6 @@ void TrainerAction::Learn(uint32 cost, TrainerSpell const* tSpell, ostringstream
         }
     }
     if (!learned) bot->learnSpell(tSpell->spell, false);
-#endif
 
     msg << " - learned";
 }
@@ -71,7 +62,7 @@ void TrainerAction::Iterate(Creature* creature, TrainerSpellAction action, Spell
             continue;
 
         uint32 spellId = tSpell->spell;
-        const SpellEntry *const pSpellInfo =  sServerFacade.LookupSpellInfo(spellId);
+        const SpellEntry *const pSpellInfo =  sServerFacade->LookupSpellInfo(spellId);
         if (!pSpellInfo)
             continue;
 
@@ -102,7 +93,7 @@ bool TrainerAction::Execute(Event event)
     if (!master)
         return false;
 
-    Creature *creature = ai->GetCreature(master->GetSelectionGuid());
+    Creature *creature = ai->GetCreature(master->GetTarget());
     if (!creature)
         return false;
 

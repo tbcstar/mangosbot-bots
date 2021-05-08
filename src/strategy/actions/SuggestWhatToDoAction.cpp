@@ -26,7 +26,7 @@ SuggestWhatToDoAction::SuggestWhatToDoAction(PlayerbotAI* ai, string name) : Inv
 
 bool SuggestWhatToDoAction::Execute(Event event)
 {
-    if (!sRandomPlayerbotMgr.IsRandomBot(bot) || bot->GetGroup() || bot->GetInstanceId())
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot) || bot->GetGroup() || bot->GetInstanceId())
         return false;
 
     int index = rand() % suggestions.size();
@@ -131,7 +131,7 @@ void SuggestWhatToDoAction::specificQuest()
 
     int index = rand() % quests.size();
 
-    Quest const* quest = sObjectMgr.GetQuestTemplate(quests[index]);
+    Quest const* quest = sObjectMgr->GetQuestTemplate(quests[index]);
 
     map<string, string> placeholders;
     placeholders["%role"] = chat->formatClass(bot, AiFactory::GetPlayerSpecTab(bot));
@@ -205,7 +205,6 @@ void SuggestWhatToDoAction::grindReputation()
         factions["Gadgetzan"] = 50;
         factions["Ratchet"] = 20;
 
-#ifdef MANGOSBOT_ONE
         factions["Ashtongue Deathsworn"] = 70;
         factions["Cenarion Expedition"] = 62;
         factions["The Consortium"] = 65;
@@ -217,9 +216,7 @@ void SuggestWhatToDoAction::grindReputation()
         factions["Sporeggar"] = 65;
         factions["Tranquillien"] = 10;
         factions["The Violet Eye"] = 70;
-#endif
 
-#ifdef MANGOSBOT_TWO
         factions["Argent Crusade"] = 75;
         factions["Ashen Verdict"] = 75;
         factions["The Kalu'ak"] = 72;
@@ -227,7 +224,6 @@ void SuggestWhatToDoAction::grindReputation()
         factions["Knights of the Ebon Blade"] = 77;
         factions["The Sons of Hodir"] = 78;
         factions["The Wyrmrest Accord"] = 77;
-#endif
     }
 
     vector<string> levels;
@@ -290,11 +286,7 @@ void SuggestWhatToDoAction::spam(string msg, uint32 channelId)
 
             if (ChannelMgr* cMgr = channelMgr(bot->GetTeam()))
             {
-                if (Channel* chn = cMgr->GetJoinChannel(channelName
-#ifdef MANGOSBOT_ONE
-                    , channel->ChannelID
-#endif
-                ))
+                if (Channel* chn = cMgr->GetJoinChannel(channelName, channel->ChannelID))
                 {
                     chn->Join(bot, "");
                     chn->Say(bot, msg.c_str(), LANG_UNIVERSAL);
@@ -344,7 +336,7 @@ SuggestTradeAction::SuggestTradeAction(PlayerbotAI* ai) : SuggestWhatToDoAction(
 
 bool SuggestTradeAction::Execute(Event event)
 {
-    if (!sRandomPlayerbotMgr.IsRandomBot(bot) || bot->GetGroup() || bot->GetInstanceId())
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot) || bot->GetGroup() || bot->GetInstanceId())
         return false;
 
     uint32 quality = urand(0, 100);
@@ -387,11 +379,11 @@ bool SuggestTradeAction::Execute(Event event)
     if (!item || !count)
         return false;
 
-    ItemPrototype const* proto = sObjectMgr.GetItemPrototype(item);
+    ItemPrototype const* proto = sObjectMgr->GetItemPrototype(item);
     if (!proto)
         return false;
 
-    uint32 price = PricingStrategy::RoundPrice(auctionbot.GetSellPrice(proto) * sRandomPlayerbotMgr.GetSellMultiplier(bot) * count);
+    uint32 price = PricingStrategy::RoundPrice(auctionbot.GetSellPrice(proto) * sRandomPlayerbotMgr->GetSellMultiplier(bot) * count);
     if (!price)
         return false;
 

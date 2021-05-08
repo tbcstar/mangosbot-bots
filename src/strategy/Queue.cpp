@@ -79,7 +79,7 @@ void Queue::RemoveExpired()
     for (std::list<ActionBasket*>::iterator iter = actions.begin(); iter != actions.end(); iter++)
     {
         ActionBasket* basket = *iter;
-        if (sPlayerbotAIConfig.expireActionTime && basket->isExpired(sPlayerbotAIConfig.expireActionTime / 1000))
+        if (sPlayerbotAIConfig->expireActionTime && basket->isExpired(sPlayerbotAIConfig->expireActionTime / 1000))
             expired.push_back(basket);
     }
 
@@ -90,7 +90,7 @@ void Queue::RemoveExpired()
         ActionNode* action = basket->getAction();
         if (action)
         {
-            sLog.outDebug("Action %s is expired", action->getName());
+            sLog->outDebug("Action %s is expired", action->getName());
             delete action;
         }
         delete basket;

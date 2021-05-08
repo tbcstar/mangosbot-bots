@@ -11,10 +11,10 @@ class GuildTaskMgr
     public:
         GuildTaskMgr();
         virtual ~GuildTaskMgr();
-        static GuildTaskMgr& instance()
+        static GuildTaskMgr* instance()
         {
             static GuildTaskMgr instance;
-            return instance;
+            return &instance;
         }
 
         void Update(Player* owner, Player* guildMaster);

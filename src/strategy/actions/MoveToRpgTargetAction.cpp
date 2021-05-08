@@ -15,7 +15,7 @@ bool MoveToRpgTargetAction::Execute(Event event)
     float distance = AI_VALUE2(float, "distance", "rpg target");
     if (distance > 180.0f)
     {
-        context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid());
+        context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid::Empty);
         return false;
     }
 
@@ -25,7 +25,7 @@ bool MoveToRpgTargetAction::Execute(Event event)
     float mapId = target->GetMapId();
 
     bot->m_movementInfo.AddMovementFlag(MOVEFLAG_WALK_MODE);
-    if (bot->IsWithinLOS(x, y, z)) return MoveNear(target, sPlayerbotAIConfig.followDistance);
+    if (bot->IsWithinLOS(x, y, z)) return MoveNear(target, sPlayerbotAIConfig->followDistance);
 
     WaitForReach(distance);
 
@@ -38,7 +38,7 @@ bool MoveToRpgTargetAction::Execute(Event event)
         ai->InterruptSpell();
     }
 
-    bool generatePath = !bot->IsFlying() && !sServerFacade.IsUnderwater(bot);
+    bool generatePath = !bot->IsFlying() && !sServerFacade->IsUnderwater(bot);
     MotionMaster &mm = *bot->GetMotionMaster();
     mm.MovePoint(mapId, x, y, z, generatePath);
 
@@ -48,5 +48,5 @@ bool MoveToRpgTargetAction::Execute(Event event)
 
 bool MoveToRpgTargetAction::isUseful()
 {
-    return context->GetValue<ObjectGuid>("rpg target")->Get() && AI_VALUE2(float, "distance", "rpg target") > sPlayerbotAIConfig.followDistance;
+    return context->GetValue<ObjectGuid>("rpg target")->Get() && AI_VALUE2(float, "distance", "rpg target") > sPlayerbotAIConfig->followDistance;
 }

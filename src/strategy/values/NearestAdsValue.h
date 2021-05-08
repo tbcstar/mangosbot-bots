@@ -9,7 +9,7 @@ namespace ai
     class NearestAdsValue : public PossibleTargetsValue
 	{
 	public:
-        NearestAdsValue(PlayerbotAI* ai, float range = sPlayerbotAIConfig.tooCloseDistance) :
+        NearestAdsValue(PlayerbotAI* ai, float range = sPlayerbotAIConfig->tooCloseDistance) :
             PossibleTargetsValue(ai, "nearest ads", range) {}
 
     protected:

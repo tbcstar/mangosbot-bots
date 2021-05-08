@@ -11,16 +11,10 @@ set<uint32> ListSpellsAction::vendorItems;
 
 bool CompareSpells(pair<uint32, string>& s1, pair<uint32, string>& s2)
 {
-    const SpellEntry* const si1 = sServerFacade.LookupSpellInfo(s1.first);
-    const SpellEntry* const si2 = sServerFacade.LookupSpellInfo(s2.first);
-#ifdef MANGOSBOT_ZERO
-    int p1 = si1->School * 20000;
-    int p2 = si2->School * 20000;
-#endif
-#ifdef MANGOSBOT_ONE
+    const SpellEntry* const si1 = sServerFacade->LookupSpellInfo(s1.first);
+    const SpellEntry* const si2 = sServerFacade->LookupSpellInfo(s2.first);
     int p1 = si1->SchoolMask * 20000;
     int p2 = si2->SchoolMask * 20000;
-#endif
 
     uint32 skill1 = 0, skill2 = 0;
     uint32 skillValue1 = 0, skillValue2 = 0;
@@ -138,7 +132,7 @@ bool ListSpellsAction::Execute(Event event)
         if (itr->second.state == PLAYERSPELL_REMOVED || itr->second.disabled || IsPassiveSpell(spellId))
             continue;
 
-        const SpellEntry* const pSpellInfo = sServerFacade.LookupSpellInfo(spellId);
+        const SpellEntry* const pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
         if (!pSpellInfo)
             continue;
 
@@ -165,7 +159,7 @@ bool ListSpellsAction::Execute(Event event)
             uint32 reagentsRequired = pSpellInfo->ReagentCount[x];
             if (itemid)
             {
-                ItemPrototype const* proto = sObjectMgr.GetItemPrototype(itemid);
+                ItemPrototype const* proto = sObjectMgr->GetItemPrototype(itemid);
                 if (proto)
                 {
                     if (first) { materials << ": "; first = false; } else materials << ", ";
@@ -199,7 +193,7 @@ bool ListSpellsAction::Execute(Event event)
             {
                 if (pSpellInfo->Effect[i] == SPELL_EFFECT_CREATE_ITEM)
                 {
-                    ItemPrototype const* proto = sObjectMgr.GetItemPrototype(pSpellInfo->EffectItemType[i]);
+                    ItemPrototype const* proto = sObjectMgr->GetItemPrototype(pSpellInfo->EffectItemType[i]);
                     if (proto)
                     {
                         if (craftCount)

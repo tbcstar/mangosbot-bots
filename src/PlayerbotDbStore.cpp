@@ -16,7 +16,7 @@ using namespace ai;
 
 void PlayerbotDbStore::Load(PlayerbotAI *ai)
 {
-    uint64 guid = ai->GetBot()->GetObjectGuid().GetRawValue();
+    ObjectGuid::LowType guid = ai->GetBot()->GetGUID().GetCounter();
 
     QueryResult* results = CharacterDatabase.PQuery("SELECT `key`,`value` FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
     if (results)
@@ -45,7 +45,7 @@ void PlayerbotDbStore::Load(PlayerbotAI *ai)
 
 void PlayerbotDbStore::Save(PlayerbotAI *ai)
 {
-    uint64 guid = ai->GetBot()->GetObjectGuid().GetRawValue();
+    ObjectGuid::LowType guid = ai->GetBot()->GetGUID().GetCounter();
 
     Reset(ai);
 
@@ -72,12 +72,12 @@ string PlayerbotDbStore::FormatStrategies(string type, list<string> strategies)
 
 void PlayerbotDbStore::Reset(PlayerbotAI *ai)
 {
-    uint64 guid = ai->GetBot()->GetObjectGuid().GetRawValue();
-    uint32 account = sObjectMgr.GetPlayerAccountIdByGUID(ObjectGuid(guid));
+    ObjectGuid::LowType guid = ai->GetBot()->GetGUID().GetCounter();
+    uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(guid);
     CharacterDatabase.PExecute("DELETE FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
 }
 
-void PlayerbotDbStore::SaveValue(uint64 guid, string key, string value)
+void PlayerbotDbStore::SaveValue(uint32 guid, string key, string value)
 {
     CharacterDatabase.PExecute("INSERT INTO `ai_playerbot_db_store` (`guid`, `key`, `value`) VALUES ('%u', '%s', '%s')", guid, key.c_str(), value.c_str());
 }

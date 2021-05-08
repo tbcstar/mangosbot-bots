@@ -6,9 +6,6 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-using namespace ai;
-using namespace MaNGOS;
-
 void NearestNonBotPlayersValue::FindUnits(list<Unit*> &targets)
 {
     AnyUnitInObjectRangeCheck u_check(bot, range);
@@ -18,6 +15,6 @@ void NearestNonBotPlayersValue::FindUnits(list<Unit*> &targets)
 
 bool NearestNonBotPlayersValue::AcceptUnit(Unit* unit)
 {
-    ObjectGuid guid = unit->GetObjectGuid();
+    ObjectGuid guid = unit->GetGUID();
     return guid.IsPlayer() && !((Player*)unit)->GetPlayerbotAI();
 }

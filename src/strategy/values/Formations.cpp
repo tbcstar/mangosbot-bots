@@ -34,10 +34,10 @@ WorldLocation MoveAheadFormation::GetLocation()
     float y = loc.coord_y;
     float z = loc.coord_z;
 
-    if (sServerFacade.isMoving(master)) {
+    if (sServerFacade->isMoving(master)) {
         float ori = master->GetOrientation();
-        float x1 = x + sPlayerbotAIConfig.tooCloseDistance * cos(ori);
-        float y1 = y + sPlayerbotAIConfig.tooCloseDistance * sin(ori);
+        float x1 = x + sPlayerbotAIConfig->tooCloseDistance * cos(ori);
+        float y1 = y + sPlayerbotAIConfig->tooCloseDistance * sin(ori);
         float ground = master->GetMap()->GetHeight(x1, y1, z);
         if (ground > INVALID_HEIGHT)
         {
@@ -80,7 +80,7 @@ namespace ai
             if (!master)
                 return WorldLocation();
 
-            float range = sPlayerbotAIConfig.followDistance;
+            float range = sPlayerbotAIConfig->followDistance;
             float angle = GetFollowAngle();
             float x = master->GetPositionX() + cos(angle) * range;
             float y = master->GetPositionY() + sin(angle) * range;
@@ -94,7 +94,7 @@ namespace ai
             return WorldLocation(master->GetMapId(), x, y, z);
         }
 
-        virtual float GetMaxDistance() { return sPlayerbotAIConfig.followDistance; }
+        virtual float GetMaxDistance() { return sPlayerbotAIConfig->followDistance; }
     };
 
 
@@ -108,14 +108,14 @@ namespace ai
             if (!master)
                 return WorldLocation();
 
-            float range = sPlayerbotAIConfig.followDistance;
+            float range = sPlayerbotAIConfig->followDistance;
 			float angle = GetFollowAngle();
 
             time_t now = time(0);
             if (!lastChangeTime || now - lastChangeTime >= 3) {
                 lastChangeTime = now;
-                dx = (urand(0, 10) / 10.0 - 0.5) * sPlayerbotAIConfig.tooCloseDistance;
-                dy = (urand(0, 10) / 10.0 - 0.5) * sPlayerbotAIConfig.tooCloseDistance;
+                dx = (urand(0, 10) / 10.0 - 0.5) * sPlayerbotAIConfig->tooCloseDistance;
+                dy = (urand(0, 10) / 10.0 - 0.5) * sPlayerbotAIConfig->tooCloseDistance;
                 dr = sqrt(dx*dx + dy*dy);
             }
 
@@ -131,7 +131,7 @@ namespace ai
             return WorldLocation(master->GetMapId(), x, y, z);
         }
 
-        virtual float GetMaxDistance() { return sPlayerbotAIConfig.followDistance + dr; }
+        virtual float GetMaxDistance() { return sPlayerbotAIConfig->followDistance + dr; }
 
     private:
         time_t lastChangeTime;
@@ -234,7 +234,7 @@ namespace ai
             if (!group)
                 return Formation::NullLocation;
 
-            float range = sPlayerbotAIConfig.followDistance;
+            float range = sPlayerbotAIConfig->followDistance;
 
             Player* master = GetMaster();
             if (!master)
@@ -277,12 +277,12 @@ namespace ai
             }
             if (ai->IsTank(bot) && !ai->IsTank(master))
             {
-                float diff = tanks.size() % 2 == 0 ? -sPlayerbotAIConfig.tooCloseDistance / 2.0f : 0.0f;
+                float diff = tanks.size() % 2 == 0 ? -sPlayerbotAIConfig->tooCloseDistance / 2.0f : 0.0f;
                 return MoveLine(tanks, diff, x + cos(orientation) * range, y + sin(orientation) * range, z, orientation, range);
             }
             if (!ai->IsTank(bot) && ai->IsTank(master))
             {
-                float diff = dps.size() % 2 == 0 ? -sPlayerbotAIConfig.tooCloseDistance / 2.0f : 0.0f;
+                float diff = dps.size() % 2 == 0 ? -sPlayerbotAIConfig->tooCloseDistance / 2.0f : 0.0f;
                 return MoveLine(dps, diff, x - cos(orientation) * range, y - sin(orientation) * range, z, orientation, range);
             }
             return Formation::NullLocation;
@@ -295,14 +295,14 @@ namespace ai
         FarFormation(PlayerbotAI* ai) : FollowFormation(ai, "far") {}
         virtual WorldLocation GetLocation()
         {
-            float range = sPlayerbotAIConfig.farDistance;
-            float followRange = sPlayerbotAIConfig.followDistance;
+            float range = sPlayerbotAIConfig->farDistance;
+            float followRange = sPlayerbotAIConfig->followDistance;
 
             Player* master = GetMaster();
             if (!master)
                 return Formation::NullLocation;
 
-            if (sServerFacade.GetDistance2d(bot, master) <= range)
+            if (sServerFacade->GetDistance2d(bot, master) <= range)
                 return Formation::NullLocation;
 
             float angle = master->GetAngle(bot);
@@ -319,7 +319,7 @@ namespace ai
                 {
                     x = master->GetPositionX() + cos(angle) * range + cos(followAngle) * followRange;
                     y = master->GetPositionY() + sin(angle) * range + sin(followAngle) * followRange;
-                    float dist = sServerFacade.GetDistance2d(bot, x, y);
+                    float dist = sServerFacade->GetDistance2d(bot, x, y);
                     float ground = master->GetMap()->GetHeight(x, y, z);
                     if (ground > INVALID_HEIGHT && (!minDist || minDist > dist))
                     {

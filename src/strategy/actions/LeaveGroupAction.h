@@ -21,11 +21,11 @@ namespace ai
             p << uint32(PARTY_OP_LEAVE) << member << uint32(0);
             bot->GetSession()->HandleGroupDisbandOpcode(p);
 
-            bool randomBot = sRandomPlayerbotMgr.IsRandomBot(bot);
+            bool randomBot = sRandomPlayerbotMgr->IsRandomBot(bot);
             if (randomBot)
             {
                 bot->GetPlayerbotAI()->SetMaster(NULL);
-                sRandomPlayerbotMgr.ScheduleTeleport(bot->GetObjectGuid());
+                sRandomPlayerbotMgr->ScheduleTeleport(bot->GetGUID());
             }
 
             ai->ResetStrategies(!randomBot);
@@ -69,7 +69,7 @@ namespace ai
 
             p >> guid;
 
-            if (bot->GetObjectGuid() == guid)
+            if (bot->GetGUID() == guid)
                 return LeaveGroupAction::Execute(event);
 
             return false;

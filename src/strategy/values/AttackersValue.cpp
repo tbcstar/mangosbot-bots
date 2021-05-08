@@ -7,9 +7,6 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-using namespace ai;
-using namespace MaNGOS;
-
 list<ObjectGuid> AttackersValue::Calculate()
 {
     set<Unit*> targets;
@@ -24,10 +21,10 @@ list<ObjectGuid> AttackersValue::Calculate()
 
     list<ObjectGuid> result;
 	for (set<Unit*>::iterator i = targets.begin(); i != targets.end(); i++)
-		result.push_back((*i)->GetObjectGuid());
+		result.push_back((*i)->GetGUID());
 
     if (bot->duel && bot->duel->opponent)
-        result.push_back(bot->duel->opponent->GetObjectGuid());
+        result.push_back(bot->duel->opponent->GetGUID());
 
 	return result;
 }
@@ -37,8 +34,8 @@ void AttackersValue::AddAttackersOf(Group* group, set<Unit*>& targets)
     Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
-        Player *member = sObjectMgr.GetPlayer(itr->guid);
-        if (!member || !sServerFacade.IsAlive(member) || member == bot)
+        Player *member = sObjectMgr->GetPlayer(itr->guid);
+        if (!member || !sServerFacade->IsAlive(member) || member == bot)
             continue;
 
         AddAttackersOf(member, targets);
@@ -62,9 +59,9 @@ void AttackersValue::AddAttackersOf(Player* player, set<Unit*>& targets)
         return;
 
 	list<Unit*> units;
-	MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck u_check(player, sPlayerbotAIConfig.sightDistance);
-    MaNGOS::UnitListSearcher<MaNGOS::AnyUnfriendlyUnitInObjectRangeCheck> searcher(units, u_check);
-    Cell::VisitAllObjects(player, searcher, sPlayerbotAIConfig.sightDistance);
+	acore::AnyUnfriendlyUnitInObjectRangeCheck u_check(player, sPlayerbotAIConfig->sightDistance);
+    acore::UnitListSearcher<acore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(units, u_check);
+    Cell::VisitAllObjects(player, searcher, sPlayerbotAIConfig->sightDistance);
 	for (list<Unit*>::iterator i = units.begin(); i != units.end(); i++)
 	{
 	    Unit* unit = *i;
@@ -95,19 +92,19 @@ bool AttackersValue::IsPossibleTarget(Unit *attacker, Player *bot)
     return attacker &&
         attacker->IsInWorld() &&
         attacker->GetMapId() == bot->GetMapId() &&
-        !sServerFacade.UnitIsDead(attacker) &&
+        !sServerFacade->UnitIsDead(attacker) &&
         !attacker->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) &&
         !attacker->HasStealthAura() &&
         !attacker->HasInvisibilityAura() &&
         !attacker->IsPolymorphed() &&
         !attacker->IsStunned() &&
-        !sServerFacade.IsCharmed(attacker) &&
-        !sServerFacade.IsFeared(attacker) &&
-        !sServerFacade.IsInRoots(attacker) &&
-        !sServerFacade.IsFriendlyTo(attacker, bot) &&
-        bot->IsWithinDistInMap(attacker, sPlayerbotAIConfig.sightDistance) &&
-        !(attacker->getLevel() == 1 && !sServerFacade.IsHostileTo(attacker, bot)) &&
-        !sPlayerbotAIConfig.IsInPvpProhibitedZone(attacker->GetAreaId()) &&
+        !sServerFacade->IsCharmed(attacker) &&
+        !sServerFacade->IsFeared(attacker) &&
+        !sServerFacade->IsInRoots(attacker) &&
+        !sServerFacade->IsFriendlyTo(attacker, bot) &&
+        bot->IsWithinDistInMap(attacker, sPlayerbotAIConfig->sightDistance) &&
+        !(attacker->getLevel() == 1 && !sServerFacade->IsHostileTo(attacker, bot)) &&
+        !sPlayerbotAIConfig->IsInPvpProhibitedZone(attacker->GetAreaId()) &&
         (!c || (
                 !c->IsInEvadeMode() &&
                 (!attacker->HasFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_TAPPED) || bot->IsTappedByMeOrMyGroup(c))
@@ -118,8 +115,8 @@ bool AttackersValue::IsPossibleTarget(Unit *attacker, Player *bot)
 bool AttackersValue::IsValidTarget(Unit *attacker, Player *bot)
 {
     return IsPossibleTarget(attacker, bot) &&
-            (sServerFacade.GetThreatManager(attacker).getCurrentVictim() || attacker->GetTargetGuid() || attacker->GetObjectGuid().IsPlayer() ||
-                    attacker->GetObjectGuid() == bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<ObjectGuid>("pull target")->Get());
+            (sServerFacade->GetThreatManager(attacker).getCurrentVictim() || attacker->GetTargetGuid() || attacker->GetGUID().IsPlayer() ||
+                    attacker->GetGUID() == bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<ObjectGuid>("pull target")->Get());
 }
 
 bool PossibleAdsValue::Calculate()
@@ -134,16 +131,16 @@ bool PossibleAdsValue::Calculate()
         if (find(attackers.begin(), attackers.end(), guid) != attackers.end()) continue;
 
         Unit* add = ai->GetUnit(guid);
-        if (add && !add->GetTargetGuid() && !sServerFacade.GetThreatManager(add).getCurrentVictim() && sServerFacade.IsHostileTo(add, bot))
+        if (add && !add->GetTargetGuid() && !sServerFacade->GetThreatManager(add).getCurrentVictim() && sServerFacade->IsHostileTo(add, bot))
         {
             for (list<ObjectGuid>::iterator j = attackers.begin(); j != attackers.end(); ++j)
             {
                 Unit* attacker = ai->GetUnit(*j);
                 if (!attacker) continue;
 
-                float dist = sServerFacade.GetDistance2d(attacker, add);
-                if (sServerFacade.IsDistanceLessOrEqualThan(dist, sPlayerbotAIConfig.aoeRadius * 1.5f)) continue;
-                if (sServerFacade.IsDistanceLessOrEqualThan(dist, sPlayerbotAIConfig.aggroDistance)) return true;
+                float dist = sServerFacade->GetDistance2d(attacker, add);
+                if (sServerFacade->IsDistanceLessOrEqualThan(dist, sPlayerbotAIConfig->aoeRadius * 1.5f)) continue;
+                if (sServerFacade->IsDistanceLessOrEqualThan(dist, sPlayerbotAIConfig->aggroDistance)) return true;
             }
         }
     }

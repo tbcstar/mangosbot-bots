@@ -32,10 +32,10 @@ class RandomPlayerbotMgr : public PlayerbotHolder
     public:
         RandomPlayerbotMgr();
         virtual ~RandomPlayerbotMgr();
-        static RandomPlayerbotMgr& instance()
+        static RandomPlayerbotMgr* instance()
         {
             static RandomPlayerbotMgr instance;
-            return instance;
+            return &instance;
         }
 
         virtual void UpdateAIInternal(uint32 elapsed);

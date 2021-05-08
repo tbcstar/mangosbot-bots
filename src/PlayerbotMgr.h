@@ -11,7 +11,7 @@ class Unit;
 class Object;
 class Item;
 
-typedef map<uint64, Player*> PlayerBotMap;
+typedef map<ObjectGuid, Player*> PlayerBotMap;
 typedef map<string, set<string> > PlayerBotErrorMap;
 
 class PlayerbotHolder : public PlayerbotAIBase
@@ -20,11 +20,11 @@ public:
     PlayerbotHolder();
     virtual ~PlayerbotHolder();
 
-    void AddPlayerBot(uint64 guid, uint32 masterAccountId);
+    void AddPlayerBot(ObjectGuid guid, uint32 masterAccountId);
 	void HandlePlayerBotLoginCallback(QueryResult * dummy, SqlQueryHolder * holder);
 
-    void LogoutPlayerBot(uint64 guid);
-    Player* GetPlayerBot (uint64 guid) const;
+    void LogoutPlayerBot(ObjectGuid guid);
+    Player* GetPlayerBot (ObjectGuid guid) const;
     PlayerBotMap::const_iterator GetPlayerBotsBegin() const { return playerBots.begin(); }
     PlayerBotMap::const_iterator GetPlayerBotsEnd()   const { return playerBots.end();   }
 

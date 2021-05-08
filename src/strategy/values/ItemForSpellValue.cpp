@@ -19,7 +19,7 @@ Item* ItemForSpellValue::Calculate()
     if (!spellid)
         return NULL;
 
-    SpellEntry const *spellInfo = sServerFacade.LookupSpellInfo(spellid );
+    SpellEntry const *spellInfo = sServerFacade->LookupSpellInfo(spellid );
     if (!spellInfo)
         return NULL;
 

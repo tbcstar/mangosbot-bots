@@ -11,10 +11,10 @@ class PlayerbotTextMgr
     public:
         PlayerbotTextMgr();
         virtual ~PlayerbotTextMgr();
-        static PlayerbotTextMgr& instance()
+        static PlayerbotTextMgr* instance()
         {
             static PlayerbotTextMgr instance;
-            return instance;
+            return &instance;
         }
 
 	public:

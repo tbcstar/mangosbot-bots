@@ -12,10 +12,10 @@ class PlayerbotCommandServer
 public:
     PlayerbotCommandServer() {}
     virtual ~PlayerbotCommandServer() {}
-    static PlayerbotCommandServer& instance()
+    static PlayerbotCommandServer* instance()
     {
         static PlayerbotCommandServer instance;
-        return instance;
+        return &instance;
     }
 
     void Start();

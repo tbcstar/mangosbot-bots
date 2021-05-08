@@ -12,7 +12,7 @@ bool SpellCastUsefulValue::Calculate()
 	if (!spellid)
 		return true; // there can be known alternatives
 
-	SpellEntry const *spellInfo = sServerFacade.LookupSpellInfo(spellid);
+	SpellEntry const *spellInfo = sServerFacade->LookupSpellInfo(spellid);
 	if (!spellInfo)
 		return true; // there can be known alternatives
 
@@ -56,7 +56,7 @@ bool SpellCastUsefulValue::Calculate()
     const string spellName = spellInfo->SpellName[0];
     for (set<uint32>::iterator i = skipSpells.begin(); i != skipSpells.end(); ++i)
     {
-        SpellEntry const *spell = sServerFacade.LookupSpellInfo(*i);
+        SpellEntry const *spell = sServerFacade->LookupSpellInfo(*i);
         if (!spell)
             continue;
 

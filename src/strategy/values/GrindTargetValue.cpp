@@ -35,7 +35,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
     for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
     {
         Unit* unit = ai->GetUnit(*i);
-        if (!unit || !sServerFacade.IsAlive(unit))
+        if (!unit || !sServerFacade->IsAlive(unit))
             continue;
 
         return unit;
@@ -54,16 +54,16 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
         if (!unit)
             continue;
 
-        if (abs(bot->GetPositionZ() - unit->GetPositionZ()) > sPlayerbotAIConfig.spellDistance)
+        if (abs(bot->GetPositionZ() - unit->GetPositionZ()) > sPlayerbotAIConfig->spellDistance)
             continue;
 
         if (GetTargetingPlayerCount(unit) > assistCount)
             continue;
 
-		if (master && master->GetDistance(unit) >= sPlayerbotAIConfig.grindDistance && !sRandomPlayerbotMgr.IsRandomBot(bot))
+		if (master && master->GetDistance(unit) >= sPlayerbotAIConfig->grindDistance && !sRandomPlayerbotMgr->IsRandomBot(bot))
             continue;
 
-		if ((int)unit->getLevel() - (int)bot->getLevel() > 4 && !unit->GetObjectGuid().IsPlayer())
+		if ((int)unit->getLevel() - (int)bot->getLevel() > 4 && !unit->GetGUID().IsPlayer())
 		    continue;
 
 		Creature* creature = dynamic_cast<Creature*>(unit);
@@ -75,8 +75,8 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
             Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
             for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
             {
-                Player *member = sObjectMgr.GetPlayer(itr->guid);
-                if( !member || !sServerFacade.IsAlive(member))
+                Player *member = sObjectMgr->GetPlayer(itr->guid);
+                if( !member || !sServerFacade->IsAlive(member))
                     continue;
 
                 float d = member->GetDistance(unit);
@@ -112,13 +112,13 @@ int GrindTargetValue::GetTargetingPlayerCount( Unit* unit )
     Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
-        Player *member = sObjectMgr.GetPlayer(itr->guid);
-        if( !member || !sServerFacade.IsAlive(member) || member == bot)
+        Player *member = sObjectMgr->GetPlayer(itr->guid);
+        if( !member || !sServerFacade->IsAlive(member) || member == bot)
             continue;
 
         PlayerbotAI* ai = member->GetPlayerbotAI();
         if ((ai && *ai->GetAiObjectContext()->GetValue<Unit*>("current target") == unit) ||
-            (!ai && member->GetSelectionGuid() == unit->GetObjectGuid()))
+            (!ai && member->GetTarget() == unit->GetGUID()))
             count++;
     }
 

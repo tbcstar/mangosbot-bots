@@ -42,11 +42,7 @@ bool UseItemAction::Execute(Event event)
 bool UseItemAction::UseGameObject(ObjectGuid guid)
 {
     GameObject* go = ai->GetGameObject(guid);
-    if (!go || !sServerFacade.isSpawned(go)
-#ifdef CMANGOS
-        || go->IsInUse()
-#endif
-        || go->GetGoState() != GO_STATE_READY)
+    if (!go || !sServerFacade->isSpawned(go) || go->GetGoState() != GO_STATE_READY)
         return false;
 
     go->Use(bot);
@@ -57,7 +53,7 @@ bool UseItemAction::UseGameObject(ObjectGuid guid)
 
 bool UseItemAction::UseItemAuto(Item* item)
 {
-    return UseItem(item, ObjectGuid(), NULL);
+    return UseItem(item, ObjectGuid::Empty, NULL);
 }
 
 bool UseItemAction::UseItemOnGameObject(Item* item, ObjectGuid go)
@@ -67,7 +63,7 @@ bool UseItemAction::UseItemOnGameObject(Item* item, ObjectGuid go)
 
 bool UseItemAction::UseItemOnItem(Item* item, Item* itemTarget)
 {
-    return UseItem(item, ObjectGuid(), itemTarget);
+    return UseItem(item, ObjectGuid::Empty, itemTarget);
 }
 
 bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
@@ -82,21 +78,14 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
     uint8 slot = item->GetSlot();
     uint8 spell_index = 0;
     uint8 cast_count = 1;
-    uint64 item_guid = item->GetObjectGuid().GetRawValue();
+    ObjectGuid item_guid = item->GetGUID();
     uint32 glyphIndex = 0;
     uint8 unk_flags = 0;
-#ifdef MANGOSBOT_ZERO
-    uint16 targetFlag = TARGET_FLAG_SELF;
-#endif
-#ifdef MANGOSBOT_ONE
     uint32 targetFlag = TARGET_FLAG_SELF;
-#endif
 
     WorldPacket packet(CMSG_USE_ITEM);
     packet << bagIndex << slot << spell_index;
-#ifdef MANGOSBOT_ONE
     packet << cast_count << item_guid;
-#endif
 
     bool targetSelected = false;
     ostringstream out; out << "Using " << chat->formatItem(item->GetProto());
@@ -112,15 +101,11 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
     if (goGuid)
     {
         GameObject* go = ai->GetGameObject(goGuid);
-        if (!go || !sServerFacade.isSpawned(go))
+        if (!go || !sServerFacade->isSpawned(go))
             return false;
 
-#ifdef MANGOS
-        targetFlag = TARGET_FLAG_OBJECT;
-#endif
-#ifdef CMANGOS
         targetFlag = TARGET_FLAG_GAMEOBJECT;
-#endif
+
         packet << targetFlag;
         packet.appendPackGUID(goGuid.GetRawValue());
         out << " on " << chat->formatGameobject(go);
@@ -131,7 +116,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
     {
         targetFlag = TARGET_FLAG_ITEM;
         packet << targetFlag;
-        packet.appendPackGUID(itemTarget->GetObjectGuid());
+        packet.appendPackGUID(itemTarget->GetGUID());
         out << " on " << chat->formatItem(itemTarget->GetProto());
         targetSelected = true;
     }
@@ -139,7 +124,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
 	Player* master = GetMaster();
 	if (!targetSelected && item->GetProto()->Class != ITEM_CLASS_CONSUMABLE && master)
 	{
-		ObjectGuid masterSelection = master->GetSelectionGuid();
+		ObjectGuid masterSelection = master->GetTarget();
 		if (masterSelection)
 		{
 			Unit* unit = ai->GetUnit(masterSelection);
@@ -155,7 +140,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
 
     if(uint32 questid = item->GetProto()->StartQuest)
     {
-        Quest const* qInfo = sObjectMgr.GetQuestTemplate(questid);
+        Quest const* qInfo = sObjectMgr->GetQuestTemplate(questid);
         if (qInfo)
         {
             WorldPacket packet(CMSG_QUESTGIVER_ACCEPT_QUEST, 8+4+4);
@@ -172,10 +157,10 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
     bot->clearUnitState( UNIT_STAT_CHASE );
     bot->clearUnitState( UNIT_STAT_FOLLOW );
 
-    if (sServerFacade.isMoving(bot))
+    if (sServerFacade->isMoving(bot))
     {
         bot->StopMoving();
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.globalCoolDown);
+        ai->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
         return false;
     }
 
@@ -188,7 +173,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
         if (!ai->CanCastSpell(spellId, bot, false))
             continue;
 
-		const SpellEntry* const pSpellInfo = sServerFacade.LookupSpellInfo(spellId);
+		const SpellEntry* const pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
 		if (pSpellInfo->Targets & TARGET_FLAG_ITEM)
         {
             Item* itemForSpell = AI_VALUE2(Item*, "item for spell", spellId);
@@ -204,7 +189,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
                     return false;
 
                 targetFlag = TARGET_FLAG_TRADE_ITEM;
-                packet << targetFlag << (uint8)1 << (uint64)TRADE_SLOT_NONTRADED;
+                packet << targetFlag << (uint8)1 << ObjectGuid((uint64)TRADE_SLOT_NONTRADED);
                 targetSelected = true;
                 out << " on traded item";
             }
@@ -212,7 +197,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
             {
                 targetFlag = TARGET_FLAG_ITEM;
                 packet << targetFlag;
-                packet.appendPackGUID(itemForSpell->GetObjectGuid());
+                packet.appendPackGUID(itemForSpell->GetGUID());
                 targetSelected = true;
                 out << " on "<< chat->formatItem(itemForSpell->GetProto());
             }
@@ -228,7 +213,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
     {
         targetFlag = TARGET_FLAG_SELF;
         packet << targetFlag;
-        packet.appendPackGUID(bot->GetObjectGuid());
+        packet.appendPackGUID(bot->GetGUID());
         targetSelected = true;
         out << " on self";
     }
@@ -239,7 +224,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
     if (proto->Class == ITEM_CLASS_CONSUMABLE && (proto->SubClass == ITEM_SUBCLASS_FOOD || proto->SubClass == ITEM_SUBCLASS_CONSUMABLE) &&
 		(isFood || isDrink))
     {
-        if (sServerFacade.IsInCombat(bot))
+        if (sServerFacade->IsInCombat(bot))
             return false;
 
         bot->addUnitState(UNIT_STAND_STATE_SIT);
@@ -268,7 +253,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
         return true;
     }
 
-    ai->SetNextCheckDelay(sPlayerbotAIConfig.globalCoolDown);
+    ai->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
     ai->TellMasterNoFacing(out.str());
     bot->GetSession()->HandleUseItemOpcode(packet);
     return true;

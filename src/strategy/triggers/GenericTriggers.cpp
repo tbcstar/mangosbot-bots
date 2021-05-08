@@ -8,12 +8,12 @@ using namespace ai;
 
 bool LowManaTrigger::IsActive()
 {
-    return AI_VALUE2(bool, "has mana", "self target") && AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig.lowMana;
+    return AI_VALUE2(bool, "has mana", "self target") && AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig->lowMana;
 }
 
 bool MediumManaTrigger::IsActive()
 {
-    return AI_VALUE2(bool, "has mana", "self target") && AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig.mediumMana;
+    return AI_VALUE2(bool, "has mana", "self target") && AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig->mediumMana;
 }
 
 
@@ -44,8 +44,8 @@ bool HasAggroTrigger::IsActive()
 
 bool PanicTrigger::IsActive()
 {
-    return AI_VALUE2(uint8, "health", "self target") < sPlayerbotAIConfig.criticalHealth &&
-		(!AI_VALUE2(bool, "has mana", "self target") || AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig.lowMana);
+    return AI_VALUE2(uint8, "health", "self target") < sPlayerbotAIConfig->criticalHealth &&
+		(!AI_VALUE2(bool, "has mana", "self target") || AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig->lowMana);
 }
 
 bool BuffTrigger::IsActive()
@@ -107,11 +107,11 @@ bool SpellCanBeCastTrigger::IsActive()
 
 bool RandomTrigger::IsActive()
 {
-    if (time(0) - lastCheck < sPlayerbotAIConfig.repeatDelay / 1000)
+    if (time(0) - lastCheck < sPlayerbotAIConfig->repeatDelay / 1000)
         return false;
 
     lastCheck = time(0);
-    int k = (int)(probability / sPlayerbotAIConfig.randomChangeMultiplier);
+    int k = (int)(probability / sPlayerbotAIConfig->randomChangeMultiplier);
     if (k < 1) k = 1;
     return (rand() % k) == 0;
 }

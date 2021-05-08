@@ -8,8 +8,6 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-using namespace MaNGOS;
-
 bool UseMeetingStoneAction::Execute(Event event)
 {
     Player* master = GetMaster();
@@ -21,16 +19,16 @@ bool UseMeetingStoneAction::Execute(Event event)
     ObjectGuid guid;
     p >> guid;
 
-	if (master->GetSelectionGuid() && master->GetSelectionGuid() != bot->GetObjectGuid())
+	if (master->GetTarget() && master->GetTarget() != bot->GetGUID())
 		return false;
 
-	if (!master->GetSelectionGuid() && master->GetGroup() != bot->GetGroup())
+	if (!master->GetTarget() && master->GetGroup() != bot->GetGroup())
 		return false;
 
     if (master->IsBeingTeleported())
         return false;
 
-    if (sServerFacade.IsInCombat(bot))
+    if (sServerFacade->IsInCombat(bot))
     {
         ai->TellError("I am in combat");
         return false;
@@ -58,7 +56,7 @@ public:
     WorldObject const& GetFocusObject() const { return *i_obj; }
     bool operator()(GameObject* u)
     {
-        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade.isSpawned(u) && u->GetGOInfo())
+        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade->isSpawned(u) && u->GetGOInfo())
             return true;
 
         return false;
@@ -98,14 +96,14 @@ bool SummonAction::Execute(Event event)
 bool SummonAction::SummonUsingGos(Player *summoner, Player *player)
 {
     list<GameObject*> targets;
-    AnyGameObjectInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig.sightDistance);
+    AnyGameObjectInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig->sightDistance);
     GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects((const WorldObject*)summoner, searcher, sPlayerbotAIConfig.sightDistance);
+    Cell::VisitAllObjects((const WorldObject*)summoner, searcher, sPlayerbotAIConfig->sightDistance);
 
     for(list<GameObject*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
     {
         GameObject* go = *tIter;
-        if (go && sServerFacade.isSpawned(go) && go->GetGoType() == GAMEOBJECT_TYPE_MEETINGSTONE)
+        if (go && sServerFacade->isSpawned(go) && go->GetGoType() == GAMEOBJECT_TYPE_MEETINGSTONE)
             return Teleport(summoner, player);
     }
 
@@ -115,13 +113,13 @@ bool SummonAction::SummonUsingGos(Player *summoner, Player *player)
 
 bool SummonAction::SummonUsingNpcs(Player *summoner, Player *player)
 {
-    if (!sPlayerbotAIConfig.summonAtInnkeepersEnabled)
+    if (!sPlayerbotAIConfig->summonAtInnkeepersEnabled)
         return false;
 
     list<Unit*> targets;
-    AnyUnitInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig.sightDistance);
+    AnyUnitInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig->sightDistance);
     UnitListSearcher<AnyUnitInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects(summoner, searcher, sPlayerbotAIConfig.sightDistance);
+    Cell::VisitAllObjects(summoner, searcher, sPlayerbotAIConfig->sightDistance);
     for(list<Unit*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
     {
         Unit* unit = *tIter;
@@ -133,24 +131,17 @@ bool SummonAction::SummonUsingNpcs(Player *summoner, Player *player)
                 return false;
             }
 
-            if (!sServerFacade.IsSpellReady(player, 8690))
+            if (!sServerFacade->IsSpellReady(player, 8690))
             {
                 ai->TellError(player == bot ? "My hearthstone is not ready" : "Your hearthstone is not ready");
                 return false;
             }
 
             // Trigger cooldown
-            SpellEntry const* spellInfo = sServerFacade.LookupSpellInfo(8690);
+            SpellEntry const* spellInfo = sServerFacade->LookupSpellInfo(8690);
             if (!spellInfo)
                 return false;
-            Spell spell(player, spellInfo,
-#ifdef MANGOS
-                    0
-#endif
-#ifdef CMANGOS
-                    TRIGGERED_OLD_TRIGGERED
-#endif
-                    );
+            Spell spell(player, spellInfo, 0);
             spell.SendSpellCooldown();
 
             return Teleport(summoner, player);
@@ -170,8 +161,8 @@ bool SummonAction::Teleport(Player *summoner, Player *player)
         for (float angle = followAngle - M_PI; angle <= followAngle + M_PI; angle += M_PI / 4)
         {
             uint32 mapId = summoner->GetMapId();
-            float x = summoner->GetPositionX() + cos(angle) * sPlayerbotAIConfig.followDistance;
-            float y = summoner->GetPositionY()+ sin(angle) * sPlayerbotAIConfig.followDistance;
+            float x = summoner->GetPositionX() + cos(angle) * sPlayerbotAIConfig->followDistance;
+            float y = summoner->GetPositionY()+ sin(angle) * sPlayerbotAIConfig->followDistance;
             float z = summoner->GetPositionZ();
             if (summoner->IsWithinLOS(x, y, z))
             {

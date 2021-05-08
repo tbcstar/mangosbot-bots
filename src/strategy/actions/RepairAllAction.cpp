@@ -15,21 +15,12 @@ bool RepairAllAction::Execute(Event event)
         if (!unit)
             continue;
 
-#ifdef MANGOS
-        if(bot->hasUnitState(UNIT_STAT_DIED))
-#endif
-#ifdef CMANGOS
-        if (bot->hasUnitState(UNIT_STAT_FEIGN_DEATH))
-#endif
+        if (bot->hasUnitState(UNIT_STAT_DIED))
             bot->RemoveSpellsCausingAura(SPELL_AURA_FEIGN_DEATH);
 
-        sServerFacade.SetFacingTo(bot, unit);
+        sServerFacade->SetFacingTo(bot, unit);
         float discountMod = bot->GetReputationPriceDiscount(unit);
-        uint32 totalCost = bot->DurabilityRepairAll(true, discountMod
-#ifdef MANGOSBOT_ONE
-            , false
-#endif
-        );
+        uint32 totalCost = bot->DurabilityRepairAll(true, discountMod, false);
 
         ostringstream out;
         out << "Repair: " << chat->formatMoney(totalCost) << " (" << unit->GetName() << ")";

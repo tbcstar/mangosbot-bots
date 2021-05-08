@@ -18,7 +18,7 @@ PlayerbotTextMgr::~PlayerbotTextMgr()
 
 void PlayerbotTextMgr::LoadTemplates()
 {
-    sLog.outBasic("Loading playerbot texts...");
+    sLog->outBasic("Loading playerbot texts...");
     QueryResult* results = CharacterDatabase.PQuery("SELECT `key`,`text` FROM `ai_playerbot_text`");
     int count = 0;
     if (results)
@@ -34,7 +34,7 @@ void PlayerbotTextMgr::LoadTemplates()
 
         delete results;
     }
-    sLog.outBasic("%d playerbot texts loaded", count);
+    sLog->outBasic("%d playerbot texts loaded", count);
 }
 
 string PlayerbotTextMgr::Format(string key, map<string, string> placeholders)

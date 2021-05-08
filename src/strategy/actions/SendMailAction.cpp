@@ -10,8 +10,8 @@ using namespace ai;
 
 bool SendMailAction::Execute(Event event)
 {
-    uint32 account = sObjectMgr.GetPlayerAccountIdByGUID(bot->GetObjectGuid());
-    bool randomBot = sPlayerbotAIConfig.IsInRandomAccountList(account);
+    uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(bot->GetGUID());
+    bool randomBot = sPlayerbotAIConfig->IsInRandomAccountList(account);
 
     list<ObjectGuid> gos = *context->GetValue<list<ObjectGuid> >("nearest game objects");
     bool mailboxFound = false;
@@ -31,7 +31,7 @@ bool SendMailAction::Execute(Event event)
     vector<string> ss = split(text, ' ');
     if (ss.size() > 1)
     {
-        Player* p = sObjectMgr.GetPlayer(ss[ss.size() - 1].c_str());
+        Player* p = sObjectMgr->GetPlayer(ss[ss.size() - 1].c_str());
         if (p) receiver = p;
     }
 
@@ -46,7 +46,7 @@ bool SendMailAction::Execute(Event event)
 
     if (!mailboxFound && !randomBot)
     {
-        bot->Whisper("There is no mailbox nearby", LANG_UNIVERSAL, tellTo->GetObjectGuid());
+        bot->Whisper("There is no mailbox nearby", LANG_UNIVERSAL, tellTo->GetGUID());
         return false;
     }
 
@@ -54,7 +54,7 @@ bool SendMailAction::Execute(Event event)
     ItemIds ids = chat->parseItems(text);
     if (ids.size() > 1)
     {
-        bot->Whisper("You can not request more than one item", LANG_UNIVERSAL, tellTo->GetObjectGuid());
+        bot->Whisper("You can not request more than one item", LANG_UNIVERSAL, tellTo->GetGUID());
         return false;
     }
 
@@ -66,7 +66,7 @@ bool SendMailAction::Execute(Event event)
 
         if (randomBot)
         {
-            bot->Whisper("I cannot send money", LANG_UNIVERSAL, tellTo->GetObjectGuid());
+            bot->Whisper("I cannot send money", LANG_UNIVERSAL, tellTo->GetGUID());
             return false;
         }
 
@@ -116,14 +116,14 @@ bool SendMailAction::Execute(Event event)
             {
                 ostringstream out;
                 out << "Cannot send " << ChatHelper::formatItem(item->GetProto());
-                bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetObjectGuid());
+                bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetGUID());
                 continue;
             }
 
             ItemPrototype const *proto = item->GetProto();
             bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
             item->DeleteFromInventoryDB();
-            item->SetOwnerGuid(receiver->GetObjectGuid());
+            item->SetOwnerGuid(receiver->GetGUID());
             item->SaveToDB();
             draft.AddItem(item);
             if (randomBot)
@@ -133,7 +133,7 @@ bool SendMailAction::Execute(Event event)
                 {
                     ostringstream out;
                     out << ChatHelper::formatItem(item->GetProto()) << ": it is not for sale";
-                    bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetObjectGuid());
+                    bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetGUID());
                     return false;
                 }
                 draft.SetCOD(price);
@@ -141,7 +141,7 @@ bool SendMailAction::Execute(Event event)
             draft.SendMailTo(MailReceiver(receiver), MailSender(bot));
 
             ostringstream out; out << "Sent mail to " << receiver->GetName();
-            bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetObjectGuid());
+            bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetGUID());
             return true;
         }
     }

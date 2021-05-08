@@ -267,7 +267,7 @@ string ChatHelper::formatQuest(Quest const* quest)
 string ChatHelper::formatGameobject(GameObject* go)
 {
     ostringstream out;
-    out << "|cFFFFFF00|Hfound:" << go->GetObjectGuid().GetRawValue() << ":" << go->GetEntry() << ":" <<  "|h[" << go->GetGOInfo()->name << "]|h|r";
+    out << "|cFFFFFF00|Hfound:" << go->GetGUID().GetRawValue() << ":" << go->GetEntry() << ":" <<  "|h[" << go->GetGOInfo()->name << "]|h|r";
     return out.str();
 }
 
@@ -349,7 +349,8 @@ list<ObjectGuid> ChatHelper::parseGameobjects(string& text)
         if (endPos == -1)     //break if error
             break;
         istringstream stream(text.substr(pos, endPos - pos));
-        uint64 guid; stream >> guid;
+        uint64 guid;
+        stream >> guid;
 
         // extract GO entry
         pos = endPos + 1;

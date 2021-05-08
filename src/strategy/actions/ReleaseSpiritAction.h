@@ -14,7 +14,7 @@ namespace ai
     public:
         virtual bool Execute(Event event)
         {
-            if (sServerFacade.IsAlive(bot) || bot->GetCorpse())
+            if (sServerFacade->IsAlive(bot) || bot->GetCorpse())
             {
                 ai->TellError("I am not dead");
                 return false;

@@ -14,39 +14,28 @@ bool DropTargetAction::Execute(Event event)
     list<ObjectGuid> possible = ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets")->Get();
     if (pullTarget && find(possible.begin(), possible.end(), pullTarget) == possible.end())
     {
-        context->GetValue<ObjectGuid>("pull target")->Set(ObjectGuid());
+        context->GetValue<ObjectGuid>("pull target")->Set(ObjectGuid::Empty);
     }
     context->GetValue<Unit*>("current target")->Set(NULL);
-    bot->SetSelectionGuid(ObjectGuid());
+    bot->SetTarget(ObjectGuid::Empty);
     ai->ChangeEngine(BOT_STATE_NON_COMBAT);
     ai->InterruptSpell();
     bot->AttackStop();
     Pet* pet = bot->GetPet();
     if (pet)
     {
-#ifdef MANGOS
-        CreatureAI*
-#endif
-#ifdef CMANGOS
-        UnitAI*
-#endif
-        creatureAI = ((Creature*)pet)->AI();
+        CreatureAI* creatureAI = ((Creature*)pet)->AI();
         if (creatureAI)
         {
-#ifdef CMANGOS
-            creatureAI->SetReactState(REACT_PASSIVE);
-#endif
-#ifdef MANGOS
             pet->GetCharmInfo()->SetReactState(REACT_PASSIVE);
             pet->GetCharmInfo()->SetCommandState(COMMAND_FOLLOW);
-#endif
             pet->AttackStop();
         }
     }
     if (!urand(0, 25))
     {
         vector<uint32> sounds;
-        if (target && sServerFacade.UnitIsDead(target))
+        if (target && sServerFacade->UnitIsDead(target))
         {
             sounds.push_back(TEXTEMOTE_CHEER);
             sounds.push_back(TEXTEMOTE_CONGRATULATE);
@@ -65,6 +54,6 @@ bool DropTargetAction::Execute(Event event)
 bool AttackAnythingAction::Execute(Event event)
 {
     bool result = AttackAction::Execute(event);
-    if (result && GetTarget()) context->GetValue<ObjectGuid>("pull target")->Set(GetTarget()->GetObjectGuid());
+    if (result && GetTarget()) context->GetValue<ObjectGuid>("pull target")->Set(GetTarget()->GetGUID());
     return result;
 }

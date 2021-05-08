@@ -11,7 +11,7 @@ bool TellReputationAction::Execute(Event event)
     if (!master)
         return false;
 
-    ObjectGuid selection = master->GetSelectionGuid();
+    ObjectGuid selection = master->GetTarget();
     if (selection.IsEmpty())
         return false;
 
@@ -19,15 +19,9 @@ bool TellReputationAction::Execute(Event event)
     if (!unit)
         return false;
 
-    const FactionTemplateEntry *factionTemplate = sServerFacade.GetFactionTemplateEntry(unit);
+    const FactionTemplateEntry *factionTemplate = sServerFacade->GetFactionTemplateEntry(unit);
     uint32 faction = factionTemplate->faction;
-    const FactionEntry* entry = sFactionStore.LookupEntry
-#ifdef CMANGOS
-    #ifdef MANGOSBOT_ONE
-            <FactionEntry>
-    #endif
-#endif
-            (faction);
+    const FactionEntry* entry = sFactionStore.LookupEntry(faction);
     int32 reputation = bot->GetReputationMgr().GetReputation(faction);
 
     ostringstream out;

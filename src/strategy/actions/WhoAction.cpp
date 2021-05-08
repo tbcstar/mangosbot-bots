@@ -28,7 +28,7 @@ bool WhoAction::Execute(Event event)
     {
         out << QuerySkill(text);
 
-        if (sRandomPlayerbotMgr.IsRandomBot(bot))
+        if (sRandomPlayerbotMgr->IsRandomBot(bot))
             out << QueryTrade(text);
     }
     else
@@ -55,7 +55,7 @@ bool WhoAction::Execute(Event event)
         return false;
 
     // ignore random bot chat filter
-	bot->Whisper(tell, LANG_UNIVERSAL, owner->GetObjectGuid());
+	bot->Whisper(tell, LANG_UNIVERSAL, owner->GetGUID());
     return true;
 }
 
@@ -68,7 +68,7 @@ string WhoAction::QueryTrade(string text)
     for (list<Item*>::iterator i = items.begin(); i != items.end(); ++i)
     {
         Item* sell = *i;
-        int32 sellPrice = auctionbot.GetSellPrice(sell->GetProto()) * sRandomPlayerbotMgr.GetSellMultiplier(bot) * sell->GetCount();
+        int32 sellPrice = auctionbot.GetSellPrice(sell->GetProto()) * sRandomPlayerbotMgr->GetSellMultiplier(bot) * sell->GetCount();
         if (!sellPrice)
             continue;
 
@@ -89,13 +89,8 @@ string WhoAction::QuerySkill(string text)
     string skillName = chat->formatSkill(skill);
     uint32 spellId = AI_VALUE2(uint32, "spell id", skillName);
     uint16 value = bot->GetSkillValue(skill);
-#ifdef MANGOS
     uint16 maxSkill = bot->GetMaxSkillValue(skill);
-#endif
-#ifdef CMANGOS
-    uint16 maxSkill = bot->GetSkillMax(skill);
-#endif
-    ObjectGuid guid = bot->GetObjectGuid();
+    ObjectGuid guid = bot->GetGUID();
     string data = "0";
     out << "|cFFFFFF00|Htrade:" << spellId << ":" << value << ":" << maxSkill << ":"
             << std::hex << std::uppercase << guid.GetRawValue()

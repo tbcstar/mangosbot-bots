@@ -6,7 +6,7 @@ using namespace ai;
 
 void AcceptAllQuestsAction::ProcessQuest(Quest const* quest, WorldObject* questGiver)
 {
-    AcceptQuest(quest, questGiver->GetObjectGuid());
+    AcceptQuest(quest, questGiver->GetGUID());
 }
 
 bool AcceptQuestAction::Execute(Event event)
@@ -17,7 +17,7 @@ bool AcceptQuestAction::Execute(Event event)
         return false;
 
     Player *bot = ai->GetBot();
-    uint64 guid = 0;
+    ObjectGuid guid;
     uint32 quest = 0;
 
     string text = event.getParam();
@@ -32,7 +32,7 @@ bool AcceptQuestAction::Execute(Event event)
             Unit* unit = ai->GetUnit(*i);
             if (unit && quest && unit->HasQuest(quest))
             {
-                guid = unit->GetObjectGuid().GetRawValue();
+                guid = unit->GetGUID();
                 break;
             }
             if (unit && text == "*" && bot->GetDistance(unit) <= INTERACTION_DISTANCE)
@@ -44,7 +44,7 @@ bool AcceptQuestAction::Execute(Event event)
             GameObject* go = ai->GetGameObject(*i);
             if (go && quest && go->HasQuest(quest))
             {
-                guid = go->GetObjectGuid().GetRawValue();
+                guid = go->GetGUID();
                 break;
             }
             if (go && text == "*" && bot->GetDistance(go) <= INTERACTION_DISTANCE)
@@ -61,7 +61,7 @@ bool AcceptQuestAction::Execute(Event event)
     if (!quest || !guid)
         return false;
 
-    Quest const* qInfo = sObjectMgr.GetQuestTemplate(quest);
+    Quest const* qInfo = sObjectMgr->GetQuestTemplate(quest);
     if (!qInfo)
         return false;
 
@@ -77,26 +77,26 @@ bool AcceptQuestShareAction::Execute(Event event)
     p.rpos(0);
     uint32 quest;
     p >> quest;
-    Quest const* qInfo = sObjectMgr.GetQuestTemplate(quest);
+    Quest const* qInfo = sObjectMgr->GetQuestTemplate(quest);
 
-    if (!qInfo || !bot->GetDividerGuid())
+    if (!qInfo || !bot->GetDivider())
         return false;
 
     quest = qInfo->GetQuestId();
     if( !bot->CanTakeQuest( qInfo, false ) )
     {
         // can't take quest
-        bot->SetDividerGuid( ObjectGuid() );
+        bot->SetDivider(ObjectGuid::Empty);
         ai->TellError("I can't take this quest");
 
         return false;
     }
 
-    if( !bot->GetDividerGuid().IsEmpty() )
+    if( !bot->GetDivider().IsEmpty() )
     {
         // send msg to quest giving player
         master->SendPushToPartyResponse( bot, QUEST_PARTY_MSG_ACCEPT_QUEST );
-        bot->SetDividerGuid( ObjectGuid() );
+        bot->SetDivider(ObjectGuid::Empty);
     }
 
     if( bot->CanAddQuest( qInfo, false ) )
@@ -112,14 +112,7 @@ bool AcceptQuestShareAction::Execute(Event event)
 
         if( qInfo->GetSrcSpell() > 0 )
         {
-            bot->CastSpell( bot, qInfo->GetSrcSpell(),
-#ifdef MANGOS
-                    true
-#endif
-#ifdef CMANGOS
-                    (uint32)0
-#endif
-            );
+            bot->CastSpell( bot, qInfo->GetSrcSpell(), true);
         }
 
         ai->TellMaster("Quest accepted");

@@ -16,7 +16,7 @@ namespace ai
             if (!grp)
                 return false;
 
-            Player* inviter = sObjectMgr.GetPlayer(grp->GetLeaderGuid());
+            Player* inviter = sObjectMgr->GetPlayer(grp->GetLeaderGuid());
             if (!inviter)
                 return false;
 
@@ -24,7 +24,7 @@ namespace ai
             {
                 WorldPacket data(SMSG_GROUP_DECLINE, 10);
                 data << bot->GetName();
-                sServerFacade.SendPacket(inviter, data);
+                sServerFacade->SendPacket(inviter, data);
                 bot->UninviteFromGroup();
                 return false;
             }
@@ -34,7 +34,7 @@ namespace ai
             p << roles_mask;
             bot->GetSession()->HandleGroupAcceptOpcode(p);
 
-            if (sRandomPlayerbotMgr.IsRandomBot(bot))
+            if (sRandomPlayerbotMgr->IsRandomBot(bot))
                 bot->GetPlayerbotAI()->SetMaster(inviter);
 
             ai->ResetStrategies();

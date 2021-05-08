@@ -44,7 +44,7 @@ class HealthChecker : public ReadyChecker
 public:
     virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
     {
-        return AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig.almostFullHealth;
+        return AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->almostFullHealth;
     }
     virtual string GetName() { return "HP"; }
 };
@@ -54,7 +54,7 @@ class ManaChecker : public ReadyChecker
 public:
     virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
     {
-        return !AI_VALUE2(bool, "has mana", "self target") || AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig.mediumHealth;
+        return !AI_VALUE2(bool, "has mana", "self target") || AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig->mediumHealth;
     }
     virtual string GetName() { return "MP"; }
 };
@@ -68,7 +68,7 @@ public:
         Player* master = ai->GetMaster();
         if (master)
         {
-            bool distance = bot->GetDistance(master) <= sPlayerbotAIConfig.sightDistance;
+            bool distance = bot->GetDistance(master) <= sPlayerbotAIConfig->sightDistance;
             if (!distance)
             {
                 return false;
@@ -147,7 +147,7 @@ bool ReadyCheckAction::Execute(Event event)
     if (!p.empty())
     {
         p >> player;
-        if (player == bot->GetObjectGuid())
+        if (player == bot->GetGUID())
             return false;
     }
 
@@ -200,7 +200,7 @@ bool ReadyCheckAction::ReadyCheck()
     ai->TellMaster(out);
 
     WorldPacket packet(MSG_RAID_READY_CHECK);
-    packet << bot->GetObjectGuid();
+    packet << bot->GetGUID();
     packet << uint8(1);
     bot->GetSession()->HandleRaidReadyCheckOpcode(packet);
 

@@ -7,9 +7,6 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-using namespace ai;
-using namespace MaNGOS;
-
 class AnyDeadUnitInObjectRangeCheck
 {
 public:
@@ -17,7 +14,7 @@ public:
     WorldObject const& GetFocusObject() const { return *i_obj; }
     bool operator()(Unit* u)
     {
-        return !sServerFacade.IsAlive(u) && i_obj->IsWithinDistInMap(u, i_range);
+        return !sServerFacade->IsAlive(u) && i_obj->IsWithinDistInMap(u, i_range);
     }
 private:
     WorldObject const* i_obj;

@@ -33,15 +33,12 @@ bool BuyAction::Execute(Event event)
         for (ItemIds::iterator i = itemIds.begin(); i != itemIds.end(); i++)
         {
             uint32 itemId = *i;
-            const ItemPrototype* proto = sObjectMgr.GetItemPrototype(itemId);
+            const ItemPrototype* proto = sObjectMgr->GetItemPrototype(itemId);
             if (!proto)
                 continue;
 
             VendorItemData const* tItems = pCreature->GetVendorItems();
             result |= BuyItem(pCreature->GetVendorItems(), vendorguid, proto);
-#ifdef MANGOSBOT_ONE
-            result |= BuyItem(pCreature->GetVendorTemplateItems(), vendorguid, proto);
-#endif
 
             if (!result)
             {

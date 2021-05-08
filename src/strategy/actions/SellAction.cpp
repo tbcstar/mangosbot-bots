@@ -83,7 +83,7 @@ void SellAction::Sell(Item* item)
         if (!pCreature)
             continue;
 
-        ObjectGuid itemguid = item->GetObjectGuid();
+        ObjectGuid itemguid = item->GetGUID();
         uint32 count = item->GetCount();
 
         WorldPacket p;

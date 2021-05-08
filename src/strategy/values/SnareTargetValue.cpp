@@ -28,9 +28,9 @@ Unit* SnareTargetValue::Calculate()
         case FLEEING_MOTION_TYPE:
             return unit;
         case CHASE_MOTION_TYPE:
-            chaseTarget = sServerFacade.GetChaseTarget(unit);
+            chaseTarget = sServerFacade->GetChaseTarget(unit);
             if (!chaseTarget) continue;
-            Player* chaseTargetPlayer = sObjectMgr.GetPlayer(chaseTarget->GetObjectGuid());
+            Player* chaseTargetPlayer = sObjectMgr->GetPlayer(chaseTarget->GetGUID());
             if (chaseTargetPlayer && !ai->IsTank(chaseTargetPlayer)) {
                 return unit;
             }

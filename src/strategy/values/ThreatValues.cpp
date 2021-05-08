@@ -16,7 +16,7 @@ uint8 ThreatValue::Calculate()
         for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
         {
             Unit* unit = ai->GetUnit(*i);
-            if (!unit || !sServerFacade.IsAlive(unit))
+            if (!unit || !sServerFacade->IsAlive(unit))
                 continue;
 
             uint8 threat = Calculate(unit);
@@ -36,26 +36,26 @@ uint8 ThreatValue::Calculate(Unit* target)
     if (!target)
         return 0;
 
-    if (target->GetObjectGuid().IsPlayer())
+    if (target->GetGUID().IsPlayer())
         return 0;
 
     Group* group = bot->GetGroup();
     if (!group)
         return 0;
 
-    float botThreat = sServerFacade.GetThreatManager(target).getThreat(bot);
+    float botThreat = sServerFacade->GetThreatManager(target).getThreat(bot);
     float maxThreat = -1.0f;
 
     Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
-        Player *player = sObjectMgr.GetPlayer(itr->guid);
-        if( !player || !sServerFacade.IsAlive(player) || player == bot)
+        Player *player = sObjectMgr->GetPlayer(itr->guid);
+        if( !player || !sServerFacade->IsAlive(player) || player == bot)
             continue;
 
         if (ai->IsTank(player))
         {
-            float threat = sServerFacade.GetThreatManager(target).getThreat(player);
+            float threat = sServerFacade->GetThreatManager(target).getThreat(player);
             if (maxThreat < threat)
                 maxThreat = threat;
         }

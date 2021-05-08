@@ -84,24 +84,24 @@ void EmoteActionBase::InitEmotes()
 
 bool EmoteActionBase::Emote(Unit* target, uint32 type)
 {
-    if (sServerFacade.isMoving(bot)) return false;
+    if (sServerFacade->isMoving(bot)) return false;
 
-    if (target && !sServerFacade.IsInFront(bot, target, sPlayerbotAIConfig.sightDistance, EMOTE_ANGLE_IN_FRONT))
-        sServerFacade.SetFacingTo(bot, target);
+    if (target && !sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, EMOTE_ANGLE_IN_FRONT))
+        sServerFacade->SetFacingTo(bot, target);
 
-    ObjectGuid oldSelection = bot->GetSelectionGuid();
+    ObjectGuid oldSelection = bot->GetTarget();
     if (target)
     {
-        bot->SetSelectionGuid(target->GetObjectGuid());
+        bot->SetTarget(target->GetGUID());
         Player* player = dynamic_cast<Player*>(target);
-        if (player && player->GetPlayerbotAI() && !sServerFacade.IsInFront(player, bot, sPlayerbotAIConfig.sightDistance, EMOTE_ANGLE_IN_FRONT))
-            sServerFacade.SetFacingTo(player, bot);
+        if (player && player->GetPlayerbotAI() && !sServerFacade->IsInFront(player, bot, sPlayerbotAIConfig->sightDistance, EMOTE_ANGLE_IN_FRONT))
+            sServerFacade->SetFacingTo(player, bot);
     }
 
     bot->HandleEmoteCommand(type);
 
     if (oldSelection)
-        bot->SetSelectionGuid(oldSelection);
+        bot->SetTarget(oldSelection);
 
     return true;
 }
@@ -115,7 +115,7 @@ Unit* EmoteActionBase::GetTarget()
     for (list<ObjectGuid>::iterator i = nfp.begin(); i != nfp.end(); ++i)
     {
         Unit* unit = ai->GetUnit(*i);
-        if (unit && sServerFacade.GetDistance2d(bot, unit) < sPlayerbotAIConfig.tooCloseDistance) targets.push_back(unit);
+        if (unit && sServerFacade->GetDistance2d(bot, unit) < sPlayerbotAIConfig->tooCloseDistance) targets.push_back(unit);
     }
 
     if (!targets.empty())
@@ -133,7 +133,7 @@ bool EmoteAction::Execute(Event event)
     if (param.empty())
     {
         time_t lastEmote = AI_VALUE2(time_t, "last emote", qualifier);
-        ai->GetAiObjectContext()->GetValue<time_t>("last emote", qualifier)->Set(time(0) + urand(1000, sPlayerbotAIConfig.repeatDelay) / 1000);
+        ai->GetAiObjectContext()->GetValue<time_t>("last emote", qualifier)->Set(time(0) + urand(1000, sPlayerbotAIConfig->repeatDelay) / 1000);
         param = qualifier;
     }
 
@@ -169,7 +169,7 @@ bool EmoteAction::Execute(Event event)
 bool EmoteAction::isUseful()
 {
     time_t lastEmote = AI_VALUE2(time_t, "last emote", qualifier);
-    return (time(0) - lastEmote) >= sPlayerbotAIConfig.repeatDelay / 1000;
+    return (time(0) - lastEmote) >= sPlayerbotAIConfig->repeatDelay / 1000;
 }
 
 
@@ -182,7 +182,7 @@ bool TalkAction::Execute(Event event)
     if (!urand(0, 100))
     {
         target = NULL;
-        context->GetValue<ObjectGuid>("talk target")->Set(ObjectGuid());
+        context->GetValue<ObjectGuid>("talk target")->Set(ObjectGuid::Empty);
         return true;
     }
 
@@ -190,9 +190,9 @@ bool TalkAction::Execute(Event event)
     {
         Player* player = dynamic_cast<Player*>(target);
         if (player && player->GetPlayerbotAI())
-            player->GetPlayerbotAI()->GetAiObjectContext()->GetValue<ObjectGuid>("talk target")->Set(bot->GetObjectGuid());
+            player->GetPlayerbotAI()->GetAiObjectContext()->GetValue<ObjectGuid>("talk target")->Set(bot->GetGUID());
 
-        context->GetValue<ObjectGuid>("talk target")->Set(target->GetObjectGuid());
+        context->GetValue<ObjectGuid>("talk target")->Set(target->GetGUID());
         return Emote(target, GetRandomEmote(target));
     }
 

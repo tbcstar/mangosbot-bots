@@ -20,7 +20,7 @@ public:
         if (pet && (pet->getPetType() == MINI_PET || pet->getPetType() == SUMMON_PET))
             return false;
 
-        if (!sServerFacade.IsAlive(unit)) return false;
+        if (!sServerFacade->IsAlive(unit)) return false;
 
         for (vector<string>::iterator i = auras.begin(); i != auras.end(); ++i)
         {

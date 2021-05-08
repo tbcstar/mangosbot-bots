@@ -9,7 +9,7 @@
 PlayerbotSecurity::PlayerbotSecurity(Player* const bot) : bot(bot)
 {
     if (bot)
-        account = sObjectMgr.GetPlayerAccountIdByGUID(bot->GetObjectGuid());
+        account = sObjectMgr->GetPlayerAccountIdByGUID(bot->GetGUID());
 }
 
 PlayerbotSecurityLevel PlayerbotSecurity::LevelFor(Player* from, DenyReason* reason, bool ignoreGroup)
@@ -23,7 +23,7 @@ PlayerbotSecurityLevel PlayerbotSecurity::LevelFor(Player* from, DenyReason* rea
         return PLAYERBOT_SECURITY_DENY_ALL;
     }
 
-    if (sPlayerbotAIConfig.IsInRandomAccountList(account))
+    if (sPlayerbotAIConfig->IsInRandomAccountList(account))
     {
         if (bot->GetPlayerbotAI()->IsOpposing(from))
         {
@@ -56,7 +56,7 @@ PlayerbotSecurityLevel PlayerbotSecurity::LevelFor(Player* from, DenyReason* rea
             return PLAYERBOT_SECURITY_TALK;
         }
 
-        if (sServerFacade.UnitIsDead(bot))
+        if (sServerFacade->UnitIsDead(bot))
         {
             if (reason) *reason = PLAYERBOT_DENY_DEAD;
             return PLAYERBOT_SECURITY_TALK;
@@ -82,7 +82,7 @@ PlayerbotSecurityLevel PlayerbotSecurity::LevelFor(Player* from, DenyReason* rea
             return PLAYERBOT_SECURITY_TALK;
         }
 
-        if (bot->GetMapId() != from->GetMapId() || bot->GetDistance(from) > sPlayerbotAIConfig.whisperDistance)
+        if (bot->GetMapId() != from->GetMapId() || bot->GetDistance(from) > sPlayerbotAIConfig->whisperDistance)
         {
             if (!bot->GetGuildId() || bot->GetGuildId() != from->GetGuildId())
             {
@@ -180,12 +180,12 @@ bool PlayerbotSecurity::CheckLevelFor(PlayerbotSecurityLevel level, bool silent,
     }
 
     string text = out.str();
-    uint64 guid = from->GetObjectGuid().GetRawValue();
+    ObjectGuid guid = from->GetGUID();
     time_t lastSaid = whispers[guid][text];
-    if (!lastSaid || (time(0) - lastSaid) >= sPlayerbotAIConfig.repeatDelay / 1000)
+    if (!lastSaid || (time(0) - lastSaid) >= sPlayerbotAIConfig->repeatDelay / 1000)
     {
         whispers[guid][text] = time(0);
-        bot->Whisper(text, LANG_UNIVERSAL, ObjectGuid(guid));
+        bot->Whisper(text, LANG_UNIVERSAL, guid);
     }
     return false;
 }

@@ -28,7 +28,7 @@ bool QueryQuestAction::Execute(Event event)
             continue;
 
         ostringstream out;
-        out << "--- " << chat->formatQuest(sObjectMgr.GetQuestTemplate(questId)) << " ";
+        out << "--- " << chat->formatQuest(sObjectMgr->GetQuestTemplate(questId)) << " ";
         if (bot->GetQuestStatus(questId) == QUEST_STATUS_COMPLETE)
         {
             out << "|c0000FF00completed|r ---";
@@ -49,7 +49,7 @@ bool QueryQuestAction::Execute(Event event)
 
 void QueryQuestAction::TellObjectives(uint32 questId)
 {
-    Quest const* questTemplate = sObjectMgr.GetQuestTemplate(questId);
+    Quest const* questTemplate = sObjectMgr->GetQuestTemplate(questId);
     QuestStatusData questStatus = bot->getQuestStatusMap()[questId];
 
     for (int i = 0; i < QUEST_OBJECTIVES_COUNT; i++)
@@ -61,7 +61,7 @@ void QueryQuestAction::TellObjectives(uint32 questId)
         {
             int required = questTemplate->ReqItemCount[i];
             int available = questStatus.m_itemcount[i];
-            ItemPrototype const* proto = sObjectMgr.GetItemPrototype(questTemplate->ReqItemId[i]);
+            ItemPrototype const* proto = sObjectMgr->GetItemPrototype(questTemplate->ReqItemId[i]);
             TellObjective(chat->formatItem(proto), available, required);
         }
 
@@ -72,14 +72,14 @@ void QueryQuestAction::TellObjectives(uint32 questId)
 
             if (questTemplate->ReqCreatureOrGOId[i] < 0)
             {
-                GameObjectInfo const* info = sObjectMgr.GetGameObjectInfo(-questTemplate->ReqCreatureOrGOId[i]);
+                GameObjectInfo const* info = sObjectMgr->GetGameObjectInfo(-questTemplate->ReqCreatureOrGOId[i]);
                 if (info)
                     TellObjective(info->name, available, required);
             }
             else
             {
 
-                CreatureInfo const* info = sObjectMgr.GetCreatureTemplate(questTemplate->ReqCreatureOrGOId[i]);
+                CreatureInfo const* info = sObjectMgr->GetCreatureTemplate(questTemplate->ReqCreatureOrGOId[i]);
                 if (info)
                     TellObjective(info->Name, available, required);
             }

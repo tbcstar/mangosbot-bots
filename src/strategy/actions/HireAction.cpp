@@ -10,10 +10,10 @@ bool HireAction::Execute(Event event)
     if (!master)
         return false;
 
-    if (!sRandomPlayerbotMgr.IsRandomBot(bot))
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot))
         return false;
 
-    uint32 account = sObjectMgr.GetPlayerAccountIdByGUID(master->GetObjectGuid().GetRawValue());
+    uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(master->GetGUID().GetRawValue());
     QueryResult* results = CharacterDatabase.PQuery("SELECT count(*) FROM characters where account = '%u'", account);
 
     uint32 charCount = 10;
@@ -36,7 +36,7 @@ bool HireAction::Execute(Event event)
         return false;
     }
 
-    uint32 discount = sRandomPlayerbotMgr.GetTradeDiscount(bot, master);
+    uint32 discount = sRandomPlayerbotMgr->GetTradeDiscount(bot, master);
     uint32 m = 1 + (bot->getLevel() / 10);
     uint32 moneyReq = m * 5000 * bot->getLevel();
     if ((int)discount < (int)moneyReq)
@@ -50,9 +50,9 @@ bool HireAction::Execute(Event event)
     ai->TellMaster("I will join you at your next relogin");
 
     bot->SetMoney(moneyReq);
-    sRandomPlayerbotMgr.Remove(bot);
+    sRandomPlayerbotMgr->Remove(bot);
     CharacterDatabase.PExecute("update characters set account = '%u' where guid = '%u'",
-            account, bot->GetObjectGuid().GetRawValue());
+            account, bot->GetGUID().GetRawValue());
 
     return true;
 }

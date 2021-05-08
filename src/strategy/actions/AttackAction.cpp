@@ -24,7 +24,7 @@ bool AttackMyTargetAction::Execute(Event event)
     if (!master)
         return false;
 
-    ObjectGuid guid = master->GetSelectionGuid();
+    ObjectGuid guid = master->GetTarget();
     if (!guid)
     {
         if (verbose) ai->TellError("You have no target");
@@ -53,19 +53,19 @@ bool AttackAction::Attack(Unit* target)
 
     ostringstream msg;
     msg << target->GetName();
-    if (sServerFacade.IsFriendlyTo(bot, target))
+    if (sServerFacade->IsFriendlyTo(bot, target))
     {
         msg << " is friendly to me";
         if (verbose) ai->TellError(msg.str());
         return false;
     }
-    if (!sServerFacade.IsWithinLOSInMap(bot, target))
+    if (!sServerFacade->IsWithinLOSInMap(bot, target))
     {
         msg << " is not on my sight";
         if (verbose) ai->TellError(msg.str());
         return false;
     }
-    if (sServerFacade.UnitIsDead(target))
+    if (sServerFacade->UnitIsDead(target))
     {
         msg << " is dead";
         if (verbose) ai->TellError(msg.str());
@@ -78,8 +78,8 @@ bool AttackAction::Attack(Unit* target)
         bot->GetSession()->HandleCancelMountAuraOpcode(emptyPacket);
     }
 
-    ObjectGuid guid = target->GetObjectGuid();
-    bot->SetSelectionGuid(target->GetObjectGuid());
+    ObjectGuid guid = target->GetGUID();
+    bot->SetTarget(target->GetGUID());
 
     Unit* oldTarget = context->GetValue<Unit*>("current target")->Get();
     context->GetValue<Unit*>("old target")->Set(oldTarget);
@@ -90,22 +90,11 @@ bool AttackAction::Attack(Unit* target)
     Pet* pet = bot->GetPet();
     if (pet)
     {
-#ifdef MANGOS
-        CreatureAI*
-#endif
-#ifdef CMANGOS
-        UnitAI*
-#endif
-            creatureAI = ((Creature*)pet)->AI();
+        CreatureAI* creatureAI = ((Creature*)pet)->AI();
         if (creatureAI)
         {
-#ifdef CMANGOS
-            creatureAI->SetReactState(REACT_PASSIVE);
-#endif
-#ifdef MANGOS
             pet->GetCharmInfo()->SetReactState(REACT_PASSIVE);
             pet->GetCharmInfo()->SetCommandState(COMMAND_ATTACK);
-#endif
             creatureAI->AttackStart(target);
         }
     }
@@ -119,10 +108,10 @@ bool AttackAction::Attack(Unit* target)
         ai->PlaySound(sounds[urand(0, sounds.size() - 1)]);
     }
 
-    if (!sServerFacade.IsInFront(bot, target, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT))
-        sServerFacade.SetFacingTo(bot, target);
+    if (!sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
+        sServerFacade->SetFacingTo(bot, target);
 
-    bot->Attack(target, !ai->IsRanged(bot) || sServerFacade.GetDistance2d(bot, target) <= sPlayerbotAIConfig.tooCloseDistance);
+    bot->Attack(target, !ai->IsRanged(bot) || sServerFacade->GetDistance2d(bot, target) <= sPlayerbotAIConfig->tooCloseDistance);
     ai->ChangeEngine(BOT_STATE_COMBAT);
     return true;
 }

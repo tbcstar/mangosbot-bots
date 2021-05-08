@@ -18,7 +18,7 @@ bool TellCastFailedAction::Execute(Event event)
     if (result == SPELL_CAST_OK)
         return false;
 
-    const SpellEntry *const pSpellInfo =  sServerFacade.LookupSpellInfo(spellId);
+    const SpellEntry *const pSpellInfo =  sServerFacade->LookupSpellInfo(spellId);
     ostringstream out; out << chat->formatSpell(pSpellInfo) << ": ";
     switch (result)
     {
@@ -44,11 +44,7 @@ bool TellCastFailedAction::Execute(Event event)
     default:
         out << "cannot cast";
     }
-    int32 castTime = GetSpellCastTime(pSpellInfo
-#ifdef CMANGOS
-            , bot
-#endif
-    );
+    int32 castTime = GetSpellCastTime(pSpellInfo);
     if (castTime >= 2000)
         ai->TellError(out.str());
     return true;
@@ -62,7 +58,7 @@ bool TellSpellAction::Execute(Event event)
     if (!spellId)
         return false;
 
-    SpellEntry const *spellInfo = sServerFacade.LookupSpellInfo(spellId );
+    SpellEntry const *spellInfo = sServerFacade->LookupSpellInfo(spellId );
     if (!spellInfo)
         return false;
 

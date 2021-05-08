@@ -8,7 +8,7 @@ using namespace ai;
 ObjectGuid Event::getObject()
 {
     if (packet.empty())
-        return ObjectGuid();
+        return ObjectGuid::Empty;
 
     WorldPacket p(packet);
     p.rpos(0);

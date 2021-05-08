@@ -18,16 +18,11 @@ bool IsDeadValue::Calculate()
     Unit* target = GetTarget();
     if (!target)
         return false;
-    return sServerFacade.GetDeathState(target) != ALIVE;
+    return sServerFacade->GetDeathState(target) != ALIVE;
 }
 
 bool PetIsDeadValue::Calculate()
 {
-#ifdef MANGOS
-    PetDatabaseStatus status = Pet::GetStatusFromDB(bot);
-    if (status == PET_DB_DEAD)
-#endif
-#ifdef CMANGOS
     if (!bot->GetPet())
     {
         uint32 ownerid = bot->GetGUIDLow();
@@ -39,25 +34,15 @@ bool PetIsDeadValue::Calculate()
         return true;
     }
     if (bot->GetPetGuid() && !bot->GetPet())
-#endif
         return true;
 
-    return bot->GetPet() && sServerFacade.GetDeathState(bot->GetPet()) != ALIVE;
+    return bot->GetPet() && sServerFacade->GetDeathState(bot->GetPet()) != ALIVE;
 }
 
 bool PetIsHappyValue::Calculate()
 {
-#ifdef MANGOSBOT_ZERO
-#ifndef CMANGOS
-    PetDatabaseStatus status = Pet::GetStatusFromDB(bot);
-    if (status == PET_DB_DEAD)
-        return true;
-#endif
-#endif
-
     return !bot->GetPet() || bot->GetPet()->GetHappinessState() == HAPPY;
 }
-
 
 uint8 RageValue::Calculate()
 {
@@ -95,7 +80,7 @@ bool HasManaValue::Calculate()
 uint8 ComboPointsValue::Calculate()
 {
     Unit *target = GetTarget();
-	if (!target || target->GetObjectGuid() != bot->GetComboTargetGuid())
+	if (!target || target->GetGUID() != bot->GetComboTargetGuid())
 		return 0;
 
     return bot->GetComboPoints();
@@ -117,7 +102,7 @@ bool IsInCombatValue::Calculate()
     if (!target)
         return false;
 
-    if (sServerFacade.IsInCombat(target)) return true;
+    if (sServerFacade->IsInCombat(target)) return true;
 
     if (target == bot)
     {
@@ -127,11 +112,11 @@ bool IsInCombatValue::Calculate()
             Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
             for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
             {
-                Player *member = sObjectMgr.GetPlayer(itr->guid);
+                Player *member = sObjectMgr->GetPlayer(itr->guid);
                 if (!member || member == bot) continue;
 
-                if (sServerFacade.IsInCombat(member) &&
-                        sServerFacade.IsDistanceLessOrEqualThan(sServerFacade.GetDistance2d(member, bot), sPlayerbotAIConfig.reactDistance)) return true;
+                if (sServerFacade->IsInCombat(member) &&
+                        sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(member, bot), sPlayerbotAIConfig->reactDistance)) return true;
             }
         }
     }

@@ -62,7 +62,7 @@ bool MarkRtiAction::Execute(Event event)
         for (int i = 0; i < 8; i++)
         {
             ObjectGuid guid = group->GetTargetIcon(i);
-            if (guid == unit->GetObjectGuid())
+            if (guid == unit->GetGUID())
             {
                 marked = true;
                 break;
@@ -78,7 +78,7 @@ bool MarkRtiAction::Execute(Event event)
 
     string rti = AI_VALUE(string, "rti");
     int index = RtiTargetValue::GetRtiIndex(rti);
-    group->SetTargetIcon(index, target->GetObjectGuid());
+    group->SetTargetIcon(index, target->GetGUID());
     return true;
 }
 

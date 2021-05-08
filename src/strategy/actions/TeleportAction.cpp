@@ -20,7 +20,7 @@ bool TeleportAction::Execute(Event event)
             continue;
 
         uint32 spellId = goInfo->spellcaster.spellId;
-        const SpellEntry* const pSpellInfo = sServerFacade.LookupSpellInfo(spellId);
+        const SpellEntry* const pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
         if (pSpellInfo->Effect[0] != SPELL_EFFECT_TELEPORT_UNITS && pSpellInfo->Effect[1] != SPELL_EFFECT_TELEPORT_UNITS && pSpellInfo->Effect[2] != SPELL_EFFECT_TELEPORT_UNITS)
             continue;
 
@@ -32,13 +32,8 @@ bool TeleportAction::Execute(Event event)
         Spell *spell = new Spell(bot, pSpellInfo, false);
         SpellCastTargets targets;
         targets.setUnitTarget(bot);
-#ifdef MANGOS
         spell->prepare(&targets, NULL);
-#endif
-#ifdef CMANGOS
-        spell->SpellStart(&targets, NULL);
-#endif
-            spell->cast(true);
+        spell->cast(true);
         return true;
     }
 

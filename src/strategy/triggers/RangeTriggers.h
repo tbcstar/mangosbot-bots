@@ -12,7 +12,7 @@ namespace ai
 		{
 			Unit* target = AI_VALUE(Unit*, "current target");
             return target &&
-                    sServerFacade.IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), ai->GetRange("spell") / 2);
+                    sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), ai->GetRange("spell") / 2);
         }
     };
 
@@ -23,7 +23,7 @@ namespace ai
 		{
 			Unit* target = AI_VALUE(Unit*, "current target");
             return target &&
-                    sServerFacade.IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), ai->GetRange("shoot") / 2);
+                    sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), ai->GetRange("shoot") / 2);
         }
     };
 
@@ -44,7 +44,7 @@ namespace ai
 		{
 			Unit* target = AI_VALUE(Unit*, "current target");
             return target &&
-                    sServerFacade.IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), sPlayerbotAIConfig.tooCloseDistance);
+                    sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), sPlayerbotAIConfig->tooCloseDistance);
         }
     };
 
@@ -58,7 +58,7 @@ namespace ai
 		{
 			Unit* target = AI_VALUE(Unit*, GetTargetName());
 			return target &&
-			        sServerFacade.IsDistanceGreaterThan(AI_VALUE2(float, "distance", GetTargetName()), distance);
+			        sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", GetTargetName()), distance);
         }
         virtual string GetTargetName() { return "current target"; }
 
@@ -69,7 +69,7 @@ namespace ai
     class EnemyOutOfMeleeTrigger : public OutOfRangeTrigger
 	{
     public:
-        EnemyOutOfMeleeTrigger(PlayerbotAI* ai) : OutOfRangeTrigger(ai, "enemy out of melee range", sPlayerbotAIConfig.meleeDistance) {}
+        EnemyOutOfMeleeTrigger(PlayerbotAI* ai) : OutOfRangeTrigger(ai, "enemy out of melee range", sPlayerbotAIConfig->meleeDistance) {}
     };
 
     class EnemyOutOfSpellRangeTrigger : public OutOfRangeTrigger
@@ -91,7 +91,7 @@ namespace ai
 
         virtual bool IsActive()
         {
-            return sServerFacade.IsDistanceGreaterThan(AI_VALUE2(float, "distance", "master target"), distance);
+            return sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "master target"), distance);
         }
 
     private:
@@ -101,6 +101,6 @@ namespace ai
     class OutOfReactRangeTrigger : public FarFromMasterTrigger
     {
     public:
-        OutOfReactRangeTrigger(PlayerbotAI* ai) : FarFromMasterTrigger(ai, "out of react range", sPlayerbotAIConfig.reactDistance / 2, 10) {}
+        OutOfReactRangeTrigger(PlayerbotAI* ai) : FarFromMasterTrigger(ai, "out of react range", sPlayerbotAIConfig->reactDistance / 2, 10) {}
     };
 }

@@ -16,7 +16,7 @@ PerformanceMonitor::~PerformanceMonitor()
 
 PerformanceMonitorOperation* PerformanceMonitor::start(PerformanceMetric metric, string name)
 {
-    if (!sPlayerbotAIConfig.perfMonEnabled) return NULL;
+    if (!sPlayerbotAIConfig->perfMonEnabled) return NULL;
 
     std::lock_guard<std::mutex> guard(lock);
     PerformanceData *pd = data[metric][name];
@@ -53,7 +53,7 @@ void PerformanceMonitor::PrintStats()
             float avg = (float)pd->totalTime / (float)pd->count;
             if (avg >= 0.5f || pd->maxTime > 10)
             {
-                sLog.outString("%6u .. %6u (%.4f of %6u) - %s: %s",
+                sLog->outString("%6u .. %6u (%.4f of %6u) - %s: %s",
                         pd->minTime, pd->maxTime, avg, pd->count,
                         key.c_str(), j->first.c_str());
             }
@@ -100,10 +100,10 @@ bool ChatHandler::HandlePerfMonCommand(char* args)
 {
     if (!strcmp(args, "reset"))
     {
-        sPerformanceMonitor.Reset();
+        sPerformanceMonitor->Reset();
         return true;
     }
 
-    sPerformanceMonitor.PrintStats();
+    sPerformanceMonitor->PrintStats();
     return true;
 }

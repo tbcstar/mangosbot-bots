@@ -8,9 +8,6 @@
 #include "CellImpl.h"
 
 using namespace ai;
-using namespace MaNGOS;
-
-uint64 extractGuid(WorldPacket& packet);
 
 class AnyGameObjectInObjectRangeCheck
 {
@@ -19,7 +16,7 @@ public:
     WorldObject const& GetFocusObject() const { return *i_obj; }
     bool operator()(GameObject* u)
     {
-        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade.isSpawned(u) && u->GetGOInfo())
+        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade->isSpawned(u) && u->GetGOInfo())
             return true;
 
         return false;
@@ -36,16 +33,16 @@ bool RevealGatheringItemAction::Execute(Event event)
         return false;
 
     list<GameObject*> targets;
-    AnyGameObjectInObjectRangeCheck u_check(bot, sPlayerbotAIConfig.grindDistance);
+    AnyGameObjectInObjectRangeCheck u_check(bot, sPlayerbotAIConfig->grindDistance);
     GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects((const WorldObject*)bot, searcher, sPlayerbotAIConfig.reactDistance);
+    Cell::VisitAllObjects((const WorldObject*)bot, searcher, sPlayerbotAIConfig->reactDistance);
 
     vector<GameObject*> result;
     for(list<GameObject*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
     {
         GameObject* go = *tIter;
-        if (!go || !sServerFacade.isSpawned(go) ||
-                sServerFacade.IsDistanceLessOrEqualThan(sServerFacade.GetDistance2d(bot, go), sPlayerbotAIConfig.lootDistance))
+        if (!go || !sServerFacade->isSpawned(go) ||
+                sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, go), sPlayerbotAIConfig->lootDistance))
             continue;
 
         if (LockEntry const *lockInfo = sLockStore.LookupEntry(go->GetGOInfo()->GetLockId()))

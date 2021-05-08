@@ -119,7 +119,7 @@ void Engine::Init()
 bool Engine::DoNextAction(Unit* unit, int depth)
 {
     LogAction("--- AI Tick ---");
-    if (sPlayerbotAIConfig.logValuesPerTick)
+    if (sPlayerbotAIConfig->logValuesPerTick)
         LogValues();
 
     bool actionExecuted = false;
@@ -130,7 +130,7 @@ bool Engine::DoNextAction(Unit* unit, int depth)
     ProcessTriggers();
 
     int iterations = 0;
-    int iterationsPerTick = queue.Size() * sPlayerbotAIConfig.iterationsPerTick;
+    int iterationsPerTick = queue.Size() * sPlayerbotAIConfig->iterationsPerTick;
     do {
         basket = queue.Peek();
         if (basket) {
@@ -170,7 +170,7 @@ bool Engine::DoNextAction(Unit* unit, int depth)
                         }
                     }
 
-                    PerformanceMonitorOperation *pmo = sPerformanceMonitor.start(PERF_MON_ACTION, action->getName());
+                    PerformanceMonitorOperation *pmo = sPerformanceMonitor->start(PERF_MON_ACTION, action->getName());
                     actionExecuted = ListenAndExecute(action, event);
                     if (pmo) pmo->finish();
 
@@ -399,7 +399,7 @@ void Engine::ProcessTriggers()
 
         if (testMode || trigger->needCheck())
         {
-            PerformanceMonitorOperation *pmo = sPerformanceMonitor.start(PERF_MON_TRIGGER, trigger->getName());
+            PerformanceMonitorOperation *pmo = sPerformanceMonitor->start(PERF_MON_TRIGGER, trigger->getName());
             Event event = trigger->Check();
             if (pmo) pmo->finish();
             if (!event)
@@ -534,10 +534,10 @@ void Engine::LogAction(const char* format, ...)
     else
     {
         Player* bot = ai->GetBot();
-        if (sPlayerbotAIConfig.logInGroupOnly && !bot->GetGroup())
+        if (sPlayerbotAIConfig->logInGroupOnly && !bot->GetGroup())
             return;
 
-        sLog.outDetail( "%s %s", bot->GetName(), buf);
+        sLog->outDetail( "%s %s", bot->GetName(), buf);
     }
 }
 
@@ -571,9 +571,9 @@ void Engine::LogValues()
         return;
 
     Player* bot = ai->GetBot();
-    if (sPlayerbotAIConfig.logInGroupOnly && !bot->GetGroup())
+    if (sPlayerbotAIConfig->logInGroupOnly && !bot->GetGroup())
         return;
 
     string text = ai->GetAiObjectContext()->FormatValues();
-    sLog.outDebug( "Values for %s: %s", bot->GetName(), text.c_str());
+    sLog->outDebug( "Values for %s: %s", bot->GetName(), text.c_str());
 }

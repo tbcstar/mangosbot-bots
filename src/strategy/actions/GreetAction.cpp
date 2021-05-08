@@ -18,14 +18,14 @@ bool GreetAction::Execute(Event event)
     Player* player = dynamic_cast<Player*>(ai->GetUnit(guid));
     if (!player) return false;
 
-    if (!sServerFacade.IsInFront(bot, player, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT))
-        sServerFacade.SetFacingTo(bot, player);
+    if (!sServerFacade->IsInFront(bot, player, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
+        sServerFacade->SetFacingTo(bot, player);
 
-    ObjectGuid oldSel = bot->GetSelectionGuid();
-    bot->SetSelectionGuid(guid);
+    ObjectGuid oldSel = bot->GetTarget();
+    bot->SetTarget(guid);
     bot->HandleEmote(EMOTE_ONESHOT_WAVE);
     ai->PlaySound(TEXTEMOTE_HELLO);
-    bot->SetSelectionGuid(oldSel);
+    bot->SetTarget(oldSel);
 
     set<ObjectGuid>& alreadySeenPlayers = ai->GetAiObjectContext()->GetValue<set<ObjectGuid>& >("already seen players")->Get();
     alreadySeenPlayers.insert(guid);

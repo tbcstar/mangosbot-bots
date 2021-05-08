@@ -19,7 +19,7 @@ bool DropQuestAction::Execute(Event event)
     {
         uint32 logQuest = bot->GetQuestSlotQuestId(slot);
 
-        Quest const* quest = sObjectMgr.GetQuestTemplate(logQuest);
+        Quest const* quest = sObjectMgr->GetQuestTemplate(logQuest);
         if (!quest)
             continue;
 

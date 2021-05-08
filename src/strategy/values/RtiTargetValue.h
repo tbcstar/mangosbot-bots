@@ -47,10 +47,10 @@ namespace ai
             list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
             if (find(attackers.begin(), attackers.end(), guid) == attackers.end()) return NULL;
 
-            Unit* unit = ai->GetUnit(ObjectGuid(guid));
-            if (!unit || sServerFacade.UnitIsDead(unit) ||
-                    !sServerFacade.IsWithinLOSInMap(bot, unit) ||
-                    sServerFacade.IsDistanceGreaterThan(sServerFacade.GetDistance2d(bot, unit), sPlayerbotAIConfig.sightDistance))
+            Unit* unit = ai->GetUnit(guid);
+            if (!unit || sServerFacade->UnitIsDead(unit) ||
+                    !sServerFacade->IsWithinLOSInMap(bot, unit) ||
+                    sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, unit), sPlayerbotAIConfig->sightDistance))
                 return NULL;
 
             return unit;

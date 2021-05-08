@@ -50,18 +50,18 @@ namespace ai
     class RpgTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        RpgTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid()) {}
+        RpgTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
     };
 
     class TalkTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        TalkTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid()) {}
+        TalkTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
     };
 
     class PullTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        PullTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid()) {}
+        PullTargetValue(PlayerbotAI* ai) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
     };
 }

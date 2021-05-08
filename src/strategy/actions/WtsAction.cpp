@@ -21,7 +21,7 @@ bool WtsAction::Execute(Event event)
     ostringstream out;
     string text = event.getParam();
 
-    if (!sRandomPlayerbotMgr.IsRandomBot(bot))
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot))
         return false;
 
     string link = event.getParam();
@@ -33,7 +33,7 @@ bool WtsAction::Execute(Event event)
     for (ItemIds::iterator i = itemIds.begin(); i != itemIds.end(); i++)
     {
         uint32 itemId = *i;
-        const ItemPrototype* proto = sObjectMgr.GetItemPrototype(itemId);
+        const ItemPrototype* proto = sObjectMgr->GetItemPrototype(itemId);
         if (!proto)
             continue;
 
@@ -42,7 +42,7 @@ bool WtsAction::Execute(Event event)
         if (usage == ITEM_USAGE_NONE)
             continue;
 
-        int32 buyPrice = PricingStrategy::RoundPrice(auctionbot.GetBuyPrice(proto) * sRandomPlayerbotMgr.GetBuyMultiplier(bot));
+        int32 buyPrice = PricingStrategy::RoundPrice(auctionbot.GetBuyPrice(proto) * sRandomPlayerbotMgr->GetBuyMultiplier(bot));
         if (!buyPrice)
             continue;
 
@@ -53,7 +53,7 @@ bool WtsAction::Execute(Event event)
         tell << "I'll buy " << chat->formatItem(proto) << " for " << chat->formatMoney(buyPrice);
 
         // ignore random bot chat filter
-        bot->Whisper(tell.str(), LANG_UNIVERSAL, owner->GetObjectGuid());
+        bot->Whisper(tell.str(), LANG_UNIVERSAL, owner->GetGUID());
     }
 
     return true;

@@ -13,12 +13,12 @@ namespace ai
         }
 
     protected:
-        bool MoveNear(uint32 mapId, float x, float y, float z, float distance = sPlayerbotAIConfig.contactDistance);
+        bool MoveNear(uint32 mapId, float x, float y, float z, float distance = sPlayerbotAIConfig->contactDistance);
         bool MoveTo(uint32 mapId, float x, float y, float z, bool idle = false);
         bool MoveTo(Unit* target, float distance = 0.0f);
-        bool MoveNear(WorldObject* target, float distance = sPlayerbotAIConfig.contactDistance);
+        bool MoveNear(WorldObject* target, float distance = sPlayerbotAIConfig->contactDistance);
         float GetFollowAngle();
-        bool Follow(Unit* target, float distance = sPlayerbotAIConfig.followDistance);
+        bool Follow(Unit* target, float distance = sPlayerbotAIConfig->followDistance);
         bool Follow(Unit* target, float distance, float angle);
         void WaitForReach(float distance);
         bool IsMovingAllowed(Unit* target);
@@ -32,7 +32,7 @@ namespace ai
     class FleeAction : public MovementAction
     {
     public:
-        FleeAction(PlayerbotAI* ai, float distance = sPlayerbotAIConfig.spellDistance) : MovementAction(ai, "flee")
+        FleeAction(PlayerbotAI* ai, float distance = sPlayerbotAIConfig->spellDistance) : MovementAction(ai, "flee")
         {
 			this->distance = distance;
 		}

@@ -59,7 +59,7 @@ bool LootStrategyAction::Execute(Event event)
             uint32 itemid = *i;
             if (query)
             {
-                ItemPrototype const *proto = sObjectMgr.GetItemPrototype(itemid);
+                ItemPrototype const *proto = sObjectMgr->GetItemPrototype(itemid);
                 if (proto)
                 {
                     ostringstream out;

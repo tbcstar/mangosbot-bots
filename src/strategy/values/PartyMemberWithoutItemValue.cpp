@@ -18,7 +18,7 @@ public:
         if (pet && (pet->getPetType() == MINI_PET || pet->getPetType() == SUMMON_PET))
             return false;
 
-        if (!sServerFacade.IsAlive(unit))
+        if (!sServerFacade->IsAlive(unit))
             return false;
 
         Player* member = dynamic_cast<Player*>(unit);

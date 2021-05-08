@@ -14,7 +14,7 @@ namespace ai
 
         virtual bool Execute(Event event)
         {
-            if (sServerFacade.IsInCombat(bot))
+            if (sServerFacade->IsInCombat(bot))
                 return false;
 
             return UseItemAction::Execute(event);
@@ -22,7 +22,7 @@ namespace ai
 
         virtual bool isUseful()
         {
-            return UseItemAction::isUseful() && AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig.lowMana;
+            return UseItemAction::isUseful() && AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig->lowMana;
         }
     };
 
@@ -33,7 +33,7 @@ namespace ai
 
         virtual bool Execute(Event event)
         {
-            if (sServerFacade.IsInCombat(bot))
+            if (sServerFacade->IsInCombat(bot))
                 return false;
 
             return UseItemAction::Execute(event);
@@ -41,7 +41,7 @@ namespace ai
 
         virtual bool isUseful()
         {
-            return UseItemAction::isUseful() && AI_VALUE2(uint8, "health", "self target") < sPlayerbotAIConfig.lowHealth;
+            return UseItemAction::isUseful() && AI_VALUE2(uint8, "health", "self target") < sPlayerbotAIConfig->lowHealth;
         }
     };
 

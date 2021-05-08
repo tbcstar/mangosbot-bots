@@ -5,18 +5,16 @@
 #include "../../ServerFacade.h"
 using namespace ai;
 
-uint64 extractGuid(WorldPacket& packet);
-
 bool CheckMountStateAction::Execute(Event event)
 {
 	Player* master = GetMaster();
-	if (!bot->GetGroup() || !master || bot->GetGroup()->GetLeaderGuid() != master->GetObjectGuid())
+	if (!bot->GetGroup() || !master || bot->GetGroup()->GetLeaderGuid() != master->GetGUID())
 		return false;
 
 	if (bot->IsTaxiFlying() || bot->IsFlying())
 		return false;
 
-	bool farFromMaster = sServerFacade.IsDistanceGreaterThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig.sightDistance);
+	bool farFromMaster = sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig->sightDistance);
 	if (master->IsMounted() && !bot->IsMounted() && !farFromMaster)
 	{
 		return Mount();
@@ -50,7 +48,7 @@ bool CheckMountStateAction::Mount()
 		if (itr->second.state == PLAYERSPELL_REMOVED || itr->second.disabled || IsPassiveSpell(spellId))
 			continue;
 
-		const SpellEntry* spellInfo = sServerFacade.LookupSpellInfo(spellId);
+		const SpellEntry* spellInfo = sServerFacade->LookupSpellInfo(spellId);
 		if (!spellInfo || spellInfo->EffectApplyAuraName[0] != SPELL_AURA_MOUNTED)
 			continue;
 

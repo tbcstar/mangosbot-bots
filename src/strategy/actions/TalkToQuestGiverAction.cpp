@@ -63,7 +63,7 @@ void TalkToQuestGiverAction::RewardNoItem(Quest const* quest, WorldObject* quest
 void TalkToQuestGiverAction::RewardSingleItem(Quest const* quest, WorldObject* questGiver, ostringstream& out) 
 {
     int index = 0;
-    ItemPrototype const *item = sObjectMgr.GetItemPrototype(quest->RewChoiceItemId[index]);
+    ItemPrototype const *item = sObjectMgr->GetItemPrototype(quest->RewChoiceItemId[index]);
     if (bot->CanRewardQuest(quest, index, false))
     {
         bot->RewardQuest(quest, index, questGiver, true);
@@ -82,7 +82,7 @@ void TalkToQuestGiverAction::AskToSelectReward(Quest const* quest, ostringstream
     msg << "Choose reward: ";
     for (uint8 i=0; i < quest->GetRewChoiceItemsCount(); ++i)
     {
-        ItemPrototype const* item = sObjectMgr.GetItemPrototype(quest->RewChoiceItemId[i]);
+        ItemPrototype const* item = sObjectMgr->GetItemPrototype(quest->RewChoiceItemId[i]);
         msg << chat->formatItem(item);
     }
     ai->TellMaster(msg);

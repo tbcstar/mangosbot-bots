@@ -7,9 +7,6 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-using namespace ai;
-using namespace MaNGOS;
-
 void NearestNpcsValue::FindUnits(list<Unit*> &targets)
 {
     AnyUnitInObjectRangeCheck u_check(bot, range);
@@ -19,5 +16,5 @@ void NearestNpcsValue::FindUnits(list<Unit*> &targets)
 
 bool NearestNpcsValue::AcceptUnit(Unit* unit)
 {
-    return !sServerFacade.IsHostileTo(unit, bot) && !dynamic_cast<Player*>(unit);
+    return !sServerFacade->IsHostileTo(unit, bot) && !dynamic_cast<Player*>(unit);
 }

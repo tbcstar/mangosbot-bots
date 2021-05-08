@@ -23,12 +23,12 @@ bool CheckMailAction::Execute(Event event)
         if (!mail || mail->state == MAIL_STATE_DELETED)
             continue;
 
-        Player* owner = sObjectMgr.GetPlayer(ObjectGuid(HIGHGUID_PLAYER, mail->sender));
+        Player* owner = sObjectMgr->GetPlayer(ObjectGuid::Create<HighGuid::Player>(mail->sender));
         if (!owner)
             continue;
 
-        uint32 account = sObjectMgr.GetPlayerAccountIdByGUID(owner->GetObjectGuid());
-        if (sPlayerbotAIConfig.IsInRandomAccountList(account))
+        uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(owner->GetGUID());
+        if (sPlayerbotAIConfig->IsInRandomAccountList(account))
             continue;
 
         ProcessMail(mail, owner);
@@ -55,7 +55,7 @@ void CheckMailAction::ProcessMail(Mail* mail, Player* owner)
     {
         if (mail->itemTextId)
         {
-            sGuildTaskMgr.CheckTaskTransfer(sObjectMgr.GetItemText(mail->itemTextId), owner, bot);
+            sGuildTaskMgr.CheckTaskTransfer(sObjectMgr->GetItemText(mail->itemTextId), owner, bot);
         }
         return;
     }

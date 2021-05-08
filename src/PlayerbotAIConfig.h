@@ -10,10 +10,10 @@ class PlayerbotAIConfig
 {
 public:
     PlayerbotAIConfig();
-    static PlayerbotAIConfig& instance()
+    static PlayerbotAIConfig* instance()
     {
         static PlayerbotAIConfig instance;
-        return instance;
+        return &instance;
     }
 
 public:
@@ -94,5 +94,5 @@ private:
     Config config;
 };
 
-#define sPlayerbotAIConfig MaNGOS::Singleton<PlayerbotAIConfig>::Instance()
+#define sPlayerbotAIConfig PlayerbotAIConfig::instance()
 

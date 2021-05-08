@@ -36,56 +36,31 @@ vector<string> split(const string &s, char delim)
     return split(s, delim, elems);
 }
 
-char *strstri(const char *haystack, const char *needle)
+char* strstri(const char* haystack, const char* needle)
 {
-    if ( !*needle )
+    if (!*needle)
     {
         return (char*)haystack;
     }
-    for ( ; *haystack; ++haystack )
+    for (; *haystack; ++haystack)
     {
-        if ( tolower(*haystack) == tolower(*needle) )
+        if (tolower(*haystack) == tolower(*needle))
         {
-            const char *h = haystack, *n = needle;
-            for ( ; *h && *n; ++h, ++n )
+            const char* h = haystack, * n = needle;
+            for (; *h && *n; ++h, ++n)
             {
-                if ( tolower(*h) != tolower(*n) )
+                if (tolower(*h) != tolower(*n))
                 {
                     break;
                 }
             }
-            if ( !*n )
+            if (!*n)
             {
                 return (char*)haystack;
             }
         }
     }
     return 0;
-}
-
-
-
-uint64 extractGuid(WorldPacket& packet)
-{
-    uint8 mask;
-    packet >> mask;
-    uint64 guid = 0;
-    uint8 bit = 0;
-    uint8 testMask = 1;
-    while (true)
-    {
-        if (mask & testMask)
-        {
-            uint8 word;
-            packet >> word;
-            guid += (word << bit);
-        }
-        if (bit == 7)
-            break;
-        ++bit;
-        testMask <<= 1;
-    }
-    return guid;
 }
 
 std::string &ltrim(std::string &s) {

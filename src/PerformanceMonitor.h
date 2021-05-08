@@ -42,10 +42,10 @@ class PerformanceMonitor
     public:
         PerformanceMonitor();
         virtual ~PerformanceMonitor();
-        static PerformanceMonitor& instance()
+        static PerformanceMonitor* instance()
         {
             static PerformanceMonitor instance;
-            return instance;
+            return &instance;
         }
 
 	public:

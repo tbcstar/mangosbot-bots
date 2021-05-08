@@ -55,10 +55,10 @@ class RandomItemMgr
     public:
         RandomItemMgr();
         virtual ~RandomItemMgr();
-        static RandomItemMgr& instance()
+        static RandomItemMgr* instance()
         {
             static RandomItemMgr instance;
-            return instance;
+            return *instance;
         }
 
 	public:

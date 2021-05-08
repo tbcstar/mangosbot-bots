@@ -12,15 +12,15 @@ bool SetHomeAction::Execute(Event event)
     if (!master)
         return false;
 
-    ObjectGuid selection = master->GetSelectionGuid();
+    ObjectGuid selection = master->GetTarget();
     if (selection)
     {
         Unit* unit = master->GetMap()->GetUnit(selection);
         if (unit && unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER))
         {
             float angle = GetFollowAngle();
-            float x = unit->GetPositionX() + sPlayerbotAIConfig.followDistance * cos(angle);
-            float y = unit->GetPositionY() + sPlayerbotAIConfig.followDistance * sin(angle);
+            float x = unit->GetPositionX() + sPlayerbotAIConfig->followDistance * cos(angle);
+            float y = unit->GetPositionY() + sPlayerbotAIConfig->followDistance * sin(angle);
             float z = unit->GetPositionZ();
             WorldLocation loc(unit->GetMapId(), x, y, z);
             bot->SetHomebindToLocation(loc, unit->GetAreaId());

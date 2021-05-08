@@ -21,7 +21,7 @@ bool QueryItemUsageAction::Execute(Event event)
 
         ObjectGuid guid;
         data >> guid;
-        if (guid != bot->GetObjectGuid())
+        if (guid != bot->GetGUID())
             return false;
 
         uint32 received, created, isShowChatMessage, notUsed, itemId,
@@ -116,7 +116,7 @@ string QueryItemUsageAction::QueryItemUsage(ItemPrototype const *item)
 
 string QueryItemUsageAction::QueryItemPrice(ItemPrototype const *item)
 {
-    if (!sRandomPlayerbotMgr.IsRandomBot(bot))
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot))
         return "";
 
     if (item->Bonding == BIND_WHEN_PICKED_UP)
@@ -130,7 +130,7 @@ string QueryItemUsageAction::QueryItemPrice(ItemPrototype const *item)
         for (list<Item*>::iterator i = items.begin(); i != items.end(); ++i)
         {
             Item* sell = *i;
-            int32 price = sell->GetCount() * auctionbot.GetSellPrice(sell->GetProto()) * sRandomPlayerbotMgr.GetSellMultiplier(bot);
+            int32 price = sell->GetCount() * auctionbot.GetSellPrice(sell->GetProto()) * sRandomPlayerbotMgr->GetSellMultiplier(bot);
             if (!sellPrice || sellPrice > price) sellPrice = price;
         }
     }
@@ -141,7 +141,7 @@ string QueryItemUsageAction::QueryItemPrice(ItemPrototype const *item)
     if (usage == ITEM_USAGE_NONE)
         return msg.str();
 
-    int32 buyPrice = auctionbot.GetBuyPrice(item) * sRandomPlayerbotMgr.GetBuyMultiplier(bot);
+    int32 buyPrice = auctionbot.GetBuyPrice(item) * sRandomPlayerbotMgr->GetBuyMultiplier(bot);
     if (buyPrice)
     {
         if (sellPrice) msg << " ";
@@ -157,7 +157,7 @@ string QueryItemUsageAction::QueryQuestItem(uint32 itemId)
     QuestStatusMap& questMap = bot->getQuestStatusMap();
     for (QuestStatusMap::const_iterator i = questMap.begin(); i != questMap.end(); i++)
     {
-        const Quest *questTemplate = sObjectMgr.GetQuestTemplate( i->first );
+        const Quest *questTemplate = sObjectMgr->GetQuestTemplate( i->first );
         if( !questTemplate )
             continue;
 

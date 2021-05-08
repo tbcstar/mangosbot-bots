@@ -15,13 +15,13 @@ namespace ai
 
         virtual bool Execute(Event event)
         {
-            if (!sRandomPlayerbotMgr.IsRandomBot(bot) || bot->GetGroup() || ai->GetMaster())
+            if (!sRandomPlayerbotMgr->IsRandomBot(bot) || bot->GetGroup() || ai->GetMaster())
                 return false;
 
-            if (sServerFacade.IsInCombat(bot))
+            if (sServerFacade->IsInCombat(bot))
                 return true;
 
-            ai->SetNextCheckDelay(sPlayerbotAIConfig.passiveDelay + sPlayerbotAIConfig.globalCoolDown);
+            ai->SetNextCheckDelay(sPlayerbotAIConfig->passiveDelay + sPlayerbotAIConfig->globalCoolDown);
             return true;
         }
     };

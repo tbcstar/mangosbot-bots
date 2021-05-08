@@ -39,18 +39,18 @@ Unit* PartyMemberToHeal::Calculate()
     for (GroupReference *gref = group->GetFirstMember(); gref; gref = gref->next())
     {
         Player* player = gref->getSource();
-        if (!Check(player) || !sServerFacade.IsAlive(player))
+        if (!Check(player) || !sServerFacade->IsAlive(player))
             continue;
 
         uint8 health = player->GetHealthPercent();
-        if (health < sPlayerbotAIConfig.almostFullHealth || !IsTargetOfSpellCast(player, predicate))
+        if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(player, predicate))
             needHeals.push_back(player);
 
         Pet* pet = player->GetPet();
         if (pet && CanHealPet(pet))
         {
             health = pet->GetHealthPercent();
-            if (health < sPlayerbotAIConfig.almostFullHealth || !IsTargetOfSpellCast(player, predicate))
+            if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(player, predicate))
                 needHeals.push_back(pet);
         }
     }
@@ -68,7 +68,7 @@ Unit* PartyMemberToHeal::Calculate()
         if (ai->IsHeal(player))
         {
             float percent = (float)player->GetPower(POWER_MANA) / (float)player->GetMaxPower(POWER_MANA) * 100.0;
-            if (percent > sPlayerbotAIConfig.lowMana)
+            if (percent > sPlayerbotAIConfig->lowMana)
                 healerIndex++;
         }
     }
@@ -84,5 +84,5 @@ bool PartyMemberToHeal::CanHealPet(Pet* pet)
 bool PartyMemberToHeal::Check(Unit* player)
 {
     return player && player != bot && player->GetMapId() == bot->GetMapId() &&
-        bot->GetDistance(player) < sPlayerbotAIConfig.spellDistance;
+        bot->GetDistance(player) < sPlayerbotAIConfig->spellDistance;
 }

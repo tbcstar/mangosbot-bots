@@ -141,7 +141,7 @@ namespace ai
     class AttackerCountTrigger : public Trigger
     {
     public:
-        AttackerCountTrigger(PlayerbotAI* ai, int amount, float distance = sPlayerbotAIConfig.sightDistance) : Trigger(ai)
+        AttackerCountTrigger(PlayerbotAI* ai, int amount, float distance = sPlayerbotAIConfig->sightDistance) : Trigger(ai)
         {
             this->amount = amount;
             this->distance = distance;
@@ -637,13 +637,13 @@ namespace ai
     class SitTrigger : public StayTimeTrigger
     {
     public:
-        SitTrigger(PlayerbotAI* ai) : StayTimeTrigger(ai, sPlayerbotAIConfig.sitDelay, "sit") {}
+        SitTrigger(PlayerbotAI* ai) : StayTimeTrigger(ai, sPlayerbotAIConfig->sitDelay, "sit") {}
     };
 
     class ReturnTrigger : public StayTimeTrigger
     {
     public:
-        ReturnTrigger(PlayerbotAI* ai) : StayTimeTrigger(ai, sPlayerbotAIConfig.returnDelay, "return") {}
+        ReturnTrigger(PlayerbotAI* ai) : StayTimeTrigger(ai, sPlayerbotAIConfig->returnDelay, "return") {}
     };
 
     class GiveItemTrigger : public Trigger

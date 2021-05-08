@@ -17,9 +17,9 @@ bool CollisionValue::Calculate()
         return false;
 
     list<Unit*> targets;
-    float range = sPlayerbotAIConfig.contactDistance;
-    MaNGOS::AnyUnitInObjectRangeCheck u_check(bot, range);
-    MaNGOS::UnitListSearcher<MaNGOS::AnyUnitInObjectRangeCheck> searcher(targets, u_check);
+    float range = sPlayerbotAIConfig->contactDistance;
+    acore::AnyUnitInObjectRangeCheck u_check(bot, range);
+    acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(targets, u_check);
     Cell::VisitAllObjects(bot, searcher, range);
 
     for (list<Unit*>::iterator i = targets.begin(); i != targets.end(); ++i)
@@ -27,8 +27,8 @@ bool CollisionValue::Calculate()
         Unit* target = *i;
         if (bot == target) continue;
 
-        float dist = sServerFacade.GetDistance2d(bot, target->GetPositionX(), target->GetPositionY());
-        if (sServerFacade.IsDistanceLessThan(dist, target->GetObjectBoundingRadius())) return true;
+        float dist = sServerFacade->GetDistance2d(bot, target->GetPositionX(), target->GetPositionY());
+        if (sServerFacade->IsDistanceLessThan(dist, target->GetObjectBoundingRadius())) return true;
 
     }
 

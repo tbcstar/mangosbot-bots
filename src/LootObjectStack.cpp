@@ -57,11 +57,11 @@ void LootObject::Refresh(Player* bot, ObjectGuid guid)
     skillId = SKILL_NONE;
     reqSkillValue = 0;
     reqItem = 0;
-    this->guid = ObjectGuid();
+    guid.Clear();
 
     PlayerbotAI* ai = bot->GetPlayerbotAI();
     Creature *creature = ai->GetCreature(guid);
-    if (creature && sServerFacade.GetDeathState(creature) == CORPSE)
+    if (creature && sServerFacade->GetDeathState(creature) == CORPSE)
     {
         if (creature->HasFlag(UNIT_DYNAMIC_FLAGS, UNIT_DYNFLAG_LOOTABLE))
             this->guid = guid;
@@ -79,11 +79,7 @@ void LootObject::Refresh(Player* bot, ObjectGuid guid)
     }
 
     GameObject* go = ai->GetGameObject(guid);
-    if (go && sServerFacade.isSpawned(go) 
-#ifdef CMANGOS
-        && !go->IsInUse() 
-#endif
-        && go->GetGoState() == GO_STATE_READY)
+    if (go && sServerFacade->isSpawned(go) && go->GetGoState() == GO_STATE_READY)
     {
         uint32 lockId = go->GetGOInfo()->GetLockId();
         LockEntry const *lockInfo = sLockStore.LookupEntry(lockId);
@@ -124,11 +120,11 @@ WorldObject* LootObject::GetWorldObject(Player* bot)
     PlayerbotAI* ai = bot->GetPlayerbotAI();
 
     Creature *creature = ai->GetCreature(guid);
-    if (creature && sServerFacade.GetDeathState(creature) == CORPSE)
+    if (creature && sServerFacade->GetDeathState(creature) == CORPSE)
         return creature;
 
     GameObject* go = ai->GetGameObject(guid);
-    if (go && sServerFacade.isSpawned(go))
+    if (go && sServerFacade->isSpawned(go))
         return go;
 
     return NULL;

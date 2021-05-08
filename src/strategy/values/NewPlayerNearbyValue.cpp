@@ -15,5 +15,5 @@ ObjectGuid NewPlayerNearbyValue::Calculate()
             return guid;
     }
 
-    return ObjectGuid();
+    return ObjectGuid::Empty;
 }

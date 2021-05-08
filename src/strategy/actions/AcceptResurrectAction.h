@@ -11,7 +11,7 @@ namespace ai
 
         virtual bool Execute(Event event)
         {
-            if (sServerFacade.IsAlive(bot))
+            if (sServerFacade->IsAlive(bot))
                 return false;
 
             WorldPacket p(event.getPacket());

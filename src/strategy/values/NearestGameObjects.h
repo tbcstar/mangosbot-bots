@@ -7,7 +7,7 @@ namespace ai
     class NearestGameObjects : public ObjectGuidListCalculatedValue
 	{
 	public:
-        NearestGameObjects(PlayerbotAI* ai, float range = sPlayerbotAIConfig.sightDistance) :
+        NearestGameObjects(PlayerbotAI* ai, float range = sPlayerbotAIConfig->sightDistance) :
             ObjectGuidListCalculatedValue(ai), range(range) {}
 
     protected:

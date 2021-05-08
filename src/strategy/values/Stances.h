@@ -18,7 +18,7 @@ namespace ai
     public:
         virtual WorldLocation GetLocation();
         virtual string GetTargetName() { return "current target"; }
-        virtual float GetMaxDistance() { return sPlayerbotAIConfig.contactDistance; }
+        virtual float GetMaxDistance() { return sPlayerbotAIConfig->contactDistance; }
     };
 
     class MoveStance : public Stance

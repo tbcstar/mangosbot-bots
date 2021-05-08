@@ -32,21 +32,21 @@ void LoadList(string value, T &list)
 
 bool PlayerbotAIConfig::Initialize()
 {
-    sLog.outString("Initializing AI Playerbot by ike3, based on the original Playerbot by blueboy");
+    sLog->outString("Initializing AI Playerbot by ike3, based on the original Playerbot by blueboy");
 #ifdef ENABLE_IMMERSIVE
-    sLog.outString("Enabling Immersive support");
+    sLog->outString("Enabling Immersive support");
 #endif
 
     if (!config.SetSource(SYSCONFDIR"aiplayerbot.conf"))
     {
-        sLog.outString("AI Playerbot is Disabled. Unable to open configuration file aiplayerbot.conf");
+        sLog->outString("AI Playerbot is Disabled. Unable to open configuration file aiplayerbot.conf");
         return false;
     }
 
     enabled = config.GetBoolDefault("AiPlayerbot.Enabled", true);
     if (!enabled)
     {
-        sLog.outString("AI Playerbot is Disabled in aiplayerbot.conf");
+        sLog->outString("AI Playerbot is Disabled in aiplayerbot.conf");
         return false;
     }
 
@@ -181,10 +181,10 @@ bool PlayerbotAIConfig::Initialize()
     auctionbot.Init();
     sRandomItemMgr.InitAfterAhBot();
 
-    sLog.outString("---------------------------------------");
-    sLog.outString("        AI Playerbot initialized       ");
-    sLog.outString("---------------------------------------");
-    sLog.outString();
+    sLog->outString("---------------------------------------");
+    sLog->outString("        AI Playerbot initialized       ");
+    sLog->outString("---------------------------------------");
+    sLog->outString();
 
     return true;
 }

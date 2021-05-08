@@ -17,7 +17,7 @@ Unit* TargetValue::FindTarget(FindTargetStrategy* strategy)
         if (!unit)
             continue;
 
-        ThreatManager &threatManager = sServerFacade.GetThreatManager(unit);
+        ThreatManager &threatManager = sServerFacade->GetThreatManager(unit);
         strategy->CheckAttacker(unit, &threatManager);
     }
 
@@ -33,8 +33,8 @@ bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
-            Player *member = sObjectMgr.GetPlayer(itr->guid);
-            if( !member || !sServerFacade.IsAlive(member))
+            Player *member = sObjectMgr->GetPlayer(itr->guid);
+            if( !member || !sServerFacade->IsAlive(member))
                 continue;
 
             PlayerbotAI *ai = member->GetPlayerbotAI();
@@ -47,15 +47,15 @@ bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
                 int index = RtiTargetValue::GetRtiIndex(rti);
                 if (index != -1)
                 {
-                    uint64 guid = group->GetTargetIcon(index);
-                    if (guid && attacker->GetObjectGuid() == ObjectGuid(guid))
+                    ObjectGuid guid = group->GetTargetIcon(index);
+                    if (guid && attacker->GetGUID() == guid)
                         return true;
                 }
             }
         }
 
-        uint64 guid = group->GetTargetIcon(4);
-        if (guid && attacker->GetObjectGuid() == ObjectGuid(guid))
+        ObjectGuid guid = group->GetTargetIcon(4);
+        if (guid && attacker->GetGUID() == guid)
             return true;
     }
 
@@ -79,7 +79,7 @@ void FindTargetStrategy::GetPlayerCount(Unit* creature, int* tankCount, int* dps
     for (set<Unit*>::const_iterator i = attackers.begin(); i != attackers.end(); i++)
     {
         Unit* attacker = *i;
-        if (!attacker || !sServerFacade.IsAlive(attacker) || attacker == bot)
+        if (!attacker || !sServerFacade->IsAlive(attacker) || attacker == bot)
             continue;
 
         Player* player = dynamic_cast<Player*>(attacker);
