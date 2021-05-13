@@ -1,35 +1,28 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #ifndef _RandomPlayerbotFactory_H
 #define _RandomPlayerbotFactory_H
 
 #include "Common.h"
-#include "PlayerbotAIBase.h"
-
-class WorldPacket;
-class Player;
-class Unit;
-class Object;
-class Item;
-
-using namespace std;
 
 class RandomPlayerbotFactory
 {
     public:
         RandomPlayerbotFactory(uint32 accountId);
-		virtual ~RandomPlayerbotFactory() {}
+		virtual ~RandomPlayerbotFactory() { }
 
-	public:
         bool CreateRandomBot(uint8 cls);
         static void CreateRandomBots();
         static void CreateRandomGuilds();
 
 	private:
-        string CreateRandomBotName(uint8 gender);
-        static string CreateRandomGuildName();
+        std::string CreateRandomBotName(uint8 gender);
+        static std::string CreateRandomGuildName();
 
-    private:
         uint32 accountId;
-        static map<uint8, vector<uint8> > availableRaces;
+        static std::map<uint8, std::vector<uint8> > availableRaces;
 };
 
 #endif

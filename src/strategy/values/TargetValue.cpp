@@ -33,11 +33,11 @@ bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
-            Player *member = sObjectMgr->GetPlayer(itr->guid);
+            Player *member = ObjectAccessor::FindPlayer(itr->guid);
             if( !member || !sServerFacade->IsAlive(member))
                 continue;
 
-            PlayerbotAI *ai = member->GetPlayerbotAI();
+            PlayerbotAI* botAI = member->GetPlayerbotAI();
             if (botAI)
             {
                 if (botAI->GetAiObjectContext()->GetValue<Unit*>("rti cc target")->Get() == attacker)

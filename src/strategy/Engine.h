@@ -7,21 +7,19 @@
 #include "AiObjectContext.h"
 #include "Strategy.h"
 
-namespace ai
+class ActionExecutionListener
 {
-    class ActionExecutionListener
-    {
     public:
         virtual bool Before(Action* action, Event event) = 0;
         virtual bool AllowExecution(Action* action, Event event) = 0;
         virtual void After(Action* action, bool executed, Event event) = 0;
         virtual bool OverrideResult(Action* action, bool executed, Event event) = 0;
-    };
+};
 
-    // -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------
 
-    class ActionExecutionListeners : public ActionExecutionListener
-    {
+class ActionExecutionListeners : public ActionExecutionListener
+{
     public:
         virtual ~ActionExecutionListeners();
 
@@ -44,23 +42,23 @@ namespace ai
 
     private:
         std::list<ActionExecutionListener*> listeners;
-    };
+};
 
-    // -----------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------------------------
 
-    enum ActionResult
-    {
-        ACTION_RESULT_UNKNOWN,
-        ACTION_RESULT_OK,
-        ACTION_RESULT_IMPOSSIBLE,
-        ACTION_RESULT_USELESS,
-        ACTION_RESULT_FAILED
-    };
+enum ActionResult
+{
+    ACTION_RESULT_UNKNOWN,
+    ACTION_RESULT_OK,
+    ACTION_RESULT_IMPOSSIBLE,
+    ACTION_RESULT_USELESS,
+    ACTION_RESULT_FAILED
+};
 
-    class Engine : public PlayerbotAIAware
-    {
+class Engine : public PlayerbotAIAware
+{
     public:
-        Engine(PlayerbotAI* botAI, AiObjectContext *factory);
+        Engine(PlayerbotAI* botAI, AiObjectContext* factory);
 
 	    void Init();
         void addStrategy(string name);
@@ -120,5 +118,4 @@ namespace ai
 
     private:
         ActionExecutionListeners actionExecutionListeners;
-    };
-}
+};

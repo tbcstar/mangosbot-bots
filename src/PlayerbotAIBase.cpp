@@ -1,9 +1,9 @@
-#include "../botpch.h"
-#include "playerbot.h"
-#include "PlayerbotAIConfig.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
-using namespace std;
+#include "PlayerbotAIBase.h"
+#include "Playerbot.h"
 
 PlayerbotAIBase::PlayerbotAIBase() : nextAICheckDelay(0)
 {
@@ -23,7 +23,7 @@ void PlayerbotAIBase::UpdateAI(uint32 elapsed)
     YieldThread();
 }
 
-void PlayerbotAIBase::SetNextCheckDelay(const uint32 delay)
+void PlayerbotAIBase::SetNextCheckDelay(uint32 const delay)
 {
     if (nextAICheckDelay < delay)
         sLog->outDebug("Setting lesser delay %d -> %d", nextAICheckDelay, delay);
@@ -55,5 +55,5 @@ void PlayerbotAIBase::YieldThread()
 
 bool PlayerbotAIBase::IsActive()
 {
-    return (int)nextAICheckDelay < (int)sPlayerbotAIConfig->maxWaitForMove;
+    return nextAICheckDelay < sPlayerbotAIConfig->maxWaitForMove;
 }

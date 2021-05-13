@@ -40,7 +40,7 @@ bool SetCraftAction::Execute(Event event)
     }
 
     uint32 itemId = *itemIds.begin();
-    ItemPrototype const* proto = sObjectMgr->GetItemPrototype(itemId);
+    ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
     if (!proto)
         return false;
 
@@ -116,7 +116,7 @@ void SetCraftAction::TellCraft()
         return;
     }
 
-    ItemPrototype const* proto = sObjectMgr->GetItemPrototype(data.itemId);
+    ItemTemplate const* proto = sObjectMgr->GetItemTemplate(data.itemId);
     if (!proto)
         return;
 
@@ -127,7 +127,7 @@ void SetCraftAction::TellCraft()
     {
         uint32 item = i->first;
         int required = i->second;
-        ItemPrototype const* reagent = sObjectMgr->GetItemPrototype(item);
+        ItemTemplate const* reagent = sObjectMgr->GetItemTemplate(item);
         if (reagent)
         {
             if (first) { first = false; } else out << ", ";
@@ -149,10 +149,10 @@ uint32 SetCraftAction::GetCraftFee(CraftData& data)
     if (data.IsEmpty())
         return 0;
 
-    ItemPrototype const* proto = sObjectMgr->GetItemPrototype(data.itemId);
+    ItemTemplate const* proto = sObjectMgr->GetItemTemplate(data.itemId);
     if (!proto)
         return 0;
 
     uint32 level = max(proto->ItemLevel, proto->RequiredLevel);
-    return sAhBotConfig.defaultMinPrice * level * level / 40;
+    return sAhBotsConfigMgr->defaultMinPrice * level * level / 40;
 }

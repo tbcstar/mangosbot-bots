@@ -8,7 +8,7 @@
 using namespace ai;
 using namespace std;
 
-Engine::Engine(PlayerbotAI* botAI, AiObjectContext *factory) : PlayerbotAIAware(botAI), aiObjectContext(factory)
+Engine::Engine(PlayerbotAI* botAI, AiObjectContext* factory) : PlayerbotAIAware(botAI), aiObjectContext(factory)
 {
     lastRelevance = 0.0f;
     testMode = false;

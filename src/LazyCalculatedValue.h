@@ -1,20 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace std;
-
-namespace ai 
+template <class TValue, class TOwner>
+class LazyCalculatedValue
 {
-    template <class TValue, class TOwner>
-    class LazyCalculatedValue
-    {
     public:
         typedef TValue (TOwner::*Calculator)();
 
     public:
-        LazyCalculatedValue(TOwner* owner, Calculator calculator) 
+        LazyCalculatedValue(TOwner* owner, Calculator calculator) : calculator(calculator), owner(owner)
         {
-            this->calculator = calculator;
-            this->owner = owner;
             Reset();
         }
 
@@ -26,9 +22,11 @@ namespace ai
                 value = (owner->*calculator)();
                 calculated = true;
             }
+
             return value;
         }
-        void Reset() 
+
+        void Reset()
         {
             calculated = false;
         }
@@ -38,5 +36,4 @@ namespace ai
         TOwner* owner;
         bool calculated;
         TValue value;
-    };
 };

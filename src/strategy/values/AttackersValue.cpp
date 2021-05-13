@@ -34,7 +34,7 @@ void AttackersValue::AddAttackersOf(Group* group, set<Unit*>& targets)
     Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
-        Player *member = sObjectMgr->GetPlayer(itr->guid);
+        Player *member = ObjectAccessor::FindPlayer(itr->guid);
         if (!member || !sServerFacade->IsAlive(member) || member == bot)
             continue;
 
@@ -88,7 +88,7 @@ void AttackersValue::RemoveNonThreating(set<Unit*>& targets)
 
 bool AttackersValue::IsPossibleTarget(Unit *attacker, Player *bot)
 {
-    Creature *c = dynamic_cast<Creature*>(attacker);
+    Creature* c = dynamic_cast<Creature*>(attacker);
     return attacker &&
         attacker->IsInWorld() &&
         attacker->GetMapId() == bot->GetMapId() &&
@@ -121,7 +121,7 @@ bool AttackersValue::IsValidTarget(Unit *attacker, Player *bot)
 
 bool PossibleAdsValue::Calculate()
 {
-    PlayerbotAI *ai = bot->GetPlayerbotAI();
+    PlayerbotAI* botAI = bot->GetPlayerbotAI();
     list<ObjectGuid> possible = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets")->Get();
     list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
 

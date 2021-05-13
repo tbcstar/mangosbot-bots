@@ -31,7 +31,7 @@ bool SendMailAction::Execute(Event event)
     vector<string> ss = split(text, ' ');
     if (ss.size() > 1)
     {
-        Player* p = sObjectMgr->GetPlayer(ss[ss.size() - 1].c_str());
+        Player* p = ObjectAccessor::FindPlayer(ss[ss.size() - 1].c_str());
         if (p) receiver = p;
     }
 
@@ -120,7 +120,7 @@ bool SendMailAction::Execute(Event event)
                 continue;
             }
 
-            ItemPrototype const *proto = item->GetProto();
+            ItemTemplate const* proto = item->GetProto();
             bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
             item->DeleteFromInventoryDB();
             item->SetOwnerGuid(receiver->GetGUID());

@@ -1,27 +1,27 @@
-#include "../botpch.h"
-#include "playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "ChatHelper.h"
 #include "AiFactory.h"
+#include "Playerbot.h"
 
-using namespace ai;
-using namespace std;
-
-map<string, uint32> ChatHelper::consumableSubClasses;
-map<string, uint32> ChatHelper::tradeSubClasses;
-map<string, uint32> ChatHelper::itemQualities;
-map<string, uint32> ChatHelper::slots;
-map<string, uint32> ChatHelper::skills;
-map<string, ChatMsg> ChatHelper::chats;
-map<uint8, string> ChatHelper::classes;
-map<uint8, string> ChatHelper::races;
-map<uint8, map<uint8, string> > ChatHelper::specs;
+std::map<std::string, uint32> ChatHelper::consumableSubClasses;
+std::map<std::string, uint32> ChatHelper::tradeSubClasses;
+std::map<std::string, uint32> ChatHelper::itemQualities;
+std::map<std::string, uint32> ChatHelper::slots;
+std::map<std::string, uint32> ChatHelper::skills;
+std::map<std::string, ChatMsg> ChatHelper::chats;
+std::map<uint8, std::string> ChatHelper::classes;
+std::map<uint8, std::string> ChatHelper::races;
+std::map<uint8, std::map<uint8, std::string> > ChatHelper::specs;
 
 template<class T>
-static bool substrContainsInMap(string searchTerm, map<string, T> searchIn)
+static bool substrContainsInMap(std::string const& searchTerm, std::map<std::string, T> searchIn)
 {
-    for (typename map<string, T>::iterator i = searchIn.begin(); i != searchIn.end(); ++i)
+    for (typename std::map<std::string, T>::iterator i = searchIn.begin(); i != searchIn.end(); ++i)
     {
-		string term = i->first;
+        std::string term = i->first;
 		if (term.size() > 1 && searchTerm.find(term) != string::npos)
             return true;
     }
@@ -161,9 +161,9 @@ ChatHelper::ChatHelper(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     races[RACE_UNDEAD] = "Undead";
 }
 
-string ChatHelper::formatMoney(uint32 copper)
+std::string ChatHelper::formatMoney(uint32 copper)
 {
-    ostringstream out;
+    std::ostringstream out;
 	if (!copper)
 	{
 		out << "0";
@@ -184,24 +184,28 @@ string ChatHelper::formatMoney(uint32 copper)
 
     if (silver > 0 && gold < 50)
     {
-        if (space) out << " ";
+        if (space)
+            out << " ";
+
         out << silver <<  "s";
         space = true;
     }
 
 	if (copper > 0 && gold < 10)
 	{
-        if (space) out << " ";
+        if (space)
+            out << " ";
+
 		out << copper <<  "c";
 	}
 
     return out.str();
 }
 
-uint32 ChatHelper::parseMoney(string& text)
+uint32 ChatHelper::parseMoney(std::string const& text)
 {
     // if user specified money in ##g##s##c format
-    string acum = "";
+    std::string acum = "";
     uint32 copper = 0;
     for (uint8 i = 0; i < text.length(); i++)
     {
@@ -233,21 +237,23 @@ uint32 ChatHelper::parseMoney(string& text)
     return copper;
 }
 
-ItemIds ChatHelper::parseItems(string& text)
+ItemIds ChatHelper::parseItems(std::string const& text)
 {
     ItemIds itemIds;
 
     uint8 pos = 0;
     while (true)
     {
-        int i = text.find("Hitem:", pos);
+        uint32 i = text.find("Hitem:", pos);
         if (i == -1)
             break;
+
         pos = i + 6;
-        int endPos = text.find(':', pos);
+        uint32 endPos = text.find(':', pos);
         if (endPos == -1)
             break;
-        string idC = text.substr(pos, endPos - pos);
+
+        std::string idC = text.substr(pos, endPos - pos);
         uint32 id = atol(idC.c_str());
         pos = endPos;
         if (id)
@@ -257,33 +263,33 @@ ItemIds ChatHelper::parseItems(string& text)
     return itemIds;
 }
 
-string ChatHelper::formatQuest(Quest const* quest)
+std::string ChatHelper::formatQuest(Quest const* quest)
 {
-    ostringstream out;
+    std::ostringstream out;
     out << "|cFFFFFF00|Hquest:" << quest->GetQuestId() << ':' << quest->GetQuestLevel() << "|h[" << quest->GetTitle() << "]|h|r";
     return out.str();
 }
 
-string ChatHelper::formatGameobject(GameObject* go)
+std::string ChatHelper::formatGameobject(GameObject* go)
 {
-    ostringstream out;
+    std::ostringstream out;
     out << "|cFFFFFF00|Hfound:" << go->GetGUID().GetRawValue() << ":" << go->GetEntry() << ":" <<  "|h[" << go->GetGOInfo()->name << "]|h|r";
     return out.str();
 }
 
-string ChatHelper::formatSpell(SpellEntry const *sInfo)
+std::ChatHelper::formatSpell(SpellInfo const* spellInfo)
 {
-    ostringstream out;
+    std::ostringstream out;
     out << "|cffffffff|Hspell:" << sInfo->Id << "|h[" << sInfo->SpellName[LOCALE_enUS] << "]|h|r";
     return out.str();
 }
 
-string ChatHelper::formatItem(ItemPrototype const * proto, int count, int total)
+std::string ChatHelper::formatItem(ItemTemplate const* proto, uint32 count, uint32 total)
 {
     char color[32];
     sprintf(color, "%x", ItemQualityColors[proto->Quality]);
 
-    ostringstream out;
+    std::ostringstream out;
     out << "|c" << color << "|Hitem:" << proto->ItemId
         << ":0:0:0:0:0:0:0" << "|h[" << proto->Name1
         << "]|h|r";
@@ -297,7 +303,7 @@ string ChatHelper::formatItem(ItemPrototype const * proto, int count, int total)
     return out.str();
 }
 
-ChatMsg ChatHelper::parseChat(string& text)
+ChatMsg ChatHelper::parseChat(std::string const& text)
 {
     if (chats.find(text) != chats.end())
         return chats[text];
@@ -305,33 +311,33 @@ ChatMsg ChatHelper::parseChat(string& text)
     return CHAT_MSG_SYSTEM;
 }
 
-string ChatHelper::formatChat(ChatMsg chat)
+std::string ChatHelper::formatChat(ChatMsg chat)
 {
     switch (chat)
     {
-    case CHAT_MSG_GUILD:
-        return "guild";
-    case CHAT_MSG_PARTY:
-        return "party";
-    case CHAT_MSG_WHISPER:
-        return "whisper";
-    case CHAT_MSG_RAID:
-        return "raid";
+        case CHAT_MSG_GUILD:
+            return "guild";
+        case CHAT_MSG_PARTY:
+            return "party";
+        case CHAT_MSG_WHISPER:
+            return "whisper";
+        case CHAT_MSG_RAID:
+            return "raid";
     }
 
     return "unknown";
 }
 
 
-uint32 ChatHelper::parseSpell(string& text)
+uint32 ChatHelper::parseSpell(std::string const& text)
 {
     PlayerbotChatHandler handler(botAI->GetBot());
     return handler.extractSpellId(text);
 }
 
-list<ObjectGuid> ChatHelper::parseGameobjects(string& text)
+GuidVector ChatHelper::parseGameobjects(std::string const& text)
 {
-    list<ObjectGuid> gos;
+    GuidVector gos;
     //    Link format
     //    |cFFFFFF00|Hfound:" << guid << ':'  << entry << ':'  <<  "|h[" << gInfo->name << "]|h|r";
     //    |cFFFFFF00|Hfound:9582:1731|h[Copper Vein]|h|r
@@ -340,14 +346,15 @@ list<ObjectGuid> ChatHelper::parseGameobjects(string& text)
     while (true)
     {
         // extract GO guid
-        int i = text.find("Hfound:", pos);     // base H = 11
+        uint32 i = text.find("Hfound:", pos);     // base H = 11
         if (i == -1)     // break if error
             break;
 
         pos = i + 7;     //start of window in text 11 + 7 = 18
-        int endPos = text.find(':', pos);     // end of window in text 22
+        uint32 endPos = text.find(':', pos);     // end of window in text 22
         if (endPos == -1)     //break if error
             break;
+
         istringstream stream(text.substr(pos, endPos - pos));
         uint64 guid;
         stream >> guid;
@@ -370,17 +377,16 @@ list<ObjectGuid> ChatHelper::parseGameobjects(string& text)
     return gos;
 }
 
-string ChatHelper::formatQuestObjective(string name, int available, int required)
+std::string ChatHelper::formatQuestObjective(std::string const& name, uint32 available, uint32 required)
 {
-    ostringstream out;
+    std::ostringstream out;
     out << "|cFFFFFFFF" << name << (available >= required ? "|c0000FF00: " : "|c00FF0000: ")
         << available << "/" << required << "|r";
 
     return out.str();
 }
 
-
-uint32 ChatHelper::parseItemQuality(string text)
+uint32 ChatHelper::parseItemQuality(std::string const& text)
 {
     if (itemQualities.find(text) == itemQualities.end())
         return MAX_ITEM_QUALITY;
@@ -388,7 +394,7 @@ uint32 ChatHelper::parseItemQuality(string text)
     return itemQualities[text];
 }
 
-bool ChatHelper::parseItemClass(string text, uint32 *itemClass, uint32 *itemSubClass)
+bool ChatHelper::parseItemClass(std::string const& text, uint32* itemClass, uint32* itemSubClass)
 {
     if (text == "questitem")
     {
@@ -414,7 +420,7 @@ bool ChatHelper::parseItemClass(string text, uint32 *itemClass, uint32 *itemSubC
     return false;
 }
 
-uint32 ChatHelper::parseSlot(string text)
+uint32 ChatHelper::parseSlot(std::string const& text)
 {
     if (slots.find(text) != slots.end())
         return slots[text];
@@ -422,30 +428,24 @@ uint32 ChatHelper::parseSlot(string text)
     return EQUIPMENT_SLOT_END;
 }
 
-bool ChatHelper::parseable(string text)
+bool ChatHelper::parseable(std::string const& text)
 {
-    return text.find("|H") != string::npos ||
-            text == "questitem" ||
-            substrContainsInMap<uint32>(text, consumableSubClasses) ||
-            substrContainsInMap<uint32>(text, tradeSubClasses) ||
-            substrContainsInMap<uint32>(text, itemQualities) ||
-            substrContainsInMap<uint32>(text, slots) ||
-            substrContainsInMap<ChatMsg>(text, chats) ||
-            substrContainsInMap<uint32>(text, skills) ||
-            parseMoney(text) > 0;
+    return text.find("|H") != string::npos || text == "questitem" || substrContainsInMap<uint32>(text, consumableSubClasses) ||
+        substrContainsInMap<uint32>(text, tradeSubClasses) || substrContainsInMap<uint32>(text, itemQualities) || substrContainsInMap<uint32>(text, slots) ||
+        substrContainsInMap<ChatMsg>(text, chats) || substrContainsInMap<uint32>(text, skills) || parseMoney(text) > 0;
 }
 
-string ChatHelper::formatClass(Player* player, int spec)
+std::string ChatHelper::formatClass(Player* player, uint8 spec)
 {
     uint8 cls = player->getClass();
 
-    ostringstream out;
+    std::ostringstream out;
     out << specs[cls][spec] << " (";
 
-    map<uint32, int32> tabs = AiFactory::GetPlayerSpecTabs(player);
-    int c0 = (int)tabs[0];
-    int c1 = (int)tabs[1];
-    int c2 = (int)tabs[2];
+    std::map<uint8, uint32> tabs = AiFactory::GetPlayerSpecTabs(player);
+    uint32 c0 = tabs[0];
+    uint32 c1 = tabs[1];
+    uint32 c2 = tabs[2];
 
     out << (c0 ? "|h|cff00ff00" : "") << c0 << "|h|cffffffff/";
     out << (c1 ? "|h|cff00ff00" : "") << c1 << "|h|cffffffff/";
@@ -455,17 +455,17 @@ string ChatHelper::formatClass(Player* player, int spec)
     return out.str();
 }
 
-string ChatHelper::formatClass(uint8 cls)
+std::string ChatHelper::formatClass(uint8 cls)
 {
     return classes[cls];
 }
 
-string ChatHelper::formatRace(uint8 race)
+std::string ChatHelper::formatRace(uint8 race)
 {
     return races[race];
 }
 
-uint32 ChatHelper::parseSkill(string& text)
+uint32 ChatHelper::parseSkill(std::string const& text)
 {
     if (skills.find(text) != skills.end())
         return skills[text];
@@ -473,9 +473,9 @@ uint32 ChatHelper::parseSkill(string& text)
     return SKILL_NONE;
 }
 
-string ChatHelper::formatSkill(uint32 skill)
+std::string ChatHelper::formatSkill(uint32 skill)
 {
-    for (map<string, uint32>::iterator i = skills.begin(); i != skills.end(); ++i)
+    for (std::map<std::string, uint32>::iterator i = skills.begin(); i != skills.end(); ++i)
     {
         if (i->second == skill)
             return i->first;
@@ -484,7 +484,7 @@ string ChatHelper::formatSkill(uint32 skill)
     return "";
 }
 
-string ChatHelper::formatBoolean(bool flag)
+std::string ChatHelper::formatBoolean(bool flag)
 {
     return flag ? "|cff00ff00ON|r" : "|cffffff00OFF|r";
 }

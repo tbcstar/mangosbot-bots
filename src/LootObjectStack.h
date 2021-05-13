@@ -1,25 +1,31 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace std;
+#include "Common.h"
 
-namespace ai
+class AiObjectContext;
+class ObjectGuid;
+class Player;
+class WorldObject;
+
+struct ItemTemplate;
+
+class LootStrategy
 {
-    class LootStrategy
-    {
     public:
-        LootStrategy() {}
-        virtual bool CanLoot(ItemPrototype const *proto, AiObjectContext *context) = 0;
-        virtual string GetName() = 0;
-    };
+        LootStrategy() { }
+        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context) = 0;
+        virtual std::string GetName() = 0;
+};
 
-    class LootObject
-    {
+class LootObject
+{
     public:
-        LootObject() : skillId(0), reqSkillValue(0), reqItem(0) {}
+        LootObject() : skillId(0), reqSkillValue(0), reqItem(0) { }
         LootObject(Player* bot, ObjectGuid guid);
-        LootObject(const LootObject& other);
+        LootObject(LootObject const& other);
 
-    public:
         bool IsEmpty() { return !guid; }
         bool IsLootPossible(Player* bot);
         void Refresh(Player* bot, ObjectGuid guid);
@@ -29,35 +35,34 @@ namespace ai
         uint32 skillId;
         uint32 reqSkillValue;
         uint32 reqItem;
-    };
+};
 
-    class LootTarget
-    {
+class LootTarget
+{
     public:
         LootTarget(ObjectGuid guid);
         LootTarget(LootTarget const& other);
 
     public:
         LootTarget& operator=(LootTarget const& other);
-        bool operator< (const LootTarget& other) const;
+        bool operator<(LootTarget const& other) const;
 
     public:
         ObjectGuid guid;
         time_t asOfTime;
-    };
+};
 
-    class LootTargetList : public set<LootTarget>
-    {
+class LootTargetList : public std::set<LootTarget>
+{
     public:
         void shrink(time_t fromTime);
-    };
+};
 
-    class LootObjectStack
-    {
+class LootObjectStack
+{
     public:
-        LootObjectStack(Player* bot) : bot(bot) {}
+        LootObjectStack(Player* bot) : bot(bot) { }
 
-    public:
         bool Add(ObjectGuid guid);
         void Remove(ObjectGuid guid);
         void Clear();
@@ -65,11 +70,8 @@ namespace ai
         LootObject GetLoot(float maxDistance = 0);
 
     private:
-        vector<LootObject> OrderByDistance(float maxDistance = 0);
+        std::vector<LootObject> OrderByDistance(float maxDistance = 0);
 
-    private:
         Player* bot;
         LootTargetList availableLoot;
-    };
-
 };

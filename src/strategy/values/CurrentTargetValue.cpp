@@ -10,7 +10,7 @@ Unit* CurrentTargetValue::Get()
     if (selection.IsEmpty())
         return NULL;
 
-    Unit* unit = sObjectAccessor.GetUnit(*bot, selection);
+    Unit* unit = ObjectAccessor::GetUnit(*bot, selection);
     if (unit && !sServerFacade->IsWithinLOSInMap(bot, unit))
         return NULL;
 

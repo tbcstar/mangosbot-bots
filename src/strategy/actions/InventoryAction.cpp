@@ -88,7 +88,7 @@ void InventoryAction::IterateItemsInBank(IterateItemsVisitor* visitor)
 
 }
 
-bool compare_items(const ItemPrototype *proto1, const ItemPrototype *proto2)
+bool compare_items(const ItemTemplate *proto1, const ItemTemplate *proto2)
 {
     if (proto1->Class != proto2->Class)
         return proto1->Class > proto2->Class;
@@ -112,18 +112,18 @@ bool compare_items_by_level(const Item* item1, const Item* item2)
 
 void InventoryAction::TellItems(map<uint32, int> itemMap, map<uint32, bool> soulbound)
 {
-    list<ItemPrototype const*> items;
+    list<ItemTemplate const*> items;
     for (map<uint32, int>::iterator i = itemMap.begin(); i != itemMap.end(); i++)
     {
-        items.push_back(sObjectMgr->GetItemPrototype(i->first));
+        items.push_back(sObjectMgr->GetItemTemplate(i->first));
     }
 
     items.sort(compare_items);
 
     uint32 oldClass = -1;
-    for (list<ItemPrototype const*>::iterator i = items.begin(); i != items.end(); i++)
+    for (list<ItemTemplate const*>::iterator i = items.begin(); i != items.end(); i++)
     {
-        ItemPrototype const *proto = *i;
+        ItemTemplate const* proto = *i;
 
         if (proto->Class != oldClass)
         {
@@ -173,7 +173,7 @@ void InventoryAction::TellItems(map<uint32, int> itemMap, map<uint32, bool> soul
     }
 }
 
-void InventoryAction::TellItem(ItemPrototype const * proto, int count, bool soulbound)
+void InventoryAction::TellItem(ItemTemplate const*  proto, int count, bool soulbound)
 {
     ostringstream out;
     out << chat->formatItem(proto, count);

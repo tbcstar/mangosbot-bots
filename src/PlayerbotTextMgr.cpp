@@ -1,54 +1,49 @@
-#include "../botpch.h"
-#include "playerbot.h"
-#include "PlayerbotAIConfig.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PlayerbotTextMgr.h"
+#include "Playerbot.h"
 
-#include "DatabaseEnv.h"
-#include "PlayerbotAI.h"
-
-void replaceAll(std::string& str, const std::string& from, const std::string& to);
-
-PlayerbotTextMgr::PlayerbotTextMgr()
-{
-}
-
-PlayerbotTextMgr::~PlayerbotTextMgr()
-{
-}
+void replaceAll(std::string& str, std::string const& from, std::string const& to);
 
 void PlayerbotTextMgr::LoadTemplates()
 {
     sLog->outBasic("Loading playerbot texts...");
-    QueryResult* results = CharacterDatabase.PQuery("SELECT `key`,`text` FROM `ai_playerbot_text`");
-    int count = 0;
+
+    QueryResult results = CharacterDatabase.PQuery("SELECT `key`,`text` FROM `ai_playerbot_text`");
+    uint32 count = 0;
     if (results)
     {
         do
         {
             Field* fields = results->Fetch();
-            string key = fields[0].GetString();
-            string text = fields[1].GetString();
+            std::string key = fields[0].GetString();
+            std::string text = fields[1].GetString();
             templates[key].push_back(text);
             count++;
         } while (results->NextRow());
-
-        delete results;
     }
+
     sLog->outBasic("%d playerbot texts loaded", count);
 }
 
-string PlayerbotTextMgr::Format(string key, map<string, string> placeholders)
+std::string PlayerbotTextMgr::Format(std::string const& key, std::map<std::string, std::string> placeholders)
 {
-    if (templates.empty()) LoadTemplates();
-    vector<string>& list = templates[key];
+    if (templates.empty())
+        LoadTemplates();
+
+    std::vector<std::string>& list = templates[key];
     if (list.empty())
     {
-        ostringstream out; out << "Unknown text: " << key;
+        std::ostringstream out;
+        out << "Unknown text: " << key;
         return out.str();
     }
 
-    string str = list[urand(0, list.size() - 1)];
-    for (map<string, string>::iterator i = placeholders.begin(); i != placeholders.end(); ++i)
+    std::string str = list[urand(0, list.size() - 1)];
+    for (std::map<std::string, std::string>::iterator i = placeholders.begin(); i != placeholders.end(); ++i)
         replaceAll(str, i->first, i->second);
+
     return str;
 }

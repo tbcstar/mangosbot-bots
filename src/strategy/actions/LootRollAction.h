@@ -12,7 +12,7 @@ namespace ai
         virtual bool Execute(Event event);
 
     private:
-        RollVote CalculateRollVote(ItemPrototype const *proto);
+        RollVote CalculateRollVote(ItemTemplate const* proto);
     };
 
 }

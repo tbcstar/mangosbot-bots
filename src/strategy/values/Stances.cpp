@@ -96,7 +96,7 @@ namespace ai
             float angle = 0.0f;
             if (group)
             {
-                for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
+                for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
                 {
                     Player* member = ref->getSource();
                     if (member && member != bot && botAI->IsRanged(member))
@@ -124,7 +124,7 @@ namespace ai
             int index = 0, count = 0;
             if (group)
             {
-                for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
+                for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
                 {
                     Player* member = ref->getSource();
                     if (member == bot) index = count;

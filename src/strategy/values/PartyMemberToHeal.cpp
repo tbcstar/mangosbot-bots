@@ -36,7 +36,7 @@ Unit* PartyMemberToHeal::Calculate()
         return NULL;
 
     vector<Unit*> needHeals;
-    for (GroupReference *gref = group->GetFirstMember(); gref; gref = gref->next())
+    for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
     {
         Player* player = gref->getSource();
         if (!Check(player) || !sServerFacade->IsAlive(player))
@@ -60,7 +60,7 @@ Unit* PartyMemberToHeal::Calculate()
     sort(needHeals.begin(), needHeals.end(), compareByHealth);
 
     int healerIndex = 0;
-    for (GroupReference *gref = group->GetFirstMember(); gref; gref = gref->next())
+    for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
     {
         Player* player = gref->getSource();
         if (!player) continue;

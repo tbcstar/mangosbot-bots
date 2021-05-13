@@ -1,22 +1,17 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace std;
+#include "Common.h"
 
 class Player;
+class PlayerbotAI;
 
-namespace ai
+class FleePoint
 {
-    class Engine;
-
-	class FleePoint {
 	public:
-		FleePoint(PlayerbotAI* botAI, float x, float y, float z) : ai(botAI), sumDistance(0.0f), minDistance(0.0f) {
-			this->x = x;
-			this->y = y;
-			this->z = z;
-		}
+        FleePoint(PlayerbotAI* botAI, float x, float y, float z) : botAI(botAI), sumDistance(0.0f), minDistance(0.0f), x(x), y(y), z(z) { }
 
-	public:
 		float x;
 		float y;
 		float z;
@@ -26,34 +21,26 @@ namespace ai
 
 	private:
 		PlayerbotAI* botAI;
-	};
+};
 
-	class FleeManager
-	{
+class FleeManager
+{
 	public:
-		FleeManager(Player* bot, float maxAllowedDistance, float followAngle, bool forceMaxDistance = false) {
-			this->bot = bot;
-			this->maxAllowedDistance = maxAllowedDistance;
-			this->followAngle = followAngle;
-			this->forceMaxDistance = forceMaxDistance;
-		}
+        FleeManager(Player* bot, float maxAllowedDistance, float followAngle, bool forceMaxDistance = false) : bot(bot),
+            maxAllowedDistance(maxAllowedDistance), followAngle(followAngle), forceMaxDistance(forceMaxDistance) { }
 
-	public:
 		bool CalculateDestination(float* rx, float* ry, float* rz);
 		bool isUseful();
 
 	private:
-		void calculatePossibleDestinations(list<FleePoint*> &points);
+		void calculatePossibleDestinations(std::vector<FleePoint*> &points);
 		void calculateDistanceToCreatures(FleePoint *point);
-		void cleanup(list<FleePoint*> &points);
-		FleePoint* selectOptimalDestination(list<FleePoint*> &points);
+		void cleanup(std::vector<FleePoint*> &points);
+		FleePoint* selectOptimalDestination(std::vector<FleePoint*> &points);
 		bool isBetterThan(FleePoint* point, FleePoint* other);
 
-	private:
 		Player* bot;
 		float maxAllowedDistance;
 		float followAngle;
 		bool forceMaxDistance;
-	};
-
 };

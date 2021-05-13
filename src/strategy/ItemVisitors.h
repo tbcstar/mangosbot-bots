@@ -3,17 +3,16 @@
 
 char * strstri (const char* str1, const char* str2);
 
-namespace ai
+class IterateItemsVisitor
 {
-    class IterateItemsVisitor
-    {
     public:
         IterateItemsVisitor() {}
 
         virtual bool Visit(Item* item) = 0;
-    };
+};
 
-    class FindItemVisitor : public IterateItemsVisitor {
+class FindItemVisitor : public IterateItemsVisitor
+{
     public:
         FindItemVisitor() : IterateItemsVisitor(), result(NULL) {}
 
@@ -29,21 +28,22 @@ namespace ai
         list<Item*>& GetResult() { return result; }
 
     protected:
-        virtual bool Accept(const ItemPrototype* proto) = 0;
+        virtual bool Accept(const ItemTemplate* proto) = 0;
 
     private:
         list<Item*> result;
-    };
+};
 
-    enum IterateItemsMask
-    {
-        ITERATE_ITEMS_IN_BAGS = 1,
-        ITERATE_ITEMS_IN_EQUIP = 2,
-        ITERATE_ITEMS_IN_BANK = 4,
-        ITERATE_ALL_ITEMS = 255
-    };
+enum IterateItemsMask
+{
+    ITERATE_ITEMS_IN_BAGS = 1,
+    ITERATE_ITEMS_IN_EQUIP = 2,
+    ITERATE_ITEMS_IN_BANK = 4,
+    ITERATE_ALL_ITEMS = 255
+};
 
-    class FindUsableItemVisitor : public FindItemVisitor {
+class FindUsableItemVisitor : public FindItemVisitor
+{
     public:
         FindUsableItemVisitor(Player* bot) : FindItemVisitor()
         {
@@ -60,11 +60,11 @@ namespace ai
 
     private:
         Player* bot;
-    };
+};
 
 
-    class FindItemsByQualityVisitor : public IterateItemsVisitor
-    {
+class FindItemsByQualityVisitor : public IterateItemsVisitor
+{
     public:
         FindItemsByQualityVisitor(uint32 quality, int count) : IterateItemsVisitor()
         {
@@ -93,10 +93,10 @@ namespace ai
         uint32 quality;
         int count;
         list<Item*> result;
-    };
+};
 
-    class FindItemsToTradeByQualityVisitor : public FindItemsByQualityVisitor
-    {
+class FindItemsToTradeByQualityVisitor : public FindItemsByQualityVisitor
+{
     public:
         FindItemsToTradeByQualityVisitor(uint32 quality, int count) : FindItemsByQualityVisitor(quality, count) {}
 
@@ -107,10 +107,10 @@ namespace ai
 
             return FindItemsByQualityVisitor::Visit(item);
         }
-    };
+};
 
-    class FindItemsToTradeByClassVisitor : public IterateItemsVisitor
-    {
+class FindItemsToTradeByClassVisitor : public IterateItemsVisitor
+{
     public:
         FindItemsToTradeByClassVisitor(uint32 itemClass, uint32 itemSubClass, int count)
             : IterateItemsVisitor(), count(count), itemClass(itemClass), itemSubClass(itemSubClass) {}
@@ -140,10 +140,10 @@ namespace ai
         uint32 itemSubClass;
         int count;
         list<Item*> result;
-    };
+};
 
-    class QueryItemCountVisitor : public IterateItemsVisitor
-    {
+class QueryItemCountVisitor : public IterateItemsVisitor
+{
     public:
         QueryItemCountVisitor(uint32 itemId)
         {
@@ -164,11 +164,11 @@ namespace ai
     protected:
         int count;
         uint32 itemId;
-    };
+};
 
 
-    class QueryNamedItemCountVisitor : public QueryItemCountVisitor
-    {
+class QueryNamedItemCountVisitor : public QueryItemCountVisitor
+{
     public:
         QueryNamedItemCountVisitor(string name) : QueryItemCountVisitor(0)
         {
@@ -177,7 +177,7 @@ namespace ai
 
         virtual bool Visit(Item* item)
         {
-            const ItemPrototype* proto = item->GetProto();
+            const ItemTemplate* proto = item->GetProto();
             if (proto && !proto->Name1 && strstri(proto->Name1, name.c_str()))
                 count += item->GetCount();
 
@@ -186,57 +186,57 @@ namespace ai
 
     private:
         string name;
-    };
+};
 
-    class FindNamedItemVisitor : public FindItemVisitor {
+class FindNamedItemVisitor : public FindItemVisitor {
     public:
         FindNamedItemVisitor(Player* bot, string name) : FindItemVisitor()
         {
             this->name = name;
         }
 
-        virtual bool Accept(const ItemPrototype* proto)
+        virtual bool Accept(const ItemTemplate* proto)
         {
             return proto && proto->Name1 && strstri(proto->Name1, name.c_str());
         }
 
     private:
         string name;
-    };
+};
 
-    class FindItemByIdVisitor : public FindItemVisitor {
+class FindItemByIdVisitor : public FindItemVisitor {
     public:
         FindItemByIdVisitor(uint32 id) : FindItemVisitor()
         {
             this->id = id;
         }
 
-        virtual bool Accept(const ItemPrototype* proto)
+        virtual bool Accept(const ItemTemplate* proto)
         {
             return proto->ItemId == id;
         }
 
     private:
         uint32 id;
-    };
+};
 
-    class FindItemByIdsVisitor : public FindItemVisitor {
+class FindItemByIdsVisitor : public FindItemVisitor {
     public:
         FindItemByIdsVisitor(ItemIds ids) : FindItemVisitor()
         {
             this->ids = ids;
         }
 
-        virtual bool Accept(const ItemPrototype* proto)
+        virtual bool Accept(const ItemTemplate* proto)
         {
             return ids.find(proto->ItemId) != ids.end();
         }
 
     private:
         ItemIds ids;
-    };
+};
 
-    class ListItemsVisitor : public IterateItemsVisitor
+class ListItemsVisitor : public IterateItemsVisitor
     {
     public:
         ListItemsVisitor() : IterateItemsVisitor() {}
@@ -255,9 +255,9 @@ namespace ai
             soulbound[id] = item->IsSoulBound();
             return true;
         }
-    };
+};
 
-    class ItemCountByQuality : public IterateItemsVisitor
+class ItemCountByQuality : public IterateItemsVisitor
     {
     public:
         ItemCountByQuality() : IterateItemsVisitor()
@@ -274,15 +274,15 @@ namespace ai
 
     public:
         map<uint32, int> count;
-    };
+};
 
 
-    class FindPotionVisitor : public FindUsableItemVisitor
+class FindPotionVisitor : public FindUsableItemVisitor
     {
     public:
         FindPotionVisitor(Player* bot, uint32 effectId) : FindUsableItemVisitor(bot), effectId(effectId) {}
 
-        virtual bool Accept(const ItemPrototype* proto)
+        virtual bool Accept(const ItemTemplate* proto)
         {
             if (proto->Class == ITEM_CLASS_CONSUMABLE && (proto->SubClass == ITEM_SUBCLASS_POTION || proto->SubClass == ITEM_SUBCLASS_FLASK))
             {
@@ -306,8 +306,8 @@ namespace ai
         uint32 effectId;
     };
 
-    class FindFoodVisitor : public FindUsableItemVisitor
-    {
+class FindFoodVisitor : public FindUsableItemVisitor
+{
     public:
         FindFoodVisitor(Player* bot, uint32 spellCategory, bool conjured = false) : FindUsableItemVisitor(bot)
         {
@@ -315,7 +315,7 @@ namespace ai
             this->conjured = conjured;
         }
 
-        virtual bool Accept(const ItemPrototype* proto)
+        virtual bool Accept(const ItemTemplate* proto)
         {
             return proto->Class == ITEM_CLASS_CONSUMABLE &&
                 (proto->SubClass == ITEM_SUBCLASS_CONSUMABLE || proto->SubClass == ITEM_SUBCLASS_FOOD) &&
@@ -326,14 +326,14 @@ namespace ai
     private:
         uint32 spellCategory;
         bool conjured;
-    };
+};
 
-    class FindMountVisitor : public FindUsableItemVisitor
+class FindMountVisitor : public FindUsableItemVisitor
     {
     public:
         FindMountVisitor(Player* bot) : FindUsableItemVisitor(bot) {}
 
-        virtual bool Accept(const ItemPrototype* proto)
+        virtual bool Accept(const ItemTemplate* proto)
         {
             for (int j = 0; j < MAX_ITEM_PROTO_SPELLS; j++)
             {
@@ -351,14 +351,14 @@ namespace ai
 
     private:
         uint32 effectId;
-    };
+};
 
-    class FindPetVisitor : public FindUsableItemVisitor
+class FindPetVisitor : public FindUsableItemVisitor
     {
     public:
         FindPetVisitor(Player* bot) : FindUsableItemVisitor(bot) {}
 
-        virtual bool Accept(const ItemPrototype* proto)
+        virtual bool Accept(const ItemTemplate* proto)
         {
             if (proto->Class == ITEM_CLASS_MISC)
             {
@@ -378,5 +378,4 @@ namespace ai
             return false;
         }
 
-    };
-}
+};

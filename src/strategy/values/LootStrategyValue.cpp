@@ -11,7 +11,7 @@ namespace ai
     class NormalLootStrategy : public LootStrategy
     {
     public:
-        virtual bool CanLoot(ItemPrototype const *proto, AiObjectContext *context)
+        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context)
         {
             ostringstream out; out << proto->ItemId;
             ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", out.str());
@@ -23,7 +23,7 @@ namespace ai
     class GrayLootStrategy : public NormalLootStrategy
     {
     public:
-        virtual bool CanLoot(ItemPrototype const *proto, AiObjectContext *context)
+        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context)
         {
             return NormalLootStrategy::CanLoot(proto, context) || proto->Quality == ITEM_QUALITY_POOR;
         }
@@ -33,7 +33,7 @@ namespace ai
     class DisenchantLootStrategy : public NormalLootStrategy
     {
     public:
-        virtual bool CanLoot(ItemPrototype const *proto, AiObjectContext *context)
+        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context)
         {
             return NormalLootStrategy::CanLoot(proto, context) ||
                     (proto->Quality >= ITEM_QUALITY_UNCOMMON && proto->Bonding != BIND_WHEN_PICKED_UP &&
@@ -45,7 +45,7 @@ namespace ai
     class AllLootStrategy : public LootStrategy
     {
     public:
-        virtual bool CanLoot(ItemPrototype const *proto, AiObjectContext *context)
+        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context)
         {
             return true;
         }

@@ -25,7 +25,7 @@ bool PetIsDeadValue::Calculate()
 {
     if (!bot->GetPet())
     {
-        uint32 ownerid = bot->GetGUIDLow();
+        uint32 ownerid = bot->GetGUID().GetCounter();
         QueryResult* result = CharacterDatabase.PQuery("SELECT id FROM character_pet WHERE owner = '%u'", ownerid);
         if (!result)
             return false;
@@ -112,7 +112,7 @@ bool IsInCombatValue::Calculate()
             Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
             for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
             {
-                Player *member = sObjectMgr->GetPlayer(itr->guid);
+                Player *member = ObjectAccessor::FindPlayer(itr->guid);
                 if (!member || member == bot) continue;
 
                 if (sServerFacade->IsInCombat(member) &&
@@ -139,7 +139,7 @@ uint8 BagSpaceValue::Calculate()
         const Bag* const pBag = (Bag*) bot->GetItemByPos(INVENTORY_SLOT_BAG_0, bag);
         if (pBag)
         {
-            ItemPrototype const* pBagProto = pBag->GetProto();
+            ItemTemplate const* pBagProto = pBag->GetProto();
             if (pBagProto->Class == ITEM_CLASS_CONTAINER && pBagProto->SubClass == ITEM_SUBCLASS_CONTAINER)
             {
                 total += pBag->GetBagSize();

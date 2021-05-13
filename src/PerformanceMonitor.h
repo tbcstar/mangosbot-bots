@@ -1,19 +1,21 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #ifndef _PerformanceMonitor_H
 #define _PerformanceMonitor_H
 
 #include "Common.h"
-#include "PlayerbotAIBase.h"
-#include "PlayerbotAIConfig.h"
-
 #include <mutex>
 #include <chrono>
 #include <ctime>
 
-using namespace std;
-
 struct PerformanceData
 {
-    uint32 minTime, maxTime, totalTime, count;
+    uint32 minTime;
+    uint32 maxTime;
+    uint32 totalTime;
+    uint32 count;
     std::mutex lock;
 };
 
@@ -28,20 +30,20 @@ enum PerformanceMetric
 
 class PerformanceMonitorOperation
 {
-public:
-    PerformanceMonitorOperation(PerformanceData* data);
-    void finish();
+    public:
+        PerformanceMonitorOperation(PerformanceData* data);
+        void finish();
 
-private:
-    PerformanceData* data;
-    std::chrono::milliseconds started;
+    private:
+        PerformanceData* data;
+        std::chrono::milliseconds started;
 };
 
 class PerformanceMonitor
 {
     public:
-        PerformanceMonitor();
-        virtual ~PerformanceMonitor();
+        PerformanceMonitor() { };
+        virtual ~PerformanceMonitor() { };
         static PerformanceMonitor* instance()
         {
             static PerformanceMonitor instance;
@@ -49,12 +51,12 @@ class PerformanceMonitor
         }
 
 	public:
-        PerformanceMonitorOperation* start(PerformanceMetric metric, string name);
+        PerformanceMonitorOperation* start(PerformanceMetric metric, std::string name);
         void PrintStats();
         void Reset();
 
 	private:
-        map<PerformanceMetric, map<string, PerformanceData*> > data;
+        std::map<PerformanceMetric, std::map<std::string, PerformanceData*> > data;
         std::mutex lock;
 };
 

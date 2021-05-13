@@ -30,7 +30,7 @@ Unit* SnareTargetValue::Calculate()
         case CHASE_MOTION_TYPE:
             chaseTarget = sServerFacade->GetChaseTarget(unit);
             if (!chaseTarget) continue;
-            Player* chaseTargetPlayer = sObjectMgr->GetPlayer(chaseTarget->GetGUID());
+            Player* chaseTargetPlayer = ObjectAccessor::FindPlayer(chaseTarget->GetGUID());
             if (chaseTargetPlayer && !botAI->IsTank(chaseTargetPlayer)) {
                 return unit;
             }

@@ -1,19 +1,18 @@
-#include "../botpch.h"
-#include "playerbot.h"
-#include "FleeManager.h"
-#include "PlayerbotAIConfig.h"
-#include "Group.h"
-#include "ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
-using namespace std;
+#include "FleeManager.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
+#include "strategy/AiObjectContext.h"
 
 void FleeManager::calculateDistanceToCreatures(FleePoint *point)
 {
     point->minDistance = -1.0f;
     point->sumDistance = 0.0f;
-	list<ObjectGuid> units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets");
-	for (list<ObjectGuid>::iterator i = units.begin(); i != units.end(); ++i)
+	GuidVector units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<GuidVector>("possible targets");
+	for (GuidVector::iterator i = units.begin(); i != units.end(); ++i)
     {
 		Unit* unit = bot->GetPlayerbotAI()->GetUnit(*i);
 		if (!unit)
@@ -21,24 +20,26 @@ void FleeManager::calculateDistanceToCreatures(FleePoint *point)
 
 		float d = sServerFacade->GetDistance2d(unit, point->x, point->y);
 		point->sumDistance += d;
-		if (point->minDistance < 0 || point->minDistance > d) point->minDistance = d;
+		if (point->minDistance < 0 || point->minDistance > d)
+            point->minDistance = d;
 	}
 }
 
-bool intersectsOri(float angle, list<float>& angles, float angleIncrement)
+bool intersectsOri(float angle, std::vector<float>& angles, float angleIncrement)
 {
-    for (list<float>::iterator i = angles.begin(); i != angles.end(); ++i)
+    for (std::vector<float>::iterator i = angles.begin(); i != angles.end(); ++i)
     {
         float ori = *i;
-        if (abs(angle - ori) < angleIncrement) return true;
+        if (abs(angle - ori) < angleIncrement)
+            return true;
     }
 
     return false;
 }
 
-void FleeManager::calculatePossibleDestinations(list<FleePoint*> &points)
+void FleeManager::calculatePossibleDestinations(std::vector<FleePoint*> &points)
 {
-    Unit *target = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<Unit*>("current target");
+    Unit* target = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<Unit*>("current target");
 
 	float botPosX = bot->GetPositionX();
 	float botPosY = bot->GetPositionY();
@@ -47,9 +48,9 @@ void FleeManager::calculatePossibleDestinations(list<FleePoint*> &points)
 	FleePoint start(bot->GetPlayerbotAI(), botPosX, botPosY, botPosZ);
 	calculateDistanceToCreatures(&start);
 
-    list<float> enemyOri;
-    list<ObjectGuid> units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets");
-    for (list<ObjectGuid>::iterator i = units.begin(); i != units.end(); ++i)
+    std::vector<float> enemyOri;
+    GuidVector units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<GuidVector>("possible targets");
+    for (GuidVector::iterator i = units.begin(); i != units.end(); ++i)
     {
         Unit* unit = bot->GetPlayerbotAI()->GetUnit(*i);
         if (!unit)
@@ -67,18 +68,17 @@ void FleeManager::calculatePossibleDestinations(list<FleePoint*> &points)
         {
             for (float angle = add; angle < add + 2 * M_PI + angleIncrement; angle += M_PI / 4)
             {
-                if (intersectsOri(angle, enemyOri, angleIncrement)) continue;
+                if (intersectsOri(angle, enemyOri, angleIncrement))
+                    continue;
 
                 float x = botPosX + cos(angle) * maxAllowedDistance, y = botPosY + sin(angle) * maxAllowedDistance, z = botPosZ + CONTACT_DISTANCE;
-
                 if (forceMaxDistance && sServerFacade->IsDistanceLessThan(sServerFacade->GetDistance2d(bot, x, y), maxAllowedDistance - sPlayerbotAIConfig->tooCloseDistance))
                     continue;
 
                 bot->UpdateAllowedPositionZ(x, y, z);
 
                 Map* map = bot->GetMap();
-                const TerrainInfo* terrain = map->GetTerrain();
-                if (terrain && terrain->IsInWater(x, y, z))
+                if (map && map->IsInWater(x, y, z))
                     continue;
 
                 if (!bot->IsWithinLOS(x, y, z) || (target && !target->IsWithinLOS(x, y, z)))
@@ -94,13 +94,13 @@ void FleeManager::calculatePossibleDestinations(list<FleePoint*> &points)
     }
 }
 
-void FleeManager::cleanup(list<FleePoint*> &points)
+void FleeManager::cleanup(std::vector<FleePoint*> &points)
 {
-	for (list<FleePoint*>::iterator i = points.begin(); i != points.end(); i++)
+	for (std::vector<FleePoint*>::iterator i = points.begin(); i != points.end(); i++)
     {
-		FleePoint* point = *i;
-		delete point;
+		delete *i;
 	}
+
 	points.clear();
 }
 
@@ -109,10 +109,10 @@ bool FleeManager::isBetterThan(FleePoint* point, FleePoint* other)
     return point->sumDistance - other->sumDistance > 0;
 }
 
-FleePoint* FleeManager::selectOptimalDestination(list<FleePoint*> &points)
+FleePoint* FleeManager::selectOptimalDestination(std::vector<FleePoint*> &points)
 {
 	FleePoint* best = NULL;
-	for (list<FleePoint*>::iterator i = points.begin(); i != points.end(); i++)
+	for (std::vector<FleePoint*>::iterator i = points.begin(); i != points.end(); i++)
     {
 		FleePoint* point = *i;
 		if (!best || isBetterThan(point, best))
@@ -124,7 +124,7 @@ FleePoint* FleeManager::selectOptimalDestination(list<FleePoint*> &points)
 
 bool FleeManager::CalculateDestination(float* rx, float* ry, float* rz)
 {
-	list<FleePoint*> points;
+    std::vector<FleePoint*> points;
 	calculatePossibleDestinations(points);
 
     FleePoint* point = selectOptimalDestination(points);
@@ -144,15 +144,17 @@ bool FleeManager::CalculateDestination(float* rx, float* ry, float* rz)
 
 bool FleeManager::isUseful()
 {
-    list<ObjectGuid> units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets");
-    for (list<ObjectGuid>::iterator i = units.begin(); i != units.end(); ++i)
+    GuidVector units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<GuidVector>("possible targets");
+    for (GuidVector::iterator i = units.begin(); i != units.end(); ++i)
     {
         Unit* unit = bot->GetPlayerbotAI()->GetUnit(*i);
         if (!unit)
             continue;
 
         float d = sServerFacade->GetDistance2d(unit, bot);
-        if (sServerFacade->IsDistanceLessThan(d, sPlayerbotAIConfig->aggroDistance)) return true;
+        if (sServerFacade->IsDistanceLessThan(d, sPlayerbotAIConfig->aggroDistance))
+            return true;
     }
+
     return false;
 }

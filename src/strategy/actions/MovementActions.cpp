@@ -147,7 +147,7 @@ float MovementAction::GetFollowAngle()
         return 0.0f;
 
     int index = 1;
-    for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
+    for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
     {
         if( ref->getSource() == master)
             continue;
@@ -324,7 +324,7 @@ bool MovementAction::Flee(Unit *target)
         Group* group = bot->GetGroup();
         if (group)
         {
-            for (GroupReference *gref = group->GetFirstMember(); gref; gref = gref->next())
+            for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
             {
                 Player* player = gref->getSource();
                 if (!player || player == bot) continue;
@@ -427,7 +427,7 @@ bool SetFacingTargetAction::Execute(Event event)
     if (!target)
         return false;
 
-    if (bot->IsTaxiFlying() || bot->IsFlying())
+    if (bot->HasUnitState(UNIT_STATE_IN_FLIGHT) || bot->IsFlying())
         return true;
 
     sServerFacade->SetFacingTo(bot, target);
@@ -465,7 +465,7 @@ bool SetBehindTargetAction::isUseful()
 
 bool MoveOutOfCollisionAction::Execute(Event event)
 {
-    float angle = M_PI * 2000 / (float)urand(1, 1000);
+    float angle = M_PI * 2000 / frand(1.f, 1000.f);
     float distance = sPlayerbotAIConfig->followDistance;
     return MoveTo(bot->GetMapId(), bot->GetPositionX() + cos(angle) * distance, bot->GetPositionY() + sin(angle) * distance, bot->GetPositionZ());
 }

@@ -8,10 +8,10 @@ using namespace ai;
 bool CheckMountStateAction::Execute(Event event)
 {
 	Player* master = GetMaster();
-	if (!bot->GetGroup() || !master || bot->GetGroup()->GetLeaderGuid() != master->GetGUID())
+	if (!bot->GetGroup() || !master || bot->GetGroup()->GetLeaderGUID() != master->GetGUID())
 		return false;
 
-	if (bot->IsTaxiFlying() || bot->IsFlying())
+	if (bot->HasUnitState(UNIT_STATE_IN_FLIGHT) || bot->IsFlying())
 		return false;
 
 	bool farFromMaster = sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig->sightDistance);

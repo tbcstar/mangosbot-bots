@@ -69,7 +69,7 @@ bool SayAction::Execute(Event event)
     if (group)
     {
         vector<Player*> members;
-        for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
+        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
         {
             Player *member = ref->getSource();
             PlayerbotAI* memberAi = member->GetPlayerbotAI();

@@ -25,7 +25,7 @@ public:
         if (!member)
             return false;
 
-        PlayerbotAI *botAi = member->GetPlayerbotAI();
+        PlayerbotAI* botAi = member->GetPlayerbotAI();
         if (!botAi)
             return false;
 

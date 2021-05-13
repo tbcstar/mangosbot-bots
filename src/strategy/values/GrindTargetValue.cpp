@@ -75,7 +75,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
             Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
             for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
             {
-                Player *member = sObjectMgr->GetPlayer(itr->guid);
+                Player *member = ObjectAccessor::FindPlayer(itr->guid);
                 if( !member || !sServerFacade->IsAlive(member))
                     continue;
 
@@ -112,7 +112,7 @@ int GrindTargetValue::GetTargetingPlayerCount( Unit* unit )
     Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
-        Player *member = sObjectMgr->GetPlayer(itr->guid);
+        Player *member = ObjectAccessor::FindPlayer(itr->guid);
         if( !member || !sServerFacade->IsAlive(member) || member == bot)
             continue;
 

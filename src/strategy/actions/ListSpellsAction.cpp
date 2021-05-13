@@ -159,7 +159,7 @@ bool ListSpellsAction::Execute(Event event)
             uint32 reagentsRequired = pSpellInfo->ReagentCount[x];
             if (itemid)
             {
-                ItemPrototype const* proto = sObjectMgr->GetItemPrototype(itemid);
+                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemid);
                 if (proto)
                 {
                     if (first) { materials << ": "; first = false; } else materials << ", ";
@@ -193,7 +193,7 @@ bool ListSpellsAction::Execute(Event event)
             {
                 if (pSpellInfo->Effect[i] == SPELL_EFFECT_CREATE_ITEM)
                 {
-                    ItemPrototype const* proto = sObjectMgr->GetItemPrototype(pSpellInfo->EffectItemType[i]);
+                    ItemTemplate const* proto = sObjectMgr->GetItemTemplate(pSpellInfo->EffectItemType[i]);
                     if (proto)
                     {
                         if (craftCount)

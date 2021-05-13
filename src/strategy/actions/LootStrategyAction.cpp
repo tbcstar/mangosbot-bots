@@ -30,7 +30,7 @@ bool LootStrategyAction::Execute(Event event)
 
             for (set<uint32>::iterator i = alwaysLootItems.begin(); i != alwaysLootItems.end(); i++)
             {
-                ItemPrototype const *proto = sItemStorage.LookupEntry<ItemPrototype>(*i);
+                ItemTemplate const* proto = sItemStorage.LookupEntry<ItemTemplate>(*i);
                 if (!proto)
                     continue;
 
@@ -59,7 +59,7 @@ bool LootStrategyAction::Execute(Event event)
             uint32 itemid = *i;
             if (query)
             {
-                ItemPrototype const *proto = sObjectMgr->GetItemPrototype(itemid);
+                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemid);
                 if (proto)
                 {
                     ostringstream out;

@@ -93,7 +93,7 @@ bool TrainerAction::Execute(Event event)
     if (!master)
         return false;
 
-    Creature *creature = botAI->GetCreature(master->GetTarget());
+    Creature* creature = botAI->GetCreature(master->GetTarget());
     if (!creature)
         return false;
 

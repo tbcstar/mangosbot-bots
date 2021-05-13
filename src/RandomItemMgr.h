@@ -1,10 +1,18 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #ifndef _RandomItemMgr_H
 #define _RandomItemMgr_H
 
 #include "Common.h"
-#include "PlayerbotAIBase.h"
 
-using namespace std;
+class ChatHandler;
+
+struct ItemTemplate;
+
+enum EquipmentSlots : uint32;
+enum InventoryType : uint32;
 
 enum RandomItemType
 {
@@ -17,38 +25,36 @@ enum RandomItemType
 
 class RandomItemPredicate
 {
-public:
-    virtual bool Apply(ItemPrototype const* proto) = 0;
+    public:
+        virtual bool Apply(ItemTemplate const* proto) = 0;
 };
 
-typedef vector<uint32> RandomItemList;
-typedef map<RandomItemType, RandomItemList> RandomItemCache;
+typedef std::vector<uint32> RandomItemList;
+typedef std::map<RandomItemType, RandomItemList> RandomItemCache;
 
 class BotEquipKey
 {
-public:
-    uint32 level;
-    uint8 clazz;
-    uint8 slot;
-    uint32 quality;
-    uint64 key;
+    public:
+        BotEquipKey() : level(0), clazz(0), slot(0), quality(0), key(GetKey()) { }
+        BotEquipKey(uint32 level, uint8 clazz, uint8 slot, uint32 quality) : level(level), clazz(clazz), slot(slot), quality(quality), key(GetKey()) { }
+        BotEquipKey(BotEquipKey const& other)  : level(other.level), clazz(other.clazz), slot(other.slot), quality(other.quality), key(GetKey()) { }
 
-public:
-    BotEquipKey() : level(0), clazz(0), slot(0), quality(0), key(GetKey()) {}
-    BotEquipKey(uint32 level, uint8 clazz, uint8 slot, uint32 quality) : level(level), clazz(clazz), slot(slot), quality(quality), key(GetKey()) {}
-    BotEquipKey(BotEquipKey const& other)  : level(other.level), clazz(other.clazz), slot(other.slot), quality(other.quality), key(GetKey()) {}
+        bool operator<(BotEquipKey const& other) const
+        {
+            return other.key < this->key;
+        }
 
-private:
-    uint64 GetKey();
+        uint32 level;
+        uint8 clazz;
+        uint8 slot;
+        uint32 quality;
+        uint64 key;
 
-public:
-    bool operator< (const BotEquipKey& other) const
-    {
-        return other.key < this->key;
-    }
+    private:
+        uint64 GetKey();
 };
 
-typedef map<BotEquipKey, RandomItemList> BotEquipCache;
+typedef std::map<BotEquipKey, RandomItemList> BotEquipCache;
 
 class RandomItemMgr
 {
@@ -58,7 +64,7 @@ class RandomItemMgr
         static RandomItemMgr* instance()
         {
             static RandomItemMgr instance;
-            return *instance;
+            return &instance;
         }
 
 	public:
@@ -72,8 +78,8 @@ class RandomItemMgr
         uint32 GetRandomPotion(uint32 level, uint32 effect);
         uint32 GetRandomFood(uint32 level, uint32 category);
         uint32 GetRandomTrade(uint32 level);
-        bool CanEquipArmor(uint8 clazz, uint32 level, ItemPrototype const* proto);
-        bool CanEquipWeapon(uint8 clazz, ItemPrototype const* proto);
+        bool CanEquipArmor(uint8 clazz, uint32 level, ItemTemplate const* proto);
+        bool CanEquipWeapon(uint8 clazz, ItemTemplate const* proto);
         float GetItemRarity(uint32 itemId);
 
     private:
@@ -84,20 +90,20 @@ class RandomItemMgr
         void BuildPotionCache();
         void BuildTradeCache();
         void BuildRarityCache();
-        bool CanEquipItem(BotEquipKey key, ItemPrototype const* proto);
-        void AddItemStats(uint32 mod, uint8 &sp, uint8 &ap, uint8 &tank);
+        bool CanEquipItem(BotEquipKey key, ItemTemplate const* proto);
+        void AddItemStats(uint32 mod, uint8& sp, uint8& ap, uint8& tank);
         bool CheckItemStats(uint8 clazz, uint8 sp, uint8 ap, uint8 tank);
 
     private:
-        map<uint32, RandomItemCache> randomItemCache;
-        map<RandomItemType, RandomItemPredicate*> predicates;
+        std::map<uint32, RandomItemCache> randomItemCache;
+        std::map<RandomItemType, RandomItemPredicate*> predicates;
         BotEquipCache equipCache;
-        map<EquipmentSlots, set<InventoryType> > viableSlots;
-        map<uint32, map<uint32, uint32> > ammoCache;
-        map<uint32, map<uint32, vector<uint32> > > potionCache;
-        map<uint32, map<uint32, vector<uint32> > > foodCache;
-        map<uint32, vector<uint32> > tradeCache;
-        map<uint32, float> rarityCache;
+        std::map<EquipmentSlots, std::set<InventoryType>> viableSlots;
+        std::map<uint32, std::map<uint32, uint32> > ammoCache;
+        std::map<uint32, std::map<uint32, std::vector<uint32> > > potionCache;
+        std::map<uint32, std::map<uint32, std::vector<uint32> > > foodCache;
+        std::map<uint32, std::vector<uint32> > tradeCache;
+        std::map<uint32, float> rarityCache;
 };
 
 #define sRandomItemMgr RandomItemMgr::instance()

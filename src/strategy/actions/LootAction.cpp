@@ -260,7 +260,7 @@ bool StoreLootAction::Execute(Event event)
         if (loot_type != LOOT_SKINNING && !IsLootAllowed(itemid, ai))
             continue;
 
-        ItemPrototype const *proto = sItemStorage.LookupEntry<ItemPrototype>(itemid);
+        ItemTemplate const* proto = sItemStorage.LookupEntry<ItemTemplate>(itemid);
         if (!proto)
             continue;
 
@@ -274,10 +274,10 @@ bool StoreLootAction::Execute(Event event)
             Group* group = bot->GetGroup();
             if (group)
             {
-                for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
+                for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
                 {
                     if( ref->getSource() != bot)
-                        sGuildTaskMgr.CheckItemTask(itemid, itemcount, ref->getSource(), bot);
+                        sGuildTaskMgr->CheckItemTask(itemid, itemcount, ref->getSource(), bot);
                 }
             }
         }
@@ -302,16 +302,16 @@ bool StoreLootAction::Execute(Event event)
     return true;
 }
 
-bool StoreLootAction::IsLootAllowed(uint32 itemid, PlayerbotAI *ai)
+bool StoreLootAction::IsLootAllowed(uint32 itemid, PlayerbotAI* botAI)
 {
-    AiObjectContext *context = botAI->GetAiObjectContext();
+    AiObjectContext* context = botAI->GetAiObjectContext();
     LootStrategy* lootStrategy = AI_VALUE(LootStrategy*, "loot strategy");
 
     set<uint32>& lootItems = AI_VALUE(set<uint32>&, "always loot list");
     if (lootItems.find(itemid) != lootItems.end())
         return true;
 
-    ItemPrototype const *proto = sObjectMgr->GetItemPrototype(itemid);
+    ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemid);
     if (!proto)
         return false;
 

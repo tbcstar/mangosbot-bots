@@ -6,7 +6,7 @@
 
 namespace ai
 {
-	enum StrategyType
+	enum StrategyType : uint32
 	{
 		STRATEGY_TYPE_GENERIC = 0,
 		STRATEGY_TYPE_COMBAT = 1,

@@ -1,30 +1,32 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #ifndef _PlayerbotDbStore_H
 #define _PlayerbotDbStore_H
 
 #include "Common.h"
-#include "PlayerbotAIBase.h"
-#include "PlayerbotMgr.h"
 
-using namespace std;
+class PlayerbotAI;
 
 class PlayerbotDbStore
 {
-public:
-    PlayerbotDbStore() {}
-    virtual ~PlayerbotDbStore() {}
-    static PlayerbotDbStore* instance()
-    {
-        static PlayerbotDbStore instance;
-        return &instance;
-    }
+    public:
+        PlayerbotDbStore() { }
+        virtual ~PlayerbotDbStore() { }
+        static PlayerbotDbStore* instance()
+        {
+            static PlayerbotDbStore instance;
+            return &instance;
+        }
 
-    void Save(PlayerbotAI *ai);
-    void Load(PlayerbotAI *ai);
-    void Reset(PlayerbotAI *ai);
+        void Save(PlayerbotAI* botAI);
+        void Load(PlayerbotAI* botAI);
+        void Reset(PlayerbotAI* botAI);
 
-private:
-    void SaveValue(uint32 guid, string key, string value);
-    string FormatStrategies(string type, list<string> strategies);
+    private:
+        void SaveValue(uint32 guid, std::string const& key, std::string const& value);
+        std::string FormatStrategies(std::string const& type, std::vector<std::string> strategies);
 };
 
 #define sPlayerbotDbStore PlayerbotDbStore::instance()

@@ -6,10 +6,8 @@
 #include "NamedObjectContext.h"
 #include "Strategy.h"
 
-namespace ai
+class AiObjectContext : public PlayerbotAIAware
 {
-    class AiObjectContext : public PlayerbotAIAware
-    {
     public:
         AiObjectContext(PlayerbotAI* botAI);
         virtual ~AiObjectContext() {}
@@ -79,5 +77,4 @@ namespace ai
         NamedObjectContextList<Action> actionContexts;
         NamedObjectContextList<Trigger> triggerContexts;
         NamedObjectContextList<UntypedValue> valueContexts;
-    };
-}
+};

@@ -55,7 +55,7 @@ bool RewardAction::Reward(uint32 itemId, Object* questGiver)
         {
             for (uint8 rewardIdx=0; rewardIdx < pQuest->GetRewChoiceItemsCount(); ++rewardIdx)
             {
-                ItemPrototype const * const pRewardItem = sObjectMgr->GetItemPrototype(pQuest->RewChoiceItemId[rewardIdx]);
+                ItemTemplate const*  const pRewardItem = sObjectMgr->GetItemTemplate(pQuest->RewChoiceItemId[rewardIdx]);
                 if (itemId == pRewardItem->ItemId)
                 {
                     bot->RewardQuest(pQuest, rewardIdx, questGiver, false);

@@ -27,7 +27,7 @@ bool CustomStrategyEditAction::PrintHelp()
 {
     botAI->TellMaster("=== Custom strategies ===");
 
-    uint32 owner = (uint32)botAI->GetBot()->GetGUIDLow();
+    uint32 owner = (uint32)botAI->GetBot()->GetGUID().GetCounter();
     QueryResult* results = CharacterDatabase.PQuery("SELECT distinct name FROM ai_playerbot_custom_strategy WHERE owner = '%u'",
             owner);
     if (results)
@@ -50,7 +50,7 @@ bool CustomStrategyEditAction::Print(string name)
     ostringstream out; out << "=== " << name << " ===";
     botAI->TellMaster(out.str());
 
-    uint32 owner = (uint32)botAI->GetBot()->GetGUIDLow();
+    uint32 owner = (uint32)botAI->GetBot()->GetGUID().GetCounter();
     QueryResult* results = CharacterDatabase.PQuery("SELECT idx, action_line FROM ai_playerbot_custom_strategy WHERE name = '%s' and owner = '%u' order by idx",
             name.c_str(), owner);
     if (results)
@@ -71,7 +71,7 @@ bool CustomStrategyEditAction::Print(string name)
 
 bool CustomStrategyEditAction::Edit(string name, uint32 idx, string command)
 {
-    uint32 owner = (uint32)botAI->GetBot()->GetGUIDLow();
+    uint32 owner = (uint32)botAI->GetBot()->GetGUID().GetCounter();
     QueryResult* results = CharacterDatabase.PQuery("SELECT action_line FROM ai_playerbot_custom_strategy WHERE name = '%s' and owner = '%u' and idx = '%u'",
             name.c_str(), owner, idx);
     if (results)

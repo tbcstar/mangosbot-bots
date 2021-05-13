@@ -140,7 +140,7 @@ Item* BankAction::FindItemInBank(uint32 ItemId)
         Item* const pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
         if (pItem)
         {
-            const ItemPrototype* const pItemProto = pItem->GetProto();
+            const ItemTemplate* const pItemProto = pItem->GetProto();
             if (!pItemProto)
                 continue;
 
@@ -158,7 +158,7 @@ Item* BankAction::FindItemInBank(uint32 ItemId)
                 Item* const pItem = bot->GetItemByPos(bag, slot);
                 if (pItem)
                 {
-                    const ItemPrototype* const pItemProto = pItem->GetProto();
+                    const ItemTemplate* const pItemProto = pItem->GetProto();
                     if (!pItemProto)
                         continue;
 

@@ -23,7 +23,7 @@ bool CheckMailAction::Execute(Event event)
         if (!mail || mail->state == MAIL_STATE_DELETED)
             continue;
 
-        Player* owner = sObjectMgr->GetPlayer(ObjectGuid::Create<HighGuid::Player>(mail->sender));
+        Player* owner = ObjectAccessor::FindPlayer(ObjectGuid::Create<HighGuid::Player>(mail->sender));
         if (!owner)
             continue;
 
@@ -55,7 +55,7 @@ void CheckMailAction::ProcessMail(Mail* mail, Player* owner)
     {
         if (mail->itemTextId)
         {
-            sGuildTaskMgr.CheckTaskTransfer(sObjectMgr->GetItemText(mail->itemTextId), owner, bot);
+            sGuildTaskMgr->CheckTaskTransfer(sObjectMgr->GetItemText(mail->itemTextId), owner, bot);
         }
         return;
     }
@@ -69,7 +69,7 @@ void CheckMailAction::ProcessMail(Mail* mail, Player* owner)
         if (!item)
             continue;
 
-        if (!sGuildTaskMgr.CheckItemTask(i->item_template, item->GetCount(), owner, bot, true))
+        if (!sGuildTaskMgr->CheckItemTask(i->item_template, item->GetCount(), owner, bot, true))
         {
             ostringstream body;
             body << "Hello, " << owner->GetName() << ",\n";

@@ -1,24 +1,18 @@
-#include "../botpch.h"
-#include "playerbot.h"
-#include "PlayerbotAIConfig.h"
-#include "PlayerbotFactory.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PlayerbotDbStore.h"
-#include <cstdlib>
+#include "Playerbot.h"
+#include "strategy/AiObjectContext.h"
+
 #include <iostream>
 
-#include "LootObjectStack.h"
-#include "strategy/values/Formations.h"
-#include "strategy/values/PositionValue.h"
-INSTANTIATE_SINGLETON_1(PlayerbotDbStore);
-
-using namespace std;
-using namespace ai;
-
-void PlayerbotDbStore::Load(PlayerbotAI *ai)
+void PlayerbotDbStore::Load(PlayerbotAI* botAI)
 {
     ObjectGuid::LowType guid = botAI->GetBot()->GetGUID().GetCounter();
 
-    QueryResult* results = CharacterDatabase.PQuery("SELECT `key`,`value` FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
+    QueryResult results = CharacterDatabase.PQuery("SELECT `key`,`value` FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
     if (results)
     {
         botAI->ClearStrategies(BOT_STATE_COMBAT);
@@ -26,31 +20,35 @@ void PlayerbotDbStore::Load(PlayerbotAI *ai)
         botAI->ChangeStrategy("+chat", BOT_STATE_COMBAT);
         botAI->ChangeStrategy("+chat", BOT_STATE_NON_COMBAT);
 
-        list<string> values;
+        std::vector<std::string> values;
         do
         {
             Field* fields = results->Fetch();
-            string key = fields[0].GetString();
-            string value = fields[1].GetString();
-            if (key == "value") values.push_back(value);
-            else if (key == "co") botAI->ChangeStrategy(value, BOT_STATE_COMBAT);
-            else if (key == "nc") botAI->ChangeStrategy(value, BOT_STATE_NON_COMBAT);
-            else if (key == "dead") botAI->ChangeStrategy(value, BOT_STATE_DEAD);
+            std::string key = fields[0].GetString();
+            std::string value = fields[1].GetString();
+
+            if (key == "value")
+                values.push_back(value);
+            else if (key == "co")
+                botAI->ChangeStrategy(value, BOT_STATE_COMBAT);
+            else if (key == "nc")
+                botAI->ChangeStrategy(value, BOT_STATE_NON_COMBAT);
+            else if (key == "dead")
+                botAI->ChangeStrategy(value, BOT_STATE_DEAD);
         } while (results->NextRow());
 
         botAI->GetAiObjectContext()->Load(values);
-        delete results;
     }
 }
 
-void PlayerbotDbStore::Save(PlayerbotAI *ai)
+void PlayerbotDbStore::Save(PlayerbotAI* botAI)
 {
     ObjectGuid::LowType guid = botAI->GetBot()->GetGUID().GetCounter();
 
     Reset(botAI);
 
-    list<string> data = botAI->GetAiObjectContext()->Save();
-    for (list<string>::iterator i = data.begin(); i != data.end(); ++i)
+    std::vector<std::string> data = botAI->GetAiObjectContext()->Save();
+    for (std::vector<std::string>::iterator i = data.begin(); i != data.end(); ++i)
     {
         SaveValue(guid, "value", *i);
     }
@@ -60,24 +58,24 @@ void PlayerbotDbStore::Save(PlayerbotAI *ai)
     SaveValue(guid, "dead", FormatStrategies("dead", botAI->GetStrategies(BOT_STATE_DEAD)));
 }
 
-string PlayerbotDbStore::FormatStrategies(string type, list<string> strategies)
+std::string PlayerbotDbStore::FormatStrategies(std::string const& type, std::vector<std::string> strategies)
 {
-    ostringstream out;
-    for(list<string>::iterator i = strategies.begin(); i != strategies.end(); ++i)
+    std::ostringstream out;
+    for (std::vector<std::string>::iterator i = strategies.begin(); i != strategies.end(); ++i)
         out << "+" << (*i).c_str() << ",";
 
-	string res = out.str();
+    std::string res = out.str();
     return res.substr(0, res.size() - 1);
 }
 
-void PlayerbotDbStore::Reset(PlayerbotAI *ai)
+void PlayerbotDbStore::Reset(PlayerbotAI* botAI)
 {
     ObjectGuid::LowType guid = botAI->GetBot()->GetGUID().GetCounter();
     uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(guid);
     CharacterDatabase.PExecute("DELETE FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
 }
 
-void PlayerbotDbStore::SaveValue(uint32 guid, string key, string value)
+void PlayerbotDbStore::SaveValue(uint32 guid, std::string const& key, std::string const& value)
 {
     CharacterDatabase.PExecute("INSERT INTO `ai_playerbot_db_store` (`guid`, `key`, `value`) VALUES ('%u', '%s', '%s')", guid, key.c_str(), value.c_str());
 }

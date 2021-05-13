@@ -305,7 +305,7 @@ public:
 
     virtual bool Visit(Item* item)
     {
-        ItemPrototype const* proto = item->GetProto();
+        ItemTemplate const* proto = item->GetProto();
         if (proto->Quality != quality)
             return true;
 
@@ -379,7 +379,7 @@ bool SuggestTradeAction::Execute(Event event)
     if (!item || !count)
         return false;
 
-    ItemPrototype const* proto = sObjectMgr->GetItemPrototype(item);
+    ItemTemplate const* proto = sObjectMgr->GetItemTemplate(item);
     if (!proto)
         return false;
 

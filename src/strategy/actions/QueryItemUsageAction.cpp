@@ -40,7 +40,7 @@ bool QueryItemUsageAction::Execute(Event event)
         data >> count;
         // data >> invCount; // [-ZERO] count of items in inventory
 
-        ItemPrototype const *item = sItemStorage.LookupEntry<ItemPrototype>(itemId);
+        ItemTemplate const* item = sItemStorage.LookupEntry<ItemTemplate>(itemId);
         if (!item)
             return false;
 
@@ -52,7 +52,7 @@ bool QueryItemUsageAction::Execute(Event event)
     ItemIds items = chat->parseItems(text);
     for (ItemIds::iterator i = items.begin(); i != items.end(); i++)
     {
-        ItemPrototype const *item = sItemStorage.LookupEntry<ItemPrototype>(*i);
+        ItemTemplate const* item = sItemStorage.LookupEntry<ItemTemplate>(*i);
         if (!item) continue;
 
         botAI->TellMaster(QueryItem(item, 0, GetCount(item)));
@@ -60,7 +60,7 @@ bool QueryItemUsageAction::Execute(Event event)
     return true;
 }
 
-uint32 QueryItemUsageAction::GetCount(ItemPrototype const *item)
+uint32 QueryItemUsageAction::GetCount(ItemTemplate const* item)
 {
     uint32 total = 0;
     list<Item*> items = InventoryAction::parseItems(item->Name1);
@@ -74,7 +74,7 @@ uint32 QueryItemUsageAction::GetCount(ItemPrototype const *item)
     return total;
 }
 
-string QueryItemUsageAction::QueryItem(ItemPrototype const *item, uint32 count, uint32 total)
+string QueryItemUsageAction::QueryItem(ItemTemplate const* item, uint32 count, uint32 total)
 {
     ostringstream out;
     string usage = QueryItemUsage(item);
@@ -91,7 +91,7 @@ string QueryItemUsageAction::QueryItem(ItemPrototype const *item, uint32 count, 
     return out.str();
 }
 
-string QueryItemUsageAction::QueryItemUsage(ItemPrototype const *item)
+string QueryItemUsageAction::QueryItemUsage(ItemTemplate const* item)
 {
     ostringstream out; out << item->ItemId;
     ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", out.str());
@@ -114,7 +114,7 @@ string QueryItemUsageAction::QueryItemUsage(ItemPrototype const *item)
     return "";
 }
 
-string QueryItemUsageAction::QueryItemPrice(ItemPrototype const *item)
+string QueryItemUsageAction::QueryItemPrice(ItemTemplate const* item)
 {
     if (!sRandomPlayerbotMgr->IsRandomBot(bot))
         return "";

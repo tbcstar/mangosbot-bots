@@ -1,15 +1,17 @@
-#include "../botpch.h"
-#include "playerbot.h"
-#include "PlayerbotAIConfig.h"
-#include "PlayerbotFactory.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PlayerbotCommandServer.h"
+#include "Playerbot.h"
+
 #include <cstdlib>
 #include <iostream>
 
-bool ReadLine(ACE_SOCK_Stream& client_stream, string* buffer, string* line)
+bool ReadLine(ACE_SOCK_Stream& client_stream, std::string* buffer, std::string* line)
 {
     // Do the real reading from fd until buffer has '\n'.
-    string::iterator pos;
+    std::string::iterator pos;
     while ((pos = find(buffer->begin(), buffer->end(), '\n')) == buffer->end())
     {
         char buf[33];
@@ -28,38 +30,41 @@ bool ReadLine(ACE_SOCK_Stream& client_stream, string* buffer, string* line)
 
 class PlayerbotCommandServerThread: public ACE_Task <ACE_MT_SYNCH>
 {
-public:
-    int svc(void) {
-        if (!sPlayerbotAIConfig->commandServerPort) {
+    public:
+        int svc(void)
+        {
+            if (!sPlayerbotAIConfig->commandServerPort)
+            {
+                return 0;
+            }
+
+            std::ostringstream s;
+            s << "Starting Playerbot Command Server on port " << sPlayerbotAIConfig->commandServerPort;
+            sLog->outString(s.str().c_str());
+
+            ACE_INET_Addr server(sPlayerbotAIConfig->commandServerPort);
+            ACE_SOCK_Acceptor client_responder(server);
+
+		    while (true)
+		    {
+			    ACE_SOCK_Stream client_stream;
+			    ACE_Time_Value timeout(5);
+			    ACE_INET_Addr client;
+			    if (-1 != client_responder.accept(client_stream, &client, &timeout))
+			    {
+				    string buffer, request;
+				    while (ReadLine(client_stream, &buffer, &request))
+				    {
+					    string response = sRandomPlayerbotMgr->HandleRemoteCommand(request) + "\n";
+					    client_stream.send_n(response.c_str(), response.size(), 0);
+					    request = "";
+				    }
+				    client_stream.close();
+			    }
+		    }
+
             return 0;
         }
-
-        ostringstream s; s << "Starting Playerbot Command Server on port " << sPlayerbotAIConfig->commandServerPort;
-        sLog->outString(s.str().c_str());
-
-        ACE_INET_Addr server(sPlayerbotAIConfig->commandServerPort);
-        ACE_SOCK_Acceptor client_responder(server);
-
-		while (true)
-		{
-			ACE_SOCK_Stream client_stream;
-			ACE_Time_Value timeout(5);
-			ACE_INET_Addr client;
-			if (-1 != client_responder.accept(client_stream, &client, &timeout))
-			{
-				string buffer, request;
-				while (ReadLine(client_stream, &buffer, &request))
-				{
-					string response = sRandomPlayerbotMgr->HandleRemoteCommand(request) + "\n";
-					client_stream.send_n(response.c_str(), response.size(), 0);
-					request = "";
-				}
-				client_stream.close();
-			}
-		}
-
-        return 0;
-    }
 };
 
 

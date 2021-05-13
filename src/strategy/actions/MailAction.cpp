@@ -40,7 +40,7 @@ public:
             {
                 Item* item = bot->GetMItem(i->item_guid);
                 int count = item ? item->GetCount() : 1;
-                ItemPrototype const *proto = sObjectMgr->GetItemPrototype(i->item_template);
+                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(i->item_template);
                 if (proto)
                 {
                     out << ChatHelper::formatItem(proto, count);
@@ -96,7 +96,7 @@ public:
             list<uint32> guids;
             for (MailItemInfoVec::iterator i = mail->items.begin(); i != mail->items.end(); ++i)
             {
-                ItemPrototype const *proto = sObjectMgr->GetItemPrototype(i->item_template);
+                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(i->item_template);
                 if (proto)
                     guids.push_back(i->item_guid);
             }
@@ -136,7 +136,7 @@ private:
         {
             if (const Bag* const pBag = (Bag*) bot->GetItemByPos(INVENTORY_SLOT_BAG_0, bag))
             {
-                ItemPrototype const* pBagProto = pBag->GetProto();
+                ItemTemplate const* pBagProto = pBag->GetProto();
                 if (pBagProto->Class == ITEM_CLASS_CONTAINER && pBagProto->SubClass == ITEM_SUBCLASS_CONTAINER)
                     totalfree += pBag->GetFreeSlots();
             }

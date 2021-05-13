@@ -1,78 +1,80 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #ifndef _PLAYERBOTMGR_H
 #define _PLAYERBOTMGR_H
 
 #include "Common.h"
+#include "QueryHolder.h"
+#include "QueryResult.h"
+#include "Player.h"
 #include "PlayerbotAIBase.h"
-#include "../botpch.h"
 
+class ChatHandler;
 class WorldPacket;
-class Player;
-class Unit;
-class Object;
-class Item;
 
-typedef map<ObjectGuid, Player*> PlayerBotMap;
-typedef map<string, set<string> > PlayerBotErrorMap;
+typedef std::map<ObjectGuid, Player*> PlayerBotMap;
+typedef std::map<std::string, std::set<string> > PlayerBotErrorMap;
 
 class PlayerbotHolder : public PlayerbotAIBase
 {
-public:
-    PlayerbotHolder();
-    virtual ~PlayerbotHolder();
+    public:
+        PlayerbotHolder();
+        virtual ~PlayerbotHolder() { };
 
-    void AddPlayerBot(ObjectGuid guid, uint32 masterAccountId);
-	void HandlePlayerBotLoginCallback(QueryResult * dummy, SqlQueryHolder * holder);
+        void AddPlayerBot(ObjectGuid guid, uint32 masterAccountId);
+	    void HandlePlayerBotLoginCallback(QueryResult dummy, SQLQueryHolder* holder);
 
-    void LogoutPlayerBot(ObjectGuid guid);
-    Player* GetPlayerBot (ObjectGuid guid) const;
-    PlayerBotMap::const_iterator GetPlayerBotsBegin() const { return playerBots.begin(); }
-    PlayerBotMap::const_iterator GetPlayerBotsEnd()   const { return playerBots.end();   }
+        void LogoutPlayerBot(ObjectGuid guid);
+        Player* GetPlayerBot (ObjectGuid guid) const;
+        PlayerBotMap::const_iterator GetPlayerBotsBegin() const { return playerBots.begin(); }
+        PlayerBotMap::const_iterator GetPlayerBotsEnd()   const { return playerBots.end();   }
 
-    virtual void UpdateAIInternal(uint32 elapsed);
-    void UpdateSessions(uint32 elapsed);
+        void UpdateAIInternal(uint32 elapsed) override { };
+        void UpdateSessions(uint32 elapsed);
 
-    void LogoutAllBots();
-    void OnBotLogin(Player * const bot);
+        void LogoutAllBots();
+        void OnBotLogin(Player* const bot);
 
-    list<string> HandlePlayerbotCommand(char const* args, Player* master = NULL);
-    string ProcessBotCommand(string cmd, ObjectGuid guid, bool admin, uint32 masterAccountId, uint32 masterGuildId);
-    uint32 GetAccountId(string name);
-    string ListBots(Player* master);
+        std::vector<string> HandlePlayerbotCommand(char const* args, Player* master = NULL);
+        std::string ProcessBotCommand(std::string const& cmd, ObjectGuid guid, bool admin, uint32 masterAccountId, uint32 masterGuildId);
+        uint32 GetAccountId(std::string const& name);
+        std::string ListBots(Player* master);
 
-protected:
-    virtual void OnBotLoginInternal(Player * const bot) = 0;
+    protected:
+        virtual void OnBotLoginInternal(Player* const bot) = 0;
 
-protected:
-    PlayerBotMap playerBots;
+        PlayerBotMap playerBots;
 };
 
 class PlayerbotMgr : public PlayerbotHolder
 {
-public:
-    PlayerbotMgr(Player* const master);
-    virtual ~PlayerbotMgr();
+    public:
+        PlayerbotMgr(Player* const master);
+        virtual ~PlayerbotMgr() { };
 
-    static bool HandlePlayerbotMgrCommand(ChatHandler* handler, char const* args);
-    void HandleMasterIncomingPacket(const WorldPacket& packet);
-    void HandleMasterOutgoingPacket(const WorldPacket& packet);
-    void HandleCommand(uint32 type, const string& text);
-    void OnPlayerLogin(Player* player);
+        static bool HandlePlayerbotMgrCommand(ChatHandler* handler, char const* args);
+        void HandleMasterIncomingPacket(WorldPacket const& packet);
+        void HandleMasterOutgoingPacket(WorldPacket const& packet);
+        void HandleCommand(uint32 type, std::string const& text);
+        void OnPlayerLogin(Player* player);
 
-    virtual void UpdateAIInternal(uint32 elapsed);
-    void TellError(string botName, string text);
+        void UpdateAIInternal(uint32 elapsed) override;
+        void TellError(std::string const& botName, std::string const& text);
 
-    Player* GetMaster() const { return master; };
+        Player* GetMaster() const { return master; };
 
-    void SaveToDB();
+        void SaveToDB();
 
-protected:
-    virtual void OnBotLoginInternal(Player * const bot);
-    void CheckTellErrors(uint32 elapsed);
+    protected:
+        void OnBotLoginInternal(Player* const bot) override;
+        void CheckTellErrors(uint32 elapsed);
 
-private:
-    Player* const master;
-    PlayerBotErrorMap errors;
-    time_t lastErrorTell;
+    private:
+        Player* const master;
+        PlayerBotErrorMap errors;
+        time_t lastErrorTell;
 };
 
 #endif

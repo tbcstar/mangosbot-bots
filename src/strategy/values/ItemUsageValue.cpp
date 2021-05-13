@@ -13,7 +13,7 @@ ItemUsage ItemUsageValue::Calculate()
     if (!itemId)
         return ITEM_USAGE_NONE;
 
-    const ItemPrototype* proto = sObjectMgr->GetItemPrototype(itemId);
+    const ItemTemplate* proto = sObjectMgr->GetItemTemplate(itemId);
     if (!proto)
         return ITEM_USAGE_NONE;
 
@@ -27,7 +27,7 @@ ItemUsage ItemUsageValue::Calculate()
         return ITEM_USAGE_USE;
     }
 
-    if (bot->GetGuildId() && sGuildTaskMgr.IsGuildTaskItem(itemId, bot->GetGuildId()))
+    if (bot->GetGuildId() && sGuildTaskMgr->IsGuildTaskItem(itemId, bot->GetGuildId()))
         return ITEM_USAGE_GUILD_TASK;
 
     ItemUsage equip = QueryItemUsageForEquip(proto);
@@ -41,7 +41,7 @@ ItemUsage ItemUsageValue::Calculate()
     return ITEM_USAGE_NONE;
 }
 
-ItemUsage ItemUsageValue::QueryItemUsageForEquip(ItemPrototype const * item)
+ItemUsage ItemUsageValue::QueryItemUsageForEquip(ItemTemplate const*  item)
 {
     if (bot->CanUseItem(item) != EQUIP_ERR_OK)
         return ITEM_USAGE_NONE;
@@ -61,17 +61,17 @@ ItemUsage ItemUsageValue::QueryItemUsageForEquip(ItemPrototype const * item)
     if( result != EQUIP_ERR_OK )
         return ITEM_USAGE_NONE;
 
-    if (item->Class == ITEM_CLASS_WEAPON && !sRandomItemMgr.CanEquipWeapon(bot->getClass(), item))
+    if (item->Class == ITEM_CLASS_WEAPON && !sRandomItemMgr->CanEquipWeapon(bot->getClass(), item))
         return ITEM_USAGE_NONE;
 
-    if (item->Class == ITEM_CLASS_ARMOR && !sRandomItemMgr.CanEquipArmor(bot->getClass(), bot->getLevel(), item))
+    if (item->Class == ITEM_CLASS_ARMOR && !sRandomItemMgr->CanEquipArmor(bot->getClass(), bot->getLevel(), item))
         return ITEM_USAGE_NONE;
 
     Item* existingItem = bot->GetItemByPos(dest);
     if (!existingItem)
         return ITEM_USAGE_EQUIP;
 
-    const ItemPrototype* oldItem = existingItem->GetProto();
+    const ItemTemplate* oldItem = existingItem->GetProto();
     if (oldItem->ItemId != item->ItemId &&
             (oldItem->ItemLevel < item->ItemLevel || oldItem->Quality < item->Quality))
     {
@@ -90,7 +90,7 @@ ItemUsage ItemUsageValue::QueryItemUsageForEquip(ItemPrototype const * item)
     return ITEM_USAGE_NONE;
 }
 
-bool ItemUsageValue::IsItemUsefulForSkill(ItemPrototype const * proto)
+bool ItemUsageValue::IsItemUsefulForSkill(ItemTemplate const*  proto)
 {
     switch (proto->Class)
     {

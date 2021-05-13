@@ -218,7 +218,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
         out << " on self";
     }
 
-    ItemPrototype const* proto = item->GetProto();
+    ItemTemplate const* proto = item->GetProto();
     bool isDrink = proto->Spells[0].SpellCategory == 59;
     bool isFood = proto->Spells[0].SpellCategory == 11;
     if (proto->Class == ITEM_CLASS_CONSUMABLE && (proto->SubClass == ITEM_SUBCLASS_FOOD || proto->SubClass == ITEM_SUBCLASS_CONSUMABLE) &&

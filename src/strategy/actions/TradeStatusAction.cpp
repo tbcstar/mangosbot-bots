@@ -83,7 +83,7 @@ bool TradeStatusAction::Execute(Event event)
                     craftData.AddObtained(itemId, count);
                 }
 
-                sGuildTaskMgr.CheckItemTask(itemId, count, master, bot);
+                sGuildTaskMgr->CheckItemTask(itemId, count, master, bot);
             }
 
 
@@ -259,7 +259,7 @@ int32 TradeStatusAction::CalculateCost(Player* player, bool sell)
         if (!item)
             continue;
 
-        ItemPrototype const* proto = item->GetProto();
+        ItemTemplate const* proto = item->GetProto();
         if (!proto)
             continue;
 

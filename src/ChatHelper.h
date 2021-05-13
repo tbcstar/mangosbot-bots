@@ -1,54 +1,61 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace std;
+#include "Common.h"
+#include "ObjectGuid.h"
+#include "PlayerbotAIAware.h"
+#include "SharedDefines.h"
 
-typedef set<uint32> ItemIds;
-typedef set<uint32> SpellIds;
+class GameObject;
+class Quest;
+class PlayerbotAI;
 
-namespace ai
+struct ItemTemplate;
+
+typedef std::set<uint32> ItemIds;
+typedef std::set<uint32> SpellIds;
+
+class ChatHelper : public PlayerbotAIAware
 {
-    class ChatHelper : public PlayerbotAIAware
-    {
     public:
         ChatHelper(PlayerbotAI* botAI);
 
-    public:
-        static string formatMoney(uint32 copper);
-        static uint32 parseMoney(string& text);
-        static ItemIds parseItems(string& text);
-        uint32 parseSpell(string& text);
-        static string formatQuest(Quest const* quest);
-        static string formatItem(ItemPrototype const * proto, int count = 0, int total = 0);
-        static string formatSpell(SpellEntry const *sInfo);
-        static string formatGameobject(GameObject* go);
-        static string formatQuestObjective(string name, int available, int required);
-        static list<ObjectGuid> parseGameobjects(string& text);
+        static std::string formatMoney(uint32 copper);
+        static uint32 parseMoney(std::string const& text);
+        static ItemIds parseItems(std::string const& text);
+        uint32 parseSpell(std::string const& text);
+        static std::string formatQuest(Quest const* quest);
+        static std::string formatItem(ItemTemplate const* proto, uint32 count = 0, uint32 total = 0);
+        static std::string formatSpell(SpellInfo const* spellInfo);
+        static std::string formatGameobject(GameObject* go);
+        static std::string formatQuestObjective(std::string const& name, uint32 available, uint32 required);
+        static GuidVector parseGameobjects(std::string const& text);
 
-        static ChatMsg parseChat(string& text);
-        static string formatChat(ChatMsg chat);
+        static ChatMsg parseChat(std::string const& text);
+        static std::string formatChat(ChatMsg chat);
 
-        static string formatClass(Player* player, int spec);
-        static string formatClass(uint8 cls);
-        static string formatRace(uint8 race);
-        static string formatSkill(uint32 skill);
-        static string formatBoolean(bool flag);
+        static std::string formatClass(Player* player, uint8 spec);
+        static std::string formatClass(uint8 cls);
+        static std::string formatRace(uint8 race);
+        static std::string formatSkill(uint32 skill);
+        static std::string formatBoolean(bool flag);
 
-        static uint32 parseItemQuality(string text);
-        static bool parseItemClass(string text, uint32 *itemClass, uint32 *itemSubClass);
-        static uint32 parseSlot(string text);
-        uint32 parseSkill(string& text);
+        static uint32 parseItemQuality(std::string const& text);
+        static bool parseItemClass(std::string const& text, uint32* itemClass, uint32* itemSubClass);
+        static uint32 parseSlot(std::string const& text);
+        uint32 parseSkill(std::string const& text);
 
-        static bool parseable(string text);
+        static bool parseable(std::string const& text);
 
     private:
-        static map<string, uint32> consumableSubClasses;
-        static map<string, uint32> tradeSubClasses;
-        static map<string, uint32> itemQualities;
-        static map<string, uint32> slots;
-        static map<string, uint32> skills;
-        static map<string, ChatMsg> chats;
-        static map<uint8, string> classes;
-        static map<uint8, string> races;
-        static map<uint8, map<uint8, string> > specs;
-    };
+        static std::map<std::string, uint32> consumableSubClasses;
+        static std::map<std::string, uint32> tradeSubClasses;
+        static std::map<std::string, uint32> itemQualities;
+        static std::map<std::string, uint32> slots;
+        static std::map<std::string, uint32> skills;
+        static std::map<std::string, ChatMsg> chats;
+        static std::map<uint8, std::string> classes;
+        static std::map<uint8, std::string> races;
+        static std::map<uint8, std::map<uint8, std::string> > specs;
 };

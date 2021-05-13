@@ -208,7 +208,7 @@ namespace ai
             float orientation = master->GetOrientation();
 
             vector<Player*> players;
-            GroupReference *gref = group->GetFirstMember();
+            GroupReference* gref = group->GetFirstMember();
             while( gref )
             {
                 Player* member = gref->getSource();
@@ -247,7 +247,7 @@ namespace ai
 
             vector<Player*> tanks;
             vector<Player*> dps;
-            GroupReference *gref = group->GetFirstMember();
+            GroupReference* gref = group->GetFirstMember();
             while( gref )
             {
                 Player* member = gref->getSource();
@@ -362,7 +362,7 @@ float Formation::GetFollowAngle()
     else if (group)
     {
         vector<Player*> roster;
-        for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
+        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
         {
             Player* member = ref->getSource();
             if (member && member != master && !botAI->IsTank(member) && !botAI->IsHeal(member))
@@ -370,7 +370,7 @@ float Formation::GetFollowAngle()
                 roster.insert(roster.begin() + roster.size() / 2, member);
             }
         }
-        for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
+        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
         {
             Player* member = ref->getSource();
             if (member && member != master && botAI->IsHeal(member))
@@ -379,7 +379,7 @@ float Formation::GetFollowAngle()
             }
         }
         bool left = true;
-        for (GroupReference *ref = group->GetFirstMember(); ref; ref = ref->next())
+        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
         {
             Player* member = ref->getSource();
             if (member && member != master && botAI->IsTank(member))

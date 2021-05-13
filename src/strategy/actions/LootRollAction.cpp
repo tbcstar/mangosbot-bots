@@ -30,7 +30,7 @@ bool LootRollAction::Execute(Event event)
         if ((*i)->isValid() && (*i)->lootedTargetGUID == guid && (*i)->itemSlot == slot)
         {
             uint32 itemId = (*i)->itemid;
-            ItemPrototype const *proto = sItemStorage.LookupEntry<ItemPrototype>(itemId);
+            ItemTemplate const* proto = sItemStorage.LookupEntry<ItemTemplate>(itemId);
             if (!proto)
                 continue;
 
@@ -53,7 +53,7 @@ bool LootRollAction::Execute(Event event)
     return true;
 }
 
-RollVote LootRollAction::CalculateRollVote(ItemPrototype const *proto)
+RollVote LootRollAction::CalculateRollVote(ItemTemplate const* proto)
 {
     ostringstream out; out << proto->ItemId;
     ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", out.str());

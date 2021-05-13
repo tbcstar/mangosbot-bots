@@ -50,7 +50,7 @@ void CustomStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
     {
         if (actionLinesCache[qualifier].empty())
         {
-            LoadActionLines((uint32)botAI->GetBot()->GetGUIDLow());
+            LoadActionLines((uint32)botAI->GetBot()->GetGUID().GetCounter());
             if (this->actionLines.empty())
                 LoadActionLines(0);
         }

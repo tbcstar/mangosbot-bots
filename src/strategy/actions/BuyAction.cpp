@@ -24,7 +24,7 @@ bool BuyAction::Execute(Event event)
     for (list<ObjectGuid>::iterator i = vendors.begin(); i != vendors.end(); ++i)
     {
         ObjectGuid vendorguid = *i;
-        Creature *pCreature = bot->GetNPCIfCanInteractWith(vendorguid, UNIT_NPC_FLAG_VENDOR);
+        Creature* pCreature = bot->GetNPCIfCanInteractWith(vendorguid, UNIT_NPC_FLAG_VENDOR);
         if (!pCreature)
             continue;
 
@@ -33,7 +33,7 @@ bool BuyAction::Execute(Event event)
         for (ItemIds::iterator i = itemIds.begin(); i != itemIds.end(); i++)
         {
             uint32 itemId = *i;
-            const ItemPrototype* proto = sObjectMgr->GetItemPrototype(itemId);
+            const ItemTemplate* proto = sObjectMgr->GetItemTemplate(itemId);
             if (!proto)
                 continue;
 
@@ -57,7 +57,7 @@ bool BuyAction::Execute(Event event)
     return true;
 }
 
-bool BuyAction::BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, const ItemPrototype* proto)
+bool BuyAction::BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, const ItemTemplate* proto)
 {
     if (!tItems)
         return false;

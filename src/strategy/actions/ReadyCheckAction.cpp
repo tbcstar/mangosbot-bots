@@ -30,7 +30,7 @@ string formatPercent(string name, uint8 value, float percent)
 class ReadyChecker
 {
 public:
-    virtual bool Check(PlayerbotAI *ai, AiObjectContext* context) = 0;
+    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context) = 0;
     virtual string GetName() = 0;
     virtual bool PrintAlways() { return true; }
 
@@ -42,7 +42,7 @@ list<ReadyChecker*> ReadyChecker::checkers;
 class HealthChecker : public ReadyChecker
 {
 public:
-    virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
+    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
     {
         return AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->almostFullHealth;
     }
@@ -52,7 +52,7 @@ public:
 class ManaChecker : public ReadyChecker
 {
 public:
-    virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
+    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
     {
         return !AI_VALUE2(bool, "has mana", "self target") || AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig->mediumHealth;
     }
@@ -62,7 +62,7 @@ public:
 class DistanceChecker : public ReadyChecker
 {
 public:
-    virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
+    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
     {
         Player* bot = botAI->GetBot();
         Player* master = botAI->GetMaster();
@@ -83,7 +83,7 @@ public:
 class HunterChecker : public ReadyChecker
 {
 public:
-    virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
+    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
     {
         Player* bot = botAI->GetBot();
         if (bot->getClass() == CLASS_HUNTER)
@@ -118,7 +118,7 @@ class ItemCountChecker : public ReadyChecker
 public:
     ItemCountChecker(string item, string name) { this->item = item; this->name = name; }
 
-    virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
+    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
     {
         return AI_VALUE2(uint8, "item count", item) > 0;
     }
@@ -133,7 +133,7 @@ class ManaPotionChecker : public ItemCountChecker
 public:
     ManaPotionChecker(string item, string name) : ItemCountChecker(item, name) {}
 
-    virtual bool Check(PlayerbotAI *ai, AiObjectContext* context)
+    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
     {
         return !AI_VALUE2(bool, "has mana", "self target") || ItemCountChecker::Check(ai, context);
     }
