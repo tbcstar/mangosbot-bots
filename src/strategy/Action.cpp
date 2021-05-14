@@ -1,18 +1,19 @@
-#include "../../botpch.h"
-#include "../playerbot.h"
-#include "AiObjectContext.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "Action.h"
+#include "../playerbot.h"
 
-using namespace ai;
-
-int NextAction::size(NextAction** actions)
+uint32 NextAction::size(NextAction** actions)
 {
     if (!actions)
         return 0;
 
-    int size;
-    for (size=0; actions[size]; )
+    uint32 size = 0;
+    for (size=0; actions[size];)
         size++;
+
     return size;
 }
 
@@ -21,25 +22,30 @@ NextAction** NextAction::clone(NextAction** actions)
     if (!actions)
         return NULL;
 
-    int size = NextAction::size(actions);
+    uint32 size = NextAction::size(actions);
 
     NextAction** res = new NextAction*[size + 1];
-    for (int i=0; i<size; i++)
+    for (uint32 i = 0; i < size; i++)
         res[i] = new NextAction(*actions[i]);
+
     res[size] = NULL;
+
     return res;
 }
 
 NextAction** NextAction::merge(NextAction** left, NextAction** right)
 {
-    int leftSize = NextAction::size(left);
-    int rightSize = NextAction::size(right);
+    uint32 leftSize = NextAction::size(left);
+    uint32 rightSize = NextAction::size(right);
 
     NextAction** res = new NextAction*[leftSize + rightSize + 1];
-    for (int i=0; i<leftSize; i++)
+
+    for (uint32 i = 0; i < leftSize; i++)
         res[i] = new NextAction(*left[i]);
-    for (int i=0; i<rightSize; i++)
+
+    for (uint32 i = 0; i < rightSize; i++)
         res[leftSize + i] = new NextAction(*right[i]);
+
     res[leftSize + rightSize] = NULL;
 
     NextAction::destroy(left);
@@ -53,7 +59,7 @@ NextAction** NextAction::array(uint8 nil, ...)
     va_list vl;
     va_start(vl, nil);
 
-    int size = 0;
+    uint32 size = 0;
     NextAction* cur = NULL;
     do
     {
@@ -78,7 +84,7 @@ void NextAction::destroy(NextAction** actions)
     if (!actions)
         return;
 
-    for (int i=0; actions[i]; i++)
+    for (uint32 i=0; actions[i]; i++)
         delete actions[i];
 
     delete actions;

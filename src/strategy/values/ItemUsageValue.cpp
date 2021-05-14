@@ -13,7 +13,7 @@ ItemUsage ItemUsageValue::Calculate()
     if (!itemId)
         return ITEM_USAGE_NONE;
 
-    const ItemTemplate* proto = sObjectMgr->GetItemTemplate(itemId);
+    ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
     if (!proto)
         return ITEM_USAGE_NONE;
 
@@ -71,7 +71,7 @@ ItemUsage ItemUsageValue::QueryItemUsageForEquip(ItemTemplate const*  item)
     if (!existingItem)
         return ITEM_USAGE_EQUIP;
 
-    const ItemTemplate* oldItem = existingItem->GetProto();
+    ItemTemplate const* oldItem = existingItem->GetProto();
     if (oldItem->ItemId != item->ItemId &&
             (oldItem->ItemLevel < item->ItemLevel || oldItem->Quality < item->Quality))
     {

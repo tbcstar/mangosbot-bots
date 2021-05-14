@@ -1,50 +1,20 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "Action.h"
-#include "Queue.h"
-#include "Trigger.h"
+#include "Common.h"
 #include "Multiplier.h"
-#include "AiObjectContext.h"
+#include "Trigger.h"
 #include "Strategy.h"
+#include "../PlayerbotAIAware.h"
 
-class ActionExecutionListener
-{
-    public:
-        virtual bool Before(Action* action, Event event) = 0;
-        virtual bool AllowExecution(Action* action, Event event) = 0;
-        virtual void After(Action* action, bool executed, Event event) = 0;
-        virtual bool OverrideResult(Action* action, bool executed, Event event) = 0;
-};
-
-// -----------------------------------------------------------------------------------------------------------------------
-
-class ActionExecutionListeners : public ActionExecutionListener
-{
-    public:
-        virtual ~ActionExecutionListeners();
-
-    // ActionExecutionListener
-    public:
-        virtual bool Before(Action* action, Event event);
-        virtual bool AllowExecution(Action* action, Event event);
-        virtual void After(Action* action, bool executed, Event event);
-        virtual bool OverrideResult(Action* action, bool executed, Event event);
-
-    public:
-        void Add(ActionExecutionListener* listener)
-        {
-            listeners.push_back(listener);
-        }
-        void Remove(ActionExecutionListener* listener)
-        {
-            listeners.remove(listener);
-        }
-
-    private:
-        std::list<ActionExecutionListener*> listeners;
-};
-
-// -----------------------------------------------------------------------------------------------------------------------
+class Action;
+class ActionNode;
+class AiObjectContext;
+class Event;
+class NextAction;
+class PlayerbotAI;
+class Queue;
 
 enum ActionResult
 {
@@ -55,40 +25,73 @@ enum ActionResult
     ACTION_RESULT_FAILED
 };
 
+class ActionExecutionListener
+{
+    public:
+        virtual bool Before(Action* action, Event event) = 0;
+        virtual bool AllowExecution(Action* action, Event event) = 0;
+        virtual void After(Action* action, bool executed, Event event) = 0;
+        virtual bool OverrideResult(Action* action, bool executed, Event event) = 0;
+};
+
+class ActionExecutionListeners : public ActionExecutionListener
+{
+    public:
+        virtual ~ActionExecutionListeners();
+
+        bool Before(Action* action, Event event) override;
+        bool AllowExecution(Action* action, Event event) override;
+        void After(Action* action, bool executed, Event event) override;
+        bool OverrideResult(Action* action, bool executed, Event event) override;
+
+        void Add(ActionExecutionListener* listener)
+        {
+            listeners.push_back(listener);
+        }
+
+        void Remove(ActionExecutionListener* listener)
+        {
+            listeners.remove(listener);
+        }
+
+    private:
+        std::list<ActionExecutionListener*> listeners;
+};
+
 class Engine : public PlayerbotAIAware
 {
     public:
         Engine(PlayerbotAI* botAI, AiObjectContext* factory);
 
 	    void Init();
-        void addStrategy(string name);
-		void addStrategies(string first, ...);
-        bool removeStrategy(string name);
-        bool HasStrategy(string name);
+        void addStrategy(std::string const& name);
+		void addStrategies(std::string const& first, ...);
+        bool removeStrategy(std::string const& name);
+        bool HasStrategy(std::string const& name);
         void removeAllStrategies();
-        void toggleStrategy(string name);
+        void toggleStrategy(std::string const& name);
         std::string ListStrategies();
-        list<string> GetStrategies();
+        std::vector<std::string> GetStrategies();
 		bool ContainsStrategy(StrategyType type);
-		void ChangeStrategy(string names);
-		string GetLastAction() { return lastAction; }
+		void ChangeStrategy(std::string const& names);
+        std::string GetLastAction() { return lastAction; }
 
-    public:
-	    virtual bool DoNextAction(Unit*, int depth = 0);
-	    ActionResult ExecuteAction(string name);
+	    virtual bool DoNextAction(Unit*, uint32 depth = 0);
+	    ActionResult ExecuteAction(std::string const& name);
 
-    public:
         void AddActionExecutionListener(ActionExecutionListener* listener)
         {
             actionExecutionListeners.Add(listener);
         }
+
         void removeActionExecutionListener(ActionExecutionListener* listener)
         {
             actionExecutionListeners.Remove(listener);
         }
 
-    public:
 	    virtual ~Engine(void);
+
+        bool testMode;
 
     private:
         bool MultiplyAndPush(NextAction** actions, float forceRelevance, bool skipPrerequisites, Event event, const char* pushType);
@@ -100,22 +103,17 @@ class Engine : public PlayerbotAIAware
         Action* InitializeAction(ActionNode* actionNode);
         bool ListenAndExecute(Action* action, Event event);
 
-    private:
-        void LogAction(const char* format, ...);
+        void LogAction(char const* format, ...);
         void LogValues();
+
+        ActionExecutionListeners actionExecutionListeners;
 
     protected:
 	    Queue queue;
-	    std::list<TriggerNode*> triggers;
-        std::list<Multiplier*> multipliers;
+	    std::vector<TriggerNode*> triggers;
+        std::vector<Multiplier*> multipliers;
         AiObjectContext* aiObjectContext;
-        std::map<string, Strategy*> strategies;
+        std::map<std::string, Strategy*> strategies;
         float lastRelevance;
         std::string lastAction;
-
-    public:
-		bool testMode;
-
-    private:
-        ActionExecutionListeners actionExecutionListeners;
 };

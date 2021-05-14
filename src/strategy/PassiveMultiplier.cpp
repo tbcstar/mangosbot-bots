@@ -1,13 +1,14 @@
-#include "../../botpch.h"
-#include "../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PassiveMultiplier.h"
+#include "Action.h"
 
-using namespace ai;
+std::vector<std::string> PassiveMultiplier::allowedActions;
+std::vector<std::string> PassiveMultiplier::allowedParts;
 
-list<string> PassiveMultiplier::allowedActions;
-list<string> PassiveMultiplier::allowedParts;
-
-PassiveMultiplier::PassiveMultiplier(PlayerbotAI* botAI) : Multiplier(ai, "passive")
+PassiveMultiplier::PassiveMultiplier(PlayerbotAI* botAI) : Multiplier(botAI, "passive")
 {
     if (allowedActions.empty())
     {
@@ -25,21 +26,22 @@ PassiveMultiplier::PassiveMultiplier(PlayerbotAI* botAI) : Multiplier(ai, "passi
     }
 }
 
-float PassiveMultiplier::GetValue(Action* action) {
+float PassiveMultiplier::GetValue(Action* action)
+{
     if (!action)
 		return 1.0f;
 
-    string name = action->getName();
+    std::string const& name = action->getName();
 
-    for (list<string>::iterator i = allowedActions.begin(); i != allowedActions.end(); i++)
+    for (std::vector<std::string>::iterator i = allowedActions.begin(); i != allowedActions.end(); i++)
     {
         if (name == *i)
             return 1.0f;
     }
 
-    for (list<string>::iterator i = allowedParts.begin(); i != allowedParts.end(); i++)
+    for (std::vector<std::string>::iterator i = allowedParts.begin(); i != allowedParts.end(); i++)
     {
-        if (name.find(*i) != string::npos)
+        if (name.find(*i) != std::string::npos)
             return 1.0f;
     }
 

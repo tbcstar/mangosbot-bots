@@ -33,7 +33,7 @@ bool BuyAction::Execute(Event event)
         for (ItemIds::iterator i = itemIds.begin(); i != itemIds.end(); i++)
         {
             uint32 itemId = *i;
-            const ItemTemplate* proto = sObjectMgr->GetItemTemplate(itemId);
+            ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
             if (!proto)
                 continue;
 
@@ -57,7 +57,7 @@ bool BuyAction::Execute(Event event)
     return true;
 }
 
-bool BuyAction::BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, const ItemTemplate* proto)
+bool BuyAction::BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, ItemTemplate const* proto)
 {
     if (!tItems)
         return false;

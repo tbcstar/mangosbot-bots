@@ -33,7 +33,7 @@ bool WtsAction::Execute(Event event)
     for (ItemIds::iterator i = itemIds.begin(); i != itemIds.end(); i++)
     {
         uint32 itemId = *i;
-        const ItemTemplate* proto = sObjectMgr->GetItemTemplate(itemId);
+        ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
         if (!proto)
             continue;
 

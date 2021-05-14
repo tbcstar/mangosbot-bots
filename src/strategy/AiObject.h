@@ -1,14 +1,17 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
+#include "Common.h"
+#include "../PlayerbotAIAware.h"
+
+class AiObjectContext;
+class ChatHelper;
+class Player;
 class PlayerbotAI;
 
-namespace ai
+class AiObject : public PlayerbotAIAware
 {
-    class AiObjectContext;
-    class ChatHelper;
-
-    class AiObject : public PlayerbotAIAware
-	{
 	public:
         AiObject(PlayerbotAI* botAI);
 
@@ -17,17 +20,16 @@ namespace ai
         Player* GetMaster();
         AiObjectContext* context;
         ChatHelper* chat;
-	};
+};
 
-    class AiNamedObject : public AiObject
-    {
+class AiNamedObject : public AiObject
+{
     public:
-        AiNamedObject(PlayerbotAI* botAI, string name) : AiObject(botAI), name(name) {}
+        AiNamedObject(PlayerbotAI* botAI, string name) : AiObject(botAI), name(name) { }
 
     public:
-        virtual string getName() { return name; }
+        virtual std::string const& getName() { return name; }
 
     protected:
-        string name;
-    };
-}
+        std::string name;
+};

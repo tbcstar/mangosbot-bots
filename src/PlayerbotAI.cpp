@@ -11,7 +11,6 @@
 #include "PlayerbotDbStore.h"
 #include "PlayerbotMgr.h"
 #include "PlayerbotSecurity.h"
-#include "strategy/AiObjectContext.h"
 #include "strategy/Engine.h"
 #include "strategy/ExternalEventHelper.h"
 #include "strategy/actions/LogLevelAction.h"

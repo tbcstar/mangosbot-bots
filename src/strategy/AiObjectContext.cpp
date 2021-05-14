@@ -1,17 +1,19 @@
-#include "../../botpch.h"
-#include "../playerbot.h"
-#include "AiObjectContext.h"
-#include "NamedObjectContext.h"
-#include "StrategyContext.h"
-#include "triggers/TriggerContext.h"
-#include "actions/ActionContext.h"
-#include "triggers/ChatTriggerContext.h"
-#include "actions/ChatActionContext.h"
-#include "triggers/WorldPacketTriggerContext.h"
-#include "actions/WorldPacketActionContext.h"
-#include "values/ValueContext.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "AiObjectContext.h"
+#include "Action.h"
+#include "StrategyContext.h"
+#include "Trigger.h"
+#include "actions/ActionContext.h"
+#include "actions/ChatActionContext.h"
+#include "actions/WorldPacketActionContext.h"
+#include "triggers/ChatTriggerContext.h"
+#include "triggers/TriggerContext.h"
+#include "triggers/WorldPacketTriggerContext.h"
+#include "values/ValueContext.h"
+#include "../Playerbot.h"
 
 AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
 {
@@ -47,45 +49,123 @@ void AiObjectContext::Reset()
     valueContexts.Reset();
 }
 
-list<string> AiObjectContext::Save()
+std::vector<std::string> AiObjectContext::Save()
 {
-    list<string> result;
+    std::vector<string> result;
 
-    set<string> names = valueContexts.GetCreated();
-    for (set<string>::iterator i = names.begin(); i != names.end(); ++i)
+    std::set<std::string> names = valueContexts.GetCreated();
+    for (std::set<std::string>::iterator i = names.begin(); i != names.end(); ++i)
     {
         UntypedValue* value = GetUntypedValue(*i);
         if (!value)
             continue;
 
-        string data = value->Save();
+        std::string const& data = value->Save();
         if (data == "?")
             continue;
 
-        string name = *i;
+        std::string const& name = *i;
         ostringstream out;
         out << name;
 
         out << ">" << data;
         result.push_back(out.str());
     }
-    return result;
+
+    return std::move(result);
 }
 
-void AiObjectContext::Load(list<string> data)
+void AiObjectContext::Load(std::vector<std::string> data)
 {
-    for (list<string>::iterator i = data.begin(); i != data.end(); ++i)
+    for (std::vector<std::string>::iterator i = data.begin(); i != data.end(); ++i)
     {
-        string row = *i;
-        vector<string> parts = split(row, '>');
-        if (parts.size() != 2) continue;
+        std::string const& row = *i;
+        std::vector<std::string> parts = split(row, '>');
+        if (parts.size() != 2)
+            continue;
 
-        string name = parts[0];
-        string text = parts[1];
+        std::string const& name = parts[0];
+        std::string const& text = parts[1];
 
         UntypedValue* value = GetUntypedValue(name);
-        if (!value) continue;
+        if (!value)
+            continue;
 
         value->Load(text);
     }
+}
+
+Strategy* AiObjectContext::GetStrategy(std::string const& name)
+{
+    return strategyContexts.GetObject(name, botAI);
+}
+
+std::set<std::string> AiObjectContext::GetSiblingStrategy(std::string const& name)
+{
+    return strategyContexts.GetSiblings(name);
+}
+
+Trigger* AiObjectContext::GetTrigger(std::string const& name)
+{
+    return triggerContexts.GetObject(name, botAI);
+}
+
+Action* AiObjectContext::GetAction(std::string const& name)
+{
+    return actionContexts.GetObject(name, botAI);
+}
+
+UntypedValue* AiObjectContext::GetUntypedValue(std::string const& name)
+{
+    return valueContexts.GetObject(name, botAI);
+}
+
+template<class T>
+Value<T>* AiObjectContext::GetValue(std::string const& name)
+{
+    return dynamic_cast<Value<T>*>(GetUntypedValue(name));
+}
+
+template<class T>
+Value<T>* AiObjectContext::GetValue(std::string const& name, std::string const& param)
+{
+    return GetValue<T>((std::string(name) + "::" + param));
+}
+
+template<class T>
+Value<T>* AiObjectContext::GetValue(std::string const& name, uint32 param)
+{
+    std::ostringstream out;
+    out << param;
+    return GetValue<T>(name, out.str());
+}
+
+std::set<std::string> AiObjectContext::GetSupportedStrategies()
+{
+    return strategyContexts.supports();
+}
+
+std::string AiObjectContext::FormatValues()
+{
+    std::ostringstream out;
+    std::set<std::string> names = valueContexts.GetCreated();
+    for (std::set<std::string>::iterator i = names.begin(); i != names.end(); ++i, out << "|")
+    {
+        UntypedValue* value = GetUntypedValue(*i);
+        if (!value)
+            continue;
+
+        std::string const& text = value->Format();
+        if (text == "?")
+            continue;
+
+        out << "{" << *i << "=" << text << "}";
+    }
+
+    return out.str();
+}
+
+void AiObjectContext::AddShared(NamedObjectContext<UntypedValue>* sharedValues)
+{
+    valueContexts.Add(sharedValues);
 }

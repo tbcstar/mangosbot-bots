@@ -1,10 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../PlayerbotAIAware.h"
-#include "Action.h"
-#include "Value.h"
+#include "Common.h"
 #include "NamedObjectContext.h"
-#include "Strategy.h"
+#include "Value.h"
+#include "../PlayerbotAIAware.h"
+
+class Action;
+class PlayerbotAI;
+class Strategy;
+class Trigger;
 
 class AiObjectContext : public PlayerbotAIAware
 {
@@ -12,65 +18,30 @@ class AiObjectContext : public PlayerbotAIAware
         AiObjectContext(PlayerbotAI* botAI);
         virtual ~AiObjectContext() {}
 
-    public:
-        virtual Strategy* GetStrategy(string name) { return strategyContexts.GetObject(name, ai); }
-        virtual set<string> GetSiblingStrategy(string name) { return strategyContexts.GetSiblings(name); }
-        virtual Trigger* GetTrigger(string name) { return triggerContexts.GetObject(name, ai); }
-        virtual Action* GetAction(string name) { return actionContexts.GetObject(name, ai); }
-        virtual UntypedValue* GetUntypedValue(string name) { return valueContexts.GetObject(name, ai); }
+        virtual Strategy* GetStrategy(std::string const& name);
+        virtual std::set<std::string> GetSiblingStrategy(std::string const& name);
+        virtual Trigger* GetTrigger(std::string const& name);
+        virtual Action* GetAction(std::string const& name);
+        virtual UntypedValue* GetUntypedValue(std::string const& name);
 
         template<class T>
-        Value<T>* GetValue(string name)
-        {
-            return dynamic_cast<Value<T>*>(GetUntypedValue(name));
-        }
+        Value<T>* GetValue(std::string const& name);
 
         template<class T>
-        Value<T>* GetValue(string name, string param)
-        {
-            return GetValue<T>((string(name) + "::" + param));
-        }
+        Value<T>* GetValue(std::string const& name, std::string const& param);
 
         template<class T>
-        Value<T>* GetValue(string name, uint32 param)
-        {
-        	ostringstream out; out << param;
-            return GetValue<T>(name, out.str());
-        }
+        Value<T>* GetValue(std::string const& name, uint32 param);
 
-        set<string> GetSupportedStrategies()
-        {
-            return strategyContexts.supports();
-        }
+        std::set<std::string> GetSupportedStrategies();
+        std::string FormatValues();
 
-        string FormatValues()
-        {
-            ostringstream out;
-            set<string> names = valueContexts.GetCreated();
-            for (set<string>::iterator i = names.begin(); i != names.end(); ++i, out << "|")
-            {
-                UntypedValue* value = GetUntypedValue(*i);
-                if (!value)
-                    continue;
-
-                string text = value->Format();
-                if (text == "?")
-                    continue;
-
-                out << "{" << *i << "=" << text << "}";
-            }
-            return out.str();
-        }
-
-    public:
         virtual void Update();
         virtual void Reset();
-        virtual void AddShared(NamedObjectContext<UntypedValue>* sharedValues)
-        {
-            valueContexts.Add(sharedValues);
-        }
-        list<string> Save();
-        void Load(list<string> data);
+        virtual void AddShared(NamedObjectContext<UntypedValue>* sharedValues);
+
+        std::vector<std::string> Save();
+        void Load(std::vector<std::string> data);
 
     protected:
         NamedObjectContextList<Strategy> strategyContexts;

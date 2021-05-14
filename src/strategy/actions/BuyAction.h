@@ -11,7 +11,7 @@ namespace ai
         virtual bool Execute(Event event);
 
     private:
-        bool BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, const ItemTemplate* proto);
+        bool BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, ItemTemplate const* proto);
         bool TradeItem(FindItemVisitor *visitor, int8 slot);
         bool TradeItem(const Item& item, int8 slot);
 

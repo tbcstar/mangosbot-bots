@@ -17,7 +17,7 @@ public:
         if (bot->CanUseItem(item->GetProto()) != EQUIP_ERR_OK)
             return true;
 
-        const ItemTemplate* proto = item->GetProto();
+        ItemTemplate const* proto = item->GetProto();
 
         if (proto->Class != ITEM_CLASS_CONSUMABLE)
             return true;

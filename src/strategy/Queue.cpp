@@ -1,11 +1,10 @@
-#include "../../botpch.h"
-#include "../playerbot.h"
-#include "Action.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "Queue.h"
-
+#include "Log.h"
 #include "../PlayerbotAIConfig.h"
-using namespace ai;
-
 
 void Queue::Push(ActionBasket *action)
 {
@@ -18,13 +17,15 @@ void Queue::Push(ActionBasket *action)
             {
 				if (basket->getRelevance() < action->getRelevance())
 					basket->setRelevance(action->getRelevance());
-				ActionNode *actionNode = action->getAction();
-				if (actionNode)
+
+				if (ActionNode* actionNode = action->getAction())
 				    delete actionNode;
                 delete action;
+
                 return;
             }
         }
+
 		actions.push_back(action);
     }
 }
@@ -33,6 +34,7 @@ ActionNode* Queue::Pop()
 {
 	float max = -1;
 	ActionBasket* selection = NULL;
+
 	for (std::list<ActionBasket*>::iterator iter = actions.begin(); iter != actions.end(); iter++)
 	{
 		ActionBasket* basket = *iter;
@@ -42,6 +44,7 @@ ActionNode* Queue::Pop()
 			selection = basket;
 		}
 	}
+
 	if (selection != NULL)
 	{
 		ActionNode* action = selection->getAction();
@@ -49,6 +52,7 @@ ActionNode* Queue::Pop()
 		delete selection;
 		return action;
 	}
+
 	return NULL;
 }
 
@@ -65,17 +69,18 @@ ActionBasket* Queue::Peek()
             selection = basket;
         }
     }
+
     return selection;
 }
 
-int Queue::Size()
+uint32 Queue::Size()
 {
 	return actions.size();
 }
 
 void Queue::RemoveExpired()
 {
-    list<ActionBasket*> expired;
+    std::vector<ActionBasket*> expired;
     for (std::list<ActionBasket*>::iterator iter = actions.begin(); iter != actions.end(); iter++)
     {
         ActionBasket* basket = *iter;
@@ -83,16 +88,17 @@ void Queue::RemoveExpired()
             expired.push_back(basket);
     }
 
-    for (std::list<ActionBasket*>::iterator iter = expired.begin(); iter != expired.end(); iter++)
+    for (std::vector<ActionBasket*>::iterator iter = expired.begin(); iter != expired.end(); iter++)
     {
         ActionBasket* basket = *iter;
         actions.remove(basket);
-        ActionNode* action = basket->getAction();
-        if (action)
+
+        if (ActionNode* action = basket->getAction())
         {
             sLog->outDebug("Action %s is expired", action->getName());
             delete action;
         }
+
         delete basket;
     }
 }

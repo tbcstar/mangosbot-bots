@@ -5,7 +5,6 @@
 #include "FleeManager.h"
 #include "Playerbot.h"
 #include "ServerFacade.h"
-#include "strategy/AiObjectContext.h"
 
 void FleeManager::calculateDistanceToCreatures(FleePoint *point)
 {

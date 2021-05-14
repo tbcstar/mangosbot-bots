@@ -13,7 +13,6 @@
 #include "Playerbot.h"
 #include "PlayerbotCommandServer.h"
 #include "PlayerbotFactory.h"
-#include "strategy/AiObjectContext.h"
 
 class PrintStatsThread: public ACE_Task <ACE_MT_SYNCH>
 {

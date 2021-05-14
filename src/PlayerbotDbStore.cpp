@@ -4,7 +4,6 @@
 
 #include "PlayerbotDbStore.h"
 #include "Playerbot.h"
-#include "strategy/AiObjectContext.h"
 
 #include <iostream>
 

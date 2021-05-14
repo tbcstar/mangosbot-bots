@@ -1,30 +1,32 @@
-#pragma once
-#include "Event.h"
-#include "Value.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "AiObject.h"
+#include "Common.h"
+#include "Value.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+class Unit;
+
+enum ActionThreatType
 {
-    class NextAction
-    {
-    public:
-        NextAction(string name, float relevance = 0.0f)
-        {
-            this->name = name;
-            this->relevance = relevance;
-        }
-        NextAction(const NextAction& o)
-        {
-            this->name = o.name;
-            this->relevance = o.relevance;
-        }
+    ACTION_THREAT_NONE      = 0,
+    ACTION_THREAT_SINGLE    = 1,
+    ACTION_THREAT_AOE       = 2
+};
 
+class NextAction
+{
     public:
-        string getName() { return name; }
+        NextAction(std::string name, float relevance = 0.0f) : name(name), relevance(relevance) { }
+        NextAction(NextAction const& o) : name(o.name), relevance(o.relevance) { }
+
+        std::string const& getName() { return name; }
         float getRelevance() {return relevance;}
 
-    public:
-        static int size(NextAction** actions);
+        static uint32 size(NextAction** actions);
         static NextAction** clone(NextAction** actions);
         static NextAction** merge(NextAction** what, NextAction** with);
         static NextAction** array(uint8 nil,...);
@@ -33,26 +35,14 @@ namespace ai
     private:
         float relevance;
         std::string name;
-    };
+};
 
-    //---------------------------------------------------------------------------------------------------------------------
-
-    class ActionBasket;
-
-    enum ActionThreatType
-    {
-        ACTION_THREAT_NONE = 0,
-        ACTION_THREAT_SINGLE= 1,
-        ACTION_THREAT_AOE = 2
-    };
-
-    class Action : public AiNamedObject
-	{
+class Action : public AiNamedObject
+{
 	public:
-        Action(PlayerbotAI* botAI, string name = "action") : verbose(false), AiNamedObject(ai, name) { }
-        virtual ~Action(void) {}
+        Action(PlayerbotAI* botAI, std::string name = "action") : verbose(false), AiNamedObject(ai, name) { }
+        virtual ~Action(void) { }
 
-    public:
         virtual bool Execute(Event event) { return true; }
         virtual bool isPossible() { return true; }
         virtual bool isUseful() { return true; }
@@ -60,28 +50,23 @@ namespace ai
         virtual NextAction** getAlternatives() { return NULL; }
         virtual NextAction** getContinuers() { return NULL; }
         virtual ActionThreatType getThreatType() { return ACTION_THREAT_NONE; }
-        void Update() {}
-        void Reset() {}
+        void Update() { }
+        void Reset() { }
         virtual Unit* GetTarget();
         virtual Value<Unit*>* GetTargetValue();
-        virtual string GetTargetName() { return "self target"; }
+        virtual std::string GetTargetName() { return "self target"; }
         void MakeVerbose() { verbose = true; }
 
     protected:
         bool verbose;
-	};
+};
 
-    class ActionNode
-    {
+class ActionNode
+{
     public:
-        ActionNode(string name, NextAction** prerequisites = NULL, NextAction** alternatives = NULL, NextAction** continuers = NULL)
-        {
-            this->action = NULL;
-            this->name = name;
-            this->prerequisites = prerequisites;
-            this->alternatives = alternatives;
-            this->continuers = continuers;
-        }
+        ActionNode(std::string name, NextAction** prerequisites = NULL, NextAction** alternatives = NULL, NextAction** continuers = NULL) :
+            action(NULL), name(name), prerequisites(prerequisites), alternatives(alternatives), continuers(continuers) { }
+
         virtual ~ActionNode()
         {
             NextAction::destroy(prerequisites);
@@ -89,35 +74,30 @@ namespace ai
             NextAction::destroy(continuers);
         }
 
-    public:
         Action* getAction() { return action; }
         void setAction(Action* action) { this->action = action; }
-        string getName() { return name; }
+        std::string const& getName() { return name; }
 
-    public:
         NextAction** getContinuers() { return NextAction::merge(NextAction::clone(continuers), action->getContinuers()); }
         NextAction** getAlternatives() { return NextAction::merge(NextAction::clone(alternatives), action->getAlternatives()); }
         NextAction** getPrerequisites() { return NextAction::merge(NextAction::clone(prerequisites), action->getPrerequisites()); }
 
     private:
-        string name;
+        std::string name;
         Action* action;
         NextAction** continuers;
         NextAction** alternatives;
         NextAction** prerequisites;
-    };
+};
 
-    //---------------------------------------------------------------------------------------------------------------------
-
-	class ActionBasket
-	{
+class ActionBasket
+{
 	public:
         ActionBasket(ActionNode* action, float relevance, bool skipPrerequisites, Event event) :
-          action(action), relevance(relevance), skipPrerequisites(skipPrerequisites), event(event) {
-            created = time(0);
-        }
-        virtual ~ActionBasket(void) {}
-	public:
+            action(action), relevance(relevance), skipPrerequisites(skipPrerequisites), event(event), created(time(0)) { }
+
+        virtual ~ActionBasket(void) { }
+
 		float getRelevance() {return relevance;}
 		ActionNode* getAction() {return action;}
         Event getEvent() { return event; }
@@ -125,18 +105,12 @@ namespace ai
         void AmendRelevance(float k) {relevance *= k; }
         void setRelevance(float relevance) { this->relevance = relevance; }
         bool isExpired(time_t secs) { return time(0) - created >= secs; }
+
 	private:
 		ActionNode* action;
 		float relevance;
         bool skipPrerequisites;
         Event event;
         time_t created;
-	};
+};
 
-    //---------------------------------------------------------------------------------------------------------------------
-
-
-}
-
-#define AI_VALUE(type, name) context->GetValue<type>(name)->Get()
-#define AI_VALUE2(type, name, param) context->GetValue<type>(name, param)->Get()
