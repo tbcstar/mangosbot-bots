@@ -1,18 +1,19 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "CastCustomSpellAction.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
-using namespace ai;
-
-int FindLastSeparator(string text, string sep)
+uint32 FindLastSeparator(std::string const& text, std::string const& sep)
 {
-    int pos = text.rfind(sep);
-    if (pos == string::npos) return pos;
+    uint32 pos = text.rfind(sep);
+    if (pos == std::string::npos)
+        return pos;
 
-    int lastLinkBegin = text.rfind("|H");
-    int lastLinkEnd = text.find("|h|r", lastLinkBegin + 1);
+    uint32 lastLinkBegin = text.rfind("|H");
+    uint32 lastLinkEnd = text.find("|h|r", lastLinkBegin + 1);
     if (pos >= lastLinkBegin && pos <= lastLinkEnd)
         pos = text.find_last_of(sep, lastLinkBegin);
 
@@ -21,7 +22,7 @@ int FindLastSeparator(string text, string sep)
 
 bool CastCustomSpellAction::Execute(Event event)
 {
-    Unit* target = NULL;
+    Unit* target = nullptr;
 
     Player* master = GetMaster();
     if (master && master->GetTarget())
@@ -30,17 +31,18 @@ bool CastCustomSpellAction::Execute(Event event)
     if (!target)
         target = bot;
 
-    string text = event.getParam();
+    std::string text = event.getParam();
 
-    Item* itemTarget = NULL;
+    Item* itemTarget = nullptr;
 
-    int pos = FindLastSeparator(text, " ");
-    int castCount = 1;
-    if (pos != string::npos)
+    uint32 pos = FindLastSeparator(text, " ");
+    uint32 castCount = 1;
+    if (pos != std::string::npos)
     {
-        string param = text.substr(pos + 1);
-        list<Item*> items = InventoryAction::parseItems(param, ITERATE_ITEMS_IN_BAGS);
-        if (!items.empty()) itemTarget = *items.begin();
+        std:string const& param = text.substr(pos + 1);
+        std::vector<Item*> items = InventoryAction::parseItems(param, ITERATE_ITEMS_IN_BAGS);
+        if (!items.empty())
+            itemTarget = *items.begin();
         else
         {
             castCount = atoi(param.c_str());
@@ -51,7 +53,7 @@ bool CastCustomSpellAction::Execute(Event event)
 
     uint32 spell = AI_VALUE2(uint32, "spell id", text);
 
-    ostringstream msg;
+    std::ostringstream msg;
     if (!spell)
     {
         msg << "Unknown spell " << text;
@@ -59,29 +61,35 @@ bool CastCustomSpellAction::Execute(Event event)
         return false;
     }
 
-    SpellEntry const *pSpellInfo = sServerFacade->LookupSpellInfo(spell);
-    if (!pSpellInfo)
+    SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spell);
+    if (!spellInfo)
     {
         msg << "Unknown spell " << text;
         botAI->TellError(msg.str());
         return false;
     }
 
-    if (target != bot && !sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
+    if (target != bot && !bot->IsInFront(target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
     {
-        sServerFacade->SetFacingTo(bot, target);
+        bot->SetFacingTo(target);
         botAI->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
+
         msg << "cast " << text;
         botAI->HandleCommand(CHAT_MSG_WHISPER, msg.str(), *master);
         return true;
     }
 
-    ostringstream spellName;
-    spellName << ChatHelper::formatSpell(pSpellInfo) << " on ";
-    if (bot->GetTrader()) spellName << "trade item";
-    else if (itemTarget) spellName << chat->formatItem(itemTarget->GetProto());
-    else if (target == bot) spellName << "self";
-    else spellName << target->GetName();
+    std::ostringstream spellName;
+    spellName << ChatHelper::formatSpell(spellInfo) << " on ";
+
+    if (bot->GetTrader())
+        spellName << "trade item";
+    else if (itemTarget)
+        spellName << chat->formatItem(itemTarget->GetTemplate());
+    else if (target == bot)
+        spellName << "self";
+    else
+        spellName << target->GetName();
 
     if (!bot->GetTrader() && !botAI->CanCastSpell(spell, target, true, itemTarget))
     {
@@ -90,8 +98,6 @@ bool CastCustomSpellAction::Execute(Event event)
         return false;
     }
 
-    MotionMaster &mm = *bot->GetMotionMaster();
-
     bool result = spell ? botAI->CastSpell(spell, target, itemTarget) : botAI->CastSpell(text, target, itemTarget);
     if (result)
     {
@@ -99,11 +105,12 @@ bool CastCustomSpellAction::Execute(Event event)
 
         if (castCount > 1)
         {
-            ostringstream cmd;
+            std::ostringstream cmd;
             cmd << "cast " << text << " " << (castCount - 1);
             botAI->HandleCommand(CHAT_MSG_WHISPER, cmd.str(), *master);
             msg << "|cffffff00(x" << (castCount-1) << " left)|r";
         }
+
         botAI->TellMasterNoFacing(msg.str());
     }
     else

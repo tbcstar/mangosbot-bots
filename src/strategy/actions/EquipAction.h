@@ -1,21 +1,26 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
+#include "../../ChatHelper.h"
 #include "InventoryAction.h"
 
-namespace ai
+class Event;
+class FindItemVisitor;
+class Item;
+class PlayerbotAI;
+
+class EquipAction : public InventoryAction
 {
-    class EquipAction : public InventoryAction {
     public:
-        EquipAction(PlayerbotAI* botAI, string name = "equip") : InventoryAction(ai, name) {}
-        virtual bool Execute(Event event);
+        EquipAction(PlayerbotAI* botAI, std::string const& name = "equip") : InventoryAction(botAI, name) { }
+
+        bool Execute(Event event) override;
 
     protected:
         void EquipItems(ItemIds ids);
 
     private:
         void EquipItem(FindItemVisitor* visitor);
-        void EquipItem(Item& item);
-    };
-
-}
+        void EquipItem(Item* item);
+};

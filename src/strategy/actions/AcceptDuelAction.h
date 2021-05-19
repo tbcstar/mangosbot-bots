@@ -1,31 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class AcceptDuelAction : public Action
 {
-    class AcceptDuelAction : public Action
-    {
     public:
-        AcceptDuelAction(PlayerbotAI* botAI) : Action(ai, "accept duel")
-        {}
+        AcceptDuelAction(PlayerbotAI* botAI) : Action(botAI, "accept duel") { }
 
-        virtual bool Execute(Event event)
-        {
-            WorldPacket p(event.getPacket());
-
-            ObjectGuid flagGuid;
-            p >> flagGuid;
-            ObjectGuid playerGuid;
-            p >> playerGuid;
-
-            WorldPacket packet(CMSG_DUEL_ACCEPTED, 8);
-            packet << flagGuid;
-            bot->GetSession()->HandleDuelAcceptedOpcode(packet);
-
-            botAI->ResetStrategies();
-            return true;
-        }
-    };
-
-}
+        bool Execute(Event event) override;
+};

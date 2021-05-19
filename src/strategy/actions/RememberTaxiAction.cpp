@@ -1,20 +1,20 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "RememberTaxiAction.h"
-#include "../values/LastMovementValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "RememberTaxiAction.h"
+#include "../Event.h"
+#include "../values/LastMovementValue.h"
+#include "../../Playerbot.h"
 
 bool RememberTaxiAction::Execute(Event event)
 {
-
-
     WorldPacket p(event.getPacket());
     p.rpos(0);
 
     switch (p.GetOpcode())
     {
-    case CMSG_ACTIVATETAXI:
+        case CMSG_ACTIVATETAXI:
         {
             LastMovement& movement = context->GetValue<LastMovement&>("last taxi")->Get();
             movement.taxiNodes.clear();
@@ -23,7 +23,7 @@ bool RememberTaxiAction::Execute(Event event)
             p >> movement.taxiMaster >> movement.taxiNodes[0] >> movement.taxiNodes[1];
             return true;
         }
-    case CMSG_ACTIVATETAXIEXPRESS:
+        case CMSG_ACTIVATETAXIEXPRESS:
         {
             ObjectGuid guid;
             uint32 node_count, totalcost;

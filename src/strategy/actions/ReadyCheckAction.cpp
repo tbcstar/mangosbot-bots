@@ -1,21 +1,16 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "ReadyCheckAction.h"
-#include "../../PlayerbotAIConfig.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
-using namespace ai;
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "ReadyCheckAction.h"
-#include "../../PlayerbotAIConfig.h"
-
-using namespace ai;
-
-string formatPercent(string name, uint8 value, float percent)
+string formatPercent(std::string const& name, uint8 value, float percent)
 {
-    ostringstream out;
+    std::ostringstream out;
 
-    string color;
+    std::string color;
     if (percent > 75)
         color = "|cff00ff00";
     else if (percent > 50)
@@ -29,114 +24,120 @@ string formatPercent(string name, uint8 value, float percent)
 
 class ReadyChecker
 {
-public:
-    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context) = 0;
-    virtual string GetName() = 0;
-    virtual bool PrintAlways() { return true; }
+    public:
+        virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context) = 0;
+        virtual std::string const& GetName() = 0;
+        virtual bool PrintAlways() { return true; }
 
-    static list<ReadyChecker*> checkers;
+        static std::vector<ReadyChecker*> checkers;
 };
 
-list<ReadyChecker*> ReadyChecker::checkers;
+std::vector<ReadyChecker*> ReadyChecker::checkers;
 
 class HealthChecker : public ReadyChecker
 {
-public:
-    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
-    {
-        return AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->almostFullHealth;
-    }
-    virtual string GetName() { return "HP"; }
+    public:
+        bool Check(PlayerbotAI* botAI, AiObjectContext* context) override
+        {
+            return AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->almostFullHealth;
+        }
+
+        std::string const& GetName() override { return "HP"; }
 };
 
 class ManaChecker : public ReadyChecker
 {
-public:
-    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
-    {
-        return !AI_VALUE2(bool, "has mana", "self target") || AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig->mediumHealth;
-    }
-    virtual string GetName() { return "MP"; }
+    public:
+        bool Check(PlayerbotAI* botAI, AiObjectContext* context) override
+        {
+            return !AI_VALUE2(bool, "has mana", "self target") || AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig->mediumHealth;
+        }
+
+        std::string const& GetName() override { return "MP"; }
 };
 
 class DistanceChecker : public ReadyChecker
 {
-public:
-    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
-    {
-        Player* bot = botAI->GetBot();
-        Player* master = botAI->GetMaster();
-        if (master)
+    public:
+        bool Check(PlayerbotAI* botAI, AiObjectContext* context) override
         {
-            bool distance = bot->GetDistance(master) <= sPlayerbotAIConfig->sightDistance;
-            if (!distance)
+            Player* bot = botAI->GetBot();
+            if (Player* master = botAI->GetMaster())
             {
-                return false;
+                bool distance = bot->GetDistance(master) <= sPlayerbotAIConfig->sightDistance;
+                if (!distance)
+                {
+                    return false;
+                }
             }
+
+            return true;
         }
-        return true;
-    }
-    virtual bool PrintAlways() { return false; }
-    virtual string GetName() { return "Far away"; }
+
+        bool PrintAlways() override { return false; }
+        std::string const& GetName() override { return "Far away"; }
 };
 
 class HunterChecker : public ReadyChecker
 {
-public:
-    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
-    {
-        Player* bot = botAI->GetBot();
-        if (bot->getClass() == CLASS_HUNTER)
+    public:
+        bool Check(PlayerbotAI* botAI, AiObjectContext* context) override
         {
-            if (!bot->GetUInt32Value(PLAYER_AMMO_ID))
+            Player* bot = botAI->GetBot();
+            if (bot->getClass() == CLASS_HUNTER)
             {
-                botAI->TellError("Out of ammo!");
-                return false;
+                if (!bot->GetUInt32Value(PLAYER_AMMO_ID))
+                {
+                    botAI->TellError("Out of ammo!");
+                    return false;
+                }
+
+                if (!bot->GetPet())
+                {
+                    botAI->TellError("No pet!");
+                    return false;
+                }
+
+                if (bot->GetPet()->GetHappinessState() == UNHAPPY)
+                {
+                    botAI->TellError("Pet is unhappy!");
+                    return false;
+                }
             }
 
-            if (!bot->GetPet())
-            {
-                botAI->TellError("No pet!");
-                return false;
-            }
-
-            if (bot->GetPet()->GetHappinessState() == UNHAPPY)
-            {
-                botAI->TellError("Pet is unhappy!");
-                return false;
-            }
+            return true;
         }
-        return true;
-    }
-    virtual bool PrintAlways() { return false; }
-    virtual string GetName() { return "Far away"; }
-};
 
+        bool PrintAlways() override { return false; }
+        std::string const& GetName() override { return "Far away"; }
+};
 
 class ItemCountChecker : public ReadyChecker
 {
-public:
-    ItemCountChecker(string item, string name) { this->item = item; this->name = name; }
+    public:
+        ItemCountChecker(std::string const& item, std::string const& name) : item(item), name(name) { }
 
-    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
-    {
-        return AI_VALUE2(uint8, "item count", item) > 0;
-    }
-    virtual string GetName() { return name; }
+        bool Check(PlayerbotAI* botAI, AiObjectContext* context) override
+        {
+            return AI_VALUE2(uint8, "item count", item) > 0;
+        }
 
-private:
-    string item, name;
+        std::string const& GetName() override { return name; }
+
+    private:
+        std::string item;
+        std::string name;
 };
 
 class ManaPotionChecker : public ItemCountChecker
 {
-public:
-    ManaPotionChecker(string item, string name) : ItemCountChecker(item, name) {}
+    public:
+        ManaPotionChecker(std::string const& item, std::string const& name) : ItemCountChecker(item, name) { }
 
-    virtual bool Check(PlayerbotAI* botAI, AiObjectContext* context)
-    {
-        return !AI_VALUE2(bool, "has mana", "self target") || ItemCountChecker::Check(ai, context);
-    }
+        bool Check(PlayerbotAI* botAI, AiObjectContext* context) override
+        {
+            return !AI_VALUE2(bool, "has mana", "self target") || ItemCountChecker::Check(botAI, context);
+        }
 };
 
 bool ReadyCheckAction::Execute(Event event)
@@ -170,14 +171,14 @@ bool ReadyCheckAction::ReadyCheck()
     }
 
     bool result = true;
-    for (list<ReadyChecker*>::iterator i = ReadyChecker::checkers.begin(); i != ReadyChecker::checkers.end(); ++i)
+    for (std::vector<ReadyChecker*>::iterator i = ReadyChecker::checkers.begin(); i != ReadyChecker::checkers.end(); ++i)
     {
         ReadyChecker* checker = *i;
-        bool ok = checker->Check(ai, context);
+        bool ok = checker->Check(botAI, context);
         result = result && ok;
     }
 
-    ostringstream out;
+    std::ostringstream out;
 
     uint8 hp = AI_VALUE2(uint8, "item count", "healing potion");
     out << formatPercent("Hp", hp, 100.0 * hp / 5);

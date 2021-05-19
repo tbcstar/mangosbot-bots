@@ -1,31 +1,17 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../../RandomPlayerbotMgr.h"
 #include "../Action.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class RandomBotUpdateAction : public Action
 {
-    class RandomBotUpdateAction : public Action
-    {
     public:
-        RandomBotUpdateAction(PlayerbotAI* botAI) : Action(ai, "random bot update")
-        {}
+        RandomBotUpdateAction(PlayerbotAI* botAI) : Action(botAI, "random bot update") { }
 
-        virtual bool Execute(Event event)
-        {
-            if (!sRandomPlayerbotMgr->IsRandomBot(bot))
-                return false;
-
-            if (bot->GetGroup())
-                return true;
-
-            return sRandomPlayerbotMgr->ProcessBot(bot);
-        }
-
-        virtual bool isUseful()
-        {
-            return AI_VALUE(bool, "random bot update");
-        }
-    };
-
-}
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};

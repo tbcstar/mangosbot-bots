@@ -25,65 +25,65 @@ private:
     static ActionNode* melee(PlayerbotAI* botAI)
     {
         return new ActionNode ("melee",
-            /*P*/ NULL,
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* caster_form(PlayerbotAI* botAI)
     {
         return new ActionNode ("caster form",
-            /*P*/ NULL,
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* cure_poison(PlayerbotAI* botAI)
     {
         return new ActionNode ("cure poison",
-            /*P*/ NULL,
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* cure_poison_on_party(PlayerbotAI* botAI)
     {
         return new ActionNode ("cure poison on party",
-            /*P*/ NULL,
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* abolish_poison(PlayerbotAI* botAI)
     {
         return new ActionNode ("abolish poison",
-            /*P*/ NULL,
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* abolish_poison_on_party(PlayerbotAI* botAI)
     {
         return new ActionNode ("abolish poison on party",
-            /*P*/ NULL,
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* rebirth(PlayerbotAI* botAI)
     {
         return new ActionNode ("rebirth",
-            /*P*/ NULL,
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* entangling_roots_on_cc(PlayerbotAI* botAI)
     {
         return new ActionNode ("entangling roots on cc",
-            /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ NextAction::array(0, new NextAction("caster form"), nullptr),
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* innervate(PlayerbotAI* botAI)
     {
         return new ActionNode ("innervate",
-            /*P*/ NULL,
-            /*A*/ NextAction::array(0, new NextAction("mana potion"), NULL),
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ NextAction::array(0, new NextAction("mana potion"), nullptr),
+            /*C*/ nullptr);
     }
 };
 
@@ -98,56 +98,56 @@ void GenericDruidStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 
     triggers.push_back(new TriggerNode(
         "low health",
-        NextAction::array(0, new NextAction("regrowth", ACTION_MEDIUM_HEAL + 2), NULL)));
+        NextAction::array(0, new NextAction("regrowth", ACTION_MEDIUM_HEAL + 2), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "party member low health",
-        NextAction::array(0, new NextAction("regrowth on party", ACTION_MEDIUM_HEAL + 1), NULL)));
+        NextAction::array(0, new NextAction("regrowth on party", ACTION_MEDIUM_HEAL + 1), nullptr)));
 
 
     triggers.push_back(new TriggerNode(
         "critical health",
-        NextAction::array(0, new NextAction("regrowth", ACTION_CRITICAL_HEAL + 2), new NextAction("healing touch", ACTION_CRITICAL_HEAL + 2), NULL)));
+        NextAction::array(0, new NextAction("regrowth", ACTION_CRITICAL_HEAL + 2), new NextAction("healing touch", ACTION_CRITICAL_HEAL + 2), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "party member critical health",
-        NextAction::array(0,  new NextAction("regrowth on party", ACTION_CRITICAL_HEAL + 1), new NextAction("healing touch on party", ACTION_CRITICAL_HEAL + 1), NULL)));
+        NextAction::array(0,  new NextAction("regrowth on party", ACTION_CRITICAL_HEAL + 1), new NextAction("healing touch on party", ACTION_CRITICAL_HEAL + 1), nullptr)));
 
 
 	triggers.push_back(new TriggerNode(
 		"party member dead",
-		NextAction::array(0, new NextAction("rebirth", ACTION_HIGH + 1), NULL)));
+		NextAction::array(0, new NextAction("rebirth", ACTION_HIGH + 1), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "low mana",
-        NextAction::array(0, new NextAction("innervate", ACTION_EMERGENCY + 5), NULL)));
+        NextAction::array(0, new NextAction("innervate", ACTION_EMERGENCY + 5), nullptr)));
 }
 
 void DruidCureStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "cure poison",
-        NextAction::array(0, new NextAction("abolish poison", ACTION_DISPEL + 2), NULL)));
+        NextAction::array(0, new NextAction("abolish poison", ACTION_DISPEL + 2), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "party member cure poison",
-        NextAction::array(0, new NextAction("abolish poison on party", ACTION_DISPEL + 1), NULL)));
+        NextAction::array(0, new NextAction("abolish poison on party", ACTION_DISPEL + 1), nullptr)));
 }
 
 void DruidBoostStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "nature's swiftness",
-        NextAction::array(0, new NextAction("nature's swiftness", ACTION_HIGH + 9), NULL)));
+        NextAction::array(0, new NextAction("nature's swiftness", ACTION_HIGH + 9), nullptr)));
 }
 
 void DruidCcStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "entangling roots",
-        NextAction::array(0, new NextAction("entangling roots on cc", ACTION_HIGH + 2), NULL)));
+        NextAction::array(0, new NextAction("entangling roots on cc", ACTION_HIGH + 2), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "hibernate",
-        NextAction::array(0, new NextAction("hibernate on cc", ACTION_HIGH + 3), NULL)));
+        NextAction::array(0, new NextAction("hibernate on cc", ACTION_HIGH + 3), nullptr)));
 }

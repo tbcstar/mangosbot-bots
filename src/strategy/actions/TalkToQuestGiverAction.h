@@ -1,22 +1,25 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "QuestAction.h"
 
-namespace ai
+class Event;
+class Quest;
+class PlayerbotAI;
+class WorldObject;
+
+class TalkToQuestGiverAction : public QuestAction
 {
-    class TalkToQuestGiverAction : public QuestAction {
     public:
-        TalkToQuestGiverAction(PlayerbotAI* botAI) : QuestAction(ai, "talk to quest giver") {}
+        TalkToQuestGiverAction(PlayerbotAI* botAI) : QuestAction(botAI, "talk to quest giver") { }
 
     protected:
-        virtual void ProcessQuest(Quest const* quest, WorldObject* questGiver);
+        void ProcessQuest(Quest const* quest, WorldObject* questGiver) override;
 
     private:
-        void TurnInQuest(Quest const* quest, WorldObject* questGiver, ostringstream& out);
-        void RewardNoItem(Quest const* quest, WorldObject* questGiver, ostringstream& out);
-        void RewardSingleItem(Quest const* quest, WorldObject* questGiver, ostringstream& out);
-        void AskToSelectReward(Quest const* quest, ostringstream& out);
-    };
-
-}
+        void TurnInQuest(Quest const* quest, WorldObject* questGiver, std::ostringstream& out);
+        void RewardNoItem(Quest const* quest, WorldObject* questGiver, std::ostringstream& out);
+        void RewardSingleItem(Quest const* quest, WorldObject* questGiver, std::ostringstream& out);
+        void AskToSelectReward(Quest const* quest, std::ostringstream& out);
+};

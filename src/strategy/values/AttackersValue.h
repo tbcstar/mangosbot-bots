@@ -8,7 +8,7 @@ namespace ai
     class AttackersValue : public ObjectGuidListCalculatedValue
 	{
 	public:
-        AttackersValue(PlayerbotAI* botAI) : ObjectGuidListCalculatedValue(ai, "attackers", 2) {}
+        AttackersValue() : ObjectGuidListCalculatedValue(ai, "attackers", 2) {}
         list<ObjectGuid> Calculate();
 
 	private:

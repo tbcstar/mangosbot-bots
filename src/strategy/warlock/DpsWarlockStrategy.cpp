@@ -18,9 +18,9 @@ private:
     static ActionNode* shadow_bolt(PlayerbotAI* botAI)
     {
         return new ActionNode ("shadow bolt",
-            /*P*/ NULL,
-            /*A*/ NextAction::array(0, new NextAction("shoot"), NULL),
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ NextAction::array(0, new NextAction("shoot"), nullptr),
+            /*C*/ nullptr);
     }
 };
 
@@ -32,7 +32,7 @@ DpsWarlockStrategy::DpsWarlockStrategy(PlayerbotAI* botAI) : GenericWarlockStrat
 
 NextAction** DpsWarlockStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("incinirate", 10.0f), new NextAction("shadow bolt", 10.0f), NULL);
+    return NextAction::array(0, new NextAction("incinirate", 10.0f), new NextAction("shadow bolt", 10.0f), nullptr);
 }
 
 void DpsWarlockStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
@@ -41,40 +41,40 @@ void DpsWarlockStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 
 	triggers.push_back(new TriggerNode(
 		"backlash",
-		NextAction::array(0, new NextAction("shadow bolt", 20.0f), NULL)));
+		NextAction::array(0, new NextAction("shadow bolt", 20.0f), nullptr)));
 }
 
 void DpsAoeWarlockStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "medium aoe",
-        NextAction::array(0, new NextAction("rain of fire", 37.0f), NULL)));
+        NextAction::array(0, new NextAction("rain of fire", 37.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "corruption on attacker",
-        NextAction::array(0, new NextAction("corruption on attacker", 27.0f), NULL)));
+        NextAction::array(0, new NextAction("corruption on attacker", 27.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "curse of agony on attacker",
-        NextAction::array(0, new NextAction("curse of agony on attacker", 28.0f), NULL)));
+        NextAction::array(0, new NextAction("curse of agony on attacker", 28.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "siphon life on attacker",
-        NextAction::array(0, new NextAction("siphon life on attacker", 29.0f), NULL)));
+        NextAction::array(0, new NextAction("siphon life on attacker", 29.0f), nullptr)));
 }
 
 void DpsWarlockDebuffStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "corruption",
-        NextAction::array(0, new NextAction("corruption", 22.0f), NULL)));
+        NextAction::array(0, new NextAction("corruption", 22.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "curse of agony",
-        NextAction::array(0, new NextAction("curse of agony", 21.0f), NULL)));
+        NextAction::array(0, new NextAction("curse of agony", 21.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "siphon life",
-        NextAction::array(0, new NextAction("siphon life", 23.0f), NULL)));
+        NextAction::array(0, new NextAction("siphon life", 23.0f), nullptr)));
 
 }

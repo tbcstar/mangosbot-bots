@@ -37,7 +37,7 @@ class PlayerbotHolder : public PlayerbotAIBase
         void LogoutAllBots();
         void OnBotLogin(Player* const bot);
 
-        std::vector<string> HandlePlayerbotCommand(char const* args, Player* master = NULL);
+        std::vector<string> HandlePlayerbotCommand(char const* args, Player* master = nullptr);
         std::string ProcessBotCommand(std::string const& cmd, ObjectGuid guid, bool admin, uint32 masterAccountId, uint32 masterGuildId);
         uint32 GetAccountId(std::string const& name);
         std::string ListBots(Player* master);

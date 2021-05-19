@@ -1,18 +1,18 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "WhoAction.h"
-#include "../../AiFactory.h"
-#include "../ItemVisitors.h"
-#include "../../../ahbot/AhBot.h"
-#include "../../RandomPlayerbotMgr.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "WhoAction.h"
+#include "../Event.h"
+#include "../ItemVisitors.h"
+#include "../../AiFactory.h"
+#include "../../Playerbot.h"
 
 #ifndef WIN32
-inline int strcmpi(const char* s1, const char* s2)
+inline int strcmpi(char const* s1, char const* s2)
 {
     for (; *s1 && *s2 && (toupper(*s1) == toupper(*s2)); ++s1, ++s2);
-    return *s1 - *s2;
+        return *s1 - *s2;
 }
 #endif
 
@@ -22,8 +22,9 @@ bool WhoAction::Execute(Event event)
     if (!owner)
         return false;
 
-    ostringstream out;
-    string text = event.getParam();
+    std::ostringstream out;
+
+    std::string const& text = event.getParam();
     if (!text.empty())
     {
         out << QuerySkill(text);
@@ -38,7 +39,7 @@ bool WhoAction::Execute(Event event)
 
     if (!out.str().empty())
     {
-        if (AreaTableEntry const* areaEntry = GetAreaEntryByAreaID(bot->GetAreaId()))
+        if (AreaTableEntry const* areaEntry = sAreaTableStore.LookupEntry(bot->GetAreaId()))
         {
             out << ", (|cffb04040" << areaEntry->area_name[0] << "|r)";
         }
@@ -46,11 +47,13 @@ bool WhoAction::Execute(Event event)
 
     if (botAI->GetMaster())
     {
-        if (!out.str().empty()) out << ", ";
+        if (!out.str().empty())
+            out << ", ";
+
         out << "playing with " << botAI->GetMaster()->GetName();
     }
 
-    string tell = out.str();
+    std::string const& tell = out.str();
     if (tell.empty())
         return false;
 
@@ -59,29 +62,27 @@ bool WhoAction::Execute(Event event)
     return true;
 }
 
-
-string WhoAction::QueryTrade(string text)
+std::string const& WhoAction::QueryTrade(std::string const& text)
 {
-    ostringstream out;
+    std::ostringstream out;
 
-    list<Item*> items = InventoryAction::parseItems(text);
-    for (list<Item*>::iterator i = items.begin(); i != items.end(); ++i)
+    std::list<Item*> items = InventoryAction::parseItems(text);
+    for (Item* sell : items)
     {
-        Item* sell = *i;
-        int32 sellPrice = auctionbot.GetSellPrice(sell->GetProto()) * sRandomPlayerbotMgr->GetSellMultiplier(bot) * sell->GetCount();
+        int32 sellPrice = auctionbot.GetSellPrice(sell->GetTemplate()) * sRandomPlayerbotMgr->GetSellMultiplier(bot) * sell->GetCount();
         if (!sellPrice)
             continue;
 
-        out << "Selling " << chat->formatItem(sell->GetProto(), sell->GetCount()) << " for " << chat->formatMoney(sellPrice);
+        out << "Selling " << chat->formatItem(sell->GetTemplate(), sell->GetCount()) << " for " << chat->formatMoney(sellPrice);
         return out.str();
     }
 
     return "";
 }
 
-string WhoAction::QuerySkill(string text)
+std::string const& WhoAction::QuerySkill(std::string const& text)
 {
-    ostringstream out;
+    std::ostringstream out;
     uint32 skill = chat->parseSkill(text);
     if (!skill || !botAI->HasSkill((SkillType)skill))
         return "";
@@ -91,22 +92,21 @@ string WhoAction::QuerySkill(string text)
     uint16 value = bot->GetSkillValue(skill);
     uint16 maxSkill = bot->GetMaxSkillValue(skill);
     ObjectGuid guid = bot->GetGUID();
-    string data = "0";
-    out << "|cFFFFFF00|Htrade:" << spellId << ":" << value << ":" << maxSkill << ":"
-            << std::hex << std::uppercase << guid.GetRawValue()
-            << std::nouppercase << std::dec << ":" << data
-            << "|h[" << skillName << "]|h|r"
-            << " |h|cff00ff00" << value << "|h|cffffffff/"
+
+    std::string data = "0";
+    out << "|cFFFFFF00|Htrade:" << spellId << ":" << value << ":" << maxSkill << ":" << std::hex << std::uppercase << guid.GetRawValue()
+            << std::nouppercase << std::dec << ":" << data << "|h[" << skillName << "]|h|r" << " |h|cff00ff00" << value << "|h|cffffffff/"
             << "|h|cff00ff00" << maxSkill << "|h|cffffffff ";
 
     return out.str();
 }
 
-string WhoAction::QuerySpec(string text)
+std::string const& WhoAction::QuerySpec(std::string const& text)
 {
-    ostringstream out;
+    std::ostringstream out;
 
-    int spec = AiFactory::GetPlayerSpecTab(bot);
+    uint8 spec = AiFactory::GetPlayerSpecTab(bot);
+
     out << "|h|cffffffff" << chat->formatRace(bot->getRace()) << " [" << (bot->getGender() == GENDER_MALE ? "M" : "F") << "] " << chat->formatClass(bot, spec);
     out << " (|h|cff00ff00" << (uint32)bot->getLevel() << "|h|cffffffff lvl), ";
     out << "|h|cff00ff00" << botAI->GetEquipGearScore(bot, false, false) << "|h|cffffffff GS (";
@@ -123,14 +123,18 @@ string WhoAction::QuerySpec(string text)
 
     if (visitor.count[ITEM_QUALITY_RARE])
     {
-        if (needSlash) out << "/";
+        if (needSlash)
+            out << "/";
+
         out << "|h|cff8080ff" << visitor.count[ITEM_QUALITY_RARE] << "|h|cffffffff";
         needSlash = true;
     }
 
     if (visitor.count[ITEM_QUALITY_UNCOMMON])
     {
-        if (needSlash) out << "/";
+        if (needSlash)
+            out << "/";
+
         out << "|h|cff00ff00" << visitor.count[ITEM_QUALITY_UNCOMMON] << "|h|cffffffff";
         needSlash = true;
     }

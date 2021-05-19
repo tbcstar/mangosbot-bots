@@ -8,7 +8,7 @@ namespace ai
     class CasterDruidStrategy : public GenericDruidStrategy
     {
     public:
-        CasterDruidStrategy(PlayerbotAI* botAI);
+        CasterDruidStrategy();
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -20,7 +20,7 @@ namespace ai
     class CasterDruidAoeStrategy : public CombatStrategy
     {
     public:
-        CasterDruidAoeStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
+        CasterDruidAoeStrategy() : CombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -30,7 +30,7 @@ namespace ai
     class CasterDruidDebuffStrategy : public CombatStrategy
     {
     public:
-        CasterDruidDebuffStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
+        CasterDruidDebuffStrategy() : CombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

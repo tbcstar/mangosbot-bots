@@ -1,25 +1,26 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "ChangeStrategyAction.h"
-#include "../../PlayerbotAIConfig.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "ChangeStrategyAction.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool ChangeCombatStrategyAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
     botAI->ChangeStrategy(text.empty() ? getName() : text, BOT_STATE_COMBAT);
     return true;
 }
 
 bool ChangeNonCombatStrategyAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
 
     uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(bot->GetGUID());
     if (sPlayerbotAIConfig->IsInRandomAccountList(account) && botAI->GetMaster() && botAI->GetMaster()->GetSession()->GetSecurity() < SEC_GAMEMASTER)
     {
-        if (text.find("loot") != string::npos || text.find("gather") != string::npos)
+        if (text.find("loot") != std::string::npos || text.find("gather") != std::string::npos)
         {
             botAI->TellError("You can change any strategy except loot and gather");
             return false;
@@ -32,7 +33,7 @@ bool ChangeNonCombatStrategyAction::Execute(Event event)
 
 bool ChangeDeadStrategyAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
     botAI->ChangeStrategy(text, BOT_STATE_DEAD);
     return true;
 }

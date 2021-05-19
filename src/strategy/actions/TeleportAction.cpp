@@ -1,42 +1,43 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "TeleportAction.h"
-#include "../values/LastMovementValue.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "TeleportAction.h"
+#include "../Event.h"
+#include "../values/LastMovementValue.h"
+#include "../../Playerbot.h"
 
 bool TeleportAction::Execute(Event event)
 {
-    list<ObjectGuid> gos = *context->GetValue<list<ObjectGuid> >("nearest game objects");
-    for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); i++)
+    GuidVector gos = *context->GetValue<GuidVector>("nearest game objects");
+    for (ObjectGuid const guid : gos)
     {
-        GameObject* go = botAI->GetGameObject(*i);
+        GameObject* go = botAI->GetGameObject(guid);
         if (!go)
             continue;
 
-        GameObjectInfo const *goInfo = go->GetGOInfo();
+        GameObjectTemplate const *goInfo = go->GetGOInfo();
         if (goInfo->type != GAMEOBJECT_TYPE_SPELLCASTER)
             continue;
 
         uint32 spellId = goInfo->spellcaster.spellId;
-        const SpellEntry* const pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
-        if (pSpellInfo->Effect[0] != SPELL_EFFECT_TELEPORT_UNITS && pSpellInfo->Effect[1] != SPELL_EFFECT_TELEPORT_UNITS && pSpellInfo->Effect[2] != SPELL_EFFECT_TELEPORT_UNITS)
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+        if (spellInfo->HasEffect(SPELL_EFFECT_TELEPORT_UNITS))
             continue;
 
-        ostringstream out; out << "Teleporting using " << goInfo->name;
+        std::ostringstream out;
+        out << "Teleporting using " << goInfo->name;
         botAI->TellMasterNoFacing(out.str());
 
         botAI->ChangeStrategy("-follow,+stay", BOT_STATE_NON_COMBAT);
 
-        Spell *spell = new Spell(bot, pSpellInfo, false);
+        Spell* spell = new Spell(bot, spellInfo, TRIGGERED_NONE);
         SpellCastTargets targets;
-        targets.setUnitTarget(bot);
-        spell->prepare(&targets, NULL);
+        targets.SetUnitTarget(bot);
+        spell->prepare(&targets, nullptr);
         spell->cast(true);
         return true;
     }
-
 
     LastMovement& movement = context->GetValue<LastMovement&>("last area trigger")->Get();
     if (movement.lastAreaTrigger)

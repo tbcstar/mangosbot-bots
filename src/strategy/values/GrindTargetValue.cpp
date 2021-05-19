@@ -14,7 +14,7 @@ Unit* GrindTargetValue::Calculate()
     if (group)
         memberCount = group->GetMembersCount();
 
-    Unit* target = NULL;
+    Unit* target = nullptr;
     uint32 assistCount = 0;
     while (!target && assistCount < memberCount)
     {
@@ -44,10 +44,10 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
     list<ObjectGuid> targets = *context->GetValue<list<ObjectGuid> >("possible targets");
 
     if(targets.empty())
-        return NULL;
+        return nullptr;
 
     float distance = 0;
-    Unit* result = NULL;
+    Unit* result = nullptr;
     for(list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.end(); tIter++)
     {
         Unit* unit = botAI->GetUnit(*tIter);
@@ -76,7 +76,7 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
             for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
             {
                 Player *member = ObjectAccessor::FindPlayer(itr->guid);
-                if( !member || !sServerFacade->IsAlive(member))
+                if (!member || !sServerFacade->IsAlive(member))
                     continue;
 
                 float d = member->GetDistance(unit);
@@ -113,7 +113,7 @@ int GrindTargetValue::GetTargetingPlayerCount( Unit* unit )
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
         Player *member = ObjectAccessor::FindPlayer(itr->guid);
-        if( !member || !sServerFacade->IsAlive(member) || member == bot)
+        if (!member || !sServerFacade->IsAlive(member) || member == bot)
             continue;
 
         PlayerbotAI* botAI = member->GetPlayerbotAI();

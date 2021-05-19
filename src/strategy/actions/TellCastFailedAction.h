@@ -1,22 +1,24 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class TellSpellAction : public Action
 {
-    class TellSpellAction : public Action
-    {
     public:
-        TellSpellAction(PlayerbotAI* botAI) : Action(ai, "spell") {}
+        TellSpellAction(PlayerbotAI* botAI) : Action(botAI, "spell") { }
 
-        virtual bool Execute(Event event);
-    };
+        bool Execute(Event event) override;
+};
 
-    class TellCastFailedAction : public Action 
-    {
+class TellCastFailedAction : public Action
+{
     public:
-        TellCastFailedAction(PlayerbotAI* botAI) : Action(ai, "tell cast failed") {}
+        TellCastFailedAction(PlayerbotAI* botAI) : Action(botAI, "tell cast failed") { }
 
-        virtual bool Execute(Event event);
-    };
-}
+        bool Execute(Event event) override;
+};

@@ -1,38 +1,27 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
+#include "MovementActions.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class TellMasterAction : public Action
 {
-    class TellMasterAction : public Action {
     public:
-        TellMasterAction(PlayerbotAI* botAI, string text) : Action(ai, "tell master"), text(text) {}
+        TellMasterAction(PlayerbotAI* botAI, std::string const& text) : Action(botAI, "tell master"), text(text) { }
 
-        virtual bool Execute(Event event)
-        {
-            botAI->TellMaster(text);
-            return true;
-        }
+        bool Execute(Event event) override;
 
     private:
-        string text;
-    };
+        std::string text;
+};
 
-    class OutOfReactRangeAction : public MovementAction {
+class OutOfReactRangeAction : public MovementAction
+{
     public:
-        OutOfReactRangeAction(PlayerbotAI* botAI) : MovementAction(ai, "tell out of react range") {}
+        OutOfReactRangeAction(PlayerbotAI* botAI) : MovementAction(botAI, "tell out of react range") { }
 
-        virtual bool Execute(Event event)
-        {
-            bool canFollow = Follow(AI_VALUE(Unit*, "master target"));
-            if (!canFollow)
-            {
-                botAI->SetNextCheckDelay(5000);
-                return false;
-            }
-
-            botAI->TellMaster("Wait for me!");
-            return true;
-        }
-   };
-}
+        bool Execute(Event event) override;
+};

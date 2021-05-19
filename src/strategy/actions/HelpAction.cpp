@@ -1,11 +1,13 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "HelpAction.h"
 #include "ChatActionContext.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
-using namespace ai;
-
-HelpAction::HelpAction(PlayerbotAI* botAI) : Action(ai, "help")
+HelpAction::HelpAction(PlayerbotAI* botAI) : Action(botAI, "help")
 {
     chatContext = new ChatActionContext();
 }
@@ -24,7 +26,7 @@ bool HelpAction::Execute(Event event)
 
 void HelpAction::TellChatCommands()
 {
-    ostringstream out;
+    std::ostringstream out;
     out << "Whisper any of: ";
     out << CombineSupported(chatContext->supports());
     out << ", [item], [quest] or [object] link";
@@ -33,17 +35,17 @@ void HelpAction::TellChatCommands()
 
 void HelpAction::TellStrategies()
 {
-    ostringstream out;
+    std::ostringstream out;
     out << "Possible strategies (co/nc/dead commands): ";
     out << CombineSupported(botAI->GetAiObjectContext()->GetSupportedStrategies());
     botAI->TellError(out.str());
 }
 
-string HelpAction::CombineSupported(set<string> commands)
+std::string const& HelpAction::CombineSupported(std::set<std::string> commands)
 {
-    ostringstream out;
+    std::ostringstream out;
 
-    for (set<string>::iterator i = commands.begin(); i != commands.end(); )
+    for (std::set<std::string>::iterator i = commands.begin(); i != commands.end(); )
 	{
         out << *i;
 		if (++i != commands.end())

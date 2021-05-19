@@ -50,7 +50,7 @@ uint8 ThreatValue::Calculate(Unit* target)
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
         Player *player = ObjectAccessor::FindPlayer(itr->guid);
-        if( !player || !sServerFacade->IsAlive(player) || player == bot)
+        if (!player || !sServerFacade->IsAlive(player) || player == bot)
             continue;
 
         if (botAI->IsTank(player))

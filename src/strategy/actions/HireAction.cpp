@@ -1,8 +1,10 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "HireAction.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "HireAction.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool HireAction::Execute(Event event)
 {
@@ -14,14 +16,13 @@ bool HireAction::Execute(Event event)
         return false;
 
     uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(master->GetGUID().GetRawValue());
-    QueryResult* results = CharacterDatabase.PQuery("SELECT count(*) FROM characters where account = '%u'", account);
+    QueryResult results = CharacterDatabase.PQuery("SELECT COUNT(*) FROM characters WHERE account = '%u'", account);
 
     uint32 charCount = 10;
     if (results)
     {
         Field* fields = results->Fetch();
         charCount = fields[0].GetUInt32();
-        delete results;
     }
 
     if (charCount >= 10)
@@ -30,7 +31,7 @@ bool HireAction::Execute(Event event)
         return false;
     }
 
-    if ((int)bot->getLevel() > (int)master->getLevel())
+    if (bot->getLevel() > master->getLevel())
     {
         botAI->TellMaster("You cannot hire higher level characters than you");
         return false;
@@ -39,9 +40,9 @@ bool HireAction::Execute(Event event)
     uint32 discount = sRandomPlayerbotMgr->GetTradeDiscount(bot, master);
     uint32 m = 1 + (bot->getLevel() / 10);
     uint32 moneyReq = m * 5000 * bot->getLevel();
-    if ((int)discount < (int)moneyReq)
+    if (discount < moneyReq)
     {
-        ostringstream out;
+        std::ostringstream out;
         out << "You cannot hire me - I barely know you. Make sure you have at least " << chat->formatMoney(moneyReq) << " as a trade discount";
         botAI->TellMaster(out.str());
         return false;
@@ -51,8 +52,7 @@ bool HireAction::Execute(Event event)
 
     bot->SetMoney(moneyReq);
     sRandomPlayerbotMgr->Remove(bot);
-    CharacterDatabase.PExecute("update characters set account = '%u' where guid = '%u'",
-            account, bot->GetGUID().GetRawValue());
+    CharacterDatabase.PExecute("UPDATE characters SET account = '%u' WHERE guid = '%u'", account, bot->GetGUID().GetRawValue());
 
     return true;
 }

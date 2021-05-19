@@ -1,15 +1,16 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "GoAction.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+#include "../Event.h"
 #include "../values/Formations.h"
 #include "../values/PositionValue.h"
+#include "../../Playerbot.h"
+#include "../../ServerFacade.h"
 
-using namespace ai;
-
-vector<string> split(const string &s, char delim);
-char *strstri(const char *haystack, const char *needle);
+std::vector<std::string> split(std::string const& s, char delim);
+char* strstri(char const* haystack, char const* needle);
 
 bool GoAction::Execute(Event event)
 {
@@ -23,53 +24,56 @@ bool GoAction::Execute(Event event)
         float x = bot->GetPositionX();
         float y = bot->GetPositionY();
         Map2ZoneCoordinates(x, y, bot->GetZoneId());
-        ostringstream out;
+
+        std::ostringstream out;
         out << "I am at " << x << "," << y;
         botAI->TellMaster(out.str());
         return true;
     }
 
-    list<ObjectGuid> gos = ChatHelper::parseGameobjects(param);
+    GuidVector gos = ChatHelper::parseGameobjects(param);
     if (!gos.empty())
     {
-        for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); ++i)
+        for (ObjectGuid const guid : gos)
         {
-            GameObject* go = botAI->GetGameObject(*i);
-            if (go && sServerFacade->isSpawned(go))
-            {
-                if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, go), sPlayerbotAIConfig->reactDistance))
+            if (GameObject* go = botAI->GetGameObject(guid))
+                if (go->isSpawned())
                 {
-                    botAI->TellError("It is too far away");
-                    return false;
-                }
+                    if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, go), sPlayerbotAIConfig->reactDistance))
+                    {
+                        botAI->TellError("It is too far away");
+                        return false;
+                    }
 
-                ostringstream out; out << "Moving to " << ChatHelper::formatGameobject(go);
-                botAI->TellMasterNoFacing(out.str());
-                return MoveNear(bot->GetMapId(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ() + 0.5f, sPlayerbotAIConfig->followDistance);
-            }
+                    std::ostringstream out;
+                    out << "Moving to " << ChatHelper::formatGameobject(go);
+                    botAI->TellMasterNoFacing(out.str());
+                    return MoveNear(bot->GetMapId(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ() + 0.5f, sPlayerbotAIConfig->followDistance);
+                }
         }
         return false;
     }
 
-    list<ObjectGuid> units;
-    list<ObjectGuid> npcs = AI_VALUE(list<ObjectGuid>, "nearest npcs");
+    GuidVector units;
+    GuidVector npcs = AI_VALUE(GuidVector, "nearest npcs");
     units.insert(units.end(), npcs.begin(), npcs.end());
-    list<ObjectGuid> players = AI_VALUE(list<ObjectGuid>, "nearest friendly players");
+    GuidVector players = AI_VALUE(GuidVector, "nearest friendly players");
     units.insert(units.end(), players.begin(), players.end());
-    for (list<ObjectGuid>::iterator i = units.begin(); i != units.end(); i++)
+    for (ObjectGuid const guid : units)
     {
-        Unit* unit = botAI->GetUnit(*i);
-        if (unit && strstri(unit->GetName(), param.c_str()))
-        {
-            ostringstream out; out << "Moving to " << unit->GetName();
-            botAI->TellMasterNoFacing(out.str());
-            return MoveNear(bot->GetMapId(), unit->GetPositionX(), unit->GetPositionY(), unit->GetPositionZ() + 0.5f, sPlayerbotAIConfig->followDistance);
-        }
+        if (Unit* unit = botAI->GetUnit(guid))
+            if (strstri(unit->GetName().c_str(), param.c_str()))
+            {
+                std::ostringstream out;
+                out << "Moving to " << unit->GetName();
+                botAI->TellMasterNoFacing(out.str());
+                return MoveNear(bot->GetMapId(), unit->GetPositionX(), unit->GetPositionY(), unit->GetPositionZ() + 0.5f, sPlayerbotAIConfig->followDistance);
+            }
     }
 
     if (param.find(",") != string::npos)
     {
-        vector<string> coords = split(param, ',');
+        std::vector<std::string> coords = split(param, ',');
         float x = atof(coords[0].c_str());
         float y = atof(coords[1].c_str());
         Zone2MapCoordinates(x, y, bot->GetZoneId());
@@ -84,8 +88,7 @@ bool GoAction::Execute(Event event)
             return false;
         }
 
-        const TerrainInfo* terrain = map->GetTerrain();
-        if (terrain->IsUnderWater(x, y, z) || terrain->IsInWater(x, y, z))
+        if (map->IsUnderWater(x, y, z) || map->IsInWater(x, y, z))
         {
             botAI->TellError("It is under water");
             return false;
@@ -100,12 +103,15 @@ bool GoAction::Execute(Event event)
 
         float x1 = x, y1 = y;
         Map2ZoneCoordinates(x1, y1, bot->GetZoneId());
-        ostringstream out; out << "Moving to " << x1 << "," << y1;
+
+        std::ostringstream out;
+        out << "Moving to " << x1 << "," << y1;
         botAI->TellMasterNoFacing(out.str());
+
         return MoveNear(bot->GetMapId(), x, y, z + 0.5f, sPlayerbotAIConfig->followDistance);
     }
 
-    ai::Position pos = context->GetValue<ai::PositionMap&>("position")->Get()[param];
+    PositionInfo pos = context->GetValue<PositionMap&>("position")->Get()[param];
     if (pos.isSet())
     {
         if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, pos.x, pos.y), sPlayerbotAIConfig->reactDistance))
@@ -114,7 +120,8 @@ bool GoAction::Execute(Event event)
             return false;
         }
 
-        ostringstream out; out << "Moving to position " << param;
+        std::ostringstream out;
+        out << "Moving to position " << param;
         botAI->TellMasterNoFacing(out.str());
         return MoveNear(bot->GetMapId(), pos.x, pos.y, pos.z + 0.5f, sPlayerbotAIConfig->followDistance);
     }

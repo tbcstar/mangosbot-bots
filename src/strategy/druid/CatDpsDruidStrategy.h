@@ -8,7 +8,7 @@ namespace ai
     class CatDpsDruidStrategy : public FeralDruidStrategy
     {
     public:
-        CatDpsDruidStrategy(PlayerbotAI* botAI);
+        CatDpsDruidStrategy();
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);
@@ -20,7 +20,7 @@ namespace ai
     class CatAoeDruidStrategy : public CombatStrategy
     {
     public:
-        CatAoeDruidStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
+        CatAoeDruidStrategy() : CombatStrategy(botAI) {}
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

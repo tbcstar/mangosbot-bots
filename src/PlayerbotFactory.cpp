@@ -281,7 +281,7 @@ void PlayerbotFactory::InitPet()
             if (!pet->Create(guid, bot->GetMap(), bot->GetPhaseMask(), co->Entry, pet_number))
             {
                 delete pet;
-                pet = NULL;
+                pet = nullptr;
                 continue;
             }
 
@@ -911,7 +911,7 @@ void PlayerbotFactory::EnchantItem(Item* item)
 
     if (ids.empty())
     {
-        sLog->outDebug(  "%s: no enchantments found for item %d", bot->GetName(), item->GetProto()->ItemId);
+        sLog->outDebug(  "%s: no enchantments found for item %d", bot->GetName(), item->GetTemplate()->ItemId);
         return;
     }
 
@@ -1439,7 +1439,7 @@ Item* PlayerbotFactory::StoreItem(uint32 itemId, uint32 count)
     ItemPosCountVec sDest;
     InventoryResult msg = bot->CanStoreNewItem(INVENTORY_SLOT_BAG_0, NULL_SLOT, sDest, itemId, count);
     if (msg != EQUIP_ERR_OK)
-        return NULL;
+        return nullptr;
 
     return bot->StoreNewItem(sDest, itemId, true, Item::GenerateItemRandomPropertyId(itemId));
 }

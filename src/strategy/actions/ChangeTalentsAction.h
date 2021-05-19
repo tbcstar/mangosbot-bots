@@ -1,16 +1,17 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class ChangeTalentsAction : public Action
 {
-	class ChangeTalentsAction : public Action {
 	public:
-		ChangeTalentsAction(PlayerbotAI* botAI) : Action(ai, "talents") {}
+		ChangeTalentsAction(PlayerbotAI* botAI) : Action(botAI, "talents") { }
 
-    public:
-        virtual bool Execute(Event event);
+        bool Execute(Event event) override;
+};
 
-    };
-
-}

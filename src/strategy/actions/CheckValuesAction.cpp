@@ -1,22 +1,24 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "CheckValuesAction.h"
-
-#include "../../PlayerbotAIConfig.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 #include "../../ServerFacade.h"
-using namespace ai;
 
-CheckValuesAction::CheckValuesAction(PlayerbotAI* botAI) : Action(ai, "check values")
+CheckValuesAction::CheckValuesAction(PlayerbotAI* botAI) : Action(botAI, "check values")
 {
 }
 
 bool CheckValuesAction::Execute(Event event)
 {
-    list<ObjectGuid> possible_targets = *context->GetValue<list<ObjectGuid> >("possible targets");
-    list<ObjectGuid> all_targets = *context->GetValue<list<ObjectGuid> >("all targets");
-    list<ObjectGuid> npcs = *context->GetValue<list<ObjectGuid> >("nearest npcs");
-    list<ObjectGuid> corpses = *context->GetValue<list<ObjectGuid> >("nearest corpses");
-    list<ObjectGuid> gos = *context->GetValue<list<ObjectGuid> >("nearest game objects");
-    list<ObjectGuid> nfp = *context->GetValue<list<ObjectGuid> >("nearest friendly players");
+    GuidVector possible_targets = *context->GetValue<GuidVector>("possible targets");
+    GuidVector all_targets = *context->GetValue<GuidVector>("all targets");
+    GuidVector npcs = *context->GetValue<GuidVector>("nearest npcs");
+    GuidVector corpses = *context->GetValue<GuidVector>("nearest corpses");
+    GuidVector gos = *context->GetValue<GuidVector>("nearest game objects");
+    GuidVector nfp = *context->GetValue<GuidVector>("nearest friendly players");
+
     return true;
 }

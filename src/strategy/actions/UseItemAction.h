@@ -1,16 +1,21 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
-{
-	class UseItemAction : public Action {
-	public:
-		UseItemAction(PlayerbotAI* botAI, string name = "use", bool selfOnly = false) : Action(ai, name), selfOnly(selfOnly) {}
+class Event;
+class Item;
+class ObjectGuid;
+class PlayerbotAI;
 
-    public:
-        virtual bool Execute(Event event);
-        virtual bool isPossible();
+class UseItemAction : public Action
+{
+	public:
+		UseItemAction(PlayerbotAI* botAI, std::string const& name = "use", bool selfOnly = false) : Action(botAI, name), selfOnly(selfOnly) { }
+
+        bool Execute(Event event) override;
+        bool isPossible() override;
 
     protected:
         bool UseItemAuto(Item* item);
@@ -18,30 +23,32 @@ namespace ai
         bool UseItemOnItem(Item* item, Item* itemTarget);
         bool UseItem(Item* item, ObjectGuid go, Item* itemTarget);
         bool UseGameObject(ObjectGuid guid);
-        void TellConsumableUse(Item* item, string action, float percent);
+        void TellConsumableUse(Item* item, std::string const& action, float percent);
 
     private:
         bool selfOnly;
-    };
+};
 
-    class UseSpellItemAction : public UseItemAction {
+class UseSpellItemAction : public UseItemAction
+{
     public:
-        UseSpellItemAction(PlayerbotAI* botAI, string name, bool selfOnly = false) : UseItemAction(ai, name, selfOnly) {}
+        UseSpellItemAction(PlayerbotAI* botAI, std::string const& name, bool selfOnly = false) : UseItemAction(botAI, name, selfOnly) {}
 
-    public:
-        virtual bool isUseful();
-    };
+        bool isUseful() override;
+};
 
-    class UseHealingPotion : public UseItemAction {
+class UseHealingPotion : public UseItemAction
+{
     public:
-        UseHealingPotion(PlayerbotAI* botAI) : UseItemAction(ai, "healing potion") {}
-        virtual bool isUseful() { return AI_VALUE2(bool, "combat", "self target"); }
-    };
+        UseHealingPotion(PlayerbotAI* botAI) : UseItemAction(botAI, "healing potion") { }
 
-    class UseManaPotion : public UseItemAction
-    {
+        bool isUseful() override;
+};
+
+class UseManaPotion : public UseItemAction
+{
     public:
-        UseManaPotion(PlayerbotAI* botAI) : UseItemAction(ai, "mana potion") {}
-        virtual bool isUseful() { return AI_VALUE2(bool, "combat", "self target"); }
-    };
-}
+        UseManaPotion(PlayerbotAI* botAI) : UseItemAction(botAI, "mana potion") { }
+
+        bool isUseful() override;
+};

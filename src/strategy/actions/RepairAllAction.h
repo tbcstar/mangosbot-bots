@@ -1,13 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class RepairAllAction : public Action
 {
-    class RepairAllAction : public Action 
-    {
     public:
-        RepairAllAction(PlayerbotAI* botAI) : Action(ai, "repair") {}
-        virtual bool Execute(Event event);
-    };
-}
+        RepairAllAction(PlayerbotAI* botAI) : Action(botAI, "repair") { }
+
+        bool Execute(Event event) override;
+};

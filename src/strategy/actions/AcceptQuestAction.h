@@ -1,27 +1,34 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "QuestAction.h"
+#include "../Action.h"
 
-namespace ai
+class Event;
+class Quest;
+class PlayerbotAI;
+class WorldObject;
+
+class AcceptAllQuestsAction : public QuestAction
 {
-    class AcceptAllQuestsAction : public QuestAction {
     public:
-        AcceptAllQuestsAction(PlayerbotAI* botAI, string name = "accept all quests") : QuestAction(ai, name) {}
+        AcceptAllQuestsAction(PlayerbotAI* botAI, std::string const& name = "accept all quests") : QuestAction(botAI, name) { }
 
     protected:
-        virtual void ProcessQuest(Quest const* quest, WorldObject* questGiver);
-    };
+        void ProcessQuest(Quest const* quest, WorldObject* questGiver) override;
+};
 
-    class AcceptQuestAction : public AcceptAllQuestsAction {
+class AcceptQuestAction : public AcceptAllQuestsAction
+{
     public:
-        AcceptQuestAction(PlayerbotAI* botAI) : AcceptAllQuestsAction(ai, "accept quest") {}
-        virtual bool Execute(Event event);
-    };
+        AcceptQuestAction(PlayerbotAI* botAI) : AcceptAllQuestsAction(botAI, "accept quest") { }
+        bool Execute(Event event) override;
+};
 
-    class AcceptQuestShareAction : public Action {
+class AcceptQuestShareAction : public Action
+{
     public:
-        AcceptQuestShareAction(PlayerbotAI* botAI) : Action(ai, "accept quest share") {}
-        virtual bool Execute(Event event);
-    };
-}
+        AcceptQuestShareAction(PlayerbotAI* botAI) : Action(botAI, "accept quest share") { }
+        bool Execute(Event event) override;
+};

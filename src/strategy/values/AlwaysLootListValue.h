@@ -6,7 +6,7 @@ namespace ai
     class AlwaysLootListValue : public ManualSetValue<set<uint32>&>
 	{
 	public:
-        AlwaysLootListValue(PlayerbotAI* botAI) : ManualSetValue<set<uint32>&>(ai, list) {}
+        AlwaysLootListValue() : ManualSetValue<set<uint32>&>(ai, list) {}
 
         virtual string Save();
         virtual bool Load(string value);

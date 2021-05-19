@@ -1,17 +1,16 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "AttackAction.h"
-#include "MovementGenerator.h"
-#include "CreatureAI.h"
-#include "../../LootObjectStack.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "AttackAction.h"
+#include "../Event.h"
+#include "../../LootObjectStack.h"
+#include "../../Playerbot.h"
+#include "../../ServerFacade.h"
 
 bool AttackAction::Execute(Event event)
 {
     Unit* target = GetTarget();
-
     if (!target)
         return false;
 
@@ -27,48 +26,64 @@ bool AttackMyTargetAction::Execute(Event event)
     ObjectGuid guid = master->GetTarget();
     if (!guid)
     {
-        if (verbose) botAI->TellError("You have no target");
+        if (verbose)
+            botAI->TellError("You have no target");
+
         return false;
     }
 
     bool result = Attack(botAI->GetUnit(guid));
-    if (result) context->GetValue<ObjectGuid>("pull target")->Set(guid);
+    if (result)
+        context->GetValue<ObjectGuid>("pull target")->Set(guid);
+
     return result;
 }
 
 bool AttackAction::Attack(Unit* target)
 {
-    MotionMaster &mm = *bot->GetMotionMaster();
-    if (mm.GetCurrentMovementGeneratorType() == FLIGHT_MOTION_TYPE || bot->HasUnitState(UNIT_STATE_IN_FLIGHT))
+    if (bot->GetMotionMaster()->GetCurrentMovementGeneratorType() == FLIGHT_MOTION_TYPE || bot->HasUnitState(UNIT_STATE_IN_FLIGHT))
     {
-        if (verbose) botAI->TellError("I cannot attack in flight");
+        if (verbose)
+            botAI->TellError("I cannot attack in flight");
+
         return false;
     }
 
     if (!target)
     {
-        if (verbose) botAI->TellError("I have no target");
+        if (verbose)
+            botAI->TellError("I have no target");
+
         return false;
     }
 
-    ostringstream msg;
+    std::ostringstream msg;
     msg << target->GetName();
-    if (sServerFacade->IsFriendlyTo(bot, target))
+
+    if (bot->IsFriendlyTo(target))
     {
         msg << " is friendly to me";
-        if (verbose) botAI->TellError(msg.str());
+        if (verbose)
+            botAI->TellError(msg.str());
+
         return false;
     }
-    if (!sServerFacade->IsWithinLOSInMap(bot, target))
+
+    if (!bot->IsWithinLOSInMap(target))
     {
         msg << " is not on my sight";
-        if (verbose) botAI->TellError(msg.str());
+        if (verbose)
+            botAI->TellError(msg.str());
+
         return false;
     }
-    if (sServerFacade->UnitIsDead(target))
+
+    if (target->isDead())
     {
         msg << " is dead";
-        if (verbose) botAI->TellError(msg.str());
+        if (verbose)
+            botAI->TellError(msg.str());
+
         return false;
     }
 
@@ -87,29 +102,27 @@ bool AttackAction::Attack(Unit* target)
     context->GetValue<Unit*>("current target")->Set(target);
     context->GetValue<LootObjectStack*>("available loot")->Get()->Add(guid);
 
-    Pet* pet = bot->GetPet();
-    if (pet)
+    if (Pet* pet = bot->GetPet())
     {
-        CreatureAI* creatureAI = ((Creature*)pet)->AI();
-        if (creatureAI)
+        if (CreatureAI* creatureAI = ((Creature*)pet)->AI())
         {
-            pet->GetCharmInfo()->SetReactState(REACT_PASSIVE);
+            pet->SetReactState(REACT_PASSIVE);
             pet->GetCharmInfo()->SetCommandState(COMMAND_ATTACK);
-            creaturebotAI->AttackStart(target);
+            creatureAI->AttackStart(target);
         }
     }
 
     if (!urand(0, 300))
     {
-        vector<uint32> sounds;
-        sounds.push_back(TEXTEMOTE_OPENFIRE);
+        std::vector<uint32> sounds;
+        sounds.push_back(TEXT_EMOTE_OPENFIRE);
         sounds.push_back(305);
         sounds.push_back(307);
         botAI->PlaySound(sounds[urand(0, sounds.size() - 1)]);
     }
 
-    if (!sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
-        sServerFacade->SetFacingTo(bot, target);
+    if (!bot->IsInFront(target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
+        bot->SetFacingTo(target);
 
     bot->Attack(target, !botAI->IsRanged(bot) || sServerFacade->GetDistance2d(bot, target) <= sPlayerbotAIConfig->tooCloseDistance);
     botAI->ChangeEngine(BOT_STATE_COMBAT);

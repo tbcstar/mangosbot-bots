@@ -7,7 +7,7 @@ namespace ai
     class ArcaneMageStrategy : public GenericMageStrategy
     {
     public:
-        ArcaneMageStrategy(PlayerbotAI* botAI);
+        ArcaneMageStrategy();
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

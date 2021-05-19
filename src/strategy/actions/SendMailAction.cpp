@@ -1,48 +1,53 @@
-#include "botpch.h"
-#include "Mail.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "SendMailAction.h"
-
-#include "../../../ahbot/AhBot.h"
-#include "../../PlayerbotAIConfig.h"
-
-using namespace ai;
+#include "Mail.h"
+#include "../Event.h"
+#include "../ItemVisitors.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
 bool SendMailAction::Execute(Event event)
 {
-    uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(bot->GetGUID());
+    uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(bot->GetGUID().GetCounter());
     bool randomBot = sPlayerbotAIConfig->IsInRandomAccountList(account);
 
-    list<ObjectGuid> gos = *context->GetValue<list<ObjectGuid> >("nearest game objects");
+    GuidVector gos = *context->GetValue<GuidVector >("nearest game objects");
     bool mailboxFound = false;
-    for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); ++i)
+    for (ObjectGuid const guid : gos)
     {
-        GameObject* go = botAI->GetGameObject(*i);
-        if (go && go->GetGoType() == GAMEOBJECT_TYPE_MAILBOX)
-        {
-            mailboxFound = true;
-            break;
-        }
+        if (GameObject* go = botAI->GetGameObject(guid))
+            if (go->GetGoType() == GAMEOBJECT_TYPE_MAILBOX)
+            {
+                mailboxFound = true;
+                break;
+            }
     }
 
-    string text = event.getParam();
+    std::string const& text = event.getParam();
+
     Player* receiver = GetMaster();
     Player* tellTo = receiver;
-    vector<string> ss = split(text, ' ');
+
+    std::vector<std::string> ss = split(text, ' ');
     if (ss.size() > 1)
     {
-        Player* p = ObjectAccessor::FindPlayer(ss[ss.size() - 1].c_str());
-        if (p) receiver = p;
+        if (Player* p = ObjectAccessor::FindPlayer(ObjectGuid(uint64(ss[ss.size() - 1].c_str()))))
+            receiver = p;
     }
 
-    if (!receiver) receiver = event.getOwner();
+    if (!receiver)
+        receiver = event.getOwner();
 
     if (!receiver || receiver == bot)
     {
         return false;
     }
 
-    if (!tellTo) tellTo = receiver;
+    if (!tellTo)
+        tellTo = receiver;
 
     if (!mailboxFound && !randomBot)
     {
@@ -76,7 +81,7 @@ bool SendMailAction::Execute(Event event)
             return false;
         }
 
-        ostringstream body;
+        std::ostringstream body;
         body << "Hello, " << receiver->GetName() << ",\n";
         body << "\n";
         body << "Here is the money you asked for";
@@ -84,18 +89,22 @@ bool SendMailAction::Execute(Event event)
         body << "Thanks,\n";
         body << bot->GetName() << "\n";
 
+        SQLTransaction trans = CharacterDatabase.BeginTransaction();
 
         MailDraft draft("Money you asked for", body.str());
-        draft.SetMoney(money);
+        draft.AddMoney(money);
         bot->SetMoney(bot->GetMoney() - money);
-        draft.SendMailTo(MailReceiver(receiver), MailSender(bot));
+        draft.SendMailTo(trans, MailReceiver(receiver), MailSender(bot));
 
-        ostringstream out; out << "Sending mail to " << receiver->GetName();
+        CharacterDatabase.CommitTransaction(trans);
+
+        std::ostringstream out;
+        out << "Sending mail to " << receiver->GetName();
         botAI->TellMaster(out.str());
         return true;
     }
 
-    ostringstream body;
+    std::ostringstream body;
     body << "Hello, " << receiver->GetName() << ",\n";
     body << "\n";
     body << "Here are the item(s) you asked for";
@@ -104,43 +113,53 @@ bool SendMailAction::Execute(Event event)
     body << bot->GetName() << "\n";
 
     MailDraft draft("Item(s) you asked for", body.str());
-    for (ItemIds::iterator i =ids.begin(); i != ids.end(); i++)
+    for (ItemIds::iterator i = ids.begin(); i != ids.end(); i++)
     {
         FindItemByIdVisitor visitor(*i);
         IterateItems(&visitor, ITERATE_ITEMS_IN_BAGS);
-        list<Item*> items = visitor.GetResult();
-        for (list<Item*>::iterator i = items.begin(); i != items.end(); ++i)
+
+        std::vector<Item*> items = visitor.GetResult();
+        for (Item* item : items)
         {
-            Item* item = *i;
             if (item->IsSoulBound() || item->IsConjuredConsumable())
             {
-                ostringstream out;
-                out << "Cannot send " << ChatHelper::formatItem(item->GetProto());
+                std::ostringstream out;
+                out << "Cannot send " << ChatHelper::formatItem(item->GetTemplate());
                 bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetGUID());
                 continue;
             }
 
-            ItemTemplate const* proto = item->GetProto();
-            bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
-            item->DeleteFromInventoryDB();
-            item->SetOwnerGuid(receiver->GetGUID());
-            item->SaveToDB();
-            draft.AddItem(item);
+            ItemTemplate const* proto = item->GetTemplate();
+            if (!proto)
+                continue;
+
             if (randomBot)
             {
                 uint32 price = item->GetCount() * auctionbot.GetSellPrice(proto);
                 if (!price)
                 {
-                    ostringstream out;
-                    out << ChatHelper::formatItem(item->GetProto()) << ": it is not for sale";
+                    std::ostringstream out;
+                    out << ChatHelper::formatItem(item->GetTemplate()) << ": it is not for sale";
                     bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetGUID());
                     return false;
                 }
-                draft.SetCOD(price);
-            }
-            draft.SendMailTo(MailReceiver(receiver), MailSender(bot));
 
-            ostringstream out; out << "Sent mail to " << receiver->GetName();
+                draft.AddCOD(price);
+            }
+
+            SQLTransaction trans = CharacterDatabase.BeginTransaction();
+
+            bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
+            item->DeleteFromInventoryDB(trans);
+            item->SetOwnerGUID(receiver->GetGUID());
+            item->SaveToDB(trans);
+            draft.AddItem(item);
+            draft.SendMailTo(trans, MailReceiver(receiver), MailSender(bot));
+
+            CharacterDatabase.CommitTransaction(trans);
+
+            std::ostringstream out;
+            out << "Sent mail to " << receiver->GetName();
             bot->Whisper(out.str(), LANG_UNIVERSAL, tellTo->GetGUID());
             return true;
         }

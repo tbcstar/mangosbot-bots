@@ -1,19 +1,22 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class CustomStrategyEditAction : public Action
 {
-    class CustomStrategyEditAction : public Action {
     public:
-        CustomStrategyEditAction(PlayerbotAI* botAI) : Action(ai, "cs") {}
-        virtual bool Execute(Event event);
+        CustomStrategyEditAction(PlayerbotAI* botAI) : Action(botAI, "cs") { }
+
+        bool Execute(Event event) override;
 
     private:
         bool PrintHelp();
-        bool PrintActionLine(uint32 idx, string command);
-        bool Print(string name);
-        bool Edit(string name, uint32 idx, string command);
-    };
-
-}
+        bool PrintActionLine(uint32 idx, std::string const& command);
+        bool Print(std::string const& name);
+        bool Edit(std::string const& name, uint32 idx, std::string const& command);
+};

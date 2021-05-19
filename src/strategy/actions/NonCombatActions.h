@@ -1,48 +1,26 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "UseItemAction.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class DrinkAction : public UseItemAction
 {
-    class DrinkAction : public UseItemAction
-    {
     public:
-        DrinkAction(PlayerbotAI* botAI) : UseItemAction(ai, "drink") {}
+        DrinkAction(PlayerbotAI* botAI) : UseItemAction(botAI, "drink") { }
 
-        virtual bool Execute(Event event)
-        {
-            if (sServerFacade->IsInCombat(bot))
-                return false;
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};
 
-            return UseItemAction::Execute(event);
-        }
-
-        virtual bool isUseful()
-        {
-            return UseItemAction::isUseful() && AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig->lowMana;
-        }
-    };
-
-    class EatAction : public UseItemAction
-    {
+class EatAction : public UseItemAction
+{
     public:
-        EatAction(PlayerbotAI* botAI) : UseItemAction(ai, "food") {}
+        EatAction(PlayerbotAI* botAI) : UseItemAction(botAI, "food") { }
 
-        virtual bool Execute(Event event)
-        {
-            if (sServerFacade->IsInCombat(bot))
-                return false;
-
-            return UseItemAction::Execute(event);
-        }
-
-        virtual bool isUseful()
-        {
-            return UseItemAction::isUseful() && AI_VALUE2(uint8, "health", "self target") < sPlayerbotAIConfig->lowHealth;
-        }
-    };
-
-}
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};

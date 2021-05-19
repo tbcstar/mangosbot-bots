@@ -1,27 +1,30 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "BuyAction.h"
+#include "../Event.h"
 #include "../ItemVisitors.h"
 #include "../values/ItemCountValue.h"
-
-using namespace ai;
+#include "../../Playerbot.h"
 
 bool BuyAction::Execute(Event event)
 {
-    string link = event.getParam();
+    std::string const& link = event.getParam();
 
     ItemIds itemIds = chat->parseItems(link);
     if (itemIds.empty())
         return false;
 
     Player* master = GetMaster();
-
     if (!master)
         return false;
 
-    list<ObjectGuid> vendors = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest npcs")->Get();
-    bool vendored = false, result = false;
-    for (list<ObjectGuid>::iterator i = vendors.begin(); i != vendors.end(); ++i)
+    GuidVector vendors = botAI->GetAiObjectContext()->GetValue<GuidVector>("nearest npcs")->Get();
+
+    bool vendored = false;
+    bool result = false;
+    for (GuidVector::iterator i = vendors.begin(); i != vendors.end(); ++i)
     {
         ObjectGuid vendorguid = *i;
         Creature* pCreature = bot->GetNPCIfCanInteractWith(vendorguid, UNIT_NPC_FLAG_VENDOR);
@@ -42,7 +45,8 @@ bool BuyAction::Execute(Event event)
 
             if (!result)
             {
-                ostringstream out; out << "Nobody sells " << ChatHelper::formatItem(proto) << " nearby";
+                std::ostringstream out;
+                out << "Nobody sells " << ChatHelper::formatItem(proto) << " nearby";
                 botAI->TellMaster(out.str());
             }
         }
@@ -68,7 +72,9 @@ bool BuyAction::BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, Ite
         if (tItems->GetItem(slot)->item == itemId)
         {
             bot->BuyItemFromVendor(vendorguid, itemId, 1, NULL_BAG, NULL_SLOT);
-            ostringstream out; out << "Buying " << ChatHelper::formatItem(proto);
+
+            std::ostringstream out;
+            out << "Buying " << ChatHelper::formatItem(proto);
             botAI->TellMaster(out.str());
             return true;
         }

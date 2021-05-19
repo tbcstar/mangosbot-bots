@@ -104,7 +104,7 @@ bool RandomPlayerbotFactory::CreateRandomBot(uint8 cls)
 	bool excludeCheck = (race == RACE_TAUREN) || (gender == GENDER_FEMALE && race != RACE_NIGHTELF && race != RACE_UNDEAD_PLAYER);
 	uint8 facialHair = excludeCheck ? 0 : facialHairTypes[urand(0, facialHairTypes.size() - 1)];
 
-	WorldSession* session = new WorldSession(accountId, NULL, SEC_PLAYER, EXPANSION_WRATH_OF_THE_LICH_KING, time_t(0), LOCALE_enUS, 0, false, false, 0);
+	WorldSession* session = new WorldSession(accountId, nullptr, SEC_PLAYER, EXPANSION_WRATH_OF_THE_LICH_KING, time_t(0), LOCALE_enUS, 0, false, false, 0);
 
     std::unique_ptr<CharacterCreateInfo> characterInfo = std::make_unique<CharacterCreateInfo>(name, race, cls, gender, face.second, face.first, hair.first, hair.second, facialHair, 0, WorldPacket());
 
@@ -145,7 +145,7 @@ std::string RandomPlayerbotFactory::CreateRandomBotName(uint8 gender)
     uint32 maxId = fields[0].GetUInt32();
 
     result = CharacterDatabase.PQuery("SELECT n.name FROM ai_playerbot_names n "
-        "LEFT OUTER JOIN characters e ON e.name = n.name WHERE e.guid IS NULL AND n.gender = '%u' ORDER BY RAND() LIMIT 1", gender);
+        "LEFT OUTER JOIN characters e ON e.name = n.name WHERE e.guid IS nullptr AND n.gender = '%u' ORDER BY RAND() LIMIT 1", gender);
     if (!result)
     {
         sLog->outError("No more names left for random bots");
@@ -338,7 +338,7 @@ std::string RandomPlayerbotFactory::CreateRandomGuildName()
 
     uint32 id = urand(0, maxId);
     result = CharacterDatabase.PQuery("SELECT n.name FROM ai_playerbot_guild_names n "
-            "LEFT OUTER JOIN guild e ON e.name = n.name WHERE e.guildid IS NULL AND n.name_id >= '%u' LIMIT 1", id);
+            "LEFT OUTER JOIN guild e ON e.name = n.name WHERE e.guildid IS nullptr AND n.name_id >= '%u' LIMIT 1", id);
     if (!result)
     {
         sLog->outError("No more names left for random guilds");

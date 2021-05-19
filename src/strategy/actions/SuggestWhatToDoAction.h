@@ -1,39 +1,42 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "InventoryAction.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class SuggestWhatToDoAction : public InventoryAction
 {
-    class SuggestWhatToDoAction : public InventoryAction
-    {
     public:
-        SuggestWhatToDoAction(PlayerbotAI* botAI, string name = "suggest what to do");
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
+        SuggestWhatToDoAction(PlayerbotAI* botAI, std::string const& name = "suggest what to do");
+
+        bool Execute(Event event) override;
+        bool isUseful() override;
 
     protected:
-        typedef void (SuggestWhatToDoAction::*Suggestion) ();
-        vector<Suggestion> suggestions;
+        typedef void (SuggestWhatToDoAction::*Suggestion)();
+        std::vector<Suggestion> suggestions;
         void instance();
         void specificQuest();
         void grindMaterials();
         void grindReputation();
         void something();
-        void trade();
-        void spam(string msg, uint32 channelId = 1);
+        void spam(std::string const& msg, uint32 channelId = 1);
 
-        vector<uint32> GetIncompletedQuests();
+        std::vector<uint32> GetIncompletedQuests();
 
     private:
-        static map<string, int> instances;
-        static map<string, int> factions;
-    };
+        static std::map<std::string, uint8> instances;
+        static std::map<std::string, uint8> factions;
+};
 
-    class SuggestTradeAction : public SuggestWhatToDoAction
-    {
+class SuggestTradeAction : public SuggestWhatToDoAction
+{
     public:
         SuggestTradeAction(PlayerbotAI* botAI);
-        virtual bool Execute(Event event);
-        virtual bool isUseful() { return true; }
-    };
-}
+
+        bool Execute(Event event) override;
+        bool isUseful() override { return true; }
+};

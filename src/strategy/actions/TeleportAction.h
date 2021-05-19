@@ -1,16 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
-#include "MovementActions.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class TeleportAction : public Action
 {
-	class TeleportAction : public Action {
 	public:
-		TeleportAction(PlayerbotAI* botAI) : Action(ai, "teleport") {}
+		TeleportAction(PlayerbotAI* botAI) : Action(botAI, "teleport") { }
 
-    public:
-        virtual bool Execute(Event event);
-    };
-
-}
+        bool Execute(Event event) override;
+};

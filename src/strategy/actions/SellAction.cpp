@@ -1,42 +1,40 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "SellAction.h"
-#include "../ItemVisitors.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "SellAction.h"
+#include "../Event.h"
+#include "../ItemVisitors.h"
+#include "../../Playerbot.h"
 
 class SellItemsVisitor : public IterateItemsVisitor
 {
-public:
-    SellItemsVisitor(SellAction* action) : IterateItemsVisitor()
-    {
-        this->action = action;
-    }
+    public:
+        SellItemsVisitor(SellAction* action) : IterateItemsVisitor(), action(action) { }
 
-    virtual bool Visit(Item* item)
-    {
-        action->Sell(item);
-        return true;
-    }
+        bool Visit(Item* item) override
+        {
+            action->Sell(item);
+            return true;
+        }
 
-private:
-    SellAction* action;
+    private:
+        SellAction* action;
 };
 
 class SellGrayItemsVisitor : public SellItemsVisitor
 {
-public:
-    SellGrayItemsVisitor(SellAction* action) : SellItemsVisitor(action) {}
+    public:
+        SellGrayItemsVisitor(SellAction* action) : SellItemsVisitor(action) { }
 
-    virtual bool Visit(Item* item)
-    {
-        if (item->GetProto()->Quality != ITEM_QUALITY_POOR)
-            return true;
+        bool Visit(Item* item) override
+        {
+            if (item->GetTemplate()->Quality != ITEM_QUALITY_POOR)
+                return true;
 
-        return SellItemsVisitor::Visit(item);
-    }
+            return SellItemsVisitor::Visit(item);
+        }
 };
-
 
 bool SellAction::Execute(Event event)
 {
@@ -44,8 +42,7 @@ bool SellAction::Execute(Event event)
     if (!master)
         return false;
 
-    string text = event.getParam();
-
+    std::string const& text = event.getParam();
     if (text == "gray" || text == "*")
     {
         SellGrayItemsVisitor visitor(this);
@@ -53,32 +50,33 @@ bool SellAction::Execute(Event event)
         return true;
     }
 
-    list<Item*> items = parseItems(text, ITERATE_ITEMS_IN_BAGS);
-    for (list<Item*>::iterator i = items.begin(); i != items.end(); ++i)
+    std::list<Item*> items = parseItems(text, ITERATE_ITEMS_IN_BAGS);
+    for (Item* item : items)
     {
-        Sell(*i);
+        Sell(item);
     }
 
     return true;
 }
 
-
 void SellAction::Sell(FindItemVisitor* visitor)
 {
     IterateItems(visitor);
-    list<Item*> items = visitor->GetResult();
-    for (list<Item*>::iterator i = items.begin(); i != items.end(); ++i)
-        Sell(*i);
+    std::vector<Item*> items = visitor->GetResult();
+    for (Item* item : items)
+    {
+        Sell(item);
+    }
 }
 
 void SellAction::Sell(Item* item)
 {
     Player* master = GetMaster();
-    list<ObjectGuid> vendors = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest npcs")->Get();
+    GuidVector vendors = botAI->GetAiObjectContext()->GetValue<GuidVector>("nearest npcs")->Get();
+
     bool bought = false;
-    for (list<ObjectGuid>::iterator i = vendors.begin(); i != vendors.end(); ++i)
+    for (ObjectGuid const vendorguid : vendors)
     {
-        ObjectGuid vendorguid = *i;
         Creature* pCreature = bot->GetNPCIfCanInteractWith(vendorguid,UNIT_NPC_FLAG_VENDOR);
         if (!pCreature)
             continue;
@@ -90,7 +88,8 @@ void SellAction::Sell(Item* item)
         p << vendorguid << itemguid << count;
         bot->GetSession()->HandleSellItemOpcode(p);
 
-        ostringstream out; out << "Selling " << chat->formatItem(item->GetProto());
+        std::ostringstream out;
+        out << "Selling " << chat->formatItem(item->GetTemplate());
         botAI->TellMaster(out);
     }
 }

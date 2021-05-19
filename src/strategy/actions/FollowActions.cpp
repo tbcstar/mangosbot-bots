@@ -1,17 +1,18 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "FollowActions.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+#include "../Event.h"
 #include "../values/Formations.h"
-
-using namespace ai;
-
+#include "../../Playerbot.h"
+#include "../../ServerFacade.h"
 
 bool FollowAction::Execute(Event event)
 {
     Formation* formation = AI_VALUE(Formation*, "formation");
-    string target = formation->GetTargetName();
+    std::string const& target = formation->GetTargetName();
+
     bool moved = false;
     if (!target.empty())
     {
@@ -20,22 +21,24 @@ bool FollowAction::Execute(Event event)
     else
     {
         WorldLocation loc = formation->GetLocation();
-        if (Formation::IsNullLocation(loc) || loc.mapid == -1)
+        if (Formation::IsNullLocation(loc) || loc.GetMapId() == -1)
             return false;
 
-        moved = MoveTo(loc.mapid, loc.coord_x, loc.coord_y, loc.coord_z);
+        moved = MoveTo(loc.GetMapId(), loc.GetPositionX(), loc.GetPositionY(), loc.GetPositionZ());
     }
 
-    if (moved) botAI->SetNextCheckDelay(sPlayerbotAIConfig->reactDelay);
+    if (moved)
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->reactDelay);
+
     return moved;
 }
 
 bool FollowAction::isUseful()
 {
     Formation* formation = AI_VALUE(Formation*, "formation");
-    float distance = 0;
-    string target = formation->GetTargetName();
+    std::string const& target = formation->GetTargetName();
 
+    float distance = 0.f;
     if (!target.empty())
     {
         distance = AI_VALUE2(float, "distance", target);
@@ -43,10 +46,10 @@ bool FollowAction::isUseful()
     else
     {
         WorldLocation loc = formation->GetLocation();
-        if (Formation::IsNullLocation(loc) || bot->GetMapId() != loc.mapid)
+        if (Formation::IsNullLocation(loc) || bot->GetMapId() != loc.GetMapId())
             return false;
 
-        distance = sServerFacade->GetDistance2d(bot, loc.coord_x, loc.coord_y);
+        distance = sServerFacade->GetDistance2d(bot, loc.GetPositionX(), loc.GetPositionY());
     }
 
     return sServerFacade->IsDistanceGreaterThan(distance, formation->GetMaxDistance());

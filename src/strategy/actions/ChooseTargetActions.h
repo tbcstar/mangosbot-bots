@@ -1,80 +1,75 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "AttackAction.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class DpsAoeAction : public AttackAction
 {
-    class DpsAoeAction : public AttackAction
-    {
     public:
-        DpsAoeAction(PlayerbotAI* botAI) : AttackAction(ai, "dps aoe") {}
+        DpsAoeAction(PlayerbotAI* botAI) : AttackAction(botAI, "dps aoe") { }
 
-        virtual string GetTargetName() { return "dps aoe target"; }
-    };
+        std::string const& GetTargetName() override { return "dps aoe target"; }
+};
 
-    class DpsAssistAction : public AttackAction
-    {
+class DpsAssistAction : public AttackAction
+{
     public:
-        DpsAssistAction(PlayerbotAI* botAI) : AttackAction(ai, "dps assist") {}
+        DpsAssistAction(PlayerbotAI* botAI) : AttackAction(botAI, "dps assist") { }
 
-        virtual string GetTargetName() { return "dps target"; }
-    };
+        std::string const& GetTargetName() override { return "dps target"; }
+};
 
-    class TankAssistAction : public AttackAction
-    {
+class TankAssistAction : public AttackAction
+{
     public:
-        TankAssistAction(PlayerbotAI* botAI) : AttackAction(ai, "tank assist") {}
-        virtual string GetTargetName() { return "tank target"; }
-    };
+        TankAssistAction(PlayerbotAI* botAI) : AttackAction(botAI, "tank assist") { }
 
-    class AttackAnythingAction : public AttackAction
-    {
+        std::string const& GetTargetName() override { return "tank target"; }
+};
+
+class AttackAnythingAction : public AttackAction
+{
     public:
-        AttackAnythingAction(PlayerbotAI* botAI) : AttackAction(ai, "attack anything") {}
-        virtual string GetTargetName() { return "grind target"; }
-        virtual bool Execute(Event event);
-        virtual bool isUseful() {
-            return GetTarget() &&
-                (!AI_VALUE(list<ObjectGuid>, "nearest non bot players").empty() &&
-                    AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->mediumHealth &&
-                    (!AI_VALUE2(uint8, "mana", "self target") || AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig->mediumMana)
-                ) || AI_VALUE2(bool, "combat", "self target")
-                ;
-        }
-        virtual bool isPossible()
-        {
-            return AttackAction::isPossible() && GetTarget();
-        }
-    };
+        AttackAnythingAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack anything") { }
 
-    class AttackLeastHpTargetAction : public AttackAction
-    {
+        std::string const& GetTargetName() { return "grind target"; }
+        bool Execute(Event event) override;
+        bool isUseful() override;
+        bool isPossible() override;
+};
+
+class AttackLeastHpTargetAction : public AttackAction
+{
     public:
-        AttackLeastHpTargetAction(PlayerbotAI* botAI) : AttackAction(ai, "attack least hp target") {}
-        virtual string GetTargetName() { return "least hp target"; }
-    };
+        AttackLeastHpTargetAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack least hp target") { }
 
-    class AttackEnemyPlayerAction : public AttackAction
-    {
+        std::string const& GetTargetName() { return "least hp target"; }
+};
+
+class AttackEnemyPlayerAction : public AttackAction
+{
     public:
-        AttackEnemyPlayerAction(PlayerbotAI* botAI) : AttackAction(ai, "attack enemy player") {}
-        virtual string GetTargetName() { return "enemy player target"; }
-    };
+        AttackEnemyPlayerAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack enemy player") { }
 
-    class AttackRtiTargetAction : public AttackAction
-    {
+        std::string const& GetTargetName() { return "enemy player target"; }
+};
+
+class AttackRtiTargetAction : public AttackAction
+{
     public:
-        AttackRtiTargetAction(PlayerbotAI* botAI) : AttackAction(ai, "attack rti target") {}
-        virtual string GetTargetName() { return "rti target"; }
-    };
+        AttackRtiTargetAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack rti target") { }
 
-    class DropTargetAction : public Action
-    {
+        std::string const& GetTargetName() { return "rti target"; }
+};
+
+class DropTargetAction : public Action
+{
     public:
-        DropTargetAction(PlayerbotAI* botAI) : Action(ai, "drop target") {}
+        DropTargetAction(PlayerbotAI* botAI) : Action(botAI, "drop target") { }
 
-        virtual bool Execute(Event event);
-    };
-
-}
+        bool Execute(Event event) override;
+};

@@ -19,23 +19,23 @@ private:
     static ActionNode* rapid_fire(PlayerbotAI* botAI)
     {
         return new ActionNode ("rapid fire",
-            /*P*/ NULL,
-            /*A*/ NextAction::array(0, new NextAction("readiness"), NULL),
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ NextAction::array(0, new NextAction("readiness"), nullptr),
+            /*C*/ nullptr);
     }
     static ActionNode* aspect_of_the_pack(PlayerbotAI* botAI)
     {
         return new ActionNode ("aspect of the pack",
-            /*P*/ NULL,
-            /*A*/ NextAction::array(0, new NextAction("aspect of the cheetah"), NULL),
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ NextAction::array(0, new NextAction("aspect of the cheetah"), nullptr),
+            /*C*/ nullptr);
     }
     static ActionNode* feign_death(PlayerbotAI* botAI)
     {
         return new ActionNode ("feign death",
-            /*P*/ NULL,
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
 };
 
@@ -50,32 +50,32 @@ void GenericHunterStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 
     triggers.push_back(new TriggerNode(
         "enemy is close",
-        NextAction::array(0, new NextAction("wing clip", 50.0f), NULL)));
+        NextAction::array(0, new NextAction("wing clip", 50.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "medium threat",
-        NextAction::array(0, new NextAction("feign death", 32.0f), NULL)));
+        NextAction::array(0, new NextAction("feign death", 32.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "hunters pet low health",
-        NextAction::array(0, new NextAction("mend pet", 20.0f), NULL)));
+        NextAction::array(0, new NextAction("mend pet", 20.0f), nullptr)));
 }
 
 NextAction** HunterBoostStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("bestial wrath", 15.0f), NULL);
+    return NextAction::array(0, new NextAction("bestial wrath", 15.0f), nullptr);
 }
 
 void HunterBoostStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "rapid fire",
-        NextAction::array(0, new NextAction("rapid fire", 16.0f), NULL)));
+        NextAction::array(0, new NextAction("rapid fire", 16.0f), nullptr)));
 }
 
 void HunterCcStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "scare beast",
-        NextAction::array(0, new NextAction("scare beast on cc", ACTION_HIGH + 3), NULL)));
+        NextAction::array(0, new NextAction("scare beast on cc", ACTION_HIGH + 3), nullptr)));
 }

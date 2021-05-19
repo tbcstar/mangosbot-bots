@@ -34,7 +34,7 @@ bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
             Player *member = ObjectAccessor::FindPlayer(itr->guid);
-            if( !member || !sServerFacade->IsAlive(member))
+            if (!member || !sServerFacade->IsAlive(member))
                 continue;
 
             PlayerbotAI* botAI = member->GetPlayerbotAI();

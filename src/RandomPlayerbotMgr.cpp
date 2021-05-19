@@ -167,7 +167,7 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
     ObjectGuid botGUID = ObjectGuid::Create<HighGuid::Player>(bot);
 
     Player* player = GetPlayerBot(botGUID);
-    PlayerbotAI* botAI = player ? player->GetPlayerbotAI() : NULL;
+    PlayerbotAI* botAI = player ? player->GetPlayerbotAI() : nullptr;
 
     uint32 isValid = GetEventValue(bot, "add");
     if (!isValid)
@@ -803,7 +803,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
         return true;
     }
 
-    std::vector<string> messages = sRandomPlayerbotMgr->HandlePlayerbotCommand(args, NULL);
+    std::vector<string> messages = sRandomPlayerbotMgr->HandlePlayerbotCommand(args, nullptr);
     for (std::vector<string>::iterator i = messages.begin(); i != messages.end(); ++i)
     {
         sLog->outString(i->c_str());
@@ -828,7 +828,7 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
         PlayerbotAI* botAI = bot->GetPlayerbotAI();
         if (player == botAI->GetMaster())
         {
-            botAI->SetMaster(NULL);
+            botAI->SetMaster(nullptr);
             botAI->ResetStrategies();
         }
     }
@@ -890,7 +890,7 @@ void RandomPlayerbotMgr::OnPlayerLoginError(uint32 bot)
 Player* RandomPlayerbotMgr::GetRandomPlayer()
 {
     if (players.empty())
-        return NULL;
+        return nullptr;
 
     uint32 index = urand(0, players.size() - 1);
     return players[index];

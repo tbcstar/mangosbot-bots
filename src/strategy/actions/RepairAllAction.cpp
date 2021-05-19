@@ -1,28 +1,29 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "RepairAllAction.h"
-
-#include "../../ServerFacade.h"
-
-using namespace ai;
+#include "../Event.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
 bool RepairAllAction::Execute(Event event)
 {
-    list<ObjectGuid> npcs = AI_VALUE(list<ObjectGuid>, "nearest npcs");
-    for (list<ObjectGuid>::iterator i = npcs.begin(); i != npcs.end(); i++)
+    GuidVector npcs = AI_VALUE(GuidVector, "nearest npcs");
+    for (ObjectGuid const guid : npcs)
     {
-        Creature* unit = bot->GetNPCIfCanInteractWith(*i, UNIT_NPC_FLAG_REPAIR);
+        Creature* unit = bot->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_REPAIR);
         if (!unit)
             continue;
 
-        if (bot->hasUnitState(UNIT_STAT_DIED))
-            bot->RemoveSpellsCausingAura(SPELL_AURA_FEIGN_DEATH);
+        if (bot->HasUnitState(UNIT_STATE_DIED))
+            bot->RemoveAurasByType(SPELL_AURA_FEIGN_DEATH);
 
-        sServerFacade->SetFacingTo(bot, unit);
+        bot->SetFacingToObject(unit);
         float discountMod = bot->GetReputationPriceDiscount(unit);
         uint32 totalCost = bot->DurabilityRepairAll(true, discountMod, false);
 
-        ostringstream out;
+        std::ostringstream out;
         out << "Repair: " << chat->formatMoney(totalCost) << " (" << unit->GetName() << ")";
         botAI->TellMasterNoFacing(out.str());
 

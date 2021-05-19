@@ -110,7 +110,7 @@ bool FleeManager::isBetterThan(FleePoint* point, FleePoint* other)
 
 FleePoint* FleeManager::selectOptimalDestination(std::vector<FleePoint*> &points)
 {
-	FleePoint* best = NULL;
+	FleePoint* best = nullptr;
 	for (std::vector<FleePoint*>::iterator i = points.begin(); i != points.end(); i++)
     {
 		FleePoint* point = *i;

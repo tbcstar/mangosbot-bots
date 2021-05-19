@@ -1,16 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class TellReputationAction : public Action
 {
-    class TellReputationAction : public Action {
     public:
-        TellReputationAction(PlayerbotAI* botAI) : Action(ai, "reputation") {}
-        virtual bool Execute(Event event);
+        TellReputationAction(PlayerbotAI* botAI) : Action(botAI, "reputation") { }
 
-    private:
-
-    };
-
-}
+        bool Execute(Event event) override;
+};

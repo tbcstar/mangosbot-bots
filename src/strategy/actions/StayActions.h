@@ -1,30 +1,35 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "MovementActions.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class StayActionBase : public MovementAction
 {
-    class StayActionBase : public MovementAction {
     public:
-        StayActionBase(PlayerbotAI* botAI, string name) : MovementAction(ai, name) {}
+        StayActionBase(PlayerbotAI* botAI, std::string const& name) : MovementAction(botAI, name) { }
 
     protected:
         bool Stay();
-    };
+};
 
-    class StayAction : public StayActionBase {
+class StayAction : public StayActionBase
+{
     public:
-        StayAction(PlayerbotAI* botAI) : StayActionBase(ai, "stay") {}
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
+        StayAction(PlayerbotAI* botAI) : StayActionBase(botAI, "stay") { }
 
-    class SitAction : public StayActionBase {
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};
+
+class SitAction : public StayActionBase
+{
     public:
-        SitAction(PlayerbotAI* botAI) : StayActionBase(ai, "sit") {}
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
+        SitAction(PlayerbotAI* botAI) : StayActionBase(botAI, "sit") { }
 
-}
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};

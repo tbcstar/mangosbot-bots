@@ -1,22 +1,22 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "SetCraftAction.h"
-
-#include "../../../ahbot/AhBotConfig.h"
-#include "../../ServerFacade.h"
+#include "../Event.h"
 #include "../values/CraftValue.h"
-using namespace ai;
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
-map<uint32, SkillLineAbilityEntry const*> SetCraftAction::skillSpells;
+std::map<uint32, SkillLineAbilityEntry const*> SetCraftAction::skillSpells;
 
 bool SetCraftAction::Execute(Event event)
 {
     Player* master = GetMaster();
-
     if (!master)
         return false;
 
-    string link = event.getParam();
+    std::string const& link = event.getParam();
 
     CraftData& data = AI_VALUE(CraftData&, "craft");
     if (link == "reset")
@@ -46,48 +46,45 @@ bool SetCraftAction::Execute(Event event)
 
     if (skillSpells.empty())
     {
-        for (uint32 j = 0; j < sSkillLineAbilityStore.GetNumRows(); ++j)
+        for (SkillLineAbilityEntry const* skillLine : sSkillLineAbilityStore)
         {
-            SkillLineAbilityEntry const* skillLine = sSkillLineAbilityStore.LookupEntry(j);
-            if (skillLine)
-                skillSpells[skillLine->spellId] = skillLine;
+            skillSpells[skillLine->spellId] = skillLine;
         }
     }
 
     data.required.clear();
     data.obtained.clear();
 
-    for (PlayerSpellMap::iterator itr = bot->GetSpellMap().begin(); itr != bot->GetSpellMap().end(); ++itr) {
-        const uint32 spellId = itr->first;
+    for (PlayerSpellMap::iterator itr = bot->GetSpellMap().begin(); itr != bot->GetSpellMap().end(); ++itr)
+    {
+        uint32 spellId = itr->first;
 
-        if (itr->second.state == PLAYERSPELL_REMOVED || itr->second.disabled || IsPassiveSpell(spellId))
+        if (itr->second->State == PLAYERSPELL_REMOVED || !itr->second->Active)
             continue;
 
-        const SpellEntry* const pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
-        if (!pSpellInfo)
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+        if (!spellInfo)
             continue;
 
-        SkillLineAbilityEntry const* skillLine = skillSpells[spellId];
-        if (skillLine)
+        if (SkillLineAbilityEntry const* skillLine = skillSpells[spellId])
         {
-            for (int i = 0; i < 3; ++i)
+            for (uint8 i = 0; i < 3; ++i)
             {
-                if (pSpellInfo->Effect[i] == SPELL_EFFECT_CREATE_ITEM)
+                if (spellInfo->Effects[i].Effect == SPELL_EFFECT_CREATE_ITEM && itemId == spellInfo->Effects[i].ItemType)
                 {
-                    if (itemId == pSpellInfo->EffectItemType[i])
+                    for (uint32 x = 0; x < MAX_SPELL_REAGENTS; ++x)
                     {
-                        for (uint32 x = 0; x < MAX_SPELL_REAGENTS; ++x)
+                        if (spellInfo->Reagent[x] <= 0)
                         {
-                            if (pSpellInfo->Reagent[x] <= 0)
-                                { continue; }
+                            continue;
+                        }
 
-                            uint32 itemid = pSpellInfo->Reagent[x];
-                            uint32 reagentsRequired = pSpellInfo->ReagentCount[x];
-                            if (itemid)
-                            {
-                                data.required[itemid] = reagentsRequired;
-                                data.obtained[itemid] = 0;
-                            }
+                        uint32 itemid = spellInfo->Reagent[x];
+                        uint32 reagentsRequired = spellInfo->ReagentCount[x];
+                        if (itemid)
+                        {
+                            data.required[itemid] = reagentsRequired;
+                            data.obtained[itemid] = 0;
                         }
                     }
                 }
@@ -120,18 +117,26 @@ void SetCraftAction::TellCraft()
     if (!proto)
         return;
 
-    ostringstream out;
+    std::ostringstream out;
     out << "I will craft " << chat->formatItem(proto) << " using reagents: ";
+
     bool first = true;
-    for (map<uint32, int>::iterator i = data.required.begin(); i != data.required.end(); ++i)
+    for (std::map<uint32, uint32>::iterator i = data.required.begin(); i != data.required.end(); ++i)
     {
         uint32 item = i->first;
-        int required = i->second;
-        ItemTemplate const* reagent = sObjectMgr->GetItemTemplate(item);
-        if (reagent)
+        uint32 required = i->second;
+
+        if (ItemTemplate const* reagent = sObjectMgr->GetItemTemplate(item))
         {
-            if (first) { first = false; } else out << ", ";
+            if (first)
+            {
+                first = false;
+            }
+            else
+                out << ", ";
+
             out << chat->formatItem(reagent, required);
+
             uint32 given = data.obtained[item];
             if (given)
             {

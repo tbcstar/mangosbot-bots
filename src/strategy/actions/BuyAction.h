@@ -1,20 +1,28 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "InventoryAction.h"
 
-namespace ai
+class Event;
+class FindItemVisitor;
+class ObjectGuid;
+class Item;
+class PlayerbotAI;
+
+struct ItemTemplate;
+struct VendorItemData;
+
+class BuyAction : public InventoryAction
 {
-    class BuyAction : public InventoryAction {
     public:
-        BuyAction(PlayerbotAI* botAI) : InventoryAction(ai, "buy") {}
-        virtual bool Execute(Event event);
+        BuyAction(PlayerbotAI* botAI) : InventoryAction(botAI, "buy") { }
+
+        bool Execute(Event event) override;
 
     private:
         bool BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, ItemTemplate const* proto);
-        bool TradeItem(FindItemVisitor *visitor, int8 slot);
-        bool TradeItem(const Item& item, int8 slot);
+        bool TradeItem(FindItemVisitor* visitor, int8 slot);
+        bool TradeItem(Item const* item, int8 slot);
 
-    };
-
-}
+};

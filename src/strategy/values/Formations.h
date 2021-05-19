@@ -48,7 +48,7 @@ namespace ai
 	{
 	public:
         FormationValue(PlayerbotAI* botAI);
-        ~FormationValue() { if (value) { delete value; value = NULL; } }
+        ~FormationValue() { if (value) { delete value; value = nullptr; } }
         virtual string Save();
         virtual bool Load(string value);
     };
@@ -56,8 +56,8 @@ namespace ai
     class SetFormationAction : public Action
     {
     public:
-        SetFormationAction(PlayerbotAI* botAI) : Action(ai, "set formation") {}
-        virtual bool Execute(Event event);
+        SetFormationAction(PlayerbotAI* botAI) : Action(botAI, "set formation") {}
+        bool Execute(Event event) override;
     };
 };
 

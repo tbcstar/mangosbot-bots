@@ -1,115 +1,113 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "BuffAction.h"
-
+#include "../Event.h"
 #include "../values/ItemCountValue.h"
+#include "../../Playerbot.h"
 
-using namespace ai;
-
-class FindBuffVisitor : public IterateItemsVisitor {
-public:
-    FindBuffVisitor(Player* bot) : IterateItemsVisitor(), bot(bot)
-    {
-    }
-
-    virtual bool Visit(Item* item)
-    {
-        if (bot->CanUseItem(item->GetProto()) != EQUIP_ERR_OK)
-            return true;
-
-        ItemTemplate const* proto = item->GetProto();
-
-        if (proto->Class != ITEM_CLASS_CONSUMABLE)
-            return true;
-
-        if (proto->SubClass != ITEM_SUBCLASS_ELIXIR && 
-            proto->SubClass != ITEM_SUBCLASS_FLASK &&
-            proto->SubClass != ITEM_SUBCLASS_SCROLL && 
-            proto->SubClass != ITEM_SUBCLASS_FOOD &&
-            proto->SubClass != ITEM_SUBCLASS_CONSUMABLE_OTHER &&
-            proto->SubClass != ITEM_SUBCLASS_ITEM_ENHANCEMENT)
-            return true;
-
-        for (int i=0; i<MAX_ITEM_PROTO_SPELLS; i++)
+class FindBuffVisitor : public IterateItemsVisitor
+{
+    public:
+        FindBuffVisitor(Player* bot) : IterateItemsVisitor(), bot(bot)
         {
-            uint32 spellId = proto->Spells[i].SpellId;
-            if (!spellId)
-                continue;
-
-            if (bot->HasAura(spellId))
-                return true;
-
-            Item* itemForSpell = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<Item*>("item for spell", spellId);
-            if (itemForSpell && itemForSpell->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT))
-                return true;
-        
-            if (items.find(proto->SubClass) == items.end())
-                items[proto->SubClass] = list<Item*>();
-
-            items[proto->SubClass].push_back(item);
-            break;
         }
 
-        return true;
-    }
+        bool Visit(Item* item) override
+        {
+            if (bot->CanUseItem(item->GetTemplate()) != EQUIP_ERR_OK)
+                return true;
 
-public:
-    map<uint32, list<Item*> > items;
+            ItemTemplate const* proto = item->GetTemplate();
 
-private:
-    Player* bot;
+            if (proto->Class != ITEM_CLASS_CONSUMABLE)
+                return true;
+
+            if (proto->SubClass != ITEM_SUBCLASS_ELIXIR && proto->SubClass != ITEM_SUBCLASS_FLASK && proto->SubClass != ITEM_SUBCLASS_SCROLL &&
+                proto->SubClass != ITEM_SUBCLASS_FOOD && proto->SubClass != ITEM_SUBCLASS_CONSUMABLE_OTHER && proto->SubClass != ITEM_SUBCLASS_ITEM_ENHANCEMENT)
+                return true;
+
+            for (uint8 i = 0; i < MAX_ITEM_PROTO_SPELLS; i++)
+            {
+                uint32 spellId = proto->Spells[i].SpellId;
+                if (!spellId)
+                    continue;
+
+                if (bot->HasAura(spellId))
+                    return true;
+
+                Item* itemForSpell = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<Item*>("item for spell", spellId);
+                if (itemForSpell && itemForSpell->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT))
+                    return true;
+
+                if (items.find(proto->SubClass) == items.end())
+                    items[proto->SubClass] = list<Item*>();
+
+                items[proto->SubClass].push_back(item);
+                break;
+            }
+
+            return true;
+        }
+
+        std::map<uint32, std::vector<Item*> > items;
+
+    private:
+        Player* bot;
 };
 
 void BuffAction::TellHeader(uint32 subClass)
 {
     switch (subClass)
     {
-    case ITEM_SUBCLASS_ELIXIR:
-        botAI->TellMaster("--- Elixir ---");
-        return;
-    case ITEM_SUBCLASS_FLASK:
-        botAI->TellMaster("--- Flask ---");
-        return;
-    case ITEM_SUBCLASS_SCROLL:
-        botAI->TellMaster("--- Scroll ---");
-        return;
-    case ITEM_SUBCLASS_FOOD:
-        botAI->TellMaster("--- Food ---");
-        return;
-    case ITEM_SUBCLASS_ITEM_ENHANCEMENT:
-        botAI->TellMaster("--- Enchant ---");
-        return;
+        case ITEM_SUBCLASS_ELIXIR:
+            botAI->TellMaster("--- Elixir ---");
+            return;
+        case ITEM_SUBCLASS_FLASK:
+            botAI->TellMaster("--- Flask ---");
+            return;
+        case ITEM_SUBCLASS_SCROLL:
+            botAI->TellMaster("--- Scroll ---");
+            return;
+        case ITEM_SUBCLASS_FOOD:
+            botAI->TellMaster("--- Food ---");
+            return;
+        case ITEM_SUBCLASS_ITEM_ENHANCEMENT:
+            botAI->TellMaster("--- Enchant ---");
+            return;
     }
 }
 
-
 bool BuffAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
 
     FindBuffVisitor visitor(bot);
     IterateItems(&visitor);
 
     uint32 oldSubClass = -1;
-    for (map<uint32, list<Item*> >::iterator i = visitor.items.begin(); i != visitor.items.end(); ++i)
+    for (std::map<uint32, std::vector<Item*> >::iterator i = visitor.items.begin(); i != visitor.items.end(); ++i)
     {
-        list<Item*> items = i->second;
+        std::vector<Item*> items = i->second;
 
         uint32 subClass = i->first;
         if (oldSubClass != subClass)
         {
             if (!items.empty())
                 TellHeader(subClass);
+
             oldSubClass = subClass;
         }
-        for (list<Item*>::iterator j = items.begin(); j != items.end(); ++j)
+
+        for (std::vector<Item*>::iterator j = items.begin(); j != items.end(); ++j)
         {
             Item* item = *j;
-            ostringstream out;
-            out << chat->formatItem(item->GetProto(), item->GetCount());
+            std::ostringstream out;
+            out << chat->formatItem(item->GetTemplate(), item->GetCount());
             botAI->TellMaster(out);
         }
     }
-    
+
     return true;
 }

@@ -1,10 +1,11 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "GossipHelloAction.h"
-
-#include "../../ServerFacade.h"
-
-using namespace ai;
+#include "GossipDef.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool GossipHelloAction::Execute(Event event)
 {
@@ -29,16 +30,16 @@ bool GossipHelloAction::Execute(Event event)
 	Creature* pCreature = bot->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_NONE);
 	if (!pCreature)
 	{
-		DEBUG_LOG("[PlayerbotMgr]: HandleMasterIncomingPacket - Received  CMSG_GOSSIP_HELLO %s not found or you can't interact with him.", guid.GetString().c_str());
+		LOG_DEBUG("[PlayerbotMgr]: HandleMasterIncomingPacket - Received  CMSG_GOSSIP_HELLO %s not found or you can't interact with him.", guid.GetString().c_str());
 		return false;
 	}
 
-	GossipMenuItemsMapBounds pMenuItemBounds = sObjectMgr->GetGossipMenuItemsMapBounds(pCreature->GetCreatureInfo()->GossipMenuId);
+	GossipMenuItemsMapBounds pMenuItemBounds = sObjectMgr->GetGossipMenuItemsMapBounds(pCreature->GetCreatureTemplate()->GossipMenuId);
 	if (pMenuItemBounds.first == pMenuItemBounds.second)
 		return false;
 
-	string text = event.getParam();
-	int menuToSelect = -1;
+	std::string const& text = event.getParam();
+	int32 menuToSelect = -1;
 	if (text.empty())
 	{
         WorldPacket p1;
@@ -46,7 +47,8 @@ bool GossipHelloAction::Execute(Event event)
         bot->GetSession()->HandleGossipHelloOpcode(p1);
         sServerFacade->SetFacingTo(bot, pCreature);
 
-        ostringstream out; out << "--- " << pCreature->GetName() << " ---";
+        std::ostringstream out;
+        out << "--- " << pCreature->GetName() << " ---";
         botAI->TellMasterNoFacing(out.str());
 
         TellGossipMenus();
@@ -59,7 +61,9 @@ bool GossipHelloAction::Execute(Event event)
 	else
 	{
 	    menuToSelect = atoi(text.c_str());
-	    if (menuToSelect > 0) menuToSelect--;
+	    if (menuToSelect > 0)
+            menuToSelect--;
+
         ProcessGossip(menuToSelect);
 	}
 
@@ -72,15 +76,17 @@ void GossipHelloAction::TellGossipText(uint32 textId)
     if (!textId)
         return;
 
-    GossipText const* text = sObjectMgr->GetGossipText(textId);
-    if (text)
+    if (GossipText const* text = sObjectMgr->GetGossipText(textId))
     {
-        for (int i = 0; i < MAX_GOSSIP_TEXT_OPTIONS; i++)
+        for (uint8 i = 0; i < MAX_GOSSIP_TEXT_OPTIONS; i++)
         {
-            string text0 = text->Options[i].Text_0;
-            if (!text0.empty()) botAI->TellMasterNoFacing(text0);
-            string text1 = text->Options[i].Text_1;
-            if (!text1.empty()) botAI->TellMasterNoFacing(text1);
+            std::string const& text0 = text->Options[i].Text_0;
+            if (!text0.empty())
+                botAI->TellMasterNoFacing(text0);
+
+            std::string const& text1 = text->Options[i].Text_1;
+            if (!text1.empty())
+                botAI->TellMasterNoFacing(text1);
         }
     }
 }
@@ -98,24 +104,26 @@ void GossipHelloAction::TellGossipMenus()
         TellGossipText(textId);
     }
 
-    for (int i = 0; i < menu.MenuItemCount(); i++)
+    for (uint32 i = 0; i < menu.GetMenuItemCount(); i++)
     {
-        GossipMenuItem const& item = menu.GetItem(i);
-        ostringstream out; out << "[" << (i+1) << "] " << item.m_gMessage;
+        GossipMenuItem const* item = menu.GetItem(i);
+        std::ostringstream out;
+        out << "[" << (i+1) << "] " << item->Message;
         botAI->TellMasterNoFacing(out.str());
     }
 }
 
 
-bool GossipHelloAction::ProcessGossip(int menuToSelect)
+bool GossipHelloAction::ProcessGossip(int32 menuToSelect)
 {
     GossipMenu& menu = bot->PlayerTalkClass->GetGossipMenu();
-    if (menuToSelect != -1 && menuToSelect >= menu.MenuItemCount())
+    if (menuToSelect != -1 && menuToSelect >= menu.GetMenuItemCount())
     {
         botAI->TellError("Unknown gossip option");
         return false;
     }
-    GossipMenuItem const& item = menu.GetItem(menuToSelect);
+
+    GossipMenuItem const* item = menu.GetItem(menuToSelect);
     WorldPacket p;
     std::string code;
     p << GetMaster()->GetTarget();

@@ -1,56 +1,53 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "MovementActions.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class PositionAction : public Action
 {
-    class PositionAction : public Action
-    {
     public:
-        PositionAction(PlayerbotAI* botAI) : Action(ai, "position")
-        {}
+        PositionAction(PlayerbotAI* botAI) : Action(botAI, "position") { }
 
-        virtual bool Execute(Event event);
-    };
+        bool Execute(Event event) override;
+};
 
-    class MoveToPositionAction : public MovementAction
-    {
+class MoveToPositionAction : public MovementAction
+{
     public:
-        MoveToPositionAction(PlayerbotAI* botAI, string name, string qualifier, bool idle = false) :
-            MovementAction(ai, name), qualifier(qualifier), idle(idle)
-        {}
+        MoveToPositionAction(PlayerbotAI* botAI, std::string const& name, std::string const& qualifier, bool idle = false) :
+            MovementAction(botAI, name), qualifier(qualifier), idle(idle) { }
 
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
+        bool Execute(Event event) override;
+        bool isUseful() override;
 
     protected:
-        string qualifier;
+        std::string qualifier;
         bool idle;
-    };
+};
 
-    class GuardAction : public MoveToPositionAction
-    {
+class GuardAction : public MoveToPositionAction
+{
     public:
-        GuardAction(PlayerbotAI* botAI) : MoveToPositionAction(ai, "move to position", "guard") {}
-    };
+        GuardAction(PlayerbotAI* botAI) : MoveToPositionAction(botAI, "move to position", "guard") { }
+};
 
-    class SetReturnPositionAction : public Action
-    {
+class SetReturnPositionAction : public Action
+{
     public:
-        SetReturnPositionAction(PlayerbotAI* botAI) : Action(ai, "set return position")
-        {}
+        SetReturnPositionAction(PlayerbotAI* botAI) : Action(botAI, "set return position") { }
 
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};
 
-    class ReturnAction : public MoveToPositionAction
-    {
+class ReturnAction : public MoveToPositionAction
+{
     public:
-        ReturnAction(PlayerbotAI* botAI) : MoveToPositionAction(ai, "return", "return", true) {}
+        ReturnAction(PlayerbotAI* botAI) : MoveToPositionAction(botAI, "return", "return", true) { }
 
-        virtual bool isUseful();
-    };
-
-}
+        bool isUseful() override;
+};

@@ -1,25 +1,32 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "InventoryAction.h"
 
-namespace ai
+class Event;
+class Quest;
+class PlayerbotAI;
+
+struct ItemTemplate;
+struct QuestStatusData;
+
+class QueryItemUsageAction : public InventoryAction
 {
-    class QueryItemUsageAction : public InventoryAction {
     public:
-        QueryItemUsageAction(PlayerbotAI* botAI, string name = "query item usage") : InventoryAction(ai, name) {}
-        virtual bool Execute(Event event);
+        QueryItemUsageAction(PlayerbotAI* botAI, std::string const& name = "query item usage") : InventoryAction(botAI, name) { }
+
+        bool Execute(Event event) override;
 
     protected:
         uint32 GetCount(ItemTemplate const* item);
-        string QueryItem(ItemTemplate const* item, uint32 count, uint32 total);
-        string QueryItemUsage(ItemTemplate const* item);
-        string QueryItemPrice(ItemTemplate const* item);
-        string QueryQuestItem(uint32 itemId, const Quest *questTemplate, const QuestStatusData *questStatus);
-        string QueryQuestItem(uint32 itemId);
+        std::string const& QueryItem(ItemTemplate const* item, uint32 count, uint32 total);
+        std::string const& QueryItemUsage(ItemTemplate const* item);
+        std::string const& QueryItemPrice(ItemTemplate const* item);
+        std::string const& QueryQuestItem(uint32 itemId, Quest const* questTemplate, QuestStatusData const* questStatus);
+        std::string const& QueryQuestItem(uint32 itemId);
 
     private:
-        ostringstream out;
+        std::ostringstream out;
 
-    };
-}
+};

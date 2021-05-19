@@ -1,10 +1,11 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "QuestAction.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "QuestAction.h"
+#include "../Event.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
 bool QuestAction::Execute(Event event)
 {
@@ -25,9 +26,9 @@ bool QuestAction::Execute(Event event)
 
 bool QuestAction::ProcessQuests(ObjectGuid questGiver)
 {
-    GameObject *gameObject = botAI->GetGameObject(questGiver);
-    if (gameObject && gameObject->GetGoType() == GAMEOBJECT_TYPE_QUESTGIVER)
-        return ProcessQuests(gameObject);
+    if (GameObject* gameObject = botAI->GetGameObject(questGiver))
+        if (gameObject->GetGoType() == GAMEOBJECT_TYPE_QUESTGIVER)
+            return ProcessQuests(gameObject);
 
     Creature* creature = botAI->GetCreature(questGiver);
     if (creature)
@@ -46,16 +47,17 @@ bool QuestAction::ProcessQuests(WorldObject* questGiver)
         return false;
     }
 
-    if (!sServerFacade->IsInFront(bot, questGiver, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
-        sServerFacade->SetFacingTo(bot, questGiver);
+    if (!bot->IsInFront(questGiver, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
+        bot->SetFacingTo(questGiver);
 
     bot->SetTarget(guid);
     bot->PrepareQuestMenu(guid);
+
     QuestMenu& questMenu = bot->PlayerTalkClass->GetQuestMenu();
-    for (uint32 i = 0; i < questMenu.MenuItemCount(); ++i)
+    for (uint32 i = 0; i < questMenu.GetMenuItemCount(); ++i)
     {
         QuestMenuItem const& menuItem = questMenu.GetItem(i);
-        uint32 questID = menuItem.m_qId;
+        uint32 questID = menuItem.QuestId;
         Quest const* quest = sObjectMgr->GetQuestTemplate(questID);
         if (!quest)
             continue;
@@ -85,7 +87,6 @@ bool QuestAction::AcceptQuest(Quest const* quest, ObjectGuid questGiver)
         out << "Quest log is full";
     else if (! bot->CanAddQuest(quest, false))
         out << "Bags are full";
-
     else
     {
         WorldPacket p(CMSG_QUESTGIVER_ACCEPT_QUEST);
@@ -119,14 +120,12 @@ bool QuestObjectiveCompletedAction::Execute(Event event)
     if (entry & 0x80000000)
     {
         entry &= 0x7FFFFFFF;
-        GameObjectInfo const* info = sObjectMgr->GetGameObjectInfo(entry);
-        if (info)
+        if (GameObjectTemplate const* info = sObjectMgr->GetGameObjectTemplate(entry))
             botAI->TellMaster(chat->formatQuestObjective(info->name, available, required));
     }
     else
     {
-        CreatureInfo const* info = sObjectMgr->GetCreatureTemplate(entry);
-        if (info)
+        if (CreatureTemplate const* info = sObjectMgr->GetCreatureTemplate(entry))
             botAI->TellMaster(chat->formatQuestObjective(info->Name, available, required));
     }
 

@@ -1,9 +1,11 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "TellReputationAction.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "TellReputationAction.h"
+#include "ReputationMgr.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool TellReputationAction::Execute(Event event)
 {
@@ -15,20 +17,22 @@ bool TellReputationAction::Execute(Event event)
     if (selection.IsEmpty())
         return false;
 
-    Unit* unit = master->GetMap()->GetUnit(selection);
+    Unit* unit = ObjectAccessor::GetUnit(*master, selection);
     if (!unit)
         return false;
 
-    const FactionTemplateEntry *factionTemplate = sServerFacade->GetFactionTemplateEntry(unit);
+    FactionTemplateEntry const* factionTemplate = unit->GetFactionTemplateEntry();
     uint32 faction = factionTemplate->faction;
-    const FactionEntry* entry = sFactionStore.LookupEntry(faction);
+    FactionEntry const* entry = sFactionStore.LookupEntry(faction);
     int32 reputation = bot->GetReputationMgr().GetReputation(faction);
 
-    ostringstream out;
+    std::ostringstream out;
     out << entry->name[0] << ": ";
     out << "|cff";
+
     ReputationRank rank = bot->GetReputationMgr().GetRank(entry);
-    switch (rank) {
+    switch (rank)
+    {
         case REP_HATED:
             out << "cc2222hated";
             break;
@@ -61,7 +65,7 @@ bool TellReputationAction::Execute(Event event)
     out << "|cffffffff";
 
     int32 base = ReputationMgr::Reputation_Cap + 1;
-    for (int i = MAX_REPUTATION_RANK - 1; i >= rank; --i)
+    for (int32 i = MAX_REPUTATION_RANK - 1; i >= rank; --i)
         base -= ReputationMgr::PointsInRank[i];
 
     out << " (" << (reputation - base) << "/" << ReputationMgr::PointsInRank[rank] << ")";

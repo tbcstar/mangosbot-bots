@@ -1,30 +1,29 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "RevealGatheringItemAction.h"
-
+#include "../Event.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 #include "../../ServerFacade.h"
-#include "GridNotifiers.h"
-#include "GridNotifiersImpl.h"
-#include "CellImpl.h"
-
-using namespace ai;
 
 class AnyGameObjectInObjectRangeCheck
 {
-public:
-    AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) {}
-    WorldObject const& GetFocusObject() const { return *i_obj; }
-    bool operator()(GameObject* u)
-    {
-        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade->isSpawned(u) && u->GetGOInfo())
-            return true;
+    public:
+        AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) {}
+        WorldObject const& GetFocusObject() const { return *i_obj; }
+        bool operator()(GameObject* go)
+        {
+            if (go && i_obj->IsWithinDistInMap(go, i_range) && go->isSpawned() && go->GetGOInfo())
+                return true;
 
-        return false;
-    }
+            return false;
+        }
 
-private:
-    WorldObject const* i_obj;
-    float i_range;
+    private:
+        WorldObject const* i_obj;
+        float i_range;
 };
 
 bool RevealGatheringItemAction::Execute(Event event)
@@ -32,29 +31,26 @@ bool RevealGatheringItemAction::Execute(Event event)
     if (!bot->GetGroup())
         return false;
 
-    list<GameObject*> targets;
+    std::list<GameObject*> targets;
     AnyGameObjectInObjectRangeCheck u_check(bot, sPlayerbotAIConfig->grindDistance);
-    GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects((const WorldObject*)bot, searcher, sPlayerbotAIConfig->reactDistance);
+    acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(bot, targets, u_check);
+    bot->VisitNearbyObject(sPlayerbotAIConfig->reactDistance, searcher);
 
-    vector<GameObject*> result;
-    for(list<GameObject*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
+    std::vector<GameObject*> result;
+    for (GameObject* go : targets)
     {
-        GameObject* go = *tIter;
-        if (!go || !sServerFacade->isSpawned(go) ||
-                sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, go), sPlayerbotAIConfig->lootDistance))
+        if (!go || !go->isSpawned() || sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, go), sPlayerbotAIConfig->lootDistance))
             continue;
 
-        if (LockEntry const *lockInfo = sLockStore.LookupEntry(go->GetGOInfo()->GetLockId()))
+        if (LockEntry const* lockInfo = sLockStore.LookupEntry(go->GetGOInfo()->GetLockId()))
         {
-            for (int i = 0; i < 8; ++i)
+            for (uint8 i = 0; i < 8; ++i)
             {
                 if (lockInfo->Type[i] == LOCK_KEY_SKILL)
                 {
                     uint32 skillId = SkillByLockType(LockType(lockInfo->Index[i]));
                     uint32 reqSkillValue = max((uint32)2, lockInfo->Skill[i]);
-                    if ((skillId == SKILL_MINING || skillId == SKILL_HERBALISM) &&
-                            botAI->HasSkill((SkillType)skillId) && uint32(bot->GetSkillValue(skillId)) >= reqSkillValue)
+                    if ((skillId == SKILL_MINING || skillId == SKILL_HERBALISM) && botAI->HasSkill((SkillType)skillId) && uint32(bot->GetSkillValue(skillId)) >= reqSkillValue)
                     {
                         result.push_back(go);
                         break;
@@ -70,11 +66,13 @@ bool RevealGatheringItemAction::Execute(Event event)
     if (result.empty())
         return false;
 
-    GameObject *go = result[urand(0, result.size() - 1)];
-    if (!go) return false;
+    GameObject* go = result[urand(0, result.size() - 1)];
+    if (!go)
+        return false;
 
-    ostringstream msg;
+    std::ostringstream msg;
     msg << "I see a " << ChatHelper::formatGameobject(go) << ". ";
+
     switch (go->GetGoType())
     {
       case GAMEOBJECT_TYPE_CHEST:

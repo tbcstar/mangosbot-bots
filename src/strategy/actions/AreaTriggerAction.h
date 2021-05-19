@@ -1,23 +1,24 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "MovementActions.h"
-#include "../values/LastMovementValue.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class ReachAreaTriggerAction : public MovementAction
 {
-    class ReachAreaTriggerAction : public MovementAction {
     public:
-        ReachAreaTriggerAction(PlayerbotAI* botAI) : MovementAction(ai, "reach area trigger") {}
+        ReachAreaTriggerAction(PlayerbotAI* botAI) : MovementAction(botAI, "reach area trigger") { }
 
-        virtual bool Execute(Event event);
-    };
+        bool Execute(Event event) override;
+};
 
-    class AreaTriggerAction : public MovementAction {
+class AreaTriggerAction : public MovementAction
+{
     public:
-        AreaTriggerAction(PlayerbotAI* botAI) : MovementAction(ai, "area trigger") {}
+        AreaTriggerAction(PlayerbotAI* botAI) : MovementAction(botAI, "area trigger") { }
 
-        virtual bool Execute(Event event);
-    };
-
-}
+        bool Execute(Event event) override;
+};

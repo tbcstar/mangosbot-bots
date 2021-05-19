@@ -1,41 +1,44 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "LootStrategyAction.h"
-#include "../values/LootStrategyValue.h"
 #include "LootAction.h"
-
-using namespace ai;
-
+#include "../Event.h"
+#include "../values/LootStrategyValue.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
 bool LootStrategyAction::Execute(Event event)
 {
-    string strategy = event.getParam();
+    std::string const& strategy = event.getParam();
 
     LootObjectStack* lootItems = AI_VALUE(LootObjectStack*, "available loot");
-    set<uint32>& alwaysLootItems = AI_VALUE(set<uint32>&, "always loot list");
+    std::set<uint32>& alwaysLootItems = AI_VALUE(std::set<uint32>&, "always loot list");
     Value<LootStrategy*>* lootStrategy = context->GetValue<LootStrategy*>("loot strategy");
 
     if (strategy == "?")
     {
         {
-            ostringstream out;
+            std::ostringstream out;
             out << "Loot strategy: ";
             out << lootStrategy->Get()->GetName();
             botAI->TellMaster(out);
         }
 
         {
-            ostringstream out;
+            std::ostringstream out;
             out << "Always loot items: ";
 
-            for (set<uint32>::iterator i = alwaysLootItems.begin(); i != alwaysLootItems.end(); i++)
+            for (uint32 itemId : alwaysLootItems)
             {
-                ItemTemplate const* proto = sItemStorage.LookupEntry<ItemTemplate>(*i);
+                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
                 if (!proto)
                     continue;
 
                 out << chat->formatItem(proto);
             }
+
             botAI->TellMaster(out);
         }
     }
@@ -46,7 +49,8 @@ bool LootStrategyAction::Execute(Event event)
         if (items.size() == 0)
         {
             lootStrategy->Set(LootStrategyValue::instance(strategy));
-            ostringstream out;
+
+            std::ostringstream out;
             out << "Loot strategy set to " << lootStrategy->Get()->GetName();
             botAI->TellMaster(out);
             return true;
@@ -54,22 +58,20 @@ bool LootStrategyAction::Execute(Event event)
 
         bool remove = strategy.size() > 1 && strategy.substr(0, 1) == "-";
         bool query = strategy.size() > 1 && strategy.substr(0, 1) == "?";
-        for (ItemIds::iterator i = items.begin(); i != items.end(); i++)
+        for (uint32 itemid : items)
         {
-            uint32 itemid = *i;
             if (query)
             {
-                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemid);
-                if (proto)
+                if (ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemid))
                 {
-                    ostringstream out;
-                    out << (StoreLootAction::IsLootAllowed(itemid, ai) ? "|cFF000000Will loot " : "|c00FF0000Won't loot ") << ChatHelper::formatItem(proto);
+                    std::ostringstream out;
+                    out << (StoreLootAction::IsLootAllowed(itemid, botAI) ? "|cFF000000Will loot " : "|c00FF0000Won't loot ") << ChatHelper::formatItem(proto);
                     botAI->TellMaster(out.str());
                 }
             }
             else if (remove)
             {
-                set<uint32>::iterator j = alwaysLootItems.find(itemid);
+                std::set<uint32>::iterator j = alwaysLootItems.find(itemid);
                 if (j != alwaysLootItems.end())
                     alwaysLootItems.erase(j);
 

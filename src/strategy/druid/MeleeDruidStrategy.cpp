@@ -14,14 +14,14 @@ NextAction** MeleeDruidStrategy::getDefaultActions()
     return NextAction::array(0,
             new NextAction("faerie fire", ACTION_NORMAL + 1),
             new NextAction("melee", ACTION_NORMAL),
-            NULL);
+            nullptr);
 }
 
 void MeleeDruidStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "omen of clarity",
-        NextAction::array(0, new NextAction("omen of clarity", ACTION_HIGH + 9), NULL)));
+        NextAction::array(0, new NextAction("omen of clarity", ACTION_HIGH + 9), nullptr)));
 
     CombatStrategy::InitTriggers(triggers);
 }

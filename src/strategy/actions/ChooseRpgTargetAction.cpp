@@ -1,22 +1,23 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "ChooseRpgTargetAction.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../values/PossibleRpgTargetsValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "ChooseRpgTargetAction.h"
+#include "../Event.h"
+#include "../values/PossibleRpgTargetsValue.h"
+#include "../../Playerbot.h"
 
 bool ChooseRpgTargetAction::Execute(Event event)
 {
-    list<ObjectGuid> possibleTargets = AI_VALUE(list<ObjectGuid>, "possible rpg targets");
+    GuidVector possibleTargets = AI_VALUE(GuidVector, "possible rpg targets");
     if (possibleTargets.empty())
         return false;
 
-    vector<Unit*> units;
-    for (list<ObjectGuid>::iterator i = possibleTargets.begin(); i != possibleTargets.end(); ++i)
+    std::vector<Unit*> units;
+    for (GuidVector::iterator i = possibleTargets.begin(); i != possibleTargets.end(); ++i)
     {
-        Unit* unit = botAI->GetUnit(*i);
-        if (unit) units.push_back(unit);
+        if (Unit* unit = botAI->GetUnit(*i))
+            units.push_back(unit);
     }
 
     if (units.empty())
@@ -26,7 +27,8 @@ bool ChooseRpgTargetAction::Execute(Event event)
     }
 
     Unit* target = units[urand(0, units.size() - 1)];
-    if (!target) return false;
+    if (!target)
+        return false;
 
     context->GetValue<ObjectGuid>("rpg target")->Set(target->GetGUID());
     return true;

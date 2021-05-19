@@ -11,7 +11,7 @@ WorldLocation Formation::NullLocation = WorldLocation();
 
 bool IsSameLocation(WorldLocation const &a, WorldLocation const &b)
 {
-	return a.coord_x == b.coord_x && a.coord_y == b.coord_y && a.coord_z == b.coord_z && a.mapid == b.mapid;
+	return a.GetPositionX() == b.GetPositionX() && a.GetPositionY() == b.GetPositionY() && a.GetPositionZ() == b.GetPositionZ() && a.mapid == b.mapid;
 }
 
 bool Formation::IsNullLocation(WorldLocation const& loc)
@@ -30,9 +30,9 @@ WorldLocation MoveAheadFormation::GetLocation()
     if (Formation::IsNullLocation(loc))
         return loc;
 
-    float x = loc.coord_x;
-    float y = loc.coord_y;
-    float z = loc.coord_z;
+    float x = loc.GetPositionX();
+    float y = loc.GetPositionY();
+    float z = loc.GetPositionZ();
 
     if (sServerFacade->isMoving(master)) {
         float ori = master->GetOrientation();
@@ -480,7 +480,7 @@ bool SetFormationAction::Execute(Event event)
     {
         WorldLocation loc = value->Get()->GetLocation();
         if (!Formation::IsNullLocation(loc))
-            botAI->Ping(loc.coord_x, loc.coord_y);
+            botAI->Ping(loc.GetPositionX(), loc.GetPositionY());
 
         return true;
     }

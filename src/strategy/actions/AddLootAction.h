@@ -1,32 +1,37 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
+class Event;
+class ObjectGuid;
+class PlayerbotAI;
+
+class AddLootAction : public Action
 {
-    class AddLootAction : public Action {
     public:
-        AddLootAction(PlayerbotAI* botAI) : Action(ai, "add loot") {}
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
+        AddLootAction(PlayerbotAI* botAI) : Action(botAI, "add loot") { }
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};
 
-    class AddAllLootAction : public Action {
+class AddAllLootAction : public Action
+{
     public:
-        AddAllLootAction(PlayerbotAI* botAI, string name = "add all loot") : Action(ai, name) {}
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
+        AddAllLootAction(PlayerbotAI* botAI, std::string const& name = "add all loot") : Action(botAI, name) { }
+        bool Execute(Event event) override;
+        bool isUseful() override;
 
     protected:
         virtual bool AddLoot(ObjectGuid guid);
-    };
+};
 
-    class AddGatheringLootAction : public AddAllLootAction {
+class AddGatheringLootAction : public AddAllLootAction
+{
     public:
-        AddGatheringLootAction(PlayerbotAI* botAI) : AddAllLootAction(ai, "add gathering loot") {}
+        AddGatheringLootAction(PlayerbotAI* botAI) : AddAllLootAction(botAI, "add gathering loot") { }
 
     protected:
-        virtual bool AddLoot(ObjectGuid guid);
-    };
-
-}
+        bool AddLoot(ObjectGuid guid) override;
+};

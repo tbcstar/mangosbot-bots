@@ -1,8 +1,10 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "GenericActions.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "GenericSpellActions.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool CastSpellAction::Execute(Event event)
 {
@@ -52,4 +54,29 @@ Value<Unit*>* CurePartyMemberAction::GetTargetValue()
 Value<Unit*>* BuffOnPartyAction::GetTargetValue()
 {
     return context->GetValue<Unit*>("party member without aura", spell);
+}
+
+NextAction** CastSpellAction::getPrerequisites()
+{
+    if (range > botAI->GetRange("spell"))
+        return nullptr;
+    else if (range > ATTACK_DISTANCE)
+        return NextAction::merge(NextAction::array(0, new NextAction("reach spell"), nullptr), Action::getPrerequisites());
+    else
+        return NextAction::merge(NextAction::array(0, new NextAction("reach melee"), nullptr), Action::getPrerequisites());
+}
+
+Value<Unit*>* CastDebuffSpellOnAttackerAction::GetTargetValue()
+{
+    return context->GetValue<Unit*>("attacker without aura", spell);
+}
+
+Value<Unit*>* CastSpellOnEnemyHealerAction::GetTargetValue()
+{
+    return context->GetValue<Unit*>("enemy healer target", spell);
+}
+
+Value<Unit*>* CastSnareSpellAction::GetTargetValue()
+{
+    return context->GetValue<Unit*>("snare target", spell);
 }

@@ -1,20 +1,22 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "EmoteAction.h"
-
-#include "../../PlayerbotAIConfig.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 #include "../../ServerFacade.h"
-using namespace ai;
 
-map<string, uint32> EmoteActionBase::emotes;
-map<string, uint32> EmoteActionBase::textEmotes;
+std::map<std::string, uint32> EmoteActionBase::emotes;
+std::map<std::string, uint32> EmoteActionBase::textEmotes;
 
-EmoteActionBase::EmoteActionBase(PlayerbotAI* botAI, string name) : Action(ai, name)
+EmoteActionBase::EmoteActionBase(PlayerbotAI* botAI, std::string const& name) : Action(botAI, name)
 {
-    if (emotes.empty()) InitEmotes();
+    if (emotes.empty())
+        InitEmotes();
 }
 
-EmoteAction::EmoteAction(PlayerbotAI* botAI) : EmoteActionBase(ai, "emote"), Qualified()
+EmoteAction::EmoteAction(PlayerbotAI* botAI) : EmoteActionBase(botAI, "emote"), Qualified()
 {
 }
 
@@ -57,18 +59,18 @@ void EmoteActionBase::InitEmotes()
     emotes["wave"] = EMOTE_ONESHOT_WAVE;
     emotes["wound"] = EMOTE_ONESHOT_WOUND;
 
-    textEmotes["bored"] = TEXTEMOTE_BORED;
-    textEmotes["bye"] = TEXTEMOTE_BYE;
-    textEmotes["cheer"] = TEXTEMOTE_CHEER;
-    textEmotes["congratulate"] = TEXTEMOTE_CONGRATULATE;
-    textEmotes["hello"] = TEXTEMOTE_HELLO;
-    textEmotes["no"] = TEXTEMOTE_NO;
-    textEmotes["nod"] = TEXTEMOTE_NOD; // yes
-    textEmotes["sigh"] = TEXTEMOTE_SIGH;
-    textEmotes["thank"] = TEXTEMOTE_THANK;
-    textEmotes["welcome"] = TEXTEMOTE_WELCOME; // you are welcome
-    textEmotes["whistle"] = TEXTEMOTE_WHISTLE;
-    textEmotes["yawn"] = TEXTEMOTE_YAWN;
+    textEmotes["bored"] = TEXT_EMOTE_BORED;
+    textEmotes["bye"] = TEXT_EMOTE_BYE;
+    textEmotes["cheer"] = TEXT_EMOTE_CHEER;
+    textEmotes["congratulate"] = TEXT_EMOTE_CONGRATULATE;
+    textEmotes["hello"] = TEXT_EMOTE_HELLO;
+    textEmotes["no"] = TEXT_EMOTE_NO;
+    textEmotes["nod"] = TEXT_EMOTE_NOD; // yes
+    textEmotes["sigh"] = TEXT_EMOTE_SIGH;
+    textEmotes["thank"] = TEXT_EMOTE_THANK;
+    textEmotes["welcome"] = TEXT_EMOTE_WELCOME; // you are welcome
+    textEmotes["whistle"] = TEXT_EMOTE_WHISTLE;
+    textEmotes["yawn"] = TEXT_EMOTE_YAWN;
     textEmotes["oom"] = 323;
     textEmotes["follow"] = 324;
     textEmotes["wait"] = 325;
@@ -84,18 +86,20 @@ void EmoteActionBase::InitEmotes()
 
 bool EmoteActionBase::Emote(Unit* target, uint32 type)
 {
-    if (sServerFacade->isMoving(bot)) return false;
+    if (bot->isMoving())
+        return false;
 
-    if (target && !sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, EMOTE_ANGLE_IN_FRONT))
-        sServerFacade->SetFacingTo(bot, target);
+    if (target && !bot->isInFront(target, sPlayerbotAIConfig->sightDistance, EMOTE_ANGLE_IN_FRONT))
+        bot->SetFacingTo(target);
 
     ObjectGuid oldSelection = bot->GetTarget();
     if (target)
     {
         bot->SetTarget(target->GetGUID());
+
         Player* player = dynamic_cast<Player*>(target);
-        if (player && player->GetPlayerbotAI() && !sServerFacade->IsInFront(player, bot, sPlayerbotAIConfig->sightDistance, EMOTE_ANGLE_IN_FRONT))
-            sServerFacade->SetFacingTo(player, bot);
+        if (player && player->GetPlayerbotAI() && !player->isInFront(bot, sPlayerbotAIConfig->sightDistance, EMOTE_ANGLE_IN_FRONT))
+            player->SetFacingTo(bot);
     }
 
     bot->HandleEmoteCommand(type);
@@ -108,14 +112,15 @@ bool EmoteActionBase::Emote(Unit* target, uint32 type)
 
 Unit* EmoteActionBase::GetTarget()
 {
-    Unit* target = NULL;
+    Unit* target = nullptr;
 
-    list<ObjectGuid> nfp = *context->GetValue<list<ObjectGuid> >("nearest friendly players");
-    vector<Unit*> targets;
-    for (list<ObjectGuid>::iterator i = nfp.begin(); i != nfp.end(); ++i)
+    GuidVector nfp = *context->GetValue<GuidVector>("nearest friendly players");
+    std::vector<Unit*> targets;
+    for (GuidVector::iterator i = nfp.begin(); i != nfp.end(); ++i)
     {
         Unit* unit = botAI->GetUnit(*i);
-        if (unit && sServerFacade->GetDistance2d(bot, unit) < sPlayerbotAIConfig->tooCloseDistance) targets.push_back(unit);
+        if (unit && sServerFacade->GetDistance2d(bot, unit) < sPlayerbotAIConfig->tooCloseDistance)
+            targets.push_back(unit);
     }
 
     if (!targets.empty())
@@ -124,12 +129,11 @@ Unit* EmoteActionBase::GetTarget()
     return target;
 }
 
-
 bool EmoteAction::Execute(Event event)
 {
     uint32 emote = 0;
 
-    string param = event.getParam();
+    std::string param = event.getParam();
     if (param.empty())
     {
         time_t lastEmote = AI_VALUE2(time_t, "last emote", qualifier);
@@ -149,8 +153,8 @@ bool EmoteAction::Execute(Event event)
 
     if (param.empty() || emotes.find(param) == emotes.end())
     {
-        int index = rand() % emotes.size();
-        for (map<string, uint32>::iterator i = emotes.begin(); i != emotes.end() && index; ++i, --index)
+        uint32 index = rand() % emotes.size();
+        for (std::map<std::string, uint32>::iterator i = emotes.begin(); i != emotes.end() && index; ++i, --index)
             emote = i->second;
     }
     else
@@ -172,7 +176,6 @@ bool EmoteAction::isUseful()
     return (time(0) - lastEmote) >= sPlayerbotAIConfig->repeatDelay / 1000;
 }
 
-
 bool TalkAction::Execute(Event event)
 {
     Unit* target = botAI->GetUnit(AI_VALUE(ObjectGuid, "talk target"));
@@ -181,7 +184,7 @@ bool TalkAction::Execute(Event event)
 
     if (!urand(0, 100))
     {
-        target = NULL;
+        target = nullptr;
         context->GetValue<ObjectGuid>("talk target")->Set(ObjectGuid::Empty);
         return true;
     }
@@ -201,7 +204,7 @@ bool TalkAction::Execute(Event event)
 
 uint32 TalkAction::GetRandomEmote(Unit* unit)
 {
-    vector<uint32> types;
+    std::vector<uint32> types;
     if (!urand(0, 20))
     {
         // expressions
@@ -219,10 +222,12 @@ uint32 TalkAction::GetRandomEmote(Unit* unit)
         types.push_back(EMOTE_ONESHOT_TALK);
         types.push_back(EMOTE_ONESHOT_EXCLAMATION);
         types.push_back(EMOTE_ONESHOT_QUESTION);
+
         if (unit && (unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_TRAINER) || unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_QUESTGIVER)))
         {
             types.push_back(EMOTE_ONESHOT_SALUTE);
         }
     }
+
     return types[urand(0, types.size() - 1)];
 }

@@ -6,82 +6,82 @@ namespace ai
 {
     class CastGreaterHealAction : public CastHealingSpellAction {
     public:
-        CastGreaterHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(ai, "greater heal") {}
+        CastGreaterHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "greater heal") {}
     };
 
     class CastGreaterHealOnPartyAction : public HealPartyMemberAction
     {
     public:
-        CastGreaterHealOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(ai, "greater heal") {}
+        CastGreaterHealOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(botAI, "greater heal") {}
 
         virtual string getName() { return "greater heal on party"; }
     };
 
     class CastLesserHealAction : public CastHealingSpellAction {
     public:
-        CastLesserHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(ai, "lesser heal") {}
+        CastLesserHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "lesser heal") {}
     };
 
     class CastLesserHealOnPartyAction : public HealPartyMemberAction
     {
     public:
-        CastLesserHealOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(ai, "lesser heal") {}
+        CastLesserHealOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(botAI, "lesser heal") {}
 
         virtual string getName() { return "lesser heal on party"; }
     };
 
     class CastFlashHealAction : public CastHealingSpellAction {
     public:
-        CastFlashHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(ai, "flash heal") {}
+        CastFlashHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "flash heal") {}
     };
 
     class CastFlashHealOnPartyAction : public HealPartyMemberAction
     {
     public:
-        CastFlashHealOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(ai, "flash heal") {}
+        CastFlashHealOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(botAI, "flash heal") {}
 
         virtual string getName() { return "flash heal on party"; }
     };
 
     class CastHealAction : public CastHealingSpellAction {
     public:
-        CastHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(ai, "heal") {}
+        CastHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "heal") {}
     };
 
     class CastHealOnPartyAction : public HealPartyMemberAction
     {
     public:
-        CastHealOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(ai, "heal") {}
+        CastHealOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(botAI, "heal") {}
 
         virtual string getName() { return "heal on party"; }
     };
 
     class CastRenewAction : public CastHealingSpellAction {
     public:
-        CastRenewAction(PlayerbotAI* botAI) : CastHealingSpellAction(ai, "renew") {}
+        CastRenewAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "renew") {}
     };
 
     class CastRenewOnPartyAction : public HealPartyMemberAction
     {
     public:
-        CastRenewOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(ai, "renew") {}
+        CastRenewOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(botAI, "renew") {}
 
         virtual string getName() { return "renew on party"; }
     };
 
     class CastFadeAction : public CastBuffSpellAction {
     public:
-        CastFadeAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "fade") {}
+        CastFadeAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "fade") {}
     };
 
     class CastShadowformAction : public CastBuffSpellAction {
     public:
-        CastShadowformAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "shadowform") {}
+        CastShadowformAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "shadowform") {}
     };
 
     class CastRemoveShadowformAction : public Action {
     public:
-        CastRemoveShadowformAction(PlayerbotAI* botAI) : Action(ai, "remove shadowform") {}
+        CastRemoveShadowformAction(PlayerbotAI* botAI) : Action(botAI, "remove shadowform") {}
         virtual bool isUseful() { return botAI->HasAura("shadowform", AI_VALUE(Unit*, "self target")); }
         virtual bool isPossible() { return true; }
         virtual bool Execute(Event event) {
@@ -92,35 +92,35 @@ namespace ai
 
 	class CastVampiricEmbraceAction : public CastBuffSpellAction {
 	public:
-		CastVampiricEmbraceAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "vampiric embrace") {}
+		CastVampiricEmbraceAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "vampiric embrace") {}
 	};
 
 	class CastPowerWordShieldAction : public CastBuffSpellAction {
 	public:
-		CastPowerWordShieldAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "power word: shield") {}
+		CastPowerWordShieldAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "power word: shield") {}
 	};
 
     class CastPowerWordShieldOnPartyAction : public HealPartyMemberAction
     {
     public:
-        CastPowerWordShieldOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(ai, "power word: shield") {}
+        CastPowerWordShieldOnPartyAction(PlayerbotAI* botAI) : HealPartyMemberAction(botAI, "power word: shield") {}
 
         virtual string getName() { return "power word: shield on party"; }
     };
 
 	class CastPowerWordFortitudeAction : public CastBuffSpellAction {
 	public:
-		CastPowerWordFortitudeAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "power word: fortitude") {}
+		CastPowerWordFortitudeAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "power word: fortitude") {}
 	};
 
 	class CastDivineSpiritAction : public CastBuffSpellAction {
 	public:
-		CastDivineSpiritAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "divine spirit") {}
+		CastDivineSpiritAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "divine spirit") {}
 	};
 
 	class CastInnerFireAction : public CastBuffSpellAction {
 	public:
-		CastInnerFireAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "inner fire") {}
+		CastInnerFireAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "inner fire") {}
 	};
 
     BEGIN_SPELL_ACTION(CastHolyNovaAction, "holy nova")
@@ -143,24 +143,24 @@ namespace ai
 
 	class CastPowerWordFortitudeOnPartyAction : public BuffOnPartyAction {
 	public:
-		CastPowerWordFortitudeOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(ai, "power word: fortitude") {}
+		CastPowerWordFortitudeOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, "power word: fortitude") {}
 	};
 
 	class CastDivineSpiritOnPartyAction : public BuffOnPartyAction {
 	public:
-		CastDivineSpiritOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(ai, "divine spirit") {}
+		CastDivineSpiritOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, "divine spirit") {}
 	};
 
 	class CastPowerWordPainAction : public CastDebuffSpellAction
 	{
     public:
-	    CastPowerWordPainAction(PlayerbotAI* botAI) : CastDebuffSpellAction(ai, "shadow word: pain") {}
+	    CastPowerWordPainAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "shadow word: pain") {}
 	};
 
 	class CastPowerWordPainOnAttackerAction : public CastDebuffSpellOnAttackerAction
 	{
     public:
-	    CastPowerWordPainOnAttackerAction(PlayerbotAI* botAI) : CastDebuffSpellOnAttackerAction(ai, "shadow word: pain") {}
+	    CastPowerWordPainOnAttackerAction(PlayerbotAI* botAI) : CastDebuffSpellOnAttackerAction(botAI, "shadow word: pain") {}
 	};
 
     BEGIN_DEBUFF_ACTION(CastDevouringPlagueAction, "devouring plague")
@@ -177,100 +177,100 @@ namespace ai
 
 	class CastCureDiseaseAction : public CastCureSpellAction {
 	public:
-		CastCureDiseaseAction(PlayerbotAI* botAI) : CastCureSpellAction(ai, "cure disease") {}
+		CastCureDiseaseAction(PlayerbotAI* botAI) : CastCureSpellAction(botAI, "cure disease") {}
 	};
 
     class CastCureDiseaseOnPartyAction : public CurePartyMemberAction
     {
     public:
-        CastCureDiseaseOnPartyAction(PlayerbotAI* botAI) : CurePartyMemberAction(ai, "cure disease", DISPEL_DISEASE) {}
+        CastCureDiseaseOnPartyAction(PlayerbotAI* botAI) : CurePartyMemberAction(botAI, "cure disease", DISPEL_DISEASE) {}
         virtual string getName() { return "cure disease on party"; }
     };
 
 	class CastAbolishDiseaseAction : public CastCureSpellAction {
 	public:
-		CastAbolishDiseaseAction(PlayerbotAI* botAI) : CastCureSpellAction(ai, "abolish disease") {}
+		CastAbolishDiseaseAction(PlayerbotAI* botAI) : CastCureSpellAction(botAI, "abolish disease") {}
 		virtual NextAction** getAlternatives();
 	};
 
     class CastAbolishDiseaseOnPartyAction : public CurePartyMemberAction
     {
     public:
-        CastAbolishDiseaseOnPartyAction(PlayerbotAI* botAI) : CurePartyMemberAction(ai, "abolish disease", DISPEL_DISEASE) {}
+        CastAbolishDiseaseOnPartyAction(PlayerbotAI* botAI) : CurePartyMemberAction(botAI, "abolish disease", DISPEL_DISEASE) {}
         virtual string getName() { return "abolish disease on party"; }
         virtual NextAction** getAlternatives();
     };
 
 	class CastDispelMagicAction : public CastCureSpellAction {
 	public:
-		CastDispelMagicAction(PlayerbotAI* botAI) : CastCureSpellAction(ai, "dispel magic") {}
+		CastDispelMagicAction(PlayerbotAI* botAI) : CastCureSpellAction(botAI, "dispel magic") {}
 	};
 
     class CastDispelMagicOnTargetAction : public CastSpellAction {
     public:
-        CastDispelMagicOnTargetAction(PlayerbotAI* botAI) : CastSpellAction(ai, "dispel magic") {}
+        CastDispelMagicOnTargetAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "dispel magic") {}
     };
 
     class CastDispelMagicOnPartyAction : public CurePartyMemberAction
     {
     public:
-        CastDispelMagicOnPartyAction(PlayerbotAI* botAI) : CurePartyMemberAction(ai, "dispel magic", DISPEL_MAGIC) {}
+        CastDispelMagicOnPartyAction(PlayerbotAI* botAI) : CurePartyMemberAction(botAI, "dispel magic", DISPEL_MAGIC) {}
         virtual string getName() { return "dispel magic on party"; }
     };
 
 	class CastResurrectionAction : public ResurrectPartyMemberAction
 	{
 	public:
-		CastResurrectionAction(PlayerbotAI* botAI) : ResurrectPartyMemberAction(ai, "resurrection") {}
+		CastResurrectionAction(PlayerbotAI* botAI) : ResurrectPartyMemberAction(botAI, "resurrection") {}
 	};
 
 	class CastCircleOfHealingAction : public CastAoeHealSpellAction
 	{
 	public:
-		CastCircleOfHealingAction(PlayerbotAI* botAI) : CastAoeHealSpellAction(ai, "circle of healing") {}
+		CastCircleOfHealingAction(PlayerbotAI* botAI) : CastAoeHealSpellAction(botAI, "circle of healing") {}
 	};
 
 	class CastPsychicScreamAction : public CastSpellAction
 	{
 	public:
-	    CastPsychicScreamAction(PlayerbotAI* botAI) : CastSpellAction(ai, "psychic scream") {}
+	    CastPsychicScreamAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "psychic scream") {}
 	};
 
 	class CastDispersionAction : public CastSpellAction
 	{
 	public:
-	    CastDispersionAction(PlayerbotAI* botAI) : CastSpellAction(ai, "dispersion") {}
+	    CastDispersionAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "dispersion") {}
 	    virtual string GetTargetName() { return "self target"; }
 	};
 
     class CastInnerFocusAction : public CastBuffSpellAction
     {
     public:
-	    CastInnerFocusAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "inner focus") {}
+	    CastInnerFocusAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "inner focus") {}
     };
 
     class CastPowerInfusionAction : public CastBuffSpellAction
     {
     public:
-        CastPowerInfusionAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "power infusion") {}
+        CastPowerInfusionAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "power infusion") {}
     };
 
     class CastShadowProtectionAction : public CastBuffSpellAction
     {
     public:
-        CastShadowProtectionAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "shadow protection") {}
+        CastShadowProtectionAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "shadow protection") {}
     };
 
     class CastShadowProtectionOnPartyAction : public BuffOnPartyAction
     {
     public:
-        CastShadowProtectionOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(ai, "shadow protection") {}
+        CastShadowProtectionOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, "shadow protection") {}
     };
 
     class CastShackleUndeadAction : public CastBuffSpellAction
     {
     public:
-        CastShackleUndeadAction(PlayerbotAI* botAI) : CastBuffSpellAction(ai, "shackle undead") {}
+        CastShackleUndeadAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "shackle undead") {}
         virtual Value<Unit*>* GetTargetValue() { return context->GetValue<Unit*>("cc target", getName()); }
     };
 }

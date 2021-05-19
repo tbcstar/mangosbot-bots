@@ -18,23 +18,23 @@ private:
     static ActionNode* mark_of_the_wild(PlayerbotAI* botAI)
     {
         return new ActionNode ("mark of the wild",
-            /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ NextAction::array(0, new NextAction("caster form"), nullptr),
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* mark_of_the_wild_on_party(PlayerbotAI* botAI)
     {
         return new ActionNode ("mark of the wild on party",
-            /*P*/ NextAction::array(0, new NextAction("caster form"), NULL),
-            /*A*/ NULL,
-            /*C*/ NULL);
+            /*P*/ NextAction::array(0, new NextAction("caster form"), nullptr),
+            /*A*/ nullptr,
+            /*C*/ nullptr);
     }
     static ActionNode* innervate(PlayerbotAI* botAI)
     {
         return new ActionNode ("innervate",
-            /*P*/ NULL,
-            /*A*/ NextAction::array(0, new NextAction("drink"), NULL),
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ NextAction::array(0, new NextAction("drink"), nullptr),
+            /*C*/ nullptr);
     }
 };
 
@@ -49,23 +49,23 @@ void GenericDruidNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &trigge
 
     triggers.push_back(new TriggerNode(
         "mark of the wild",
-        NextAction::array(0, new NextAction("mark of the wild", 12.0f), NULL)));
+        NextAction::array(0, new NextAction("mark of the wild", 12.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "cure poison",
-        NextAction::array(0, new NextAction("abolish poison", 21.0f), NULL)));
+        NextAction::array(0, new NextAction("abolish poison", 21.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "party member cure poison",
-        NextAction::array(0, new NextAction("abolish poison on party", 20.0f), NULL)));
+        NextAction::array(0, new NextAction("abolish poison on party", 20.0f), nullptr)));
 
 	triggers.push_back(new TriggerNode(
 		"party member dead",
-		NextAction::array(0, new NextAction("revive", 22.0f), NULL)));
+		NextAction::array(0, new NextAction("revive", 22.0f), nullptr)));
 
     triggers.push_back(new TriggerNode(
         "low mana",
-        NextAction::array(0, new NextAction("innervate", ACTION_EMERGENCY + 5), NULL)));
+        NextAction::array(0, new NextAction("innervate", ACTION_EMERGENCY + 5), nullptr)));
 }
 
 void GenericDruidBuffStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
@@ -74,5 +74,5 @@ void GenericDruidBuffStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 
     triggers.push_back(new TriggerNode(
         "mark of the wild on party",
-        NextAction::array(0, new NextAction("mark of the wild on party", 11.0f), NULL)));
+        NextAction::array(0, new NextAction("mark of the wild on party", 11.0f), nullptr)));
 }

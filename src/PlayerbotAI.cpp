@@ -54,14 +54,14 @@ void PacketHandlingHelper::AddPacket(WorldPacket const& packet)
         queue.push(WorldPacket(packet));
 }
 
-PlayerbotAI::PlayerbotAI() : PlayerbotAIBase(), bot(NULL), aiObjectContext(NULL),
-    currentEngine(NULL), chatHelper(this), chatFilter(this), accountId(0), security(NULL), master(NULL), currentState(BOT_STATE_NON_COMBAT)
+PlayerbotAI::PlayerbotAI() : PlayerbotAIBase(), bot(nullptr), aiObjectContext(nullptr),
+    currentEngine(nullptr), chatHelper(this), chatFilter(this), accountId(0), security(nullptr), master(nullptr), currentState(BOT_STATE_NON_COMBAT)
 {
     for (uint8 i = 0 ; i < BOT_STATE_MAX; i++)
-        engines[i] = NULL;
+        engines[i] = nullptr;
 }
 
-PlayerbotAI::PlayerbotAI(Player* bot) : PlayerbotAIBase(), bot(bot), chatHelper(this), chatFilter(this), security(bot), master(NULL)
+PlayerbotAI::PlayerbotAI(Player* bot) : PlayerbotAIBase(), bot(bot), chatHelper(this), chatFilter(this), security(bot), master(nullptr)
 {
 	accountId = sObjectMgr->GetPlayerAccountIdByGUID(bot->GetGUID().GetCounter());
 
@@ -198,8 +198,8 @@ void PlayerbotAI::Reset()
     nextAICheckDelay = 0;
     whispers.clear();
 
-    aiObjectContext->GetValue<Unit*>("old target")->Set(NULL);
-    aiObjectContext->GetValue<Unit*>("current target")->Set(NULL);
+    aiObjectContext->GetValue<Unit*>("old target")->Set(nullptr);
+    aiObjectContext->GetValue<Unit*>("current target")->Set(nullptr);
     aiObjectContext->GetValue<ObjectGuid>("pull target")->Set(ObjectGuid::Empty);
     aiObjectContext->GetValue<LootObject>("loot target")->Set(LootObject());
     aiObjectContext->GetValue<uint32>("lfg proposal")->Set(0);
@@ -207,9 +207,9 @@ void PlayerbotAI::Reset()
     LastSpellCast& lastSpell = aiObjectContext->GetValue<LastSpellCast&>("last spell cast")->Get();
     lastSpell.Reset();
 
-    aiObjectContext->GetValue<LastMovement&>("last movement")->Get().Set(NULL);
-    aiObjectContext->GetValue<LastMovement&>("last area trigger")->Get().Set(NULL);
-    aiObjectContext->GetValue<LastMovement&>("last taxi")->Get().Set(NULL);
+    aiObjectContext->GetValue<LastMovement&>("last movement")->Get().Set(nullptr);
+    aiObjectContext->GetValue<LastMovement&>("last area trigger")->Get().Set(nullptr);
+    aiObjectContext->GetValue<LastMovement&>("last taxi")->Get().Set(nullptr);
 
     bot->GetMotionMaster()->Clear();
     bot->m_taxi.ClearTaxiDestinations();
@@ -471,7 +471,7 @@ void PlayerbotAI::DoNextAction()
         return;
     }
 
-    currentEngine->DoNextAction(NULL);
+    currentEngine->DoNextAction(nullptr);
 
     if (currentEngine != engines[BOT_STATE_DEAD] && !bot->IsAlive())
         ChangeEngine(BOT_STATE_DEAD);
@@ -627,7 +627,7 @@ bool PlayerbotAI::IsRanged(Player* player)
         case CLASS_ROGUE:
             return false;
         case CLASS_DRUID:
-            return !HasAnyAuraOf(player, "cat form", "bear form", "dire bear form", NULL);
+            return !HasAnyAuraOf(player, "cat form", "bear form", "dire bear form", nullptr);
     }
 
     return true;
@@ -644,7 +644,7 @@ bool PlayerbotAI::IsTank(Player* player)
         case CLASS_WARRIOR:
             return true;
         case CLASS_DRUID:
-            return HasAnyAuraOf(player, "bear form", "dire bear form", NULL);
+            return HasAnyAuraOf(player, "bear form", "dire bear form", nullptr);
     }
 
     return false;
@@ -660,7 +660,7 @@ bool PlayerbotAI::IsHeal(Player* player)
         case CLASS_PRIEST:
             return true;
         case CLASS_DRUID:
-            return HasAnyAuraOf(player, "tree of life form", NULL);
+            return HasAnyAuraOf(player, "tree of life form", nullptr);
     }
 
     return false;
@@ -705,7 +705,7 @@ namespace acore
 Unit* PlayerbotAI::GetUnit(ObjectGuid guid)
 {
     if (!guid)
-        return NULL;
+        return nullptr;
 
     return ObjectAccessor::GetUnit(*bot, guid);
 }
@@ -714,7 +714,7 @@ Unit* PlayerbotAI::GetUnit(ObjectGuid guid)
 Creature* PlayerbotAI::GetCreature(ObjectGuid guid)
 {
     if (!guid)
-        return NULL;
+        return nullptr;
 
     return ObjectAccessor::GetCreature(*bot, guid);
 }
@@ -722,7 +722,7 @@ Creature* PlayerbotAI::GetCreature(ObjectGuid guid)
 GameObject* PlayerbotAI::GetGameObject(ObjectGuid guid)
 {
     if (!guid)
-        return NULL;
+        return nullptr;
 
     return ObjectAccessor::GetGameObject(*bot, guid);
 }
@@ -1021,7 +1021,7 @@ bool PlayerbotAI::CastSpell(uint32 spellId, Unit* target, Item* itemTarget)
         return true;
     }
 
-    aiObjectContext->GetValue<LastMovement&>("last movement")->Get().Set(NULL);
+    aiObjectContext->GetValue<LastMovement&>("last movement")->Get().Set(nullptr);
     aiObjectContext->GetValue<time_t>("stay time")->Set(0);
 
     if (bot->IsFlying() || bot->HasUnitState(UNIT_STATE_IN_FLIGHT))
@@ -1251,7 +1251,7 @@ bool PlayerbotAI::HasAuraToDispel(Unit* target, uint32 dispelType)
 }
 
 #ifndef WIN32
-inline int strcmpi(const char* s1, const char* s2)
+inline int strcmpi(char const* s1, char const* s2)
 {
     for (; *s1 && *s2 && (toupper(*s1) == toupper(*s2)); ++s1, ++s2);
         return *s1 - *s2;

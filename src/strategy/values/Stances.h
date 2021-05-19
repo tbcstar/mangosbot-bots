@@ -38,7 +38,7 @@ namespace ai
 	{
 	public:
         StanceValue(PlayerbotAI* botAI);
-        ~StanceValue() { if (value) { delete value; value = NULL; } }
+        ~StanceValue() { if (value) { delete value; value = nullptr; } }
         virtual string Save();
         virtual bool Load(string value);
     };
@@ -46,8 +46,8 @@ namespace ai
     class SetStanceAction : public Action
     {
     public:
-        SetStanceAction(PlayerbotAI* botAI) : Action(ai, "set Stance") {}
-        virtual bool Execute(Event event);
+        SetStanceAction(PlayerbotAI* botAI) : Action(botAI, "set Stance") {}
+        bool Execute(Event event) override;
     };
 };
 

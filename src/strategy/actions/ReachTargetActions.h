@@ -1,65 +1,51 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "MovementActions.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class ReachTargetAction : public MovementAction
 {
-    class ReachTargetAction : public MovementAction
-    {
     public:
-        ReachTargetAction(PlayerbotAI* botAI, string name, float distance) : MovementAction(ai, name)
-		{
-            this->distance = distance;
-        }
-        virtual bool Execute(Event event)
-		{
-			return MoveTo(AI_VALUE(Unit*, GetTargetName()), distance);
-        }
-        virtual bool isUseful()
-		{
-            return sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", GetTargetName()), (distance + sPlayerbotAIConfig->contactDistance));
-        }
-        virtual string GetTargetName() { return "current target"; }
+        ReachTargetAction(PlayerbotAI* botAI, std::string const& name, float distance) : MovementAction(botAI, name) : distance(distance) { }
+
+        bool Execute(Event event) override;
+        bool isUseful() override;
+        std::string const& GetTargetName() override;
 
     protected:
         float distance;
-    };
+};
 
-    class CastReachTargetSpellAction : public CastSpellAction
-    {
+class CastReachTargetSpellAction : public CastSpellAction
+{
     public:
-        CastReachTargetSpellAction(PlayerbotAI* botAI, string spell, float distance) : CastSpellAction(ai, spell)
-		{
-            this->distance = distance;
-        }
-		virtual bool isUseful()
-		{
-			return sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "current target"), (distance + sPlayerbotAIConfig->contactDistance));
-		}
+        CastReachTargetSpellAction(PlayerbotAI* botAI, std::string const& spell, float distance) : CastSpellAction(botAI, spell) : distance(distance) { }
+
+        bool isUseful() override;
 
     protected:
         float distance;
-    };
+};
 
-    class ReachMeleeAction : public ReachTargetAction
-	{
+class ReachMeleeAction : public ReachTargetAction
+{
     public:
-        ReachMeleeAction(PlayerbotAI* botAI) : ReachTargetAction(ai, "reach melee", sPlayerbotAIConfig->meleeDistance) {}
-    };
+        ReachMeleeAction(PlayerbotAI* botAI) : ReachTargetAction(botAI, "reach melee", sPlayerbotAIConfig->meleeDistance) { }
+};
 
-    class ReachSpellAction : public ReachTargetAction
-	{
+class ReachSpellAction : public ReachTargetAction
+{
     public:
-        ReachSpellAction(PlayerbotAI* botAI) : ReachTargetAction(ai, "reach spell", botAI->GetRange("spell")) {}
-    };
+        ReachSpellAction(PlayerbotAI* botAI) : ReachTargetAction(botAI, "reach spell", botAI->GetRange("spell")) { }
+};
 
-    class ReachPartyMemberToHealAction : public ReachTargetAction
-	{
+class ReachPartyMemberToHealAction : public ReachTargetAction
+{
     public:
-        ReachPartyMemberToHealAction(PlayerbotAI* botAI) : ReachTargetAction(ai, "reach party member to heal", botAI->GetRange("heal")) {}
-        virtual string GetTargetName() { return "party member to heal"; }
-    };
-}
+        ReachPartyMemberToHealAction(PlayerbotAI* botAI) : ReachTargetAction(botAI, "reach party member to heal", botAI->GetRange("heal")) { }
+        std::string const& GetTargetName() override;
+};

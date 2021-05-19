@@ -1,21 +1,20 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "SuggestWhatToDoAction.h"
-#include "../../../ahbot/AhBot.h"
-#include "../../../ahbot/PricingStrategy.h"
-#include "../../AiFactory.h"
 #include "ChannelMgr.h"
-#include "../../PlayerbotAIConfig.h"
+#include "../Event.h"
+#include "../ItemVisitors.h"
+#include "../../AiFactory.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 #include "../../PlayerbotTextMgr.h"
 
-using ahbot::PricingStrategy;
+std::map<std::string, uint8> SuggestWhatToDoAction::instances;
+std::map<std::string, uint8> SuggestWhatToDoAction::factions;
 
-using namespace ai;
-
-map<string, int> SuggestWhatToDoAction::instances;
-map<string, int> SuggestWhatToDoAction::factions;
-
-SuggestWhatToDoAction::SuggestWhatToDoAction(PlayerbotAI* botAI, string name) : InventoryAction(ai, name)
+SuggestWhatToDoAction::SuggestWhatToDoAction(PlayerbotAI* botAI, std::string const& name) : InventoryAction(botAI, name)
 {
     suggestions.push_back(&SuggestWhatToDoAction::instance);
     suggestions.push_back(&SuggestWhatToDoAction::specificQuest);
@@ -29,10 +28,10 @@ bool SuggestWhatToDoAction::Execute(Event event)
     if (!sRandomPlayerbotMgr->IsRandomBot(bot) || bot->GetGroup() || bot->GetInstanceId())
         return false;
 
-    int index = rand() % suggestions.size();
+    uint32 index = rand() % suggestions.size();
     (this->*suggestions[index])();
 
-    string qualifier = "suggest what to do";
+    std::string const& qualifier = "suggest what to do";
     time_t lastSaid = AI_VALUE2(time_t, "last said", qualifier);
     botAI->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(time(0) + urand(1, 60));
 
@@ -87,27 +86,29 @@ void SuggestWhatToDoAction::instance()
         instances["Halls of Reflection"] = 80;
     }
 
-    vector<string> allowedInstances;
-    for (map<string, int>::iterator i = instances.begin(); i != instances.end(); ++i)
+    std::vector<string> allowedInstances;
+    for (std::map<string, uint8>::iterator i = instances.begin(); i != instances.end(); ++i)
     {
-        if (bot->getLevel() >= i->second) allowedInstances.push_back(i->first);
+        if (bot->getLevel() >= i->second)
+            allowedInstances.push_back(i->first);
     }
 
-    if (allowedInstances.empty()) return;
+    if (allowedInstances.empty())
+        return;
 
-    map<string, string> placeholders;
+    std::map<std::string, std::string> placeholders;
     placeholders["%role"] = chat->formatClass(bot, AiFactory::GetPlayerSpecTab(bot));
 
-    ostringstream itemout;
+    std::ostringstream itemout;
     itemout << "|c00b000b0" << allowedInstances[urand(0, allowedInstances.size() - 1)] << "|r";
     placeholders["%instance"] = itemout.str();
 
-    spam(sPlayerbotTextMgr.Format("suggest_instance", placeholders));
+    spam(sPlayerbotTextMgr->Format("suggest_instance", placeholders));
 }
 
-vector<uint32> SuggestWhatToDoAction::GetIncompletedQuests()
+std::vector<uint32> SuggestWhatToDoAction::GetIncompletedQuests()
 {
-    vector<uint32> result;
+    std::vector<uint32> result;
 
     for (uint16 slot = 0; slot < MAX_QUEST_LOG_SIZE; ++slot)
     {
@@ -120,24 +121,24 @@ vector<uint32> SuggestWhatToDoAction::GetIncompletedQuests()
             result.push_back(questId);
     }
 
-    return result;
+    return std::move(result);
 }
 
 void SuggestWhatToDoAction::specificQuest()
 {
-    vector<uint32> quests = GetIncompletedQuests();
+    std::vector<uint32> quests = GetIncompletedQuests();
     if (quests.empty())
         return;
 
-    int index = rand() % quests.size();
+    uint32 index = rand() % quests.size();
 
     Quest const* quest = sObjectMgr->GetQuestTemplate(quests[index]);
 
-    map<string, string> placeholders;
+    std::map<std::string, std::string> placeholders;
     placeholders["%role"] = chat->formatClass(bot, AiFactory::GetPlayerSpecTab(bot));
     placeholders["%quest"] = chat->formatQuest(quest);
 
-    spam(sPlayerbotTextMgr.Format("suggest_quest", placeholders));
+    spam(sPlayerbotTextMgr->Format("suggest_quest", placeholders));
 }
 
 void SuggestWhatToDoAction::grindMaterials()
@@ -145,40 +146,42 @@ void SuggestWhatToDoAction::grindMaterials()
     if (bot->getLevel() <= 5)
         return;
 
-    QueryResult *result = CharacterDatabase.PQuery("SELECT distinct category, multiplier FROM ahbot_category where category not in ('other', 'quest', 'trade', 'reagent') and multiplier > 3 order by multiplier desc limit 10");
+    QueryResult result = CharacterDatabase.PQuery("SELECT DISTINCT category, multiplier FROM ahbot_category WHERE category NOT IN ('other', 'quest', 'trade', 'reagent') "
+        "AND multiplier > 3 ORDER BY multiplier DESC LIMIT 10");
     if (!result)
         return;
 
-    map<string, double> categories;
+    std::map<std::string, double> categories;
     do
     {
         Field* fields = result->Fetch();
-        categories[fields[0].GetCppString()] = fields[1].GetFloat();
+        categories[fields[0].GetString()] = fields[1].GetFloat();
     } while (result->NextRow());
-    delete result;
 
-    for (map<string, double>::iterator i = categories.begin(); i != categories.end(); ++i)
+    for (std::map<std::string, double>::iterator i = categories.begin(); i != categories.end(); ++i)
     {
-        if (urand(0, 10) < 3) {
-            string name = i->first;
+        if (urand(0, 10) < 3)
+        {
+            std::string const& name = i->first;
             double multiplier = i->second;
 
-            for (int j = 0; j < ahbot::CategoryList::instance.size(); j++)
+            for (uint32 j = 0; j < ahbot::CategoryList::instance.size(); j++)
             {
                 ahbot::Category* category = ahbot::CategoryList::instance[j];
                 if (name == category->GetName())
                 {
-                    string item = category->GetLabel();
+                    std::string item = category->GetLabel();
                     transform(item.begin(), item.end(), item.begin(), tolower);
-                    ostringstream itemout;
+
+                    std::ostringstream itemout;
                     itemout << "|c0000b000" << item << "|r";
                     item = itemout.str();
 
-                    map<string, string> placeholders;
+                    std::map<std::string, std::string> placeholders;
                     placeholders["%role"] = chat->formatClass(bot, AiFactory::GetPlayerSpecTab(bot));
                     placeholders["%category"] = item;
 
-                    spam(sPlayerbotTextMgr.Format("suggest_trade", placeholders));
+                    spam(sPlayerbotTextMgr->Format("suggest_trade", placeholders));
                     return;
                 }
             }
@@ -226,70 +229,73 @@ void SuggestWhatToDoAction::grindReputation()
         factions["The Wyrmrest Accord"] = 77;
     }
 
-    vector<string> levels;
+    std::vector<std::string> levels;
     levels.push_back("honored");
     levels.push_back("revered");
     levels.push_back("exalted");
 
-    vector<string> allowedFactions;
-    for (map<string, int>::iterator i = factions.begin(); i != factions.end(); ++i) {
-        if (bot->getLevel() >= i->second) allowedFactions.push_back(i->first);
+    std::vector<std::string> allowedFactions;
+    for (std::map<string, uint8>::iterator i = factions.begin(); i != factions.end(); ++i)
+    {
+        if (bot->getLevel() >= i->second)
+            allowedFactions.push_back(i->first);
     }
 
-    if (allowedFactions.empty()) return;
+    if (allowedFactions.empty())
+        return;
 
-    map<string, string> placeholders;
+    std::map<std::string, std::string> placeholders;
     placeholders["%role"] = chat->formatClass(bot, AiFactory::GetPlayerSpecTab(bot));
     placeholders["%level"] = levels[urand(0, 2)];
-    ostringstream rnd; rnd << urand(1, 5) << "K";
+
+    std::ostringstream rnd;
+    rnd << urand(1, 5) << "K";
     placeholders["%rndK"] = rnd.str();
 
-    ostringstream itemout;
+    std::ostringstream itemout;
     itemout << "|c004040b0" << allowedFactions[urand(0, allowedFactions.size() - 1)] << "|r";
     placeholders["%faction"] = itemout.str();
 
-    spam(sPlayerbotTextMgr.Format("suggest_faction", placeholders));
+    spam(sPlayerbotTextMgr->Format("suggest_faction", placeholders));
 }
 
 void SuggestWhatToDoAction::something()
 {
-    map<string, string> placeholders;
+    std::map<std::string, std::string> placeholders;
     placeholders["%role"] = chat->formatClass(bot, AiFactory::GetPlayerSpecTab(bot));
 
-    AreaTableEntry const* entry = GetAreaEntryByAreaID(bot->GetAreaId());
+    AreaTableEntry const* entry = sAreaTableStore.LookupEntry(bot->GetAreaId());
     if (!entry)
         return;
 
-    ostringstream out;
+    std::ostringstream out;
     out << "|cffb04040" << entry->area_name[0] << "|r";
     placeholders["%zone"] = out.str();
 
-    spam(sPlayerbotTextMgr.Format("suggest_something", placeholders));
+    spam(sPlayerbotTextMgr->Format("suggest_something", placeholders));
 }
 
-void SuggestWhatToDoAction::spam(string msg, uint32 channelId)
+void SuggestWhatToDoAction::spam(std::string const& msg, uint32 channelId)
 {
-    set<string> said;
+    std::set<std::string> said;
     for (uint32 i = 0; i < sChatChannelsStore.GetNumRows(); ++i)
     {
         ChatChannelsEntry const* channel = sChatChannelsStore.LookupEntry(i);
         if (!channel || channel->ChannelID != channelId) continue;
 
-        for (uint32 j = 0; j < sAreaStore.GetNumRows(); ++j)
+        for (AreaTableEntry const* area : sAreaTableStore)
         {
-            AreaTableEntry const* area = sAreaStore.LookupEntry(j);
-            if (!area) continue;
-
             char channelName[255];
             snprintf(channelName, 255, channel->pattern[0], area->area_name[0]);
-            if (said.find(channelName) != said.end()) continue;
+            if (said.find(channelName) != said.end())
+                continue;
 
-            if (ChannelMgr* cMgr = channelMgr(bot->GetTeam()))
+            if (ChannelMgr* cMgr = ChannelMgr::forTeam(bot->GetTeamId()))
             {
                 if (Channel* chn = cMgr->GetJoinChannel(channelName, channel->ChannelID))
                 {
-                    chn->Join(bot, "");
-                    chn->Say(bot, msg.c_str(), LANG_UNIVERSAL);
+                    chn->JoinChannel(bot, "");
+                    chn->Say(bot->GetGUID(), msg.c_str(), LANG_UNIVERSAL);
                     said.insert(channelName);
                 }
             }
@@ -297,40 +303,38 @@ void SuggestWhatToDoAction::spam(string msg, uint32 channelId)
     }
 }
 
-
 class FindTradeItemsVisitor : public IterateItemsVisitor
 {
-public:
-    FindTradeItemsVisitor(uint32 quality) : quality(quality), IterateItemsVisitor() {}
+    public:
+        FindTradeItemsVisitor(uint32 quality) : quality(quality), IterateItemsVisitor() { }
 
-    virtual bool Visit(Item* item)
-    {
-        ItemTemplate const* proto = item->GetProto();
-        if (proto->Quality != quality)
-            return true;
-
-        if (proto->Class == ITEM_CLASS_TRADE_GOODS && proto->Bonding == NO_BIND)
+        bool Visit(Item* item) override
         {
-            if(proto->Quality == ITEM_QUALITY_NORMAL && item->GetCount() > 1 && item->GetCount() == item->GetMaxStackCount())
-                stacks.push_back(proto->ItemId);
+            ItemTemplate const* proto = item->GetTemplate();
+            if (proto->Quality != quality)
+                return true;
 
-            items.push_back(proto->ItemId);
-            count[proto->ItemId] += item->GetCount();
+            if (proto->Class == ITEM_CLASS_TRADE_GOODS && proto->Bonding == NO_BIND)
+            {
+                if (proto->Quality == ITEM_QUALITY_NORMAL && item->GetCount() > 1 && item->GetCount() == item->GetMaxStackCount())
+                    stacks.push_back(proto->ItemId);
+
+                items.push_back(proto->ItemId);
+                count[proto->ItemId] += item->GetCount();
+            }
+
+            return true;
         }
 
-        return true;
-    }
+        std::map<uint32, uint32> count;
+        std::vector<uint32> stacks;
+        std::vector<uint32> items;
 
-    map<uint32, int > count;
-    vector<uint32> stacks;
-    vector<uint32> items;
-
-private:
-    uint32 quality;
+    private:
+        uint32 quality;
 };
 
-
-SuggestTradeAction::SuggestTradeAction(PlayerbotAI* botAI) : SuggestWhatToDoAction(ai, "suggest trade")
+SuggestTradeAction::SuggestTradeAction(PlayerbotAI* botAI) : SuggestWhatToDoAction(botAI, "suggest trade")
 {
 }
 
@@ -356,7 +360,7 @@ bool SuggestTradeAction::Execute(Event event)
         IterateItems(&visitor);
         if (!visitor.stacks.empty())
         {
-            int index = urand(0, visitor.stacks.size() - 1);
+            uint32 index = urand(0, visitor.stacks.size() - 1);
             item = visitor.stacks[index];
         }
 
@@ -364,7 +368,7 @@ bool SuggestTradeAction::Execute(Event event)
         {
             if (!visitor.items.empty())
             {
-                int index = urand(0, visitor.items.size() - 1);
+                uint32 index = urand(0, visitor.items.size() - 1);
                 item = visitor.items[index];
             }
         }
@@ -387,17 +391,17 @@ bool SuggestTradeAction::Execute(Event event)
     if (!price)
         return false;
 
-    map<string, string> placeholders;
+    std::map<std::string, std::string> placeholders;
     placeholders["%item"] = chat->formatItem(proto, count);
     placeholders["%gold"] = chat->formatMoney(price);
 
-    spam(sPlayerbotTextMgr.Format("suggest_sell", placeholders));
+    spam(sPlayerbotTextMgr->Format("suggest_sell", placeholders));
     return true;
 }
 
 bool SuggestWhatToDoAction::isUseful()
 {
-    string qualifier = "suggest what to do";
+    std::string const& qualifier = "suggest what to do";
     time_t lastSaid = AI_VALUE2(time_t, "last said", qualifier);
     return (time(0) - lastSaid) > 30;
 }

@@ -73,7 +73,7 @@ class RandomItemMgr
         static bool HandleConsoleCommand(ChatHandler* handler, char const* args);
         RandomItemList Query(uint32 level, RandomItemType type, RandomItemPredicate* predicate);
         RandomItemList Query(uint32 level, uint8 clazz, uint8 slot, uint32 quality);
-        uint32 GetRandomItem(uint32 level, RandomItemType type, RandomItemPredicate* predicate = NULL);
+        uint32 GetRandomItem(uint32 level, RandomItemType type, RandomItemPredicate* predicate = nullptr);
         uint32 GetAmmo(uint32 level, uint32 subClass);
         uint32 GetRandomPotion(uint32 level, uint32 effect);
         uint32 GetRandomFood(uint32 level, uint32 category);

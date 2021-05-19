@@ -511,7 +511,7 @@ bool GuildTaskMgr::IsGuildTaskItem(uint32 itemId, uint32 guildId)
     return value;
 }
 
-std::map<uint32, uint32> GuildTaskMgr::GetTaskValues(uint32 owner, std::string type, uint32* validIn /* = NULL */)
+std::map<uint32, uint32> GuildTaskMgr::GetTaskValues(uint32 owner, std::string type, uint32* validIn /* = nullptr */)
 {
     std::map<uint32, uint32> result;
 
@@ -538,7 +538,7 @@ std::map<uint32, uint32> GuildTaskMgr::GetTaskValues(uint32 owner, std::string t
 	return std::move(result);
 }
 
-uint32 GuildTaskMgr::GetTaskValue(uint32 owner, uint32 guildId, std::string type, uint32* validIn /* = NULL */)
+uint32 GuildTaskMgr::GetTaskValue(uint32 owner, uint32 guildId, std::string type, uint32* validIn /* = nullptr */)
 {
     uint32 value = 0;
 

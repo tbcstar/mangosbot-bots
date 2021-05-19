@@ -17,5 +17,5 @@ void GenericPaladinNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &trig
 
 	triggers.push_back(new TriggerNode(
 		"party member dead",
-		NextAction::array(0, new NextAction("redemption", 30.0f), NULL)));
+		NextAction::array(0, new NextAction("redemption", 30.0f), nullptr)));
 }

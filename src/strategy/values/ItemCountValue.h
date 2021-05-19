@@ -8,7 +8,7 @@ namespace ai
     class InventoryItemValueBase : public InventoryAction
     {
     public:
-        InventoryItemValueBase(PlayerbotAI* botAI) : InventoryAction(ai, "empty") {}
+        InventoryItemValueBase(PlayerbotAI* botAI) : InventoryAction(botAI, "empty") {}
         virtual bool Execute(Event event) { return false; }
 
     protected:

@@ -9,7 +9,7 @@ namespace ai
     class AvailableLootValue : public ManualSetValue<LootObjectStack*>
 	{
 	public:
-        AvailableLootValue(PlayerbotAI* botAI) : ManualSetValue<LootObjectStack*>(ai, NULL)
+        AvailableLootValue() : ManualSetValue<LootObjectStack*>(ai, nullptr)
         {
             value = new LootObjectStack(botAI->GetBot());
         }
@@ -24,13 +24,13 @@ namespace ai
     class LootTargetValue : public ManualSetValue<LootObject>
     {
     public:
-        LootTargetValue(PlayerbotAI* botAI) : ManualSetValue<LootObject>(ai, LootObject()) {}
+        LootTargetValue() : ManualSetValue<LootObject>(ai, LootObject()) {}
     };
 
     class CanLootValue : public BoolCalculatedValue
     {
     public:
-        CanLootValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        CanLootValue() : BoolCalculatedValue(botAI) {}
 
         virtual bool Calculate()
         {

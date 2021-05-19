@@ -45,7 +45,7 @@ public:
         if (*botAI->GetAiObjectContext()->GetValue<uint8>("aoe count") > 2)
         {
             WorldLocation aoe = *botAI->GetAiObjectContext()->GetValue<WorldLocation>("aoe position");
-            if (sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(creature, aoe.coord_x, aoe.coord_y), sPlayerbotAIConfig->aoeRadius))
+            if (sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(creature, aoe.GetPositionX(), aoe.GetPositionY()), sPlayerbotAIConfig->aoeRadius))
                 return;
         }
 
@@ -61,7 +61,7 @@ public:
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
             Player *member = ObjectAccessor::FindPlayer(itr->guid);
-            if( !member || !sServerFacade->IsAlive(member) || member == bot)
+            if (!member || !sServerFacade->IsAlive(member) || member == bot)
                 continue;
 
             if (!botAI->IsTank(member))

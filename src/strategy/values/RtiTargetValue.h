@@ -32,26 +32,26 @@ namespace ai
         {
             Group* group = bot->GetGroup();
             if(!group)
-                return NULL;
+                return nullptr;
 
             string rti = AI_VALUE(string, type);
             int index = GetRtiIndex(rti);
 
             if (index == -1)
-                return NULL;
+                return nullptr;
 
             ObjectGuid guid = group->GetTargetIcon(index);
             if (!guid)
-                return NULL;
+                return nullptr;
 
             list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
-            if (find(attackers.begin(), attackers.end(), guid) == attackers.end()) return NULL;
+            if (find(attackers.begin(), attackers.end(), guid) == attackers.end()) return nullptr;
 
             Unit* unit = botAI->GetUnit(guid);
             if (!unit || sServerFacade->UnitIsDead(unit) ||
                     !sServerFacade->IsWithinLOSInMap(bot, unit) ||
                     sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, unit), sPlayerbotAIConfig->sightDistance))
-                return NULL;
+                return nullptr;
 
             return unit;
         }

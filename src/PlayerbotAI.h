@@ -143,17 +143,17 @@ class PlayerbotAI : public PlayerbotAIBase
         bool PlaySound(uint32 emote);
         void Ping(float x, float y);
 
-        virtual bool CanCastSpell(std::string name, Unit* target, Item* itemTarget = NULL);
-        virtual bool CastSpell(std::string name, Unit* target, Item* itemTarget = NULL);
+        virtual bool CanCastSpell(std::string name, Unit* target, Item* itemTarget = nullptr);
+        virtual bool CastSpell(std::string name, Unit* target, Item* itemTarget = nullptr);
         virtual bool HasAura(std::string spellName, Unit* player, bool maxStack = false);
         virtual bool HasAnyAuraOf(Unit* player, ...);
 
         virtual bool IsInterruptableSpellCasting(Unit* player, std::string spell);
         virtual bool HasAuraToDispel(Unit* player, uint32 dispelType);
-        bool CanCastSpell(uint32 spellid, Unit* target, bool checkHasSpell = true, Item* itemTarget = NULL);
+        bool CanCastSpell(uint32 spellid, Unit* target, bool checkHasSpell = true, Item* itemTarget = nullptr);
 
         bool HasAura(uint32 spellId, Unit const* player);
-        bool CastSpell(uint32 spellId, Unit* target, Item* itemTarget = NULL);
+        bool CastSpell(uint32 spellId, Unit* target, Item* itemTarget = nullptr);
         bool canDispel(SpellInfo const* spellInfo, uint32 dispelType);
 
         uint32 GetEquipGearScore(Player* player, bool withBags, bool withBank);

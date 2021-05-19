@@ -1,14 +1,17 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "TradeAction.h"
+#include "../Event.h"
 #include "../ItemVisitors.h"
 #include "../values/ItemCountValue.h"
-
-using namespace ai;
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
 bool TradeAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
     uint32 copper = chat->parseMoney(text);
     if (copper > 0)
     {
@@ -18,34 +21,33 @@ bool TradeAction::Execute(Event event)
     }
 
     size_t pos = text.rfind(" ");
-    int count = pos!=string::npos ? atoi(text.substr(pos + 1).c_str()) : 1;
-    list<Item*> found = parseItems(text);
+    int count = pos != std::string::npos ? atoi(text.substr(pos + 1).c_str()) : 1;
+
+    std::list<Item*> found = parseItems(text);
     if (found.empty())
         return false;
 
-    int traded = 0;
-    for (list<Item*>::iterator i = found.begin(); i != found.end(); i++)
+    uint32 traded = 0;
+    for (Item* item : found)
     {
-        Item* item = *i;
-
         if (!bot->GetTrader() || item->IsInTrade())
             continue;
 
         int8 slot = item->CanBeTraded() ? -1 : TRADE_SLOT_NONTRADED;
-        if (TradeItem(*item, slot) && slot != TRADE_SLOT_NONTRADED && ++traded >= count)
+        if (TradeItem(item, slot) && slot != TRADE_SLOT_NONTRADED && ++traded >= count)
             break;
     }
 
     return true;
 }
 
-bool TradeAction::TradeItem(const Item& item, int8 slot)
+bool TradeAction::TradeItem(Item const* item, int8 slot)
 {
     int8 tradeSlot = -1;
-    Item* itemPtr = const_cast<Item*>(&item);
+    Item* itemPtr = const_cast<Item*>(item);
 
     TradeData* pTrade = bot->GetTradeData();
-    if ((slot >= 0 && slot < TRADE_SLOT_COUNT) && pTrade->GetItem(TradeSlots(slot)) == NULL)
+    if ((slot >= 0 && slot < TRADE_SLOT_COUNT) && pTrade->GetItem(TradeSlots(slot)) == nullptr)
         tradeSlot = slot;
 
     if (slot == TRADE_SLOT_NONTRADED)
@@ -61,14 +63,14 @@ bool TradeAction::TradeItem(const Item& item, int8 slot)
                 WorldPacket packet(CMSG_CLEAR_TRADE_ITEM, 1);
                 packet << (uint8) tradeSlot;
                 bot->GetSession()->HandleClearTradeItemOpcode(packet);
-                pTrade->SetItem(TradeSlots(i), NULL);
+                pTrade->SetItem(TradeSlots(i), nullptr);
                 return true;
             }
         }
 
         for (uint8 i = 0; i < TRADE_SLOT_TRADED_COUNT && tradeSlot == -1; i++)
         {
-            if (pTrade->GetItem(TradeSlots(i)) == NULL)
+            if (pTrade->GetItem(TradeSlots(i)) == nullptr)
             {
                 pTrade->SetItem(TradeSlots(i), itemPtr);
                 tradeSlot = i;
@@ -76,11 +78,13 @@ bool TradeAction::TradeItem(const Item& item, int8 slot)
         }
     }
 
-    if (tradeSlot == -1) return false;
+    if (tradeSlot == -1)
+        return false;
 
     WorldPacket packet(CMSG_SET_TRADE_ITEM, 3);
-    packet << (uint8) tradeSlot << (uint8) item.GetBagSlot()
-        << (uint8) item.GetSlot();
+    packet << (uint8)tradeSlot;
+    packet << (uint8)item->GetBagSlot();
+    packet << (uint8)item->GetSlot();
     bot->GetSession()->HandleSetTradeItemOpcode(packet);
     return true;
 }

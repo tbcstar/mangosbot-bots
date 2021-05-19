@@ -1,21 +1,23 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "InventoryAction.h"
 
-namespace ai
+class Event;
+class Item;
+class PlayerbotAI;
+
+class BankAction : public InventoryAction
 {
-    class BankAction : public InventoryAction {
     public:
-        BankAction(PlayerbotAI* botAI) : InventoryAction(ai, "bank") {}
-        virtual bool Execute(Event event);
+        BankAction(PlayerbotAI* botAI) : InventoryAction(botAI, "bank") { }
+        bool Execute(Event event) override;
 
     private:
-        bool Execute(string text, Unit* bank);
+        bool Execute(std::string const& text, Unit* bank);
         void ListItems();
-        bool Withdraw(const uint32 itemid);
+        bool Withdraw(uint32 itemid);
         bool Deposit(Item* pItem);
         Item* FindItemInBank(uint32 ItemId);
-    };
-
-}
+};

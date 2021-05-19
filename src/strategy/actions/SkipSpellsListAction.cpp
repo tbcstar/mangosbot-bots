@@ -1,26 +1,27 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "SkipSpellsListAction.h"
-#include "../values/SkipSpellsListValue.h"
 #include "LootAction.h"
-#include "../../ServerFacade.h"
-
-using namespace ai;
-
+#include "../Event.h"
+#include "../values/SkipSpellsListValue.h"
+#include "../../Playerbot.h"
 
 bool SkipSpellsListAction::Execute(Event event)
 {
-    string cmd = event.getParam();
-
-    set<uint32>& skipSpells = AI_VALUE(set<uint32>&, "skip spells list");
+    std::string cmd = event.getParam();
+    std::set<uint32>& skipSpells = AI_VALUE(std::set<uint32>&, "skip spells list");
 
     SpellIds spellIds = parseIds(cmd);
-    if (!spellIds.empty()) {
+    if (!spellIds.empty())
+    {
         skipSpells.clear();
-        for (SpellIds::iterator i = spellIds.begin(); i != spellIds.end(); ++i)
+        for (uint32 spellId : spellIds)
         {
-            skipSpells.insert(*i);
+            skipSpells.insert(spellId);
         }
+
         cmd = "?";
     }
 
@@ -33,7 +34,7 @@ bool SkipSpellsListAction::Execute(Event event)
 
     if (cmd.empty() || cmd == "?")
     {
-        ostringstream out;
+        std::ostringstream out;
         if (skipSpells.empty())
         {
             botAI->TellMaster("Ignored spell list is empty");
@@ -43,15 +44,20 @@ bool SkipSpellsListAction::Execute(Event event)
         out << "Ignored spell list: ";
 
         bool first = true;
-        for (set<uint32>::iterator i = skipSpells.begin(); i != skipSpells.end(); i++)
+        for (uint32 spellId : skipSpells)
         {
-            SpellEntry const* spell = sServerFacade->LookupSpellInfo(*i);
-            if (!spell)
+            SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+            if (!spellInfo)
                 continue;
 
-            if (first) first = false; else out << ", ";
-            out << chat->formatSpell(spell);
+            if (first)
+                first = false;
+            else
+                out << ", ";
+
+            out << chat->formatSpell(spellInfo);
         }
+
         botAI->TellMaster(out);
     }
     else
@@ -67,30 +73,32 @@ bool SkipSpellsListAction::Execute(Event event)
             return false;
         }
 
-        SpellEntry const* spell = sServerFacade->LookupSpellInfo(spellId);
-        if (!spell)
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+        if (!spellInfo)
             return false;
 
         if (remove)
         {
-            set<uint32>::iterator j = skipSpells.find(spellId);
+            std::set<uint32>::iterator j = skipSpells.find(spellId);
             if (j != skipSpells.end())
             {
                 skipSpells.erase(j);
-                ostringstream out;
-                out << chat->formatSpell(spell) << " removed from ignored spells";
+
+                std::ostringstream out;
+                out << chat->formatSpell(spellInfo) << " removed from ignored spells";
                 botAI->TellMaster(out);
                 return true;
             }
         }
         else
         {
-            set<uint32>::iterator j = skipSpells.find(spellId);
+            std::set<uint32>::iterator j = skipSpells.find(spellId);
             if (j == skipSpells.end())
             {
                 skipSpells.insert(spellId);
-                ostringstream out;
-                out << chat->formatSpell(spell) << " added to ignored spells";
+
+                std::ostringstream out;
+                out << chat->formatSpell(spellInfo) << " added to ignored spells";
                 botAI->TellMaster(out);
                 return true;
             }
@@ -100,19 +108,18 @@ bool SkipSpellsListAction::Execute(Event event)
     return false;
 }
 
-
-SpellIds SkipSpellsListAction::parseIds(string text)
+SpellIds SkipSpellsListAction::parseIds(std::string const& text)
 {
     SpellIds spellIds;
 
     uint8 pos = 0;
     while (pos < text.size())
     {
-        int endPos = text.find(',', pos);
+        int32 endPos = text.find(',', pos);
         if (endPos == -1)
             endPos = text.size();
 
-        string idC = text.substr(pos, endPos - pos);
+        std::string const& idC = text.substr(pos, endPos - pos);
         uint32 id = atol(idC.c_str());
         pos = endPos + 1;
         if (id)

@@ -25,7 +25,7 @@ uint8 AoeHealValue::Calculate()
 	for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
 	{
 		Player *player = ObjectAccessor::FindPlayer(itr->guid);
-		if( !player || !sServerFacade->IsAlive(player))
+		if (!player || !sServerFacade->IsAlive(player))
 			continue;
 
 	    float percent = (static_cast<float> (player->GetHealth()) / player->GetMaxHealth()) * 100;

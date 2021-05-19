@@ -7,7 +7,7 @@ namespace ai
     class BearTankDruidStrategy : public FeralDruidStrategy
     {
     public:
-        BearTankDruidStrategy(PlayerbotAI* botAI);
+        BearTankDruidStrategy();
 
     public:
         virtual void InitTriggers(std::list<TriggerNode*> &triggers);

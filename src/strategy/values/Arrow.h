@@ -88,7 +88,7 @@ namespace ai
     class ArrowFormation : public MoveAheadFormation
     {
     public:
-        ArrowFormation(PlayerbotAI* botAI) : MoveAheadFormation(ai, "arrow"), built(false), masterUnit(NULL), botUnit(NULL) {}
+        ArrowFormation() : MoveAheadFormation(ai, "arrow"), built(false), masterUnit(nullptr), botUnit(nullptr) {}
 
     public:
         virtual WorldLocation GetLocationInternal();

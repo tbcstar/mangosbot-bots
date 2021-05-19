@@ -36,5 +36,5 @@ int strcmpi(std::string s1, std::string s2);
 
 // Ultranix: missing death knighta
 // Ultranix: sLog->outdebug
-// Ultranix: NULL --> nullptr
+// Ultranix: nullptr --> nullptr
 // Ultranix: RACE_DRAENEI

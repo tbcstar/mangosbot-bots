@@ -1,12 +1,10 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "UseMeetingStoneAction.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "GridNotifiers.h"
-#include "GridNotifiersImpl.h"
-#include "CellImpl.h"
+#include "UseMeetingStoneAction.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool UseMeetingStoneAction::Execute(Event event)
 {
@@ -28,7 +26,7 @@ bool UseMeetingStoneAction::Execute(Event event)
     if (master->IsBeingTeleported())
         return false;
 
-    if (sServerFacade->IsInCombat(bot))
+    if (bot->IsInCombat())
     {
         botAI->TellError("I am in combat");
         return false;
@@ -36,13 +34,13 @@ bool UseMeetingStoneAction::Execute(Event event)
 
     Map* map = master->GetMap();
     if (!map)
-        return NULL;
+        return nullptr;
 
     GameObject *gameObject = map->GetGameObject(guid);
     if (!gameObject)
         return false;
 
-	const GameObjectInfo* goInfo = gameObject->GetGOInfo();
+	GameObjectTemplate const* goInfo = gameObject->GetGOInfo();
 	if (!goInfo || goInfo->type != GAMEOBJECT_TYPE_SUMMONING_RITUAL)
         return false;
 
@@ -51,22 +49,21 @@ bool UseMeetingStoneAction::Execute(Event event)
 
 class AnyGameObjectInObjectRangeCheck
 {
-public:
-    AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) {}
-    WorldObject const& GetFocusObject() const { return *i_obj; }
-    bool operator()(GameObject* u)
-    {
-        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade->isSpawned(u) && u->GetGOInfo())
-            return true;
+    public:
+        AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) { }
+        WorldObject const& GetFocusObject() const { return *i_obj; }
+        bool operator()(GameObject* go)
+        {
+            if (go && i_obj->IsWithinDistInMap(go, i_range) && go->isSpawned() && go->GetGOInfo())
+                return true;
 
-        return false;
-    }
+            return false;
+        }
 
-private:
-    WorldObject const* i_obj;
-    float i_range;
+    private:
+        WorldObject const* i_obj;
+        float i_range;
 };
-
 
 bool SummonAction::Execute(Event event)
 {
@@ -92,18 +89,16 @@ bool SummonAction::Execute(Event event)
     return false;
 }
 
-
-bool SummonAction::SummonUsingGos(Player *summoner, Player *player)
+bool SummonAction::SummonUsingGos(Player* summoner, Player* player)
 {
-    list<GameObject*> targets;
+    std::list<GameObject*> targets;
     AnyGameObjectInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig->sightDistance);
-    GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects((const WorldObject*)summoner, searcher, sPlayerbotAIConfig->sightDistance);
+    acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(summoner, targets, u_check);
+    summoner->VisitNearbyObject(sPlayerbotAIConfig->sightDistance, searcher);
 
-    for(list<GameObject*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
+    for (GameObject* go : targets)
     {
-        GameObject* go = *tIter;
-        if (go && sServerFacade->isSpawned(go) && go->GetGoType() == GAMEOBJECT_TYPE_MEETINGSTONE)
+        if (go->isSpawned() && go->GetGoType() == GAMEOBJECT_TYPE_MEETINGSTONE)
             return Teleport(summoner, player);
     }
 
@@ -111,18 +106,18 @@ bool SummonAction::SummonUsingGos(Player *summoner, Player *player)
     return false;
 }
 
-bool SummonAction::SummonUsingNpcs(Player *summoner, Player *player)
+bool SummonAction::SummonUsingNpcs(Player* summoner, Player* player)
 {
     if (!sPlayerbotAIConfig->summonAtInnkeepersEnabled)
         return false;
 
-    list<Unit*> targets;
-    AnyUnitInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig->sightDistance);
-    UnitListSearcher<AnyUnitInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects(summoner, searcher, sPlayerbotAIConfig->sightDistance);
-    for(list<Unit*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
+    std::list<Unit*> targets;
+    acore::AnyUnitInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig->sightDistance);
+    acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(summoner, targets, u_check);
+    summoner->VisitNearbyObject(sPlayerbotAIConfig->sightDistance, searcher);
+
+    for (Unit* unit : targets)
     {
-        Unit* unit = *tIter;
         if (unit && unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER))
         {
             if (!player->HasItemCount(6948, 1, false))
@@ -131,17 +126,18 @@ bool SummonAction::SummonUsingNpcs(Player *summoner, Player *player)
                 return false;
             }
 
-            if (!sServerFacade->IsSpellReady(player, 8690))
+            if (player->HasSpellCooldown(8690))
             {
                 botAI->TellError(player == bot ? "My hearthstone is not ready" : "Your hearthstone is not ready");
                 return false;
             }
 
             // Trigger cooldown
-            SpellEntry const* spellInfo = sServerFacade->LookupSpellInfo(8690);
+            SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(8690);
             if (!spellInfo)
                 return false;
-            Spell spell(player, spellInfo, 0);
+
+            Spell spell(player, spellInfo, TRIGGERED_NONE);
             spell.SendSpellCooldown();
 
             return Teleport(summoner, player);
@@ -152,7 +148,7 @@ bool SummonAction::SummonUsingNpcs(Player *summoner, Player *player)
     return false;
 }
 
-bool SummonAction::Teleport(Player *summoner, Player *player)
+bool SummonAction::Teleport(Player* summoner, Player* player)
 {
     Player* master = GetMaster();
     if (!summoner->IsBeingTeleported() && !player->IsBeingTeleported())
@@ -162,8 +158,9 @@ bool SummonAction::Teleport(Player *summoner, Player *player)
         {
             uint32 mapId = summoner->GetMapId();
             float x = summoner->GetPositionX() + cos(angle) * sPlayerbotAIConfig->followDistance;
-            float y = summoner->GetPositionY()+ sin(angle) * sPlayerbotAIConfig->followDistance;
+            float y = summoner->GetPositionY() + sin(angle) * sPlayerbotAIConfig->followDistance;
             float z = summoner->GetPositionZ();
+
             if (summoner->IsWithinLOS(x, y, z))
             {
                 player->GetMotionMaster()->Clear();

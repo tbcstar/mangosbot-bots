@@ -1,14 +1,15 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "OutfitAction.h"
-#include "../values/OutfitListValue.h"
-
-using namespace ai;
-
+#include "../Event.h"
+#include "../../Playerbot.h"
+#include "../../strategy/ItemVisitors.h"
 
 bool OutfitAction::Execute(Event event)
 {
-    string param = event.getParam();
+    std::string const& param = event.getParam();
 
     if (param == "?")
     {
@@ -19,12 +20,13 @@ bool OutfitAction::Execute(Event event)
     }
     else
     {
-        string name = parseOutfitName(param);
+        std::string name = parseOutfitName(param);
         ItemIds items = parseOutfitItems(param);
         if (!name.empty())
         {
             Save(name, items);
-            ostringstream out;
+
+            std::ostringstream out;
             out << "Setting outfit " << name << " as " << param;
             botAI->TellMaster(out);
             return true;
@@ -32,29 +34,32 @@ bool OutfitAction::Execute(Event event)
 
         items = chat->parseItems(param);
 
-        int space = param.find(" ");
+        int32 space = param.find(" ");
         if (space == -1)
             return false;
 
         name = param.substr(0, space);
+
         ItemIds outfit = FindOutfitItems(name);
-        string command = param.substr(space + 1);
+        std::string const& command = param.substr(space + 1);
         if (command == "equip")
         {
-            ostringstream out;
+            std::ostringstream out;
             out << "Equipping outfit " << name;
             botAI->TellMaster(out);
+
             EquipItems(outfit);
             return true;
         }
         else if (command == "replace")
         {
-            ostringstream out;
+            std::ostringstream out;
             out << "Replacing current equip with outfit " << name;
             botAI->TellMaster(out);
+
             for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; slot++)
             {
-                Item* const pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
+                Item const* pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
                 if (!pItem)
                     continue;
 
@@ -65,36 +70,39 @@ bool OutfitAction::Execute(Event event)
                 packet << bagIndex << slot << dstBag;
                 bot->GetSession()->HandleAutoStoreBagItemOpcode(packet);
             }
+
             EquipItems(outfit);
             return true;
         }
         else if (command == "reset")
         {
-            ostringstream out;
+            std::ostringstream out;
             out << "Resetting outfit " << name;
             botAI->TellMaster(out);
+
             Save(name, ItemIds());
             return true;
         }
         else if (command == "update")
         {
-            ostringstream out;
+            std::ostringstream out;
             out << "Updating with current items outfit " << name;
             botAI->TellMaster(out);
+
             Update(name);
             return true;
         }
 
         bool remove = param.size() > 1 && param.substr(space + 1, 1) == "-";
-        for (ItemIds::iterator i = items.begin(); i != items.end(); i++)
+        for (uint32 itemid : items)
         {
-            uint32 itemid = *i;
-            ItemTemplate const* proto = sItemStorage.LookupEntry<ItemTemplate>(*i);
-            ostringstream out;
+            ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemid);
+
+            std::ostringstream out;
             out << chat->formatItem(proto);
             if (remove)
             {
-                set<uint32>::iterator j = outfit.find(itemid);
+                std::set<uint32>::iterator j = outfit.find(itemid);
                 if (j != outfit.end())
                     outfit.erase(j);
 
@@ -105,21 +113,23 @@ bool OutfitAction::Execute(Event event)
                 outfit.insert(itemid);
                 out << " added to ";
             }
+
             out << name;
             botAI->TellMaster(out.str());
         }
+
         Save(name, outfit);
     }
 
     return true;
 }
 
-void OutfitAction::Save(string name, ItemIds items)
+void OutfitAction::Save(std::string const& name, ItemIds items)
 {
-    list<string>& outfits = AI_VALUE(list<string>&, "outfit list");
-    for (list<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
+    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit list");
+    for (std::vector<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
-        string outfit = *i;
+        std::string const& outfit = *i;
         if (name == parseOutfitName(outfit))
         {
             outfits.erase(i);
@@ -127,50 +137,53 @@ void OutfitAction::Save(string name, ItemIds items)
         }
     }
 
-    if (items.empty()) return;
+    if (items.empty())
+        return;
 
-    ostringstream out;
+    std::ostringstream out;
     out << name << "=";
+
     bool first = true;
     for (ItemIds::iterator i = items.begin(); i != items.end(); i++)
     {
-        if (first) first = false; else out << ",";
+        if (first)
+            first = false;
+        else
+            out << ",";
+
         out << *i;
     }
+
     outfits.push_back(out.str());
 }
 
-
 void OutfitAction::List()
 {
-    list<string>& outfits = AI_VALUE(list<string>&, "outfit list");
-    for (list<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
+    std::vector<string>& outfits = AI_VALUE(std::vector<string>&, "outfit list");
+    for (std::vector<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
-        string outfit = *i;
-        string name = parseOutfitName(outfit);
+        std::string const& outfit = *i;
+        std::string const& name = parseOutfitName(outfit);
         ItemIds items = parseOutfitItems(outfit);
 
-        ostringstream out;
+        std::ostringstream out;
         out << name << ": ";
-        for (ItemIds::iterator j = items.begin(); j != items.end(); ++j)
-        {
-            ItemTemplate const* proto = sItemStorage.LookupEntry<ItemTemplate>(*j);
-            if (proto)
-            {
+
+        for (uint32 itemId : items)
+            if (ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId))
                 out << chat->formatItem(proto) << " ";
-            }
-        }
+
         botAI->TellMaster(out);
     }
 }
 
-void OutfitAction::Update(string name)
+void OutfitAction::Update(std::string const& name)
 {
     ListItemsVisitor visitor;
     IterateItems(&visitor, ITERATE_ITEMS_IN_EQUIP);
 
     ItemIds items;
-    for (map<uint32, int>::iterator i = visitor.items.begin(); i != visitor.items.end(); ++i)
+    for (std::map<uint32, uint32>::iterator i = visitor.items.begin(); i != visitor.items.end(); ++i)
         items.insert(i->first);
 
     Save(name, items);

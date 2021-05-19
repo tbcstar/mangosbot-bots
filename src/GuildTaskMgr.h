@@ -34,8 +34,8 @@ class GuildTaskMgr
         bool CheckTaskTransfer(std::string text, Player* owner, Player* bot);
 
     private:
-        std::map<uint32, uint32> GetTaskValues(uint32 owner, std::string type, uint32* validIn = NULL);
-        uint32 GetTaskValue(uint32 owner, uint32 guildId, std::string type, uint32* validIn = NULL);
+        std::map<uint32, uint32> GetTaskValues(uint32 owner, std::string type, uint32* validIn = nullptr);
+        uint32 GetTaskValue(uint32 owner, uint32 guildId, std::string type, uint32* validIn = nullptr);
         uint32 SetTaskValue(uint32 owner, uint32 guildId, std::string type, uint32 value, uint32 validIn);
         uint32 CreateTask(uint32 owner, uint32 guildId);
         bool SendAdvertisement(SQLTransaction& trans, uint32 owner, uint32 guildId);

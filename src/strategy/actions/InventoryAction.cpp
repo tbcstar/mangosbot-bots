@@ -1,12 +1,12 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "InventoryAction.h"
-
+#include "../Event.h"
+#include "../ItemVisitors.h"
 #include "../values/ItemCountValue.h"
-#include "../../ServerFacade.h"
-
-using namespace ai;
-
+#include "../../Playerbot.h"
 
 void InventoryAction::IterateItems(IterateItemsVisitor* visitor, IterateItemsMask mask)
 {
@@ -22,17 +22,17 @@ void InventoryAction::IterateItems(IterateItemsVisitor* visitor, IterateItemsMas
 
 void InventoryAction::IterateItemsInBags(IterateItemsVisitor* visitor)
 {
-    for(int i = INVENTORY_SLOT_ITEM_START; i < INVENTORY_SLOT_ITEM_END; ++i)
+    for (uint32 i = INVENTORY_SLOT_ITEM_START; i < INVENTORY_SLOT_ITEM_END; ++i)
         if (Item *pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
             if (!visitor->Visit(pItem))
                 return;
 
-    for(int i = KEYRING_SLOT_START; i < KEYRING_SLOT_END; ++i)
+    for (uint32 i = KEYRING_SLOT_START; i < KEYRING_SLOT_END; ++i)
         if (Item *pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
             if (!visitor->Visit(pItem))
                 return;
 
-    for(int i = INVENTORY_SLOT_BAG_START; i < INVENTORY_SLOT_BAG_END; ++i)
+    for (uint32 i = INVENTORY_SLOT_BAG_START; i < INVENTORY_SLOT_BAG_END; ++i)
         if (Bag *pBag = (Bag*)bot->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
             for(uint32 j = 0; j < pBag->GetBagSize(); ++j)
                 if (Item* pItem = pBag->GetItemByPos(j))
@@ -45,7 +45,7 @@ void InventoryAction::IterateItemsInEquip(IterateItemsVisitor* visitor)
     for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; slot++)
     {
         Item* const pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
-        if(!pItem)
+        if (!pItem)
             continue;
 
         if (!visitor->Visit(pItem))
@@ -65,7 +65,7 @@ void InventoryAction::IterateItemsInBank(IterateItemsVisitor* visitor)
             return;
     }
 
-    for (int i = BANK_SLOT_BAG_START; i < BANK_SLOT_BAG_END; ++i)
+    for (uint32 i = BANK_SLOT_BAG_START; i < BANK_SLOT_BAG_END; ++i)
     {
         if (Bag* pBag = (Bag*)bot->GetItemByPos(INVENTORY_SLOT_BAG_0, i))
         {
@@ -85,10 +85,9 @@ void InventoryAction::IterateItemsInBank(IterateItemsVisitor* visitor)
             }
         }
     }
-
 }
 
-bool compare_items(const ItemTemplate *proto1, const ItemTemplate *proto2)
+bool compare_items(ItemTemplate const* proto1, ItemTemplate const* proto2)
 {
     if (proto1->Class != proto2->Class)
         return proto1->Class > proto2->Class;
@@ -105,15 +104,15 @@ bool compare_items(const ItemTemplate *proto1, const ItemTemplate *proto2)
     return false;
 }
 
-bool compare_items_by_level(const Item* item1, const Item* item2)
+bool compare_items_by_level(Item const* item1, Item const* item2)
 {
-    return compare_items(item1->GetProto(), item2->GetProto());
+    return compare_items(item1->GetTemplate(), item2->GetTemplate());
 }
 
-void InventoryAction::TellItems(map<uint32, int> itemMap, map<uint32, bool> soulbound)
+void InventoryAction::TellItems(std::map<uint32, uint32> itemMap, std::map<uint32, bool> soulbound)
 {
-    list<ItemTemplate const*> items;
-    for (map<uint32, int>::iterator i = itemMap.begin(); i != itemMap.end(); i++)
+    std::list<ItemTemplate const*> items;
+    for (std::map<uint32, uint32>::iterator i = itemMap.begin(); i != itemMap.end(); i++)
     {
         items.push_back(sObjectMgr->GetItemTemplate(i->first));
     }
@@ -121,51 +120,49 @@ void InventoryAction::TellItems(map<uint32, int> itemMap, map<uint32, bool> soul
     items.sort(compare_items);
 
     uint32 oldClass = -1;
-    for (list<ItemTemplate const*>::iterator i = items.begin(); i != items.end(); i++)
+    for (ItemTemplate const* proto : items)
     {
-        ItemTemplate const* proto = *i;
-
         if (proto->Class != oldClass)
         {
             oldClass = proto->Class;
             switch (proto->Class)
             {
-            case ITEM_CLASS_CONSUMABLE:
-                botAI->TellMaster("--- consumable ---");
-                break;
-            case ITEM_CLASS_CONTAINER:
-                botAI->TellMaster("--- container ---");
-                break;
-            case ITEM_CLASS_WEAPON:
-                botAI->TellMaster("--- weapon ---");
-                break;
-            case ITEM_CLASS_ARMOR:
-                botAI->TellMaster("--- armor ---");
-                break;
-            case ITEM_CLASS_REAGENT:
-                botAI->TellMaster("--- reagent ---");
-                break;
-            case ITEM_CLASS_PROJECTILE:
-                botAI->TellMaster("--- projectile ---");
-                break;
-            case ITEM_CLASS_TRADE_GOODS:
-                botAI->TellMaster("--- trade goods ---");
-                break;
-            case ITEM_CLASS_RECIPE:
-                botAI->TellMaster("--- recipe ---");
-                break;
-            case ITEM_CLASS_QUIVER:
-                botAI->TellMaster("--- quiver ---");
-                break;
-            case ITEM_CLASS_QUEST:
-                botAI->TellMaster("--- quest items ---");
-                break;
-            case ITEM_CLASS_KEY:
-                botAI->TellMaster("--- keys ---");
-                break;
-            case ITEM_CLASS_MISC:
-                botAI->TellMaster("--- other ---");
-                break;
+                case ITEM_CLASS_CONSUMABLE:
+                    botAI->TellMaster("--- consumable ---");
+                    break;
+                case ITEM_CLASS_CONTAINER:
+                    botAI->TellMaster("--- container ---");
+                    break;
+                case ITEM_CLASS_WEAPON:
+                    botAI->TellMaster("--- weapon ---");
+                    break;
+                case ITEM_CLASS_ARMOR:
+                    botAI->TellMaster("--- armor ---");
+                    break;
+                case ITEM_CLASS_REAGENT:
+                    botAI->TellMaster("--- reagent ---");
+                    break;
+                case ITEM_CLASS_PROJECTILE:
+                    botAI->TellMaster("--- projectile ---");
+                    break;
+                case ITEM_CLASS_TRADE_GOODS:
+                    botAI->TellMaster("--- trade goods ---");
+                    break;
+                case ITEM_CLASS_RECIPE:
+                    botAI->TellMaster("--- recipe ---");
+                    break;
+                case ITEM_CLASS_QUIVER:
+                    botAI->TellMaster("--- quiver ---");
+                    break;
+                case ITEM_CLASS_QUEST:
+                    botAI->TellMaster("--- quest items ---");
+                    break;
+                case ITEM_CLASS_KEY:
+                    botAI->TellMaster("--- keys ---");
+                    break;
+                case ITEM_CLASS_MISC:
+                    botAI->TellMaster("--- other ---");
+                    break;
             }
         }
 
@@ -173,22 +170,26 @@ void InventoryAction::TellItems(map<uint32, int> itemMap, map<uint32, bool> soul
     }
 }
 
-void InventoryAction::TellItem(ItemTemplate const*  proto, int count, bool soulbound)
+void InventoryAction::TellItem(ItemTemplate const* proto, uint32 count, bool soulbound)
 {
-    ostringstream out;
+    std::ostringstream out;
     out << chat->formatItem(proto, count);
     if (soulbound)
         out << " (soulbound)";
+
     botAI->TellMaster(out.str());
 }
 
-list<Item*> InventoryAction::parseItems(string text, IterateItemsMask mask)
+std::list<Item*> InventoryAction::parseItems(std::string const& text, IterateItemsMask mask)
 {
-    set<Item*> found;
+    std::set<Item*> found;
     size_t pos = text.find(" ");
-    int count = pos!=string::npos ? atoi(text.substr(pos + 1).c_str()) : TRADE_SLOT_TRADED_COUNT;
-    if (count < 1) count = 1;
-    else if (count > TRADE_SLOT_TRADED_COUNT) count = TRADE_SLOT_TRADED_COUNT;
+
+    int count = pos != std::string::npos ? atoi(text.substr(pos + 1).c_str()) : TRADE_SLOT_TRADED_COUNT;
+    if (count < 1)
+        count = 1;
+    else if (count > TRADE_SLOT_TRADED_COUNT)
+        count = TRADE_SLOT_TRADED_COUNT;
 
     if (text == "food" || text == "conjured food")
     {
@@ -255,8 +256,7 @@ list<Item*> InventoryAction::parseItems(string text, IterateItemsMask mask)
     uint32 fromSlot = chat->parseSlot(text);
     if (fromSlot != EQUIPMENT_SLOT_END)
     {
-        Item* item = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, fromSlot);
-        if (item)
+        if (Item* item = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, fromSlot))
             found.insert(item);
     }
 
@@ -276,8 +276,8 @@ list<Item*> InventoryAction::parseItems(string text, IterateItemsMask mask)
         found.insert(visitor.GetResult().begin(), visitor.GetResult().end());
     }
 
-    list<Item*> result;
-    for (set<Item*>::iterator i = found.begin(); i != found.end(); ++i)
+    std::list<Item*> result;
+    for (std::set<Item*>::iterator i = found.begin(); i != found.end(); ++i)
         result.push_back(*i);
 
     result.sort(compare_items_by_level);
@@ -289,48 +289,51 @@ uint32 InventoryAction::GetItemCount(FindItemVisitor* visitor, IterateItemsMask 
 {
     IterateItems(visitor, mask);
     uint32 count = 0;
-    list<Item*>& items = visitor->GetResult();
-    for (list<Item*>::iterator i = items.begin(); i != items.end(); ++i)
+
+    std::vector<Item*>& items = visitor->GetResult();
+    for (Item* item : items)
     {
-        Item* item = *i;
         count += item->GetCount();
     }
+
     return count;
 }
 
 
-ItemIds InventoryAction::FindOutfitItems(string name)
+ItemIds InventoryAction::FindOutfitItems(std::string const& name)
 {
-    list<string>& outfits = AI_VALUE(list<string>&, "outfit list");
-    for (list<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
+    std::vector<string>& outfits = AI_VALUE(std::vector<string>&, "outfit list");
+    for (std::vector<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
-        string outfit = *i;
+        std::string const& outfit = *i;
         if (name == parseOutfitName(outfit))
             return parseOutfitItems(outfit);
     }
-    return set<uint32>();
+
+    return std::set<uint32>();
 }
 
-
-string InventoryAction::parseOutfitName(string outfit)
+std::string const& InventoryAction::parseOutfitName(std::string const& outfit)
 {
-    int pos = outfit.find("=");
-    if (pos == -1) return "";
+    uint32 pos = outfit.find("=");
+    if (pos == -1)
+        return "";
+
     return outfit.substr(0, pos);
 }
 
-ItemIds InventoryAction::parseOutfitItems(string text)
+ItemIds InventoryAction::parseOutfitItems(std::string const& text)
 {
     ItemIds itemIds;
 
     uint8 pos = text.find("=") + 1;
     while (pos < text.size())
     {
-        int endPos = text.find(',', pos);
+        uint32 endPos = text.find(',', pos);
         if (endPos == -1)
             endPos = text.size();
 
-        string idC = text.substr(pos, endPos - pos);
+        std::string const& idC = text.substr(pos, endPos - pos);
         uint32 id = atol(idC.c_str());
         pos = endPos + 1;
         if (id)

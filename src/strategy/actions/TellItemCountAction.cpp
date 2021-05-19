@@ -1,27 +1,30 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "TellItemCountAction.h"
-#include "../values/ItemCountValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "TellItemCountAction.h"
+#include "../Event.h"
+#include "../values/ItemCountValue.h"
+#include "../../Playerbot.h"
 
 bool TellItemCountAction::Execute(Event event)
 {
-    string text = event.getParam();
-    list<Item*> found = parseItems(text);
-    map<uint32, uint32> itemMap;
-    map<uint32, bool> soulbound;
-    for (list<Item*>::iterator i = found.begin(); i != found.end(); i++)
+    std::string const& text = event.getParam();
+    std::list<Item*> found = parseItems(text);
+    std::map<uint32, uint32> itemMap;
+    std::map<uint32, bool> soulbound;
+
+    for (Item* item : found)
     {
-        ItemTemplate const* proto = (*i)->GetProto();
-        itemMap[proto->ItemId] += (*i)->GetCount();
-        soulbound[proto->ItemId] = (*i)->IsSoulBound();
+        ItemTemplate const* proto = item->GetTemplate();
+        itemMap[proto->ItemId] += item->GetCount();
+        soulbound[proto->ItemId] = item->IsSoulBound();
     }
 
     botAI->TellMaster("=== Inventory ===");
-    for (map<uint32, uint32>::iterator i = itemMap.begin(); i != itemMap.end(); ++i)
+    for (std::map<uint32, uint32>::iterator i = itemMap.begin(); i != itemMap.end(); ++i)
     {
-        ItemTemplate const* proto = sItemStorage.LookupEntry<ItemTemplate>(i->first);
+        ItemTemplate const* proto = sObjectMgr->GetItemTemplate(i->first);
         TellItem(proto, i->second, soulbound[i->first]);
     }
 

@@ -75,7 +75,7 @@ Engine::~Engine(void)
 
 void Engine::Reset()
 {
-    ActionNode* action = NULL;
+    ActionNode* action = nullptr;
     do
     {
         action = queue.Pop();
@@ -132,7 +132,7 @@ bool Engine::DoNextAction(Unit* unit, uint32 depth)
         LogValues();
 
     bool actionExecuted = false;
-    ActionBasket* basket = NULL;
+    ActionBasket* basket = nullptr;
 
     time_t currentTime = time(0);
     aiObjectContext->Update();
@@ -252,9 +252,9 @@ ActionNode* Engine::CreateActionNode(std::string const& name)
     }
 
     return new ActionNode (name,
-        /*P*/ NULL,
-        /*A*/ NULL,
-        /*C*/ NULL);
+        /*P*/ nullptr,
+        /*A*/ nullptr,
+        /*C*/ nullptr);
 }
 
 bool Engine::MultiplyAndPush(NextAction** actions, float forceRelevance, bool skipPrerequisites, Event event, char const* pushType)
@@ -495,7 +495,7 @@ void Engine::PushAgain(ActionNode* actionNode, float relevance, Event event)
 {
     NextAction** nextAction = new NextAction*[2];
     nextAction[0] = new NextAction(actionNode->getName(), relevance);
-    nextAction[1] = NULL;
+    nextAction[1] = nullptr;
     MultiplyAndPush(nextAction, relevance, true, event, "again");
     delete actionNode;
 }

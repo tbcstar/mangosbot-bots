@@ -37,7 +37,7 @@ namespace ai
                 return sServerFacade->GetDistance2d(botAI->GetBot(), pos.x, pos.y);
             }
 
-            Unit* target = NULL;
+            Unit* target = nullptr;
             if (qualifier == "rpg target")
             {
                 ObjectGuid rpgTarget = AI_VALUE(ObjectGuid, qualifier);
@@ -47,7 +47,7 @@ namespace ai
             {
                 Stance* stance = AI_VALUE(Stance*, "stance");
                 WorldLocation loc = stance->GetLocation();
-                return sServerFacade->GetDistance2d(botAI->GetBot(), loc.coord_x, loc.coord_y);
+                return sServerFacade->GetDistance2d(botAI->GetBot(), loc.GetPositionX(), loc.GetPositionY());
             }
             else
             {
@@ -56,7 +56,7 @@ namespace ai
                 {
                     Formation* formation = AI_VALUE(Formation*, "formation");
                     WorldLocation loc = formation->GetLocation();
-                    return sServerFacade->GetDistance2d(botAI->GetBot(), loc.coord_x, loc.coord_y);
+                    return sServerFacade->GetDistance2d(botAI->GetBot(), loc.GetPositionX(), loc.GetPositionY());
                 }
             }
 

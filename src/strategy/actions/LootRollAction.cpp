@@ -1,14 +1,19 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "LootRollAction.h"
-
+#include "../Event.h"
 #include "../values/ItemUsageValue.h"
-
-using namespace ai;
+#include "../../Playerbot.h"
 
 bool LootRollAction::Execute(Event event)
 {
-    Player *bot = QueryItemUsageAction::botAI->GetBot();
+    Player* bot = QueryItemUsageAction::botAI->GetBot();
+
+    Group* group = bot->GetGroup();
+    if (!group)
+        return false;
 
     WorldPacket p(event.getPacket()); //WorldPacket packet for CMSG_LOOT_ROLL, (8+4+1)
     ObjectGuid guid;
@@ -19,35 +24,32 @@ bool LootRollAction::Execute(Event event)
     p >> slot; //number of players invited to roll
     p >> rollType; //need,greed or pass on roll
 
-    Group* group = bot->GetGroup();
-    if(!group)
-        return false;
-
-    RollVote vote = ROLL_PASS;
-    vector<Roll*>& rolls = group->GetRolls();
-    for (vector<Roll*>::iterator i = rolls.begin(); i != rolls.end(); ++i)
+    RollVote vote = PASS;
+    std::vector<Roll*>& rolls = group->GetRolls();
+    for (Roll* roll : rolls)
     {
-        if ((*i)->isValid() && (*i)->lootedTargetGUID == guid && (*i)->itemSlot == slot)
+        if (roll->isValid() && roll->itemGUID == guid && roll->itemSlot == slot)
         {
-            uint32 itemId = (*i)->itemid;
-            ItemTemplate const* proto = sItemStorage.LookupEntry<ItemTemplate>(itemId);
+            uint32 itemId = roll->itemid;
+            ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
             if (!proto)
                 continue;
 
             vote = CalculateRollVote(proto);
-            if (vote != ROLL_PASS) break;
+            if (vote != PASS)
+                break;
         }
     }
 
     switch (group->GetLootMethod())
     {
-    case MASTER_LOOT:
-    case FREE_FOR_ALL:
-        group->CountRollVote(bot, guid, slot, ROLL_PASS);
-        break;
-    default:
-        group->CountRollVote(bot, guid, slot, vote);
-        break;
+        case MASTER_LOOT:
+        case FREE_FOR_ALL:
+            group->CountRollVote(bot->GetGUID(), guid, PASS);
+            break;
+        default:
+            group->CountRollVote(bot->GetGUID(), guid, vote);
+            break;
     }
 
     return true;
@@ -55,23 +57,24 @@ bool LootRollAction::Execute(Event event)
 
 RollVote LootRollAction::CalculateRollVote(ItemTemplate const* proto)
 {
-    ostringstream out; out << proto->ItemId;
+    std::ostringstream out;
+    out << proto->ItemId;
     ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", out.str());
 
-    RollVote needVote = ROLL_GREED;
+    RollVote needVote = GREED;
     switch (usage)
     {
-    case ITEM_USAGE_EQUIP:
-    case ITEM_USAGE_REPLACE:
-    case ITEM_USAGE_GUILD_TASK:
-        needVote = ROLL_NEED;
-        break;
-    case ITEM_USAGE_SKILL:
-    case ITEM_USAGE_USE:
-    case ITEM_USAGE_DISENCHANT:
-        needVote = ROLL_GREED;
-        break;
+        case ITEM_USAGE_EQUIP:
+        case ITEM_USAGE_REPLACE:
+        case ITEM_USAGE_GUILD_TASK:
+            needVote = NEED;
+            break;
+        case ITEM_USAGE_SKILL:
+        case ITEM_USAGE_USE:
+        case ITEM_USAGE_DISENCHANT:
+            needVote = GREED;
+            break;
     }
 
-    return StoreLootAction::IsLootAllowed(proto->ItemId, bot->GetPlayerbotAI()) ? needVote : ROLL_PASS;
+    return StoreLootAction::IsLootAllowed(proto->ItemId, bot->GetPlayerbotAI()) ? needVote : PASS;
 }

@@ -1,12 +1,13 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "RpgAction.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../values/PossibleRpgTargetsValue.h"
 #include "EmoteAction.h"
 #include "GossipDef.h"
-
-using namespace ai;
+#include "../Event.h"
+#include "../values/PossibleRpgTargetsValue.h"
+#include "../../Playerbot.h"
 
 bool RpgAction::Execute(Event event)
 {
@@ -14,7 +15,7 @@ bool RpgAction::Execute(Event event)
     if (!target)
         return false;
 
-    if (sServerFacade->isMoving(bot))
+    if (bot->isMoving())
         return false;
 
     if (bot->GetMapId() != target->GetMapId())
@@ -23,9 +24,9 @@ bool RpgAction::Execute(Event event)
         return false;
     }
 
-    if (!sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT) && !bot->HasUnitState(UNIT_STATE_IN_FLIGHT) && !bot->IsFlying())
+    if (!bot->IsInFront(target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT) && !bot->HasUnitState(UNIT_STATE_IN_FLIGHT) && !bot->IsFlying())
     {
-        sServerFacade->SetFacingTo(bot, target, true);
+        bot->SetFacingToObject(target);
         botAI->SetNextCheckDelay(sPlayerbotAIConfig->globalCoolDown);
         return false;
     }
@@ -39,7 +40,7 @@ bool RpgAction::Execute(Event event)
         return true;
     }
 
-    vector<RpgElement> elements;
+    std::vector<RpgElement> elements;
     elements.push_back(&RpgAction::cancel);
     elements.push_back(&RpgAction::emote);
     elements.push_back(&RpgAction::stay);
@@ -52,13 +53,15 @@ bool RpgAction::Execute(Event event)
 
 void RpgAction::stay(Unit* unit)
 {
-    if (bot->PlayerTalkClass) bot->PlayerTalkClass->CloseGossip();
+    if (bot->PlayerTalkClass)
+        bot->PlayerTalkClass->SendCloseGossip();
+
     botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::work(Unit* unit)
 {
-    bot->HandleEmoteCommand(EMOTE_STATE_USESTANDING);
+    bot->HandleEmoteCommand(EMOTE_STATE_USE_STANDING);
     botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
@@ -90,17 +93,18 @@ void RpgAction::cancel(Unit* unit)
 
 void RpgAction::taxi(Unit* unit)
 {
-    uint32 curloc = sObjectMgr->GetNearestTaxiNode(unit->GetPositionX(), unit->GetPositionY(), unit->GetPositionZ(), unit->GetMapId(), bot->GetTeam());
+    uint32 curloc = sObjectMgr->GetNearestTaxiNode(unit->GetPositionX(), unit->GetPositionY(), unit->GetPositionZ(), unit->GetMapId(), bot->GetTeamId());
 
-    vector<uint32> nodes;
+    std::vector<uint32> nodes;
     for (uint32 i = 0; i < sTaxiPathStore.GetNumRows(); ++i)
     {
-        TaxiPathEntry const* entry = sTaxiPathStore.LookupEntry(i);
-        if (entry && entry->from == curloc)
-        {
-            uint8  field = uint8((i - 1) / 32);
-            if (field < TaxiMaskSize) nodes.push_back(i);
-        }
+        if (TaxiPathEntry const* entry = sTaxiPathStore.LookupEntry(i))
+            if (entry->from == curloc)
+            {
+                uint8  field = uint8((i - 1) / 32);
+                if (field < TaxiMaskSize)
+                    nodes.push_back(i);
+            }
     }
 
     if (nodes.empty())
@@ -132,6 +136,7 @@ void RpgAction::taxi(Unit* unit)
         sLog->outDetail("Bot %s cannot fly (%d location available)", bot->GetName(), nodes.size());
         return;
     }
+
     sLog->outDetail("Bot %s is flying to %u (%d location available)", bot->GetName(), path, nodes.size());
     bot->SetMoney(money);
 }

@@ -1,28 +1,27 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 
-namespace ai
-{
-    class RtiAction : public Action
-    {
-    public:
-        RtiAction(PlayerbotAI* botAI) : Action(ai, "rti")
-        {}
+class Event;
+class PlayerbotAI;
 
-        virtual bool Execute(Event event);
+class RtiAction : public Action
+{
+    public:
+        RtiAction(PlayerbotAI* botAI) : Action(botAI, "rti") { }
+
+        bool Execute(Event event) override;
 
     private:
-        void AppendRti(ostringstream & out, string type);
+        void AppendRti(std::ostringstream& out, std::string const& type);
+};
 
-    };
-
-    class MarkRtiAction : public Action
-    {
+class MarkRtiAction : public Action
+{
     public:
-        MarkRtiAction(PlayerbotAI* botAI) : Action(ai, "mark rti")
-        {}
+        MarkRtiAction(PlayerbotAI* botAI) : Action(botAI, "mark rti") { }
 
-        virtual bool Execute(Event event);
-    };
-}
+        bool Execute(Event event) override;
+};

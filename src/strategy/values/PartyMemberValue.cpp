@@ -23,7 +23,7 @@ Unit* PartyMemberValue::FindPartyMember(list<Player*>* party, FindPlayerPredicat
             return pet;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate &predicate)
@@ -36,7 +36,7 @@ Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate &predicate)
     {
         for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
         {
-            if( ref->getSource() != bot)
+            if (ref->getSource() != bot)
             {
                 if (ref->getSubGroup() != bot->GetSubGroup())
                 {
@@ -79,7 +79,7 @@ Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate &predicate)
             return target;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 bool PartyMemberValue::Check(Unit* player)

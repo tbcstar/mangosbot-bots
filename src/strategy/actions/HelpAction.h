@@ -1,22 +1,25 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
+#include "../NamedObjectContext.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class HelpAction : public Action
 {
-    class HelpAction : public Action {
     public:
         HelpAction(PlayerbotAI* botAI);
+
         virtual ~HelpAction();
-        virtual bool Execute(Event event);
+        bool Execute(Event event) override;
 
     private:
         void TellChatCommands();
         void TellStrategies();
-        string CombineSupported(set<string> commands);
+        std::string const& CombineSupported(std::set<std::string> commands);
 
-    private:
         NamedObjectContext<Action>* chatContext;
-    };
-
-}
+};

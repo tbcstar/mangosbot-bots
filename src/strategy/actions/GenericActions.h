@@ -1,19 +1,15 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
-#include "GenericSpellActions.h"
-#include "ReachTargetActions.h"
-#include "ChooseTargetActions.h"
-#include "MovementActions.h"
+#include "AttackAction.h"
 
-namespace ai
+class PlayerbotAI;
+
+class MeleeAction : public AttackAction
 {
-    class MeleeAction : public AttackAction 
-    {
     public:
-        MeleeAction(PlayerbotAI* botAI) : AttackAction(ai, "melee") {}
+        MeleeAction(PlayerbotAI* botAI) : AttackAction(botAI, "melee") { }
 
-        virtual string GetTargetName() { return "current target"; }
-    };
-
-}
+        std::string const& GetTargetName() override { return "current target"; }
+};

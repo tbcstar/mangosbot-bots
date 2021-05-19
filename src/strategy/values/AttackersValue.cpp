@@ -121,7 +121,7 @@ bool AttackersValue::IsValidTarget(Unit *attacker, Player *bot)
 
 bool PossibleAdsValue::Calculate()
 {
-    PlayerbotAI* botAI = bot->GetPlayerbotAI();
+     = bot->GetPlayerbotAI();
     list<ObjectGuid> possible = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets")->Get();
     list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
 

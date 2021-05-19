@@ -8,7 +8,7 @@ namespace ai
     public:
         FindTargetStrategy(PlayerbotAI* botAI)
         {
-            result = NULL;
+            result = nullptr;
             this->ai = ai;
         }
 

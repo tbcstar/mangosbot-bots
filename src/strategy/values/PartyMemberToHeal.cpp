@@ -33,7 +33,7 @@ Unit* PartyMemberToHeal::Calculate()
 
     Group* group = bot->GetGroup();
     if (!group)
-        return NULL;
+        return nullptr;
 
     vector<Unit*> needHeals;
     for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
@@ -55,7 +55,7 @@ Unit* PartyMemberToHeal::Calculate()
         }
     }
     if (needHeals.empty())
-        return NULL;
+        return nullptr;
 
     sort(needHeals.begin(), needHeals.end(), compareByHealth);
 

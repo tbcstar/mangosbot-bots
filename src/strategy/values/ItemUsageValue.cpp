@@ -58,7 +58,7 @@ ItemUsage ItemUsageValue::QueryItemUsageForEquip(ItemTemplate const*  item)
     pItem->RemoveFromUpdateQueueOf(bot);
     delete pItem;
 
-    if( result != EQUIP_ERR_OK )
+    if (result != EQUIP_ERR_OK )
         return ITEM_USAGE_NONE;
 
     if (item->Class == ITEM_CLASS_WEAPON && !sRandomItemMgr->CanEquipWeapon(bot->getClass(), item))
@@ -71,7 +71,7 @@ ItemUsage ItemUsageValue::QueryItemUsageForEquip(ItemTemplate const*  item)
     if (!existingItem)
         return ITEM_USAGE_EQUIP;
 
-    ItemTemplate const* oldItem = existingItem->GetProto();
+    ItemTemplate const* oldItem = existingItem->GetTemplate();
     if (oldItem->ItemId != item->ItemId &&
             (oldItem->ItemLevel < item->ItemLevel || oldItem->Quality < item->Quality))
     {

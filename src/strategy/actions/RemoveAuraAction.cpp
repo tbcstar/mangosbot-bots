@@ -1,18 +1,17 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "RemoveAuraAction.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
-using namespace ai;
-
-RemoveAuraAction::RemoveAuraAction(PlayerbotAI* botAI) : Action(ai, "ra")
+RemoveAuraAction::RemoveAuraAction(PlayerbotAI* botAI) : Action(botAI, "ra")
 {
 }
 
 bool RemoveAuraAction::Execute(Event event)
 {
-    string text = event.getParam();
-    botAI->RemoveAura(text);
+    botAI->RemoveAura(event.getParam());
     return true;
 }

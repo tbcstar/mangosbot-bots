@@ -1,11 +1,12 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "TrainerAction.h"
-#include "../../ServerFacade.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
-using namespace ai;
-
-void TrainerAction::Learn(uint32 cost, TrainerSpell const* tSpell, ostringstream& msg)
+void TrainerAction::Learn(uint32 cost, TrainerSpell const* tSpell, std::ostringstream& msg)
 {
     if (bot->GetMoney() < cost)
     {
@@ -15,21 +16,23 @@ void TrainerAction::Learn(uint32 cost, TrainerSpell const* tSpell, ostringstream
 
     bot->ModifyMoney(-int32(cost));
 
-    SpellEntry const* proto = sServerFacade->LookupSpellInfo(tSpell->spell);
-    if (!proto)
+    SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(tSpell->spell);
+    if (!spellInfo)
         return;
 
     bool learned = false;
-    for (int j = 0; j < 3; ++j)
+    for (uint8 j = 0; j < 3; ++j)
     {
-        if (proto->Effect[j] == SPELL_EFFECT_LEARN_SPELL)
+        if (spellInfo->Effects[j].Effect == SPELL_EFFECT_LEARN_SPELL)
         {
-            uint32 learnedSpell = proto->EffectTriggerSpell[j];
-            bot->learnSpell(learnedSpell, false);
+            uint32 learnedSpell = spellInfo->Effects[j].TriggerSpell;
+            bot->learnSpell(learnedSpell);
             learned = true;
         }
     }
-    if (!learned) bot->learnSpell(tSpell->spell, false);
+
+    if (!learned)
+        bot->learnSpell(tSpell->spell);
 
     msg << " - learned";
 }
@@ -38,32 +41,23 @@ void TrainerAction::Iterate(Creature* creature, TrainerSpellAction action, Spell
 {
     TellHeader(creature);
 
-    TrainerSpellData const* cSpells = creature->GetTrainerSpells();
-    TrainerSpellData const* tSpells = creature->GetTrainerTemplateSpells();
+    TrainerSpellData const* trainer_spells = creature->GetTrainerSpells();
     float fDiscountMod =  bot->GetReputationPriceDiscount(creature);
     uint32 totalCost = 0;
-
-    TrainerSpellData const* trainer_spells = cSpells;
-    if (!trainer_spells)
-        trainer_spells = tSpells;
 
     for (TrainerSpellMap::const_iterator itr =  trainer_spells->spellList.begin(); itr !=  trainer_spells->spellList.end(); ++itr)
     {
         TrainerSpell const* tSpell = &itr->second;
-
         if (!tSpell)
             continue;
 
-        uint32 reqLevel = 0;
-
-        reqLevel = tSpell->isProvidedReqLevel ? tSpell->reqLevel : std::max(reqLevel, tSpell->reqLevel);
-        TrainerSpellState state = bot->GetTrainerSpellState(tSpell, reqLevel);
+        TrainerSpellState state = bot->GetTrainerSpellState(tSpell);
         if (state != TRAINER_SPELL_GREEN)
             continue;
 
         uint32 spellId = tSpell->spell;
-        const SpellEntry *const pSpellInfo =  sServerFacade->LookupSpellInfo(spellId);
-        if (!pSpellInfo)
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+        if (!spellInfo)
             continue;
 
         if (!spells.empty() && spells.find(tSpell->spell) == spells.end())
@@ -72,8 +66,8 @@ void TrainerAction::Iterate(Creature* creature, TrainerSpellAction action, Spell
         uint32 cost = uint32(floor(tSpell->spellCost *  fDiscountMod));
         totalCost += cost;
 
-        ostringstream out;
-        out << chat->formatSpell(pSpellInfo) << chat->formatMoney(cost);
+        std::ostringstream out;
+        out << chat->formatSpell(spellInfo) << chat->formatMoney(cost);
 
         if (action)
             (this->*action)(cost, tSpell, out);
@@ -84,10 +78,9 @@ void TrainerAction::Iterate(Creature* creature, TrainerSpellAction action, Spell
     TellFooter(totalCost);
 }
 
-
 bool TrainerAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
 
     Player* master = GetMaster();
     if (!master)
@@ -97,7 +90,7 @@ bool TrainerAction::Execute(Event event)
     if (!creature)
         return false;
 
-    if (!creature->IsTrainerOf(bot, false))
+    if (!creature->IsValidTrainerForPlayer(bot))
     {
         botAI->TellError("This trainer cannot teach me");
         return false;
@@ -105,8 +98,7 @@ bool TrainerAction::Execute(Event event)
 
     // check present spell in trainer spell list
     TrainerSpellData const* cSpells = creature->GetTrainerSpells();
-    TrainerSpellData const* tSpells = creature->GetTrainerTemplateSpells();
-    if (!cSpells && !tSpells)
+    if (!cSpells)
     {
         botAI->TellError("No spells can be learned from this trainer");
         return false;
@@ -117,17 +109,18 @@ bool TrainerAction::Execute(Event event)
     if (spell)
         spells.insert(spell);
 
-    if (text.find("learn") != string::npos)
+    if (text.find("learn") != std::string::npos)
         Iterate(creature, &TrainerAction::Learn, spells);
     else
-        Iterate(creature, NULL, spells);
+        Iterate(creature, nullptr, spells);
 
     return true;
 }
 
 void TrainerAction::TellHeader(Creature* creature)
 {
-    ostringstream out; out << "--- Can learn from " << creature->GetName() << " ---";
+    std::ostringstream out;
+    out << "--- Can learn from " << creature->GetName() << " ---";
     botAI->TellMaster(out);
 }
 
@@ -135,7 +128,8 @@ void TrainerAction::TellFooter(uint32 totalCost)
 {
     if (totalCost)
     {
-        ostringstream out; out << "Total cost: " << chat->formatMoney(totalCost);
+        std::ostringstream out;
+        out << "Total cost: " << chat->formatMoney(totalCost);
         botAI->TellMaster(out);
     }
 }

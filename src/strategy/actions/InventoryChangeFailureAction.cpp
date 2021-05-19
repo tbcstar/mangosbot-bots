@@ -1,11 +1,12 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "InventoryChangeFailureAction.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
-
-using namespace ai;
-
-map<InventoryResult, string> InventoryChangeFailureAction::messages;
+std::map<InventoryResult, std::string> InventoryChangeFailureAction::messages;
 
 bool InventoryChangeFailureAction::Execute(Event event)
 {
@@ -88,7 +89,7 @@ bool InventoryChangeFailureAction::Execute(Event event)
     if (err == EQUIP_ERR_OK)
         return false;
 
-    string msg = messages[(InventoryResult)err];
+    std::string const& msg = messages[(InventoryResult)err];
     if (!msg.empty())
     {
         botAI->TellError(msg);

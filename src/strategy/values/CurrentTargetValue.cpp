@@ -8,11 +8,11 @@ using namespace ai;
 Unit* CurrentTargetValue::Get()
 {
     if (selection.IsEmpty())
-        return NULL;
+        return nullptr;
 
     Unit* unit = ObjectAccessor::GetUnit(*bot, selection);
     if (unit && !sServerFacade->IsWithinLOSInMap(bot, unit))
-        return NULL;
+        return nullptr;
 
     return unit;
 }

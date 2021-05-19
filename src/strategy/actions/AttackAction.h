@@ -1,38 +1,37 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "MovementActions.h"
 
-namespace ai
-{
-	class AttackAction : public MovementAction
-	{
-	public:
-		AttackAction(PlayerbotAI* botAI, string name) : MovementAction(ai, name) {}
+class Event;
+class PlayerbotAI;
 
-    public:
-        virtual bool Execute(Event event);
+class AttackAction : public MovementAction
+{
+	public:
+		AttackAction(PlayerbotAI* botAI, std::string const& name) : MovementAction(botAI, name) { }
+
+        bool Execute(Event event) override;
 
     protected:
         bool Attack(Unit* target);
-    };
+};
 
-    class AttackMyTargetAction : public AttackAction
+class AttackMyTargetAction : public AttackAction
+{
+    public:
+        AttackMyTargetAction(PlayerbotAI* botAI, std::string const& name = "attack my target") : AttackAction(botAI, name) { }
+
+        bool Execute(Event event) override;
+};
+
+class AttackDuelOpponentAction : public AttackAction
     {
     public:
-        AttackMyTargetAction(PlayerbotAI* botAI, string name = "attack my target") : AttackAction(ai, name) {}
+        AttackDuelOpponentAction(PlayerbotAI* botAI, std::string const& name = "attack duel opponent") : AttackAction(botAI, name) { }
 
     public:
-        virtual bool Execute(Event event);
-    };
-
-    class AttackDuelOpponentAction : public AttackAction
-    {
-    public:
-        AttackDuelOpponentAction(PlayerbotAI* botAI, string name = "attack duel opponent") : AttackAction(ai, name) {}
-
-    public:
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
-}
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};

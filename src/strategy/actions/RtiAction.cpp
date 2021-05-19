@@ -1,67 +1,74 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "RtiAction.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../values/RtiTargetValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "RtiAction.h"
+#include "../Event.h"
+#include "../values/RtiTargetValue.h"
+#include "../../Playerbot.h"
 
 bool RtiAction::Execute(Event event)
 {
-    string text = event.getParam();
-    string type = "rti";
+    std::string text = event.getParam();
+    std::string type = "rti";
     if (text.find("cc ") == 0)
     {
         type = "rti cc";
         text = text.substr(3);
     }
+
     if (text.empty() || text == "?")
     {
-        ostringstream outRti; outRti << "rti" << ": ";
+        std::ostringstream outRti;
+        outRti << "rti" << ": ";
         AppendRti(outRti, "rti");
         botAI->TellMaster(outRti);
 
-        ostringstream outRtiCc; outRtiCc << "rti cc" << ": ";
+        std::ostringstream outRtiCc;
+        outRtiCc << "rti cc" << ": ";
         AppendRti(outRtiCc, "rti cc");
         botAI->TellMaster(outRtiCc);
         return true;
     }
 
     context->GetValue<string>(type)->Set(text);
-    ostringstream out; out << type << " set to: ";
+
+    std::ostringstream out;
+    out << type << " set to: ";
     AppendRti(out, type);
     botAI->TellMaster(out);
     return true;
 }
 
-void RtiAction::AppendRti(ostringstream & out, string type)
+void RtiAction::AppendRti(std::ostringstream& out, std::string const& type)
 {
-    out << AI_VALUE(string, type);
+    out << AI_VALUE(std::string, type);
 
-    ostringstream n; n << type << " target";
-    Unit* target = AI_VALUE(Unit*, n.str());
-    if(target)
+    std::ostringstream n;
+    n << type << " target";
+
+    if (Unit* target = AI_VALUE(Unit*, n.str()))
         out << " (" << target->GetName() << ")";
-
 }
 
 bool MarkRtiAction::Execute(Event event)
 {
     Group* group = bot->GetGroup();
-    if (!group) return false;
+    if (!group)
+        return false;
 
-    Unit* target = NULL;
-    list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
-    for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); ++i)
+    Unit* target = nullptr;
+    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector>("attackers")->Get();
+    for (ObjectGuid const guid : attackers)
     {
-        Unit* unit = botAI->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(guid);
         if (!unit)
             continue;
 
         bool marked = false;
-        for (int i = 0; i < 8; i++)
+        for (uint8 i = 0; i < 8; i++)
         {
-            ObjectGuid guid = group->GetTargetIcon(i);
+            ObjectGuid iconGUID = group->GetTargetIcon(i);
             if (guid == unit->GetGUID())
             {
                 marked = true;
@@ -69,16 +76,19 @@ bool MarkRtiAction::Execute(Event event)
             }
         }
 
-        if (marked) continue;
+        if (marked)
+            continue;
 
-        if (!target || (int)target->GetHealth() > (int)unit->GetHealth()) target = unit;
+        if (!target || target->GetHealth() > unit->GetHealth())
+            target = unit;
     }
 
-    if (!target) return false;
+    if (!target)
+        return false;
 
-    string rti = AI_VALUE(string, "rti");
-    int index = RtiTargetValue::GetRtiIndex(rti);
-    group->SetTargetIcon(index, target->GetGUID());
+    std::string const& rti = AI_VALUE(std::string, "rti");
+    uint8 index = RtiTargetValue::GetRtiIndex(rti);
+    group->SetTargetIcon(index, bot->GetGUID(), target->GetGUID());
     return true;
 }
 

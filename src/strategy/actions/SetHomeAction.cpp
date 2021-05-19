@@ -1,10 +1,10 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "SetHomeAction.h"
-#include "../../PlayerbotAIConfig.h"
-
-
-using namespace ai;
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool SetHomeAction::Execute(Event event)
 {
@@ -12,27 +12,28 @@ bool SetHomeAction::Execute(Event event)
     if (!master)
         return false;
 
-    ObjectGuid selection = master->GetTarget();
-    if (selection)
+    if (ObjectGuid selection = master->GetTarget())
     {
-        Unit* unit = master->GetMap()->GetUnit(selection);
-        if (unit && unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER))
-        {
-            float angle = GetFollowAngle();
-            float x = unit->GetPositionX() + sPlayerbotAIConfig->followDistance * cos(angle);
-            float y = unit->GetPositionY() + sPlayerbotAIConfig->followDistance * sin(angle);
-            float z = unit->GetPositionZ();
-            WorldLocation loc(unit->GetMapId(), x, y, z);
-            bot->SetHomebindToLocation(loc, unit->GetAreaId());
-            botAI->TellMaster("This inn is my new home");
-            return true;
-        }
+        if (Unit* unit = ObjectAccessor::GetUnit(*master, selection))
+            if (unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER))
+            {
+                float angle = GetFollowAngle();
+                float x = unit->GetPositionX() + sPlayerbotAIConfig->followDistance * cos(angle);
+                float y = unit->GetPositionY() + sPlayerbotAIConfig->followDistance * sin(angle);
+                float z = unit->GetPositionZ();
+
+                WorldLocation loc(unit->GetMapId(), x, y, z);
+                bot->SetHomebind(loc, unit->GetAreaId());
+
+                botAI->TellMaster("This inn is my new home");
+                return true;
+            }
     }
 
-    list<ObjectGuid> npcs = AI_VALUE(list<ObjectGuid>, "nearest npcs");
-    for (list<ObjectGuid>::iterator i = npcs.begin(); i != npcs.end(); i++)
+    GuidVector npcs = AI_VALUE(GuidVector, "nearest npcs");
+    for (ObjectGuid const guid : npcs)
     {
-        Creature* unit = bot->GetNPCIfCanInteractWith(*i, UNIT_NPC_FLAG_INNKEEPER);
+        Creature* unit = bot->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_INNKEEPER);
         if (!unit)
             continue;
 

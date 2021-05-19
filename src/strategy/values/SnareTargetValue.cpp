@@ -37,5 +37,5 @@ Unit* SnareTargetValue::Calculate()
         }
     }
 
-    return NULL;
+    return nullptr;
 }

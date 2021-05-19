@@ -1,16 +1,19 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+class Unit;
+class WorldObject;
+
+class MovementAction : public Action
 {
-    class MovementAction : public Action {
     public:
-        MovementAction(PlayerbotAI* botAI, string name) : Action(ai, name)
-        {
-            bot = botAI->GetBot();
-        }
+        MovementAction(PlayerbotAI* botAI, std::string const& name);
 
     protected:
         bool MoveNear(uint32 mapId, float x, float y, float z, float distance = sPlayerbotAIConfig->contactDistance);
@@ -27,74 +30,75 @@ namespace ai
         bool Flee(Unit *target);
         void ClearIdleState();
         void UpdateMovementState();
-    };
+};
 
-    class FleeAction : public MovementAction
-    {
+class FleeAction : public MovementAction
+{
     public:
-        FleeAction(PlayerbotAI* botAI, float distance = sPlayerbotAIConfig->spellDistance) : MovementAction(ai, "flee")
-        {
-			this->distance = distance;
-		}
+        FleeAction(PlayerbotAI* botAI, float distance = sPlayerbotAIConfig->spellDistance) : MovementAction(botAI, "flee"), distance(distance) { }
 
-        virtual bool Execute(Event event);
+        bool Execute(Event event) override;
 
 	private:
 		float distance;
-    };
+};
 
-    class FleeWithPetAction : public MovementAction
-    {
+class FleeWithPetAction : public MovementAction
+{
     public:
-        FleeWithPetAction(PlayerbotAI* botAI) : MovementAction(ai, "flee with pet") {}
+        FleeWithPetAction(PlayerbotAI* botAI) : MovementAction(botAI, "flee with pet") { }
 
-        virtual bool Execute(Event event);
-    };
+        bool Execute(Event event) override;
+};
 
-    class RunAwayAction : public MovementAction
-    {
+class RunAwayAction : public MovementAction
+{
     public:
-        RunAwayAction(PlayerbotAI* botAI) : MovementAction(ai, "runaway") {}
-        virtual bool Execute(Event event);
-    };
+        RunAwayAction(PlayerbotAI* botAI) : MovementAction(botAI, "runaway") { }
 
-    class MoveToLootAction : public MovementAction
-    {
+        bool Execute(Event event) override;
+};
+
+class MoveToLootAction : public MovementAction
+{
     public:
-        MoveToLootAction(PlayerbotAI* botAI) : MovementAction(ai, "move to loot") {}
-        virtual bool Execute(Event event);
-    };
+        MoveToLootAction(PlayerbotAI* botAI) : MovementAction(botAI, "move to loot") { }
 
-    class MoveOutOfEnemyContactAction : public MovementAction
-    {
+        bool Execute(Event event) override;
+};
+
+class MoveOutOfEnemyContactAction : public MovementAction
+{
     public:
-        MoveOutOfEnemyContactAction(PlayerbotAI* botAI) : MovementAction(ai, "move out of enemy contact") {}
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
+        MoveOutOfEnemyContactAction(PlayerbotAI* botAI) : MovementAction(botAI, "move out of enemy contact") { }
 
-    class SetFacingTargetAction : public MovementAction
-    {
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};
+
+class SetFacingTargetAction : public MovementAction
+{
     public:
-        SetFacingTargetAction(PlayerbotAI* botAI) : MovementAction(ai, "set facing") {}
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
+        SetFacingTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set facing") { }
 
-    class SetBehindTargetAction : public MovementAction
-    {
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};
+
+class SetBehindTargetAction : public MovementAction
+{
     public:
-        SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(ai, "set behind") {}
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
+        SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set behind") { }
 
-    class MoveOutOfCollisionAction : public MovementAction
-    {
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};
+
+class MoveOutOfCollisionAction : public MovementAction
+{
     public:
-        MoveOutOfCollisionAction(PlayerbotAI* botAI) : MovementAction(ai, "move out of collision") {}
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
+        MoveOutOfCollisionAction(PlayerbotAI* botAI) : MovementAction(botAI, "move out of collision") { }
 
-}
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};

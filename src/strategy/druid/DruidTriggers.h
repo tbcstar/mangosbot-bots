@@ -106,7 +106,7 @@ namespace ai {
     {
     public:
         BearFormTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "bear form") {}
-        virtual bool IsActive() { return !botAI->HasAnyAuraOf(bot, "bear form", "dire bear form", NULL); }
+        virtual bool IsActive() { return !botAI->HasAnyAuraOf(bot, "bear form", "dire bear form", nullptr); }
     };
 
     class TreeFormTrigger : public BuffTrigger

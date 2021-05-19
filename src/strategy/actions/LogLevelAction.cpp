@@ -1,16 +1,17 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "LogLevelAction.h"
-
-
-using namespace ai;
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool LogLevelAction::Execute(Event event)
 {
-    string param = event.getParam();
+    std::string const& param = event.getParam();
     Value<LogLevel> *value = botAI->GetAiObjectContext()->GetValue<LogLevel>("log level");
 
-    ostringstream out; 
+    std::ostringstream out;
     if (param != "?")
     {
         value->Set(string2logLevel(param));
@@ -20,32 +21,45 @@ bool LogLevelAction::Execute(Event event)
     {
         out << "My log level is " << logLevel2string(value->Get());
     }
+
     botAI->TellMaster(out);
-    return true;    
+    return true;
 }
 
-string LogLevelAction::logLevel2string(LogLevel level)
+std::string const& LogLevelAction::logLevel2string(LogLevel level)
 {
-    switch (level) 
+    switch (level)
     {
-    case LOG_LVL_BASIC:
-        return "basic";
-    case LOG_LVL_MINIMAL:
-        return "minimal";
-    case LOG_LVL_DETAIL:
-        return "detail";
-    default:
-        return "debug";
+        case LOG_LEVEL_DISABLED:
+            return "disabled";
+        case LOG_LEVEL_FATAL:
+            return "fatal";
+        case LOG_LEVEL_ERROR:
+            return "error";
+        case LOG_LEVEL_WARN:
+            return "warn";
+        case LOG_LEVEL_INFO:
+            return "info";
+        case LOG_LEVEL_DEBUG:
+            return "debug";
+        default:
+            return "trace";
     }
 }
-LogLevel LogLevelAction::string2logLevel(string level)
+LogLevel LogLevelAction::string2logLevel(std::string const& level)
 {
-    if (level == "debug")
-        return LOG_LVL_DEBUG;
-    else if (level == "minimal")
-        return LOG_LVL_MINIMAL;
-    else if (level == "detail")
-        return LOG_LVL_DETAIL;
-    else 
-        return LOG_LVL_BASIC;
+    if (level == "disabled")
+        return LOG_LEVEL_DISABLED;
+    else if (level == "fatal")
+        return LOG_LEVEL_FATAL;
+    else if (level == "error")
+        return LOG_LEVEL_ERROR;
+    else if (level == "warn")
+        return LOG_LEVEL_WARN;
+    else if (level == "info")
+        return LOG_LEVEL_INFO;
+    else if (level == "debug")
+        return LOG_LEVEL_DEBUG;
+
+    return LOG_LEVEL_TRACE;
 }

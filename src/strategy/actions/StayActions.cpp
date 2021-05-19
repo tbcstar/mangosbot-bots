@@ -1,20 +1,20 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "StayActions.h"
-
-#include "../../ServerFacade.h"
+#include "../Event.h"
 #include "../values/LastMovementValue.h"
-
-using namespace ai;
+#include "../../Playerbot.h"
 
 bool StayActionBase::Stay()
 {
-    AI_VALUE(LastMovement&, "last movement").Set(NULL);
+    AI_VALUE(LastMovement&, "last movement").Set(nullptr);
 
-    if (!urand(0, 5000)) botAI->PlaySound(TEXTEMOTE_YAWN);
+    if (!urand(0, 5000))
+        botAI->PlaySound(TEXT_EMOTE_YAWN);
 
-    MotionMaster &mm = *bot->GetMotionMaster();
-    if (mm.GetCurrentMovementGeneratorType() == FLIGHT_MOTION_TYPE || bot->IsFlying())
+    if (bot->GetMotionMaster()->GetCurrentMovementGeneratorType() == FLIGHT_MOTION_TYPE || bot->IsFlying())
         return false;
 
     uint32 sitDelay = sPlayerbotAIConfig->sitDelay / 1000;
@@ -26,12 +26,12 @@ bool StayActionBase::Stay()
         context->GetValue<time_t>("stay time")->Set(stayTime);
     }
 
-    if (!sServerFacade->isMoving(bot))
+    if (!bot->isMoving())
         return false;
 
     bot->StopMoving();
-	bot->clearUnitState(UNIT_STAT_CHASE);
-	bot->clearUnitState(UNIT_STAT_FOLLOW);
+	bot->ClearUnitState(UNIT_STATE_CHASE);
+	bot->ClearUnitState(UNIT_STATE_FOLLOW);
 
     return true;
 }
@@ -48,7 +48,7 @@ bool StayAction::isUseful()
 
 bool SitAction::Execute(Event event)
 {
-    if (sServerFacade->isMoving(bot))
+    if (bot->isMoving())
         return false;
 
     bot->SetStandState(UNIT_STAND_STATE_SIT);

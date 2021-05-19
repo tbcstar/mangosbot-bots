@@ -1,14 +1,15 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "RewardAction.h"
-#include "../ItemVisitors.h"
-#include "../values/ItemCountValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "RewardAction.h"
+#include "../Event.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
 bool RewardAction::Execute(Event event)
 {
-    string link = event.getParam();
+    std::string const& link = event.getParam();
 
     ItemIds itemIds = chat->parseItems(link);
     if (itemIds.empty())
@@ -16,20 +17,20 @@ bool RewardAction::Execute(Event event)
 
     uint32 itemId = *itemIds.begin();
 
-    list<ObjectGuid> npcs = AI_VALUE(list<ObjectGuid>, "nearest npcs");
-    for (list<ObjectGuid>::iterator i = npcs.begin(); i != npcs.end(); i++)
+    GuidVector npcs = AI_VALUE(GuidVector, "nearest npcs");
+    for (ObjectGuid const guid : npcs)
     {
-        Unit* npc = botAI->GetUnit(*i);
-        if (npc && Reward(itemId, npc))
-            return true;
+        if (Unit* npc = botAI->GetUnit(guid))
+            if (Reward(itemId, npc))
+                return true;
     }
 
-    list<ObjectGuid> gos = AI_VALUE(list<ObjectGuid>, "nearest game objects");
-    for (list<ObjectGuid>::iterator i = gos.begin(); i != gos.end(); i++)
+    GuidVector gos = AI_VALUE(GuidVector, "nearest game objects");
+    for (ObjectGuid const guid : gos)
     {
-        GameObject* go = botAI->GetGameObject(*i);
-        if (go && Reward(itemId, go))
-            return true;
+        if (GameObject* go = botAI->GetGameObject(guid))
+            if (Reward(itemId, go))
+                return true;
     }
 
     botAI->TellError("Cannot talk to quest giver");
@@ -39,31 +40,29 @@ bool RewardAction::Execute(Event event)
 bool RewardAction::Reward(uint32 itemId, Object* questGiver)
 {
     QuestMenu& questMenu = bot->PlayerTalkClass->GetQuestMenu();
-    for (uint32 iI = 0; iI < questMenu.MenuItemCount(); ++iI)
+    for (uint32 iI = 0; iI < questMenu.GetMenuItemCount(); ++iI)
     {
         QuestMenuItem const& qItem = questMenu.GetItem(iI);
 
-        uint32 questID = qItem.m_qId;
+        uint32 questID = qItem.QuestId;
         Quest const* pQuest = sObjectMgr->GetQuestTemplate(questID);
         QuestStatus status = bot->GetQuestStatus(questID);
 
         // if quest is complete, turn it in
-        if (status == QUEST_STATUS_COMPLETE &&
-            ! bot->GetQuestRewardStatus(questID) &&
-            pQuest->GetRewChoiceItemsCount() > 1 &&
-            bot->CanRewardQuest(pQuest, false))
+        if (status == QUEST_STATUS_COMPLETE && !bot->GetQuestRewardStatus(questID) && pQuest->GetRewChoiceItemsCount() > 1 && bot->CanRewardQuest(pQuest, false))
         {
             for (uint8 rewardIdx=0; rewardIdx < pQuest->GetRewChoiceItemsCount(); ++rewardIdx)
             {
-                ItemTemplate const*  const pRewardItem = sObjectMgr->GetItemTemplate(pQuest->RewChoiceItemId[rewardIdx]);
+                ItemTemplate const* pRewardItem = sObjectMgr->GetItemTemplate(pQuest->RewardChoiceItemId[rewardIdx]);
                 if (itemId == pRewardItem->ItemId)
                 {
                     bot->RewardQuest(pQuest, rewardIdx, questGiver, false);
 
-                    string questTitle  = pQuest->GetTitle();
-                    string itemName = pRewardItem->Name1;
+                    std::string const& questTitle  = pQuest->GetTitle();
+                    std::string const& itemName = pRewardItem->Name1;
 
-                    ostringstream out; out << chat->formatItem(pRewardItem) << " rewarded";
+                    std::ostringstream out;
+                    out << chat->formatItem(pRewardItem) << " rewarded";
                     botAI->TellMaster(out);
                     return true;
                 }

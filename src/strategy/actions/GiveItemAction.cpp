@@ -1,20 +1,23 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "GiveItemAction.h"
-
+#include "../Event.h"
 #include "../values/ItemCountValue.h"
+#include "../../Playerbot.h"
 
-using namespace ai;
-
-vector<string> split(const string &s, char delim);
+std::vector<std::string> split(std::string const&s, char delim);
 
 bool GiveItemAction::Execute(Event event)
 {
     Unit* target = GetTarget();
-    if (!target) return false;
+    if (!target)
+        return false;
 
     Player* receiver = dynamic_cast<Player*>(target);
-    if (!receiver) return false;
+    if (!receiver)
+        return false;
 
     PlayerbotAI* receiverAi = receiver->GetPlayerbotAI();
     if (!receiverAi)
@@ -24,28 +27,26 @@ bool GiveItemAction::Execute(Event event)
         return true;
 
     bool moved = false;
-    list<Item*> items = InventoryAction::parseItems(item, ITERATE_ITEMS_IN_BAGS);
-    for (list<Item*>::iterator j = items.begin(); j != items.end(); j++)
+    std::vector<Item*> items = InventoryAction::parseItems(item, ITERATE_ITEMS_IN_BAGS);
+    for (Item* item : items)
     {
-        Item* item = *j;
-
         ItemPosCountVec dest;
         InventoryResult msg = receiver->CanStoreItem(NULL_BAG, NULL_SLOT, dest, item, false);
         if (msg == EQUIP_ERR_OK)
         {
             bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
-            item->SetOwnerGuid(target->GetGUID());
+            item->SetOwnerGUID(target->GetGUID());
             receiver->MoveItemToInventory(dest, item, true);
             moved = true;
 
-            ostringstream out;
-            out << "Got " << chat->formatItem(item->GetProto(), item->GetCount()) << " from " << bot->GetName();
+            std::ostringstream out;
+            out << "Got " << chat->formatItem(item->GetTemplate(), item->GetCount()) << " from " << bot->GetName();
             receiverbotAI->TellMasterNoFacing(out.str());
         }
         else
         {
-            ostringstream out;
-            out << "Cannot get " << chat->formatItem(item->GetProto(), item->GetCount()) << " from " << bot->GetName() << "- my bags are full";
+            std::ostringstream out;
+            out << "Cannot get " << chat->formatItem(item->GetTemplate(), item->GetCount()) << " from " << bot->GetName() << "- my bags are full";
             receiverbotAI->TellError(out.str());
         }
     }
@@ -56,6 +57,11 @@ bool GiveItemAction::Execute(Event event)
 Unit* GiveItemAction::GetTarget()
 {
     return AI_VALUE2(Unit*, "party member without item", item);
+}
+
+bool GiveItemAction::isUseful()
+{
+    return GetTarget() && AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig->lowMana;
 }
 
 Unit* GiveFoodAction::GetTarget()

@@ -1,27 +1,34 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
-#include "../ItemVisitors.h"
 
-namespace ai
+class Event;
+class IterateItemsVisitor;
+class PlayerbotAI;
+
+struct ItemTemplate;
+
+enum IterateItemsMask : uint32;
+
+class InventoryAction : public Action
 {
-    class InventoryAction : public Action {
     public:
-        InventoryAction(PlayerbotAI* botAI, string name) : Action(ai, name) {}
+        InventoryAction(PlayerbotAI* botAI, std::string const& name) : Action(botAI, name) { }
 
     protected:
         void IterateItems(IterateItemsVisitor* visitor, IterateItemsMask mask = ITERATE_ITEMS_IN_BAGS);
-        void TellItems(map<uint32, int> items, map<uint32, bool> soulbound);
-        void TellItem(ItemTemplate const*  proto, int count, bool soulbound);
-        list<Item*> parseItems(string text, IterateItemsMask mask = ITERATE_ALL_ITEMS);
+        void TellItems(std::map<uint32, uint32> items, std::map<uint32, bool> soulbound);
+        void TellItem(ItemTemplate const* proto, uint32 count, bool soulbound);
+        std::list<Item*> parseItems(std::string const& text, IterateItemsMask mask = ITERATE_ALL_ITEMS);
         uint32 GetItemCount(FindItemVisitor* visitor, IterateItemsMask mask = ITERATE_ITEMS_IN_BAGS);
-        string parseOutfitName(string outfit);
-        ItemIds parseOutfitItems(string outfit);
-        ItemIds FindOutfitItems(string name);
+        std::string const& parseOutfitName(std::string const& outfit);
+        ItemIds parseOutfitItems(std::string const& outfit);
+        ItemIds FindOutfitItems(std::string const& name);
 
     private:
         void IterateItemsInBags(IterateItemsVisitor* visitor);
         void IterateItemsInEquip(IterateItemsVisitor* visitor);
         void IterateItemsInBank(IterateItemsVisitor* visitor);
-    };
-}
+};

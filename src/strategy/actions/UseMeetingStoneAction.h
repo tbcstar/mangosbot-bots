@@ -1,28 +1,30 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "MovementActions.h"
 
-namespace ai
-{
-    class SummonAction : public MovementAction
-    {
-    public:
-        SummonAction(PlayerbotAI* botAI, string name = "summon") : MovementAction(ai, name) {}
+class Event;
+class Player;
+class PlayerbotAI;
 
-        virtual bool Execute(Event event);
+class SummonAction : public MovementAction
+{
+    public:
+        SummonAction(PlayerbotAI* botAI, std::string const& name = "summon") : MovementAction(botAI, name) { }
+
+        bool Execute(Event event) override;
 
     protected:
-        bool Teleport(Player *summoner, Player *player);
-        bool SummonUsingGos(Player *summoner, Player *player);
-        bool SummonUsingNpcs(Player *summoner, Player *player);
-    };
+        bool Teleport(Player* summoner, Player* player);
+        bool SummonUsingGos(Player* summoner, Player* player);
+        bool SummonUsingNpcs(Player* summoner, Player* player);
+};
 
-    class UseMeetingStoneAction : public SummonAction
-    {
+class UseMeetingStoneAction : public SummonAction
+{
     public:
-        UseMeetingStoneAction(PlayerbotAI* botAI) : SummonAction(ai, "use meeting stone") {}
+        UseMeetingStoneAction(PlayerbotAI* botAI) : SummonAction(botAI, "use meeting stone") { }
 
-        virtual bool Execute(Event event);
-    };
-}
+        bool Execute(Event event) override;
+};

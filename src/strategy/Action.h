@@ -40,21 +40,21 @@ class NextAction
 class Action : public AiNamedObject
 {
 	public:
-        Action(PlayerbotAI* botAI, std::string name = "action") : verbose(false), AiNamedObject(ai, name) { }
+        Action(PlayerbotAI* botAI, std::string name = "action") : verbose(false), AiNamedObject(botAI, name) { }
         virtual ~Action(void) { }
 
         virtual bool Execute(Event event) { return true; }
         virtual bool isPossible() { return true; }
         virtual bool isUseful() { return true; }
-        virtual NextAction** getPrerequisites() { return NULL; }
-        virtual NextAction** getAlternatives() { return NULL; }
-        virtual NextAction** getContinuers() { return NULL; }
+        virtual NextAction** getPrerequisites() { return nullptr; }
+        virtual NextAction** getAlternatives() { return nullptr; }
+        virtual NextAction** getContinuers() { return nullptr; }
         virtual ActionThreatType getThreatType() { return ACTION_THREAT_NONE; }
         void Update() { }
         void Reset() { }
         virtual Unit* GetTarget();
         virtual Value<Unit*>* GetTargetValue();
-        virtual std::string GetTargetName() { return "self target"; }
+        virtual std::string const& GetTargetName() { return "self target"; }
         void MakeVerbose() { verbose = true; }
 
     protected:
@@ -64,8 +64,8 @@ class Action : public AiNamedObject
 class ActionNode
 {
     public:
-        ActionNode(std::string name, NextAction** prerequisites = NULL, NextAction** alternatives = NULL, NextAction** continuers = NULL) :
-            action(NULL), name(name), prerequisites(prerequisites), alternatives(alternatives), continuers(continuers) { }
+        ActionNode(std::string name, NextAction** prerequisites = nullptr, NextAction** alternatives = nullptr, NextAction** continuers = nullptr) :
+            action(nullptr), name(name), prerequisites(prerequisites), alternatives(alternatives), continuers(continuers) { }
 
         virtual ~ActionNode()
         {
@@ -113,4 +113,3 @@ class ActionBasket
         Event event;
         time_t created;
 };
-

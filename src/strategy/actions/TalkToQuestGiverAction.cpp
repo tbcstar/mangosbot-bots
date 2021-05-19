@@ -1,40 +1,42 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "TalkToQuestGiverAction.h"
-
-
-using namespace ai;
+#include "../Event.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
 void TalkToQuestGiverAction::ProcessQuest(Quest const* quest, WorldObject* questGiver)
 {
-    std::ostringstream out; out << "Quest ";
+    std::ostringstream out;
+    out << "Quest ";
 
     QuestStatus status = bot->GetQuestStatus(quest->GetQuestId());
     switch (status)
     {
-    case QUEST_STATUS_COMPLETE:
-        TurnInQuest(quest, questGiver, out);
-        break;
-    case QUEST_STATUS_INCOMPLETE:
-        out << "|cffff0000Incompleted|r";
-        break;
-    case QUEST_STATUS_AVAILABLE:
-    case QUEST_STATUS_NONE:
-        out << "|cff00ff00Available|r";
-        break;
-    case QUEST_STATUS_FAILED:
-        out << "|cffff0000Failed|r";
-        break;
+        case QUEST_STATUS_COMPLETE:
+            TurnInQuest(quest, questGiver, out);
+            break;
+        case QUEST_STATUS_INCOMPLETE:
+            out << "|cffff0000Incompleted|r";
+            break;
+        case QUEST_STATUS_NONE:
+            out << "|cff00ff00Available|r";
+            break;
+        case QUEST_STATUS_FAILED:
+            out << "|cffff0000Failed|r";
+            break;
     }
 
     out << ": " << chat->formatQuest(quest);
     botAI->TellMaster(out);
 }
 
-void TalkToQuestGiverAction::TurnInQuest(Quest const* quest, WorldObject* questGiver, ostringstream& out) 
+void TalkToQuestGiverAction::TurnInQuest(Quest const* quest, WorldObject* questGiver, ostringstream& out)
 {
     uint32 questID = quest->GetQuestId();
-        
+
     if (bot->GetQuestRewardStatus(questID))
         return;
 
@@ -42,12 +44,13 @@ void TalkToQuestGiverAction::TurnInQuest(Quest const* quest, WorldObject* questG
         RewardNoItem(quest, questGiver, out);
     else if (quest->GetRewChoiceItemsCount() == 1)
         RewardSingleItem(quest, questGiver, out);
-    else {
+    else
+    {
         AskToSelectReward(quest, out);
     }
 }
 
-void TalkToQuestGiverAction::RewardNoItem(Quest const* quest, WorldObject* questGiver, ostringstream& out) 
+void TalkToQuestGiverAction::RewardNoItem(Quest const* quest, WorldObject* questGiver, std::ostringstream& out)
 {
     if (bot->CanRewardQuest(quest, false))
     {
@@ -60,10 +63,10 @@ void TalkToQuestGiverAction::RewardNoItem(Quest const* quest, WorldObject* quest
     }
 }
 
-void TalkToQuestGiverAction::RewardSingleItem(Quest const* quest, WorldObject* questGiver, ostringstream& out) 
+void TalkToQuestGiverAction::RewardSingleItem(Quest const* quest, WorldObject* questGiver, std::ostringstream& out)
 {
     int index = 0;
-    ItemTemplate const* item = sObjectMgr->GetItemTemplate(quest->RewChoiceItemId[index]);
+    ItemTemplate const* item = sObjectMgr->GetItemTemplate(quest->RewardChoiceItemId[index]);
     if (bot->CanRewardQuest(quest, index, false))
     {
         bot->RewardQuest(quest, index, questGiver, true);
@@ -76,16 +79,17 @@ void TalkToQuestGiverAction::RewardSingleItem(Quest const* quest, WorldObject* q
     }
 }
 
-void TalkToQuestGiverAction::AskToSelectReward(Quest const* quest, ostringstream& out) 
+void TalkToQuestGiverAction::AskToSelectReward(Quest const* quest, std::ostringstream& out)
 {
-    ostringstream msg;
+    std::ostringstream msg;
     msg << "Choose reward: ";
-    for (uint8 i=0; i < quest->GetRewChoiceItemsCount(); ++i)
+
+    for (uint8 i = 0; i < quest->GetRewChoiceItemsCount(); ++i)
     {
-        ItemTemplate const* item = sObjectMgr->GetItemTemplate(quest->RewChoiceItemId[i]);
+        ItemTemplate const* item = sObjectMgr->GetItemTemplate(quest->RewardChoiceItemId[i]);
         msg << chat->formatItem(item);
     }
-    botAI->TellMaster(msg);
 
+    botAI->TellMaster(msg);
     out << "Reward pending";
 }

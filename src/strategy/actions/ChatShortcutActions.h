@@ -1,65 +1,73 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Action.h"
-#include "InventoryAction.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class ReturnPositionResetAction : public Action
 {
-    class ReturnPositionResetAction : public Action
-    {
     public:
-        ReturnPositionResetAction(PlayerbotAI* botAI, string name) : Action(ai, name) {}
+        ReturnPositionResetAction(PlayerbotAI* botAI, string name) : Action(botAI, name) { }
+
         void ResetReturnPosition();
         void SetReturnPosition(float x, float y, float z);
-    };
+};
 
-    class FollowChatShortcutAction : public ReturnPositionResetAction
-    {
+class FollowChatShortcutAction : public ReturnPositionResetAction
+{
     public:
-        FollowChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(ai, "follow chat shortcut") {}
-        virtual bool Execute(Event event);
-    };
+        FollowChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(botAI, "follow chat shortcut") { }
 
-    class StayChatShortcutAction : public ReturnPositionResetAction
-    {
+        bool Execute(Event event) override;
+};
+
+class StayChatShortcutAction : public ReturnPositionResetAction
+{
     public:
-        StayChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(ai, "stay chat shortcut") {}
-        virtual bool Execute(Event event);
-    };
+        StayChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(botAI, "stay chat shortcut") { }
 
-    class FleeChatShortcutAction : public ReturnPositionResetAction
-    {
+        bool Execute(Event event) override;
+};
+
+class FleeChatShortcutAction : public ReturnPositionResetAction
+{
     public:
-        FleeChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(ai, "flee chat shortcut") {}
-        virtual bool Execute(Event event);
-    };
+        FleeChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(botAI, "flee chat shortcut") { }
 
-    class GoawayChatShortcutAction : public ReturnPositionResetAction
-    {
+        bool Execute(Event event) override;
+};
+
+class GoawayChatShortcutAction : public ReturnPositionResetAction
+{
     public:
-        GoawayChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(ai, "runaway chat shortcut") {}
-        virtual bool Execute(Event event);
-    };
+        GoawayChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(botAI, "runaway chat shortcut") { }
 
-    class GrindChatShortcutAction : public ReturnPositionResetAction
-    {
+        bool Execute(Event event) override;
+};
+
+class GrindChatShortcutAction : public ReturnPositionResetAction
+{
     public:
-        GrindChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(ai, "grind chat shortcut") {}
-        virtual bool Execute(Event event);
-    };
+        GrindChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(botAI, "grind chat shortcut") { }
 
-    class TankAttackChatShortcutAction : public ReturnPositionResetAction
-    {
+        bool Execute(Event event) override;
+};
+
+class TankAttackChatShortcutAction : public ReturnPositionResetAction
+{
     public:
-        TankAttackChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(ai, "tank attack chat shortcut") {}
-        virtual bool Execute(Event event);
-    };
+        TankAttackChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(botAI, "tank attack chat shortcut") { }
 
-    class MaxDpsChatShortcutAction : public Action
-    {
+        bool Execute(Event event) override;
+};
+
+class MaxDpsChatShortcutAction : public Action
+{
     public:
-        MaxDpsChatShortcutAction(PlayerbotAI* botAI) : Action(ai, "max dps chat shortcut") {}
-        virtual bool Execute(Event event);
-    };
+        MaxDpsChatShortcutAction(PlayerbotAI* botAI) : Action(botAI, "max dps chat shortcut") { }
 
-}
+        bool Execute(Event event) override;
+};

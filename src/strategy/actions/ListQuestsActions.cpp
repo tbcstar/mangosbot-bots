@@ -1,9 +1,10 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "ListQuestsActions.h"
-
-
-using namespace ai;
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool ListQuestsAction::Execute(Event event)
 {
@@ -23,6 +24,7 @@ bool ListQuestsAction::Execute(Event event)
     {
         ListQuests(QUEST_LIST_FILTER_SUMMARY);
     }
+
     return true;
 }
 
@@ -33,21 +35,24 @@ void ListQuestsAction::ListQuests(QuestListFilter filter)
 
     if (showIncompleted)
         botAI->TellMaster("--- Incompleted quests ---");
-    int incompleteCount = ListQuests(false, !showIncompleted);
+
+    uint32 incompleteCount = ListQuests(false, !showIncompleted);
 
     if (showCompleted)
         botAI->TellMaster("--- Completed quests ---");
-    int completeCount = ListQuests(true, !showCompleted);
+
+    uint32 completeCount = ListQuests(true, !showCompleted);
 
     botAI->TellMaster("--- Summary ---");
+
     std::ostringstream out;
     out << "Total: " << (completeCount + incompleteCount) << " / 25 (incompleted: " << incompleteCount << ", completed: " << completeCount << ")";
     botAI->TellMaster(out);
 }
 
-int ListQuestsAction::ListQuests(bool completed, bool silent)
+uint32 ListQuestsAction::ListQuests(bool completed, bool silent)
 {
-    int count = 0;
+    uint32 count = 0;
     for (uint16 slot = 0; slot < MAX_QUEST_LOG_SIZE; ++slot)
     {
         uint32 questId = bot->GetQuestSlotQuestId(slot);

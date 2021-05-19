@@ -77,7 +77,7 @@ uint8 BalancePercentValue::Calculate()
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
             Player *player = ObjectAccessor::FindPlayer(itr->guid);
-            if( !player || !sServerFacade->IsAlive(player))
+            if (!player || !sServerFacade->IsAlive(player))
                 continue;
 
             playerLevel += player->getLevel();

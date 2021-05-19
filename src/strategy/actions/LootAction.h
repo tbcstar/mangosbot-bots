@@ -1,44 +1,51 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
-#include "../../LootObjectStack.h"
 #include "MovementActions.h"
 
-namespace ai
-{
-    class LootAction : public MovementAction
-    {
-    public:
-        LootAction(PlayerbotAI* botAI) : MovementAction(ai, "loot") {}
-        virtual bool Execute(Event event);
-    };
+class Event;
+class GameObject;
+class LootObject;
+class PlayerbotAI;
+class SpellInfo;
 
-    class OpenLootAction : public MovementAction
-    {
+class LootAction : public MovementAction
+{
     public:
-        OpenLootAction(PlayerbotAI* botAI) : MovementAction(ai, "open loot") {}
-        virtual bool Execute(Event event);
+        LootAction(PlayerbotAI* botAI) : MovementAction(botAI, "loot") { }
+
+        bool Execute(Event event) override;
+};
+
+class OpenLootAction : public MovementAction
+{
+    public:
+        OpenLootAction(PlayerbotAI* botAI) : MovementAction(botAI, "open loot") { }
+
+        bool Execute(Event event) override;
 
     private:
         bool DoLoot(LootObject& lootObject);
         uint32 GetOpeningSpell(LootObject& lootObject);
         uint32 GetOpeningSpell(LootObject& lootObject, GameObject* go);
-        bool CanOpenLock(LootObject& lootObject, const SpellEntry* pSpellInfo, GameObject* go);
+        bool CanOpenLock(LootObject& lootObject, SpellInfo const* spellInfo, GameObject* go);
         bool CanOpenLock(uint32 skillId, uint32 reqSkillValue);
-    };
+};
 
-    class StoreLootAction : public MovementAction
-    {
+class StoreLootAction : public MovementAction
+{
     public:
-        StoreLootAction(PlayerbotAI* botAI) : MovementAction(ai, "store loot") {}
-        virtual bool Execute(Event event);
+        StoreLootAction(PlayerbotAI* botAI) : MovementAction(botAI, "store loot") { }
+
+        bool Execute(Event event) override;
         static bool IsLootAllowed(uint32 itemid, PlayerbotAI* botAI);
-    };
+};
 
-    class ReleaseLootAction : public MovementAction
-    {
+class ReleaseLootAction : public MovementAction
+{
     public:
-        ReleaseLootAction(PlayerbotAI* botAI) : MovementAction(ai, "release loot") {}
-        virtual bool Execute(Event event);
-    };
-}
+        ReleaseLootAction(PlayerbotAI* botAI) : MovementAction(botAI, "release loot") { }
+
+        bool Execute(Event event) override;
+};

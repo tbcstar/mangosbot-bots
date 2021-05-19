@@ -37,11 +37,11 @@ class NamedObjectFactory
             }
 
             if (creators.find(name) == creators.end())
-                return NULL;
+                return nullptr;
 
             ActionCreator creator = creators[name];
             if (!creator)
-                return NULL;
+                return nullptr;
 
             T* object = (*creator);
             if (Qualified* q = dynamic_cast<Qualified*>(object))
@@ -154,7 +154,7 @@ class NamedObjectContextList
                     return object;
             }
 
-            return NULL;
+            return nullptr;
         }
 
         void Update()
@@ -250,7 +250,7 @@ class NamedObjectFactoryList
                     return object;
             }
 
-            return NULL;
+            return nullptr;
         }
 
     private:

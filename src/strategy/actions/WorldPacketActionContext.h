@@ -1,33 +1,35 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
+#include "AcceptDuelAction.h"
 #include "AcceptInvitationAction.h"
-#include "PassLeadershipToMasterAction.h"
-#include "TellMasterAction.h"
-#include "TalkToQuestGiverAction.h"
 #include "AcceptQuestAction.h"
-#include "LootRollAction.h"
-#include "ReviveFromCorpseAction.h"
 #include "AcceptResurrectAction.h"
-#include "UseMeetingStoneAction.h"
 #include "AreaTriggerAction.h"
 #include "CheckMountStateAction.h"
-#include "RememberTaxiAction.h"
-#include "TradeStatusAction.h"
-#include "InventoryChangeFailureAction.h"
-#include "LootAction.h"
-#include "QuestAction.h"
-#include "LeaveGroupAction.h"
-#include "TellCastFailedAction.h"
-#include "AcceptDuelAction.h"
-#include "ReadyCheckAction.h"
-#include "LfgActions.h"
-#include "SecurityCheckAction.h"
 #include "GuildAcceptAction.h"
+#include "InventoryChangeFailureAction.h"
+#include "LeaveGroupAction.h"
+#include "LootAction.h"
+#include "LootRollAction.h"
+#include "QuestAction.h"
+#include "PassLeadershipToMasterAction.h"
+#include "ReadyCheckAction.h"
+#include "RememberTaxiAction.h"
+#include "ReviveFromCorpseAction.h"
+#include "SecurityCheckAction.h"
+#include "TalkToQuestGiverAction.h"
+#include "TellCastFailedAction.h"
+#include "TellMasterAction.h"
+#include "TradeStatusAction.h"
+#include "UseMeetingStoneAction.h"
+#include "../NamedObjectContext.h"
 
-namespace ai
+class PlayerbotAI;
+
+class WorldPacketActionContext : public NamedObjectContext<Action>
 {
-    class WorldPacketActionContext : public NamedObjectContext<Action>
-    {
     public:
         WorldPacketActionContext()
         {
@@ -86,15 +88,12 @@ namespace ai
         static Action* revive_from_corpse(PlayerbotAI* botAI) { return new ReviveFromCorpseAction(botAI); }
         static Action* accept_invitation(PlayerbotAI* botAI) { return new AcceptInvitationAction(botAI); }
         static Action* pass_leadership_to_master(PlayerbotAI* botAI) { return new PassLeadershipToMasterAction(botAI); }
-        static Action* tell_not_enough_money(PlayerbotAI* botAI) { return new TellMasterAction(ai, "Not enough money"); }
-        static Action* tell_not_enough_reputation(PlayerbotAI* botAI) { return new TellMasterAction(ai, "Not enough reputation"); }
+        static Action* tell_not_enough_money(PlayerbotAI* botAI) { return new TellMasterAction(botAI, "Not enough money"); }
+        static Action* tell_not_enough_reputation(PlayerbotAI* botAI) { return new TellMasterAction(botAI, "Not enough reputation"); }
         static Action* tell_cannot_equip(PlayerbotAI* botAI) { return new InventoryChangeFailureAction(botAI); }
         static Action* turn_in_quest(PlayerbotAI* botAI) { return new TalkToQuestGiverAction(botAI); }
         static Action* accept_quest(PlayerbotAI* botAI) { return new AcceptQuestAction(botAI); }
         static Action* accept_all_quests(PlayerbotAI* botAI) { return new AcceptAllQuestsAction(botAI); }
         static Action* accept_quest_share(PlayerbotAI* botAI) { return new AcceptQuestShareAction(botAI); }
         static Action* loot_roll(PlayerbotAI* botAI) { return (QueryItemUsageAction*)new LootRollAction(botAI); }
-    };
-
-
 };

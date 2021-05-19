@@ -1,14 +1,15 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "EquipAction.h"
-
+#include "../Event.h"
 #include "../values/ItemCountValue.h"
-
-using namespace ai;
+#include "../../Playerbot.h"
 
 bool EquipAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
     ItemIds ids = chat->parseItems(text);
     EquipItems(ids);
     return true;
@@ -26,18 +27,18 @@ void EquipAction::EquipItems(ItemIds ids)
 void EquipAction::EquipItem(FindItemVisitor* visitor)
 {
     IterateItems(visitor);
-    list<Item*> items = visitor->GetResult();
-	if (!items.empty()) EquipItem(**items.begin());
+    std::vector<Item*> items = visitor->GetResult();
+	if (!items.empty())
+        EquipItem(**items.begin());
 }
 
-
-void EquipAction::EquipItem(Item& item)
+void EquipAction::EquipItem(Item* item)
 {
-    uint8 bagIndex = item.GetBagSlot();
-    uint8 slot = item.GetSlot();
-    uint32 itemId = item.GetProto()->ItemId;
+    uint8 bagIndex = item->GetBagSlot();
+    uint8 slot = item->GetSlot();
+    uint32 itemId = item->GetTemplate()->ItemId;
 
-    if (item.GetProto()->InventoryType == INVTYPE_AMMO)
+    if (item->GetTemplate()->InventoryType == INVTYPE_AMMO)
     {
         bot->SetAmmo(itemId);
     }
@@ -48,6 +49,7 @@ void EquipAction::EquipItem(Item& item)
         bot->GetSession()->HandleAutoEquipItemOpcode(packet);
     }
 
-    ostringstream out; out << "equipping " << chat->formatItem(item.GetProto());
+    std::ostringstream out;
+    out << "equipping " << chat->formatItem(item->GetTemplate());
     botAI->TellMaster(out);
 }

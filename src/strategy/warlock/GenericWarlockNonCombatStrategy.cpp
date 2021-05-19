@@ -17,16 +17,16 @@ private:
     static ActionNode* fel_armor(PlayerbotAI* botAI)
     {
         return new ActionNode ("fel armor",
-            /*P*/ NULL,
-            /*A*/ NextAction::array(0, new NextAction("demon armor"), NULL),
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ NextAction::array(0, new NextAction("demon armor"), nullptr),
+            /*C*/ nullptr);
     }
     static ActionNode* demon_armor(PlayerbotAI* botAI)
     {
         return new ActionNode ("demon armor",
-            /*P*/ NULL,
-            /*A*/ NextAction::array(0, new NextAction("demon skin"), NULL),
-            /*C*/ NULL);
+            /*P*/ nullptr,
+            /*A*/ NextAction::array(0, new NextAction("demon skin"), nullptr),
+            /*C*/ nullptr);
     }
 };
 
@@ -41,12 +41,12 @@ void GenericWarlockNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &trig
 
     triggers.push_back(new TriggerNode(
         "demon armor",
-        NextAction::array(0, new NextAction("fel armor", 21.0f), NULL)));
+        NextAction::array(0, new NextAction("fel armor", 21.0f), nullptr)));
 }
 
 void WarlockPetStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {
     triggers.push_back(new TriggerNode(
         "no pet",
-        NextAction::array(0, new NextAction("summon voidwalker", 30.0f), NULL)));
+        NextAction::array(0, new NextAction("summon voidwalker", 30.0f), nullptr)));
 }

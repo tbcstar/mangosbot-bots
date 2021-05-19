@@ -41,7 +41,7 @@ class Strategy : public PlayerbotAIAware
         Strategy(PlayerbotAI* botAI);
         virtual ~Strategy() { }
 
-        virtual NextAction** getDefaultActions() { return NULL; }
+        virtual NextAction** getDefaultActions() { return nullptr; }
         virtual void InitTriggers(std::vector<TriggerNode*> &triggers) {}
         virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) {}
         virtual std::string const& getName() = 0;

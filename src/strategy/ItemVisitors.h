@@ -10,7 +10,7 @@ class Player;
 
 char* strstri(char const* str1, char const* str2);
 
-enum IterateItemsMask
+enum IterateItemsMask : uint32
 {
     ITERATE_ITEMS_IN_BAGS   = 1,
     ITERATE_ITEMS_IN_EQUIP  = 2,
@@ -29,7 +29,7 @@ class IterateItemsVisitor
 class FindItemVisitor : public IterateItemsVisitor
 {
     public:
-        FindItemVisitor() : IterateItemsVisitor(), result(NULL) { }
+        FindItemVisitor() : IterateItemsVisitor(), result(nullptr) { }
 
         bool Visit(Item* item) override
         {

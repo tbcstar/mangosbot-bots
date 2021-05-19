@@ -1,99 +1,103 @@
-#include "../../botpch.h"
-#include "../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "CustomStrategy.h"
+#include "../Playerbot.h"
+
 #include <regex>
 
-using namespace ai;
+std::map<std::string, std::string> CustomStrategy::actionLinesCache;
 
-map<string, string> CustomStrategy::actionLinesCache;
-
-NextAction* toNextAction(string action)
+NextAction* toNextAction(std::string const& action)
 {
-    vector<string> tokens = split(action, '!');
+    std::vector<std::string> tokens = split(action, '!');
     if (tokens.size() == 2 && !tokens[0].empty())
         return new NextAction(tokens[0], atof(tokens[1].c_str()));
     else if (tokens.size() == 1 && !tokens[0].empty())
         return new NextAction(tokens[0], ACTION_NORMAL);
 
     sLog->outError("Invalid action '%s'", action);
-    return NULL;
+    return nullptr;
 }
 
-NextAction** toNextActionArray(string actions)
+NextAction** toNextActionArray(std::string const& actions)
 {
-    vector<string> tokens = split(actions, ',');
+    std::vector<std::string> tokens = split(actions, ',');
     NextAction** res = new NextAction*[tokens.size() + 1];
-    int index = 0;
-    for (vector<string>::iterator i = tokens.begin(); i != tokens.end(); ++i)
+
+    uint32 index = 0;
+    for (std::vector<std::string>::iterator i = tokens.begin(); i != tokens.end(); ++i)
     {
-        NextAction* na = toNextAction(*i);
-        if (na)
+        if (NextAction* na = toNextAction(*i))
             res[index++] = na;
     }
-	res[index++] = NULL;
+
+	res[index++] = nullptr;
     return res;
 }
 
-TriggerNode* toTriggerNode(string actionLine)
+TriggerNode* toTriggerNode(std::string const& actionLine)
 {
-    vector<string> tokens = split(actionLine, '>');
+    std::vector<std::string> tokens = split(actionLine, '>');
     if (tokens.size() == 2)
         return new TriggerNode(tokens[0], toNextActionArray(tokens[1]));
 
     sLog->outError("Invalid action line '%s'", actionLine);
-    return NULL;
+    return nullptr;
 }
 
-void CustomStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+CustomStrategy::CustomStrategy(PlayerbotAI* botAI) : Strategy(botAI), Qualified()
+{
+}
+
+void CustomStrategy::InitTriggers(std::vector<TriggerNode*> &triggers)
 {
     if (actionLines.empty())
     {
         if (actionLinesCache[qualifier].empty())
         {
             LoadActionLines((uint32)botAI->GetBot()->GetGUID().GetCounter());
-            if (this->actionLines.empty())
+            if (actionLines.empty())
                 LoadActionLines(0);
         }
         else
         {
-            vector<string> tokens = split(actionLinesCache[qualifier], '\n');
-            regex tpl("\\(NULL,\\s*'.+',\\s*'(.+)'\\)(,|;)");
-            for (vector<string>::iterator i = tokens.begin(); i != tokens.end(); ++i)
+            std::vector<std::string> tokens = split(actionLinesCache[qualifier], '\n');
+            std::regex tpl("\\(nullptr,\\s*'.+',\\s*'(.+)'\\)(,|;)");
+            for (std::vector<std::string>::iterator i = tokens.begin(); i != tokens.end(); ++i)
             {
-                string line = *i;
-                for (sregex_iterator j = sregex_iterator(line.begin(), line.end(), tpl); j != sregex_iterator(); ++j)
+                std::string const& line = *i;
+                for (std::sregex_iterator j = std::sregex_iterator(line.begin(), line.end(), tpl); j != std::sregex_iterator(); ++j)
                 {
-                    smatch match = *j;
-                    string actionLine = match[1].str();
+                    std::smatch match = *j;
+                    std::string const& actionLine = match[1].str();
                     if (!actionLine.empty())
-                        this->actionLines.push_back(actionLine);
+                        actionLines.push_back(actionLine);
                 }
             }
         }
     }
 
-    for (list<string>::iterator i = actionLines.begin(); i != actionLines.end(); ++i)
+    for (std::vector<std::string>::iterator i = actionLines.begin(); i != actionLines.end(); ++i)
     {
-        TriggerNode* tn = toTriggerNode(*i);
-        if (tn)
+        if (TriggerNode* tn = toTriggerNode(*i))
             triggers.push_back(tn);
     }
 }
 
 void CustomStrategy::LoadActionLines(uint32 owner)
 {
-    QueryResult* results = CharacterDatabase.PQuery("SELECT action_line FROM ai_playerbot_custom_strategy WHERE name = '%s' and owner = '%u' order by idx",
+    QueryResult results = CharacterDatabase.PQuery("SELECT action_line FROM ai_playerbot_custom_strategy WHERE name = '%s' AND owner = '%u' ORDER BY idx",
             qualifier.c_str(), owner);
     if (results)
     {
         do
         {
             Field* fields = results->Fetch();
-            string action = fields[0].GetString();
-            this->actionLines.push_back(action);
+            std::string const& action = fields[0].GetString();
+            actionLines.push_back(action);
         } while (results->NextRow());
-
-        delete results;
     }
 }
 
@@ -101,8 +105,4 @@ void CustomStrategy::Reset()
 {
     actionLines.clear();
     actionLinesCache[qualifier].clear();
-}
-
-CustomStrategy::CustomStrategy(PlayerbotAI* botAI) : Strategy(botAI), Qualified()
-{
 }

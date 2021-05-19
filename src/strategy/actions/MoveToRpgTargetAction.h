@@ -1,17 +1,17 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Action.h"
 #include "MovementActions.h"
-#include "../values/LastMovementValue.h"
 
-namespace ai
+class Event;
+class PlayerbotAI;
+
+class MoveToRpgTargetAction : public MovementAction
 {
-    class MoveToRpgTargetAction : public MovementAction {
     public:
-        MoveToRpgTargetAction(PlayerbotAI* botAI) : MovementAction(ai, "move to rpg target") {}
+        MoveToRpgTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "move to rpg target") { }
 
-        virtual bool Execute(Event event);
-        virtual bool isUseful();
-    };
-
-}
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};

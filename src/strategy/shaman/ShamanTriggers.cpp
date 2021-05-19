@@ -34,5 +34,5 @@ bool ShamanWeaponTrigger::IsActive()
 bool ShockTrigger::IsActive()
 {
     return SpellTrigger::IsActive()
-            && !botAI->HasAnyAuraOf(GetTarget(), "frost shock", "earth shock", "flame shock", NULL);
+            && !botAI->HasAnyAuraOf(GetTarget(), "frost shock", "earth shock", "flame shock", nullptr);
 }

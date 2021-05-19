@@ -254,7 +254,7 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
     }
 
     char* cmd = strtok ((char*)args, " ");
-    char* charname = strtok (NULL, " ");
+    char* charname = strtok (nullptr, " ");
     if (!cmd)
     {
         messages.push_back("usage: list or add/init/remove PLAYERNAME");

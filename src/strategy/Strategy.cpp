@@ -27,89 +27,89 @@ class ActionNodeFactoryInternal : public NamedObjectFactory<ActionNode>
         static ActionNode* melee()
         {
             return new ActionNode ("melee",
-                /*P*/ NULL,
-                /*A*/ NULL,
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ nullptr,
+                /*C*/ nullptr);
         }
 
         static ActionNode* healthstone()
         {
             return new ActionNode ("healthstone",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("healing potion"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("healing potion"), nullptr),
+                /*C*/ nullptr);
         }
 
         static ActionNode* follow_master_random()
         {
             return new ActionNode ("be near",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("follow"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("follow"), nullptr),
+                /*C*/ nullptr);
         }
 
         static ActionNode* attack_anything()
         {
             return new ActionNode ("attack anything",
-                /*P*/ NULL,
-                /*A*/ NULL,
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ nullptr,
+                /*C*/ nullptr);
         }
 
         static ActionNode* move_random()
         {
             return new ActionNode ("move random",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("stay line"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("stay line"), nullptr),
+                /*C*/ nullptr);
         }
 
         static ActionNode* move_to_loot()
         {
             return new ActionNode ("move to loot",
-                /*P*/ NULL,
-                /*A*/ NULL,
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ nullptr,
+                /*C*/ nullptr);
         }
 
         static ActionNode* food()
         {
             return new ActionNode ("food",
-                /*P*/ NULL,
-                /*A*/ NULL,
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ nullptr,
+                /*C*/ nullptr);
         }
 
         static ActionNode* drink()
         {
             return new ActionNode ("drink",
-                /*P*/ NULL,
-                /*A*/ NULL,
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ nullptr,
+                /*C*/ nullptr);
         }
 
         static ActionNode* mana_potion()
         {
             return new ActionNode ("mana potion",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("drink"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("drink"), nullptr),
+                /*C*/ nullptr);
         }
 
         static ActionNode* healing_potion()
         {
             return new ActionNode ("healing potion",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("food"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("food"), nullptr),
+                /*C*/ nullptr);
         }
 
         static ActionNode* flee()
         {
             return new ActionNode ("flee",
-                /*P*/ NULL,
-                /*A*/ NULL,
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ nullptr,
+                /*C*/ nullptr);
         }
 };
 

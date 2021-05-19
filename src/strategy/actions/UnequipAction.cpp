@@ -1,28 +1,29 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "UnequipAction.h"
-
+#include "../Event.h"
 #include "../values/ItemCountValue.h"
+#include "../../Playerbot.h"
 
-using namespace ai;
-
-vector<string> split(const string &s, char delim);
+std::vector<string> split(std::string const& s, char delim);
 
 bool UnequipAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
 
     ItemIds ids = chat->parseItems(text);
     if (ids.empty())
     {
-        vector<string> names = split(text, ',');
-        for (vector<string>::iterator i = names.begin(); i != names.end(); ++i)
+        std::vector<std::string> names = split(text, ',');
+        for (std::vector<std::string>::iterator i = names.begin(); i != names.end(); ++i)
         {
             uint32 slot = chat->parseSlot(*i);
             if (slot != EQUIPMENT_SLOT_END)
             {
-                Item* const pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot);
-                if (pItem) UnequipItem(*pItem);
+                if (Item* const pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
+                    UnequipItem(pItem);
             }
         }
     }
@@ -38,26 +39,26 @@ bool UnequipAction::Execute(Event event)
     return true;
 }
 
-
 void UnequipAction::UnequipItem(FindItemVisitor* visitor)
 {
     IterateItems(visitor, ITERATE_ALL_ITEMS);
-    list<Item*> items = visitor->GetResult();
-	if (!items.empty()) UnequipItem(**items.begin());
+    std::vector<Item*> items = visitor->GetResult();
+	if (!items.empty())
+        UnequipItem(*items.begin());
 }
 
-void UnequipAction::UnequipItem(Item& item)
+void UnequipAction::UnequipItem(Item* item)
 {
-    uint8 bagIndex = item.GetBagSlot();
-    uint8 slot = item.GetSlot();
+    uint8 bagIndex = item->GetBagSlot();
+    uint8 slot = item->GetSlot();
     uint8 dstBag = NULL_BAG;
-
 
     WorldPacket packet(CMSG_AUTOSTORE_BAG_ITEM, 3);
     packet << bagIndex << slot << dstBag;
     bot->GetSession()->HandleAutoStoreBagItemOpcode(packet);
 
-    ostringstream out; out << chat->formatItem(item.GetProto()) << " unequipped";
+    std::ostringstream out;
+    out << chat->formatItem(item->GetTemplate()) << " unequipped";
     botAI->TellMaster(out);
 }
 

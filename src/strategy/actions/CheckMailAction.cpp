@@ -1,11 +1,11 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "CheckMailAction.h"
-#include "Mail.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
+#include "CheckMailAction.h"
+#include "../Event.h"
 #include "../../GuildTaskMgr.h"
-#include "../../PlayerbotAIConfig.h"
-using namespace ai;
+#include "../../Playerbot.h"
 
 bool CheckMailAction::Execute(Event event)
 {
@@ -15,11 +15,10 @@ bool CheckMailAction::Execute(Event event)
     if (botAI->GetMaster() || !bot->GetMailSize())
         return false;
 
-    list<uint32> ids;
+    std::vector<uint32> ids;
     for (PlayerMails::iterator i = bot->GetMailBegin(); i != bot->GetMailEnd(); ++i)
     {
         Mail* mail = *i;
-
         if (!mail || mail->state == MAIL_STATE_DELETED)
             continue;
 
@@ -27,7 +26,7 @@ bool CheckMailAction::Execute(Event event)
         if (!owner)
             continue;
 
-        uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(owner->GetGUID());
+        uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(owner->GetGUID().GetCounter());
         if (sPlayerbotAIConfig->IsInRandomAccountList(account))
             continue;
 
@@ -36,9 +35,8 @@ bool CheckMailAction::Execute(Event event)
         mail->state = MAIL_STATE_DELETED;
     }
 
-    for (list<uint32>::iterator i = ids.begin(); i != ids.end(); ++i)
+    for (uint32 id : ids)
     {
-        uint32 id = *i;
         bot->SendMailResult(id, MAIL_DELETED, MAIL_OK);
         CharacterDatabase.PExecute("DELETE FROM mail WHERE id = '%u'", id);
         CharacterDatabase.PExecute("DELETE FROM mail_items WHERE mail_id = '%u'", id);

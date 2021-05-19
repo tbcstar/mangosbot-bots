@@ -8,7 +8,7 @@
 PerformanceMonitorOperation* PerformanceMonitor::start(PerformanceMetric metric, string name)
 {
     if (!sPlayerbotAIConfig->perfMonEnabled)
-        return NULL;
+        return nullptr;
 
     std::lock_guard<std::mutex> guard(lock);
     PerformanceData* pd = data[metric][name];

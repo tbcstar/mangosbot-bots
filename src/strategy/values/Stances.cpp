@@ -15,7 +15,7 @@ Unit* Stance::GetTarget()
     ObjectGuid pullTarget = context->GetValue<ObjectGuid>("pull target")->Get();
     if (pullTarget) botAI->GetUnit(pullTarget);
 
-    return NULL;
+    return nullptr;
 }
 
 WorldLocation Stance::GetLocation()
@@ -194,7 +194,7 @@ bool SetStanceAction::Execute(Event event)
     {
         WorldLocation loc = value->Get()->GetLocation();
         if (!Formation::IsNullLocation(loc))
-            botAI->Ping(loc.coord_x, loc.coord_y);
+            botAI->Ping(loc.GetPositionX(), loc.GetPositionY());
 
         return true;
     }

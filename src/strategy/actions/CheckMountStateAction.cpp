@@ -1,9 +1,11 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "CheckMountStateAction.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
+#include "CheckMountStateAction.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 #include "../../ServerFacade.h"
-using namespace ai;
 
 bool CheckMountStateAction::Execute(Event event)
 {
@@ -35,34 +37,35 @@ bool CheckMountStateAction::Mount()
 	Player* master = GetMaster();
 	botAI->RemoveShapeshift();
 
-	Unit::AuraList const& auras = master->GetAurasByType(SPELL_AURA_MOUNTED);
-	if (auras.empty()) return false;
+	Unit::AuraEffectList const& auras = master->GetAuraEffectsByType(SPELL_AURA_MOUNTED);
+	if (auras.empty())
+        return false;
 
-	const SpellEntry* masterSpell = auras.front()->GetSpellProto();
-	int32 masterSpeed = max(masterSpell->EffectBasePoints[1], masterSpell->EffectBasePoints[2]);
+	SpellInfo const* masterSpellInfo = auras.front()->GetSpellInfo();
+	int32 masterSpeed = std::max(masterSpellInfo->Effects[1].BasePoints, masterSpellInfo->Effects[2].BasePoints);
 
-	map<int32, vector<uint32> > spells;
+	std::map<int32, std::vector<uint32> > spells;
 	for (PlayerSpellMap::iterator itr = bot->GetSpellMap().begin(); itr != bot->GetSpellMap().end(); ++itr)
 	{
 		uint32 spellId = itr->first;
-		if (itr->second.state == PLAYERSPELL_REMOVED || itr->second.disabled || IsPassiveSpell(spellId))
+		if (itr->second->State == PLAYERSPELL_REMOVED || !itr->second->Active)
 			continue;
 
-		const SpellEntry* spellInfo = sServerFacade->LookupSpellInfo(spellId);
-		if (!spellInfo || spellInfo->EffectApplyAuraName[0] != SPELL_AURA_MOUNTED)
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+		if (!spellInfo || spellInfo->IsPassive() || spellInfo->Effects[0].ApplyAuraName != SPELL_AURA_MOUNTED)
 			continue;
 
-		int32 effect = max(spellInfo->EffectBasePoints[1], spellInfo->EffectBasePoints[2]);
+		int32 effect = std::max(spellInfo->Effects[1].BasePoints, spellInfo->Effects[2].BasePoints);
 		if (effect < masterSpeed)
 			continue;
 
 		spells[effect].push_back(spellId);
 	}
 
-	for (map<int32, vector<uint32> >::iterator i = spells.begin(); i != spells.end(); ++i)
+	for (std::map<int32, std::vector<uint32> >::iterator i = spells.begin(); i != spells.end(); ++i)
 	{
-		vector<uint32>& ids = i->second;
-		int index = urand(0, ids.size() - 1);
+        std::vector<uint32>& ids = i->second;
+		uint32 index = urand(0, ids.size() - 1);
 		if (index >= ids.size())
 			continue;
 
@@ -70,8 +73,9 @@ bool CheckMountStateAction::Mount()
 		return true;
 	}
 
-    list<Item*> items = AI_VALUE2(list<Item*>, "inventory items", "mount");
-    if (!items.empty()) return UseItemAuto(*items.begin());
+    std::vector<Item*> items = AI_VALUE2(std::vector<Item*>, "inventory items", "mount");
+    if (!items.empty())
+        return UseItemAuto(*items.begin());
 
     return false;
 }

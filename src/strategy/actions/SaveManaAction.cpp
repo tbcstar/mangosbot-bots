@@ -1,19 +1,20 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "SaveManaAction.h"
-#include "../../AiFactory.h"
-#include "../ItemVisitors.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "SaveManaAction.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 bool SaveManaAction::Execute(Event event)
 {
-    string text = event.getParam();
+    std::string const& text = event.getParam();
     double value = AI_VALUE(double, "mana save level");
 
     if (text == "?")
     {
-        ostringstream out; out << "Mana save level: " << format(value);
+        std::ostringstream out;
+        out << "Mana save level: " << format(value);
         botAI->TellMaster(out);
         return true;
     }
@@ -22,18 +23,18 @@ bool SaveManaAction::Execute(Event event)
     {
         switch (bot->getClass())
         {
-        case CLASS_HUNTER:
-        case CLASS_SHAMAN:
-        case CLASS_DRUID:
-            value = 5.0;
-            break;
-        case CLASS_MAGE:
-        case CLASS_PRIEST:
-        case CLASS_WARLOCK:
-            value = 2.0;
-            break;
-        default:
-            value = 3.0;
+            case CLASS_HUNTER:
+            case CLASS_SHAMAN:
+            case CLASS_DRUID:
+                value = 5.0;
+                break;
+            case CLASS_MAGE:
+            case CLASS_PRIEST:
+            case CLASS_WARLOCK:
+                value = 2.0;
+                break;
+            default:
+                value = 3.0;
         }
     }
     else if (text.empty())
@@ -42,24 +43,26 @@ bool SaveManaAction::Execute(Event event)
     }
     else
     {
-        value = atof(text.c_str());
+        value = std::atof(text.c_str());
     }
 
-    value = min(10.0, value);
-    value = max(1.0, value);
-    value = floor(value * 100 + 0.5) / 100.0;
+    value = std::min(10.0, value);
+    value = std::max(1.0, value);
+    value = std::floor(value * 100 + 0.5) / 100.0;
 
     botAI->GetAiObjectContext()->GetValue<double>("mana save level")->Set(value);
 
-    ostringstream out; out << "Mana save level set: " << format(value);
+    std::ostringstream out;
+    out << "Mana save level set: " << format(value);
     botAI->TellMaster(out);
 
     return true;
 }
 
-string SaveManaAction::format(double value)
+std::string const& SaveManaAction::format(double value)
 {
-    ostringstream out;
+    std::ostringstream out;
+
     if (value <= 1.0)
         out << "|cFF808080";
     else if (value <= 5.0)
@@ -68,6 +71,7 @@ string SaveManaAction::format(double value)
         out << "|cFFFFFF00";
     else
         out << "|cFFFF0000";
+
     out << value << "|cffffffff";
     return out.str();
 }

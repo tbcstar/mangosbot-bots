@@ -1,20 +1,16 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "TradeStatusAction.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
+#include "TradeStatusAction.h"
+#include "SetCraftAction.h"
+#include "../Event.h"
 #include "../ItemVisitors.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../../ahbot/AhBot.h"
-#include "../../RandomPlayerbotMgr.h"
-#include "../../GuildTaskMgr.h"
-#include "../../ServerFacade.h"
 #include "../values/CraftValue.h"
 #include "../values/ItemUsageValue.h"
-#include "SetCraftAction.h"
-
-using namespace ai;
-
-
+#include "../../GuildTaskMgr.h"
+#include "../../Playerbot.h"
+#include "../../PlayerbotSecurity.h"
 
 bool TradeStatusAction::Execute(Event event)
 {
@@ -53,16 +49,16 @@ bool TradeStatusAction::Execute(Event event)
         {
             int32 botMoney = CalculateCost(bot, true);
 
-            map<uint32, uint32> givenItemIds, takenItemIds;
+            std::map<uint32, uint32> givenItemIds, takenItemIds;
             for (uint32 slot = 0; slot < TRADE_SLOT_TRADED_COUNT; ++slot)
             {
                 Item* item = master->GetTradeData()->GetItem((TradeSlots)slot);
                 if (item)
-                    givenItemIds[item->GetProto()->ItemId] += item->GetCount();
+                    givenItemIds[item->GetTemplate()->ItemId] += item->GetCount();
 
                 item = bot->GetTradeData()->GetItem((TradeSlots)slot);
                 if (item)
-                    takenItemIds[item->GetProto()->ItemId] += item->GetCount();
+                    takenItemIds[item->GetTemplate()->ItemId] += item->GetCount();
             }
 
             bot->GetSession()->HandleAcceptTradeOpcode(p);
@@ -72,12 +68,12 @@ bool TradeStatusAction::Execute(Event event)
                 return false;
             }
 
-            for (map<uint32, uint32>::iterator i = givenItemIds.begin(); i != givenItemIds.end(); ++i)
+            for (std::map<uint32, uint32>::iterator i = givenItemIds.begin(); i != givenItemIds.end(); ++i)
             {
                 uint32 itemId = i->first;
                 uint32 count = i->second;
 
-                CraftData &craftData = AI_VALUE(CraftData&, "craft");
+                CraftData& craftData = AI_VALUE(CraftData&, "craft");
                 if (!craftData.IsEmpty() && craftData.IsRequired(itemId))
                 {
                     craftData.AddObtained(itemId, count);
@@ -87,12 +83,12 @@ bool TradeStatusAction::Execute(Event event)
             }
 
 
-            for (map<uint32, uint32>::iterator i = takenItemIds.begin(); i != takenItemIds.end(); ++i)
+            for (std::map<uint32, uint32>::iterator i = takenItemIds.begin(); i != takenItemIds.end(); ++i)
             {
                 uint32 itemId = i->first;
                 uint32 count = i->second;
 
-                CraftData &craftData = AI_VALUE(CraftData&, "craft");
+                CraftData& craftData = AI_VALUE(CraftData&, "craft");
                 if (!craftData.IsEmpty() && craftData.itemId == itemId)
                 {
                     craftData.Crafted(count);
@@ -104,15 +100,15 @@ bool TradeStatusAction::Execute(Event event)
     }
     else if (status == TRADE_STATUS_BEGIN_TRADE)
     {
-        if (!sServerFacade->IsInFront(bot, trader, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
-            sServerFacade->SetFacingTo(bot, trader);
+        if (!bot->IsInFront(trader, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
+            bot->SetFacingToObject(trader);
+
         BeginTrade();
         return true;
     }
 
     return false;
 }
-
 
 void TradeStatusAction::BeginTrade()
 {
@@ -130,7 +126,8 @@ void TradeStatusAction::BeginTrade()
         uint32 discount = sRandomPlayerbotMgr->GetTradeDiscount(bot, botAI->GetMaster());
         if (discount)
         {
-            ostringstream out; out << "Discount up to: " << chat->formatMoney(discount);
+            std::ostringstream out;
+            out << "Discount up to: " << chat->formatMoney(discount);
             botAI->TellMaster(out);
         }
     }
@@ -149,7 +146,8 @@ bool TradeStatusAction::CheckTrade()
         int32 playerItemsMoney = CalculateCost(master, false);
         int32 playerMoney = master->GetTradeData()->GetMoney() + playerItemsMoney;
         if (playerMoney || botMoney)
-            botAI->PlaySound(playerMoney < botMoney ? TEXTEMOTE_SIGH : TEXTEMOTE_THANK);
+            botAI->PlaySound(playerMoney < botMoney ? TEXT_EMOTE_SIGH : TEXT_EMOTE_THANK);
+
         return true;
     }
 
@@ -161,26 +159,27 @@ bool TradeStatusAction::CheckTrade()
     for (uint32 slot = 0; slot < TRADE_SLOT_TRADED_COUNT; ++slot)
     {
         Item* item = bot->GetTradeData()->GetItem((TradeSlots)slot);
-        if (item && !auctionbot.GetSellPrice(item->GetProto()))
+        if (item && !auctionbot.GetSellPrice(item->GetTemplate()))
         {
-            ostringstream out;
-            out << chat->formatItem(item->GetProto()) << " - This is not for sale";
+            std::ostringstream out;
+            out << chat->formatItem(item->GetTemplate()) << " - This is not for sale";
             botAI->TellMaster(out);
-            botAI->PlaySound(TEXTEMOTE_NO);
+            botAI->PlaySound(TEXT_EMOTE_NO);
             return false;
         }
 
         item = master->GetTradeData()->GetItem((TradeSlots)slot);
         if (item)
         {
-            ostringstream out; out << item->GetProto()->ItemId;
+            std::ostringstream out;
+            out << item->GetTemplate()->ItemId;
             ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", out.str());
-            if (botMoney && !auctionbot.GetBuyPrice(item->GetProto()) || usage == ITEM_USAGE_NONE)
+            if (botMoney && !auctionbot.GetBuyPrice(item->GetTemplate()) || usage == ITEM_USAGE_NONE)
             {
-                ostringstream out;
-                out << chat->formatItem(item->GetProto()) << " - I don't need this";
+                std::ostringstream out;
+                out << chat->formatItem(item->GetTemplate()) << " - I don't need this";
                 botAI->TellMaster(out);
-                botAI->PlaySound(TEXTEMOTE_NO);
+                botAI->PlaySound(TEXT_EMOTE_NO);
                 return false;
             }
         }
@@ -206,9 +205,10 @@ bool TradeStatusAction::CheckTrade()
             if (moneyDelta < 0)
             {
                 botAI->TellError("You can use discount to buy items only");
-                botAI->PlaySound(TEXTEMOTE_NO);
+                botAI->PlaySound(TEXT_EMOTE_NO);
                 return false;
             }
+
             success = true;
         }
     }
@@ -220,28 +220,30 @@ bool TradeStatusAction::CheckTrade()
     if (success)
     {
         sRandomPlayerbotMgr->AddTradeDiscount(bot, master, delta);
-        switch (urand(0, 4)) {
-        case 0:
-            botAI->TellMaster("A pleasure doing business with you");
-            break;
-        case 1:
-            botAI->TellMaster("Fair trade");
-            break;
-        case 2:
-            botAI->TellMaster("Thanks");
-            break;
-        case 3:
-            botAI->TellMaster("Off with you");
-            break;
+        switch (urand(0, 4))
+        {
+            case 0:
+                botAI->TellMaster("A pleasure doing business with you");
+                break;
+            case 1:
+                botAI->TellMaster("Fair trade");
+                break;
+            case 2:
+                botAI->TellMaster("Thanks");
+                break;
+            case 3:
+                botAI->TellMaster("Off with you");
+                break;
         }
-        botAI->PlaySound(TEXTEMOTE_THANK);
+
+        botAI->PlaySound(TEXT_EMOTE_THANK);
         return true;
     }
 
-    ostringstream out;
+    std::ostringstream out;
     out << "I want " << chat->formatMoney(-(delta + discount)) << " for this";
     botAI->TellMaster(out);
-    botAI->PlaySound(TEXTEMOTE_NO);
+    botAI->PlaySound(TEXT_EMOTE_NO);
     return false;
 }
 
@@ -259,14 +261,14 @@ int32 TradeStatusAction::CalculateCost(Player* player, bool sell)
         if (!item)
             continue;
 
-        ItemTemplate const* proto = item->GetProto();
+        ItemTemplate const* proto = item->GetTemplate();
         if (!proto)
             continue;
 
         if (proto->Quality < ITEM_QUALITY_NORMAL)
             return 0;
 
-        CraftData &craftData = AI_VALUE(CraftData&, "craft");
+        CraftData& craftData = AI_VALUE(CraftData&, "craft");
         if (!craftData.IsEmpty())
         {
             if (player == master && !sell && craftData.IsRequired(proto->ItemId))
