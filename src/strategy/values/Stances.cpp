@@ -5,7 +5,7 @@
 #include "../../ServerFacade.h"
 #include "Arrow.h"
 
-using namespace ai;
+using namespace botAI;
 
 Unit* Stance::GetTarget()
 {
@@ -51,13 +51,13 @@ WorldLocation MoveStance::GetLocationInternal()
 }
 
 
-namespace ai
+namespace botAI
 {
 
     class NearStance : public MoveStance
     {
     public:
-        NearStance(PlayerbotAI* botAI) : MoveStance(ai, "near") {}
+        NearStance(PlayerbotAI* botAI) : MoveStance(botAI, "near") { }
 
         virtual float GetAngle()
         {
@@ -74,7 +74,7 @@ namespace ai
     class TankStance : public MoveStance
     {
     public:
-        TankStance(PlayerbotAI* botAI) : MoveStance(ai, "tank") {}
+        TankStance(PlayerbotAI* botAI) : MoveStance(botAI, "tank") { }
 
         virtual float GetAngle()
         {
@@ -86,7 +86,7 @@ namespace ai
     class TurnBackStance : public MoveStance
     {
     public:
-        TurnBackStance(PlayerbotAI* botAI) : MoveStance(ai, "turnback") {}
+        TurnBackStance(PlayerbotAI* botAI) : MoveStance(botAI, "turnback") { }
 
         virtual float GetAngle()
         {
@@ -115,7 +115,7 @@ namespace ai
     class BehindStance : public MoveStance
     {
     public:
-        BehindStance(PlayerbotAI* botAI) : MoveStance(ai, "behind") {}
+        BehindStance(PlayerbotAI* botAI) : MoveStance(botAI, "behind") { }
 
         virtual float GetAngle()
         {
@@ -141,7 +141,7 @@ namespace ai
     };
 };
 
-StanceValue::StanceValue(PlayerbotAI* botAI) : ManualSetValue<Stance*>(ai, new NearStance(botAI), "stance")
+StanceValue::StanceValue(PlayerbotAI* botAI) : ManualSetValue<Stance*>(botAI, new NearStance(botAI), "stance")
 {
 }
 

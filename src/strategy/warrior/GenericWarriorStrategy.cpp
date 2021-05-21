@@ -3,13 +3,13 @@
 #include "GenericWarriorStrategy.h"
 #include "WarriorAiObjectContext.h"
 
-using namespace ai;
+using namespace botAI;
 
 GenericWarriorStrategy::GenericWarriorStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {
 }
 
-void GenericWarriorStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void GenericWarriorStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     CombatStrategy::InitTriggers(triggers);
 

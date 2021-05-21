@@ -1,12 +1,13 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "WorldPacketTrigger.h"
 #include "WithinAreaTrigger.h"
+#include "../NamedObjectContext.h"
 
-namespace ai
+class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
 {
-    class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
-    {
     public:
         WorldPacketTriggerContext()
         {
@@ -48,40 +49,39 @@ namespace ai
         }
 
     private:
-        static Trigger* inventory_change_failure(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "inventory change failure"); }
-        static Trigger* guild_invite(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "guild invite"); }
-        static Trigger* lfg_teleport(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "lfg teleport"); }
-        static Trigger* lfg_leave(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "lfg leave"); }
-        static Trigger* lfg_proposal(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "lfg proposal"); }
-        static Trigger* lfg_role_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "lfg role check"); }
-        static Trigger* lfg_update(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "lfg join"); }
-        static Trigger* uninvite(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "uninvite"); }
-        static Trigger* ready_check_finished(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "ready check finished"); }
-        static Trigger* ready_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "ready check"); }
-        static Trigger* duel_requested(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "duel requested"); }
-        static Trigger* cast_failed(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "cast failed"); }
-        static Trigger* taxi_done(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "taxi done"); }
-        static Trigger* party_command(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "party command"); }
-        static Trigger* item_push_result(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "item push result"); }
-        static Trigger* quest_objective_completed(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "quest objective completed"); }
+        static Trigger* inventory_change_failure(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "inventory change failure"); }
+        static Trigger* guild_invite(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "guild invite"); }
+        static Trigger* lfg_teleport(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg teleport"); }
+        static Trigger* lfg_leave(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg leave"); }
+        static Trigger* lfg_proposal(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg proposal"); }
+        static Trigger* lfg_role_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg role check"); }
+        static Trigger* lfg_update(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg join"); }
+        static Trigger* uninvite(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "uninvite"); }
+        static Trigger* ready_check_finished(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "ready check finished"); }
+        static Trigger* ready_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "ready check"); }
+        static Trigger* duel_requested(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "duel requested"); }
+        static Trigger* cast_failed(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "cast failed"); }
+        static Trigger* taxi_done(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "taxi done"); }
+        static Trigger* party_command(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "party command"); }
+        static Trigger* item_push_result(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "item push result"); }
+        static Trigger* quest_objective_completed(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "quest objective completed"); }
         static Trigger* out_of_react_range(PlayerbotAI* botAI) { return new OutOfReactRangeTrigger(botAI); }
-        static Trigger* loot_response(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "loot response"); }
-        static Trigger* trade_status(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "trade status"); }
-        static Trigger* cannot_equip(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "cannot equip"); }
-        static Trigger* check_mount_state(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "check mount state"); }
-        static Trigger* area_trigger(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "area trigger"); }
+        static Trigger* loot_response(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "loot response"); }
+        static Trigger* trade_status(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "trade status"); }
+        static Trigger* cannot_equip(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "cannot equip"); }
+        static Trigger* check_mount_state(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "check mount state"); }
+        static Trigger* area_trigger(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "area trigger"); }
         static Trigger* within_area_trigger(PlayerbotAI* botAI) { return new WithinAreaTrigger(botAI); }
-        static Trigger* resurrect_request(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "resurrect request"); }
-        static Trigger* gossip_hello(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "gossip hello"); }
-        static Trigger* group_invite(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "group invite"); }
-        static Trigger* group_set_leader(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "group set leader"); }
-        static Trigger* no_money(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "not enough money"); }
-        static Trigger* no_reputation(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "not enough reputation"); }
-        static Trigger* use_game_object(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "use game object"); }
-        static Trigger* complete_quest(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "complete quest"); }
-        static Trigger* accept_quest(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "accept quest"); }
-        static Trigger* quest_share(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "quest share"); }
-        static Trigger* loot_roll(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "loot roll"); }
-        static Trigger* taxi(PlayerbotAI* botAI) { return new WorldPacketTrigger(ai, "activate taxi"); }
-    };
+        static Trigger* resurrect_request(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "resurrect request"); }
+        static Trigger* gossip_hello(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "gossip hello"); }
+        static Trigger* group_invite(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "group invite"); }
+        static Trigger* group_set_leader(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "group set leader"); }
+        static Trigger* no_money(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "not enough money"); }
+        static Trigger* no_reputation(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "not enough reputation"); }
+        static Trigger* use_game_object(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "use game object"); }
+        static Trigger* complete_quest(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "complete quest"); }
+        static Trigger* accept_quest(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "accept quest"); }
+        static Trigger* quest_share(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "quest share"); }
+        static Trigger* loot_roll(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "loot roll"); }
+        static Trigger* taxi(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "activate taxi"); }
 };

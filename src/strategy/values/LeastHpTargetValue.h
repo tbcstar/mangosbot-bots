@@ -2,12 +2,12 @@
 #include "../Value.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
     class LeastHpTargetValue : public TargetValue
 	{
 	public:
-        LeastHpTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
+        LeastHpTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) { }
 
     public:
         Unit* Calculate();

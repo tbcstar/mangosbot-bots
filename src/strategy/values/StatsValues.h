@@ -3,12 +3,12 @@
 
 class Unit;
 
-namespace ai
+namespace botAI
 {
     class HealthValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        HealthValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) {}
+        HealthValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -21,7 +21,7 @@ namespace ai
     class IsDeadValue : public BoolCalculatedValue, public Qualified
     {
     public:
-        IsDeadValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        IsDeadValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -34,21 +34,21 @@ namespace ai
     class PetIsDeadValue : public BoolCalculatedValue
     {
     public:
-        PetIsDeadValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        PetIsDeadValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
         virtual bool Calculate();
     };
 
     class PetIsHappyValue : public BoolCalculatedValue
     {
     public:
-        PetIsHappyValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        PetIsHappyValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
         virtual bool Calculate();
     };
 
     class RageValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        RageValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) {}
+        RageValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -61,7 +61,7 @@ namespace ai
     class EnergyValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        EnergyValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) {}
+        EnergyValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -74,7 +74,7 @@ namespace ai
     class ManaValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        ManaValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) {}
+        ManaValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -87,7 +87,7 @@ namespace ai
     class HasManaValue : public BoolCalculatedValue, public Qualified
     {
     public:
-        HasManaValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        HasManaValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -100,7 +100,7 @@ namespace ai
     class ComboPointsValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        ComboPointsValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) {}
+        ComboPointsValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -113,7 +113,7 @@ namespace ai
     class IsMountedValue : public BoolCalculatedValue, public Qualified
     {
     public:
-        IsMountedValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        IsMountedValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -126,7 +126,7 @@ namespace ai
     class IsInCombatValue : public BoolCalculatedValue, public Qualified
     {
     public:
-        IsInCombatValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        IsInCombatValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -139,7 +139,7 @@ namespace ai
     class BagSpaceValue : public Uint8CalculatedValue
     {
     public:
-        BagSpaceValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) {}
+        BagSpaceValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
         virtual uint8 Calculate();
     };
@@ -147,7 +147,7 @@ namespace ai
     class SpeedValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        SpeedValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) {}
+        SpeedValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -160,7 +160,7 @@ namespace ai
     class IsInGroupValue : public BoolCalculatedValue
     {
     public:
-        IsInGroupValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        IsInGroupValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         virtual bool Calculate() { return bot->GetGroup(); }
     };

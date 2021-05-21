@@ -3,7 +3,7 @@
 #include "WarlockMultipliers.h"
 #include "GenericWarlockNonCombatStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class GenericWarlockNonCombatStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -35,7 +35,7 @@ GenericWarlockNonCombatStrategy::GenericWarlockNonCombatStrategy(PlayerbotAI* bo
     actionNodeFactories.Add(new GenericWarlockNonCombatStrategyActionNodeFactory());
 }
 
-void GenericWarlockNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void GenericWarlockNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     NonCombatStrategy::InitTriggers(triggers);
 
@@ -44,7 +44,7 @@ void GenericWarlockNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &trig
         NextAction::array(0, new NextAction("fel armor", 21.0f), nullptr)));
 }
 
-void WarlockPetStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void WarlockPetStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "no pet",

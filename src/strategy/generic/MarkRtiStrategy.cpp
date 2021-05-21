@@ -1,13 +1,12 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "MarkRtiStrategy.h"
+#include "../../Playerbot.h"
 
-using namespace ai;
-
-void MarkRtiStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void MarkRtiStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    triggers.push_back(new TriggerNode(
-        "no rti target",
-        NextAction::array(0, new NextAction("mark rti", 3), nullptr)));
+    triggers.push_back(new TriggerNode("no rti target", NextAction::array(0, new NextAction("mark rti", 3), nullptr)));
 }
 

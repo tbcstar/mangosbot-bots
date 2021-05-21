@@ -1,13 +1,13 @@
 #pragma once
 #include "StatsValues.h"
 
-namespace ai
+namespace botAI
 {
 
     class AttackerCountValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        AttackerCountValue() : Uint8CalculatedValue(botAI) {}
+        AttackerCountValue() : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -20,7 +20,7 @@ namespace ai
     class MyAttackerCountValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        MyAttackerCountValue() : Uint8CalculatedValue(botAI) {}
+        MyAttackerCountValue() : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -33,7 +33,7 @@ namespace ai
     class HasAggroValue : public BoolCalculatedValue, public Qualified
     {
     public:
-        HasAggroValue() : BoolCalculatedValue(botAI) {}
+        HasAggroValue() : BoolCalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {
@@ -46,7 +46,7 @@ namespace ai
     class BalancePercentValue : public Uint8CalculatedValue, public Qualified
     {
     public:
-        BalancePercentValue() : Uint8CalculatedValue(botAI) {}
+        BalancePercentValue() : Uint8CalculatedValue(botAI) { }
 
         Unit* GetTarget()
         {

@@ -2,13 +2,13 @@
 #include "../Value.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
 
     class ItemForSpellValue : public CalculatedValue<Item*>, public Qualified
 	{
 	public:
-        ItemForSpellValue(PlayerbotAI* botAI) : CalculatedValue<Item*>(botAI) {}
+        ItemForSpellValue(PlayerbotAI* botAI) : CalculatedValue<Item*>(botAI) { }
 
     public:
         virtual Item* Calculate();

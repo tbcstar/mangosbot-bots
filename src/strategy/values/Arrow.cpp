@@ -3,7 +3,7 @@
 #include "Formations.h"
 #include "Arrow.h"
 
-using namespace ai;
+using namespace botAI;
 
 WorldLocation ArrowFormation::GetLocationInternal()
 {

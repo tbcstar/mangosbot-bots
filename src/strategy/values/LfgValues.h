@@ -2,11 +2,11 @@
 
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
 class LfgProposalValue : public ManualSetValue<uint32>
 {
 public:
-    LfgProposalValue(PlayerbotAI* botAI) : ManualSetValue<uint32>(ai, 0, "lfg proposal") {}
+    LfgProposalValue(PlayerbotAI* botAI) : ManualSetValue<uint32>(botAI, 0, "lfg proposal") { }
 };
 }

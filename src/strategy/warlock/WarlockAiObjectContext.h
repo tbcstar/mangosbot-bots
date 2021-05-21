@@ -2,7 +2,7 @@
 
 #include "../AiObjectContext.h"
 
-namespace ai
+namespace botAI
 {
     class WarlockAiObjectContext : public AiObjectContext
     {

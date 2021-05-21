@@ -3,12 +3,12 @@
 #include "RtiTargetValue.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
     class DpsTargetValue : public RtiTargetValue
 	{
 	public:
-        DpsTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) {}
+        DpsTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) { }
 
     public:
         Unit* Calculate();
@@ -17,7 +17,7 @@ namespace ai
     class DpsAoeTargetValue : public RtiTargetValue
 	{
 	public:
-        DpsAoeTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) {}
+        DpsAoeTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) { }
 
     public:
         Unit* Calculate();

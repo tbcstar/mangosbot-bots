@@ -3,7 +3,7 @@
 #include "PartyMemberValue.h"
 #include "../../PlayerbotAIConfig.h"
 
-using namespace ai;
+using namespace botAI;
 using namespace std;
 
 Unit* PartyMemberValue::FindPartyMember(list<Player*>* party, FindPlayerPredicate &predicate)
@@ -29,7 +29,7 @@ Unit* PartyMemberValue::FindPartyMember(list<Player*>* party, FindPlayerPredicat
 Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate &predicate)
 {
     Player* master = GetMaster();
-    list<ObjectGuid> nearestPlayers = AI_VALUE(list<ObjectGuid>, "nearest friendly players");
+    GuidVector nearestPlayers = AI_VALUE(GuidVector, "nearest friendly players");
 
     Group* group = bot->GetGroup();
     if (group)
@@ -52,7 +52,7 @@ Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate &predicate)
 
     list<Player*> healers, tanks, others, masters;
     if (master) masters.push_back(master);
-    for (list<ObjectGuid>::iterator i = nearestPlayers.begin(); i != nearestPlayers.end(); ++i)
+    for (GuidVector::iterator i = nearestPlayers.begin(); i != nearestPlayers.end(); ++i)
     {
         Player* player = dynamic_cast<Player*>(botAI->GetUnit(*i));
         if (!player || player == bot) continue;
@@ -91,11 +91,11 @@ bool PartyMemberValue::Check(Unit* player)
 
 bool PartyMemberValue::IsTargetOfSpellCast(Player* target, SpellEntryPredicate &predicate)
 {
-    list<ObjectGuid> nearestPlayers = AI_VALUE(list<ObjectGuid>, "nearest friendly players");
+    GuidVector nearestPlayers = AI_VALUE(GuidVector, "nearest friendly players");
     ObjectGuid targetGuid = target ? target->GetGUID() : bot->GetGUID();
     ObjectGuid corpseGuid = target && target->GetCorpse() ? target->GetCorpse()->GetGUID() : ObjectGuid::Empty;
 
-    for (list<ObjectGuid>::iterator i = nearestPlayers.begin(); i != nearestPlayers.end(); ++i)
+    for (GuidVector::iterator i = nearestPlayers.begin(); i != nearestPlayers.end(); ++i)
     {
         Player* player = dynamic_cast<Player*>(botAI->GetUnit(*i));
         if (!player || player == bot)

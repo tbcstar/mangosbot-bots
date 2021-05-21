@@ -3,7 +3,7 @@
 #include "LineTargetValue.h"
 
 #include "../../ServerFacade.h"
-using namespace ai;
+using namespace botAI;
 
 Unit* LineTargetValue::Calculate()
 {

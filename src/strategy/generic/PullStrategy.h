@@ -1,34 +1,30 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "CombatStrategy.h"
 
-namespace ai
-{
-    class PullStrategy : public CombatStrategy
-    {
-    public:
-        PullStrategy(PlayerbotAI* botAI, string action) : CombatStrategy(botAI)
-        {
-            this->action = action;
-        }
+class PlayerbotAI;
 
+class PullStrategy : public CombatStrategy
+{
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual void InitMultipliers(std::list<Multiplier*> &multipliers);
-        virtual string getName() { return "pull"; }
-        virtual NextAction** getDefaultActions();
+        PullStrategy(PlayerbotAI* botAI, std::string const& action) : CombatStrategy(botAI), action(action) { }
+
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        void InitMultipliers(std::vector<Multiplier*>& multipliers) override;
+        std::string const& getName() override { return "pull"; }
+        NextAction** getDefaultActions() override;
 
     private:
-        string action;
-    };
+        std::string action;
+};
 
-    class PossibleAdsStrategy : public Strategy
-    {
+class PossibleAdsStrategy : public Strategy
+{
     public:
-        PossibleAdsStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        PossibleAdsStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "ads"; }
-    };
-}
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "ads"; }
+};

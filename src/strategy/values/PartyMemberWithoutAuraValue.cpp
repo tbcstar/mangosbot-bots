@@ -3,15 +3,15 @@
 #include "PartyMemberWithoutAuraValue.h"
 
 #include "../../ServerFacade.h"
-using namespace ai;
+using namespace botAI;
 
 extern vector<string> split(const string &s, char delim);
 
 class PlayerWithoutAuraPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {
 public:
-    PlayerWithoutAuraPredicate(PlayerbotAI* botAI, string aura) :
-        PlayerbotAIAware(botAI), FindPlayerPredicate(), auras(split(aura, ',')) {}
+    PlayerWithoutAuraPredicate(PlayerbotAI* botAI, std::string const& aura) :
+        PlayerbotAIAware(botAI), FindPlayerPredicate(), auras(split(aura, ',')) { }
 
 public:
     virtual bool Check(Unit* unit)
@@ -37,7 +37,7 @@ private:
 
 Unit* PartyMemberWithoutAuraValue::Calculate()
 {
-	PlayerWithoutAuraPredicate predicate(ai, qualifier);
+	PlayerWithoutAuraPredicate predicate(botAI, qualifier);
     return FindPartyMember(predicate);
 }
 

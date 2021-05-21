@@ -1,18 +1,15 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Trigger.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
 
-namespace ai
+class PlayerbotAI;
+
+class NoRtiTrigger : public Trigger
 {
-    class NoRtiTrigger : public Trigger
-    {
     public:
-        NoRtiTrigger(PlayerbotAI* botAI) : Trigger(ai, "no rti target") {}
+        NoRtiTrigger(PlayerbotAI* botAI) : Trigger(botAI, "no rti target") { }
 
-        virtual bool IsActive()
-		{
-			return !AI_VALUE(Unit*, "rti target");
-        }
-    };
-}
+        bool IsActive() override;
+};

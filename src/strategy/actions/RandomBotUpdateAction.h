@@ -13,5 +13,5 @@ class RandomBotUpdateAction : public Action
         RandomBotUpdateAction(PlayerbotAI* botAI) : Action(botAI, "random bot update") { }
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
 };

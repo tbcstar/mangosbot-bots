@@ -10,10 +10,10 @@ class PlayerbotAI;
 class GiveItemAction : public InventoryAction
 {
     public:
-        GiveItemAction(PlayerbotAI* botAI, std::string const& name, std::string const& item) : InventoryAction(ai, name), item(item) { }
+        GiveItemAction(PlayerbotAI* botAI, std::string const& name, std::string const& item) : InventoryAction(botAI, name), item(item) { }
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
         Unit* GetTarget() override;
 
     protected:

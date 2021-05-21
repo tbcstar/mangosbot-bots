@@ -1,26 +1,19 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace ai
+#include "../Strategy.h"
+
+class PlayerbotAI;
+
+class PassTroughStrategy : public Strategy
 {
-    class PassTroughStrategy : public Strategy
-    {
     public:
-        PassTroughStrategy(PlayerbotAI* botAI, float relevance = 100.0f) : Strategy(botAI), relevance(relevance) {}
+        PassTroughStrategy(PlayerbotAI* botAI, float relevance = 100.0f) : Strategy(botAI), relevance(relevance) { }
 
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers)
-        {
-            for (list<string>::iterator i = supported.begin(); i != supported.end(); i++)
-            {
-                string s = i->c_str();
-
-                triggers.push_back(new TriggerNode(
-                    s, 
-                    NextAction::array(0, new NextAction(s, relevance), nullptr)));
-            }
-        }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
 
     protected:
-        list<string> supported;
+        std::vector<std::string> supported;
         float relevance;
-    };
-}
+};

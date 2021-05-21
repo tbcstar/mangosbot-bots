@@ -3,13 +3,13 @@
 #include "PartyMemberWithoutItemValue.h"
 
 #include "../../ServerFacade.h"
-using namespace ai;
+using namespace botAI;
 
 class PlayerWithoutItemPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {
 public:
-    PlayerWithoutItemPredicate(PlayerbotAI* botAI, string item) :
-        PlayerbotAIAware(botAI), FindPlayerPredicate(), item(item) {}
+    PlayerWithoutItemPredicate(PlayerbotAI* botAI, std::string const& item) :
+        PlayerbotAIAware(botAI), FindPlayerPredicate(), item(item) { }
 
 public:
     virtual bool Check(Unit* unit)
@@ -46,13 +46,13 @@ Unit* PartyMemberWithoutItemValue::Calculate()
 
 FindPlayerPredicate* PartyMemberWithoutItemValue::CreatePredicate()
 {
-    return new PlayerWithoutItemPredicate(ai, qualifier);
+    return new PlayerWithoutItemPredicate(botAI, qualifier);
 }
 
 class PlayerWithoutFoodPredicate : public PlayerWithoutItemPredicate
 {
 public:
-    PlayerWithoutFoodPredicate(PlayerbotAI* botAI) : PlayerWithoutItemPredicate(ai, "conjured food") {}
+    PlayerWithoutFoodPredicate(PlayerbotAI* botAI) : PlayerWithoutItemPredicate(botAI, "conjured food") { }
 
 public:
     virtual bool Check(Unit* unit)
@@ -72,7 +72,7 @@ public:
 class PlayerWithoutWaterPredicate : public PlayerWithoutItemPredicate
 {
 public:
-    PlayerWithoutWaterPredicate(PlayerbotAI* botAI) : PlayerWithoutItemPredicate(ai, "conjured water") {}
+    PlayerWithoutWaterPredicate(PlayerbotAI* botAI) : PlayerWithoutItemPredicate(botAI, "conjured water") { }
 
 public:
     virtual bool Check(Unit* unit)

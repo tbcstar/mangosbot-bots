@@ -10,9 +10,8 @@ class PlayerbotAI;
 class Multiplier : public AiNamedObject
 {
     public:
-        Multiplier(PlayerbotAI* botAI, string name) : AiNamedObject(botAI, name)  { }
+        Multiplier(PlayerbotAI* botAI, std::string const& name) : AiNamedObject(botAI, name)  { }
         virtual ~Multiplier() { }
 
-    public:
         virtual float GetValue(Action* action) { return 1.0f; }
 };

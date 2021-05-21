@@ -2,12 +2,12 @@
 #include "../Value.h"
 #include "MotionGenerators/TargetedMovementGenerator.h"
 
-namespace ai
+namespace botAI
 {
     class IsMovingValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        IsMovingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        IsMovingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         virtual bool Calculate()
         {
@@ -24,7 +24,7 @@ namespace ai
     class IsSwimmingValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        IsSwimmingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        IsSwimmingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         virtual bool Calculate()
         {

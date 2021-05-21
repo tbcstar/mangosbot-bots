@@ -303,7 +303,7 @@ class FindMountVisitor : public FindUsableItemVisitor
 class FindPetVisitor : public FindUsableItemVisitor
 {
     public:
-        FindPetVisitor(Player* bot) : FindUsableItemVisitor(bot) {}
+        FindPetVisitor(Player* bot) : FindUsableItemVisitor(bot) { }
 
         bool Accept(ItemTemplate const* proto) override;
 };

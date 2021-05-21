@@ -4,7 +4,7 @@
 #include "../../PlayerbotAIConfig.h"
 #include "../../ServerFacade.h"
 
-using namespace ai;
+using namespace botAI;
 
 uint8 MyAttackerCountValue::Calculate()
 {
@@ -50,8 +50,8 @@ uint8 AttackerCountValue::Calculate()
     int count = 0;
     float range = sPlayerbotAIConfig->sightDistance;
 
-    list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
-    for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
+    GuidVector attackers = context->GetValue<GuidVector >("attackers")->Get();
+    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); i++)
     {
         Unit* unit = botAI->GetUnit(*i);
         if (!unit || !sServerFacade->IsAlive(unit))
@@ -84,9 +84,9 @@ uint8 BalancePercentValue::Calculate()
         }
     }
 
-    list<ObjectGuid> v = context->GetValue<list<ObjectGuid> >("attackers")->Get();
+    GuidVector v = context->GetValue<GuidVector >("attackers")->Get();
 
-    for (list<ObjectGuid>::iterator i = v.begin(); i!=v.end(); i++)
+    for (GuidVector::iterator i = v.begin(); i!=v.end(); i++)
     {
         Creature* creature = botAI->GetCreature((*i));
         if (!creature || !sServerFacade->IsAlive(creature))

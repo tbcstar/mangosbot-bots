@@ -2,14 +2,14 @@
 #include "../../playerbot.h"
 #include "RtiValue.h"
 
-using namespace ai;
+using namespace botAI;
 
 RtiValue::RtiValue(PlayerbotAI* botAI)
-    : ManualSetValue<string>(ai, "skull")
+    : ManualSetValue<string>(botAI, "skull")
 {
 }
 
 RtiCcValue::RtiCcValue(PlayerbotAI* botAI)
-    : ManualSetValue<string>(ai, "moon")
+    : ManualSetValue<string>(botAI, "moon")
 {
 }

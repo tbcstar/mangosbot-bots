@@ -5,13 +5,13 @@
 #include "Group.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
     class RtiTargetValue : public TargetValue
     {
     public:
-        RtiTargetValue(PlayerbotAI* botAI, string type = "rti") : type(type), TargetValue(botAI)
-        {}
+        RtiTargetValue(PlayerbotAI* botAI, std::string const& type = "rti") : type(type), TargetValue(botAI)
+        { }
 
     public:
         static int GetRtiIndex(string rti)
@@ -44,7 +44,7 @@ namespace ai
             if (!guid)
                 return nullptr;
 
-            list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
+            GuidVector attackers = context->GetValue<GuidVector >("attackers")->Get();
             if (find(attackers.begin(), attackers.end(), guid) == attackers.end()) return nullptr;
 
             Unit* unit = botAI->GetUnit(guid);
@@ -63,6 +63,6 @@ namespace ai
     class RtiCcTargetValue : public RtiTargetValue
     {
     public:
-        RtiCcTargetValue(PlayerbotAI* botAI) : RtiTargetValue(ai, "rti cc") {}
+        RtiCcTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI, "rti cc") { }
     };
 }

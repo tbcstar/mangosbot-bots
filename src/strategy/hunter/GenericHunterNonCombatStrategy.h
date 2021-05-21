@@ -2,26 +2,26 @@
 
 #include "../generic/NonCombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class GenericHunterNonCombatStrategy : public NonCombatStrategy
     {
     public:
         GenericHunterNonCombatStrategy(PlayerbotAI* botAI);
-        virtual string getName() { return "nc"; }
+        std::string const& getName() override { return "nc"; }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
     };
 
     class HunterPetStrategy : public Strategy
     {
     public:
-        HunterPetStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
-        virtual string getName() { return "pet"; }
+        HunterPetStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
+        std::string const& getName() override { return "pet"; }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
     };
 
 }

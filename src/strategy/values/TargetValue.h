@@ -1,7 +1,7 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class FindTargetStrategy
     {
@@ -9,7 +9,7 @@ namespace ai
         FindTargetStrategy(PlayerbotAI* botAI)
         {
             result = nullptr;
-            this->ai = ai;
+            this->botAI = botAI;
         }
 
     public:
@@ -31,7 +31,7 @@ namespace ai
     class FindNonCcTargetStrategy : public FindTargetStrategy
     {
     public:
-        FindNonCcTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI) {}
+        FindNonCcTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI) { }
 
     protected:
         virtual bool IsCcTarget(Unit* attacker);
@@ -41,7 +41,7 @@ namespace ai
     class TargetValue : public UnitCalculatedValue
 	{
 	public:
-        TargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) {}
+        TargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) { }
 
     protected:
         Unit* FindTarget(FindTargetStrategy* strategy);
@@ -50,18 +50,18 @@ namespace ai
     class RpgTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        RpgTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
+        RpgTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(botAI, ObjectGuid::Empty) { }
     };
 
     class TalkTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        TalkTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
+        TalkTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(botAI, ObjectGuid::Empty) { }
     };
 
     class PullTargetValue : public ManualSetValue<ObjectGuid>
     {
     public:
-        PullTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(ai, ObjectGuid::Empty) {}
+        PullTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(botAI, ObjectGuid::Empty) { }
     };
 }

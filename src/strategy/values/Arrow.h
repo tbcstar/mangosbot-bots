@@ -1,11 +1,11 @@
 #pragma once
 
-namespace ai
+namespace botAI
 {
     class UnitPosition
     {
     public:
-        UnitPosition(float x, float y) : x(x), y(y) {}
+        UnitPosition(float x, float y) : x(x), y(y) { }
         UnitPosition(const UnitPosition& other) { x = other.x; y = other.y; }
         float x, y;
     };
@@ -13,7 +13,7 @@ namespace ai
     class FormationUnit
     {
     public:
-        FormationUnit(uint32 groupIndex, bool master) : groupIndex(groupIndex), master(master), position(0, 0) {}
+        FormationUnit(uint32 groupIndex, bool master) : groupIndex(groupIndex), master(master), position(0, 0) { }
         FormationUnit(const FormationUnit& other) : position(other.position.x, other.position.y)
         {
             groupIndex = other.groupIndex;
@@ -36,7 +36,7 @@ namespace ai
     class UnitPlacer
     {
     public:
-        UnitPlacer() {}
+        UnitPlacer() { }
 
     public:
         virtual UnitPosition Place(FormationUnit *unit, uint32 index, uint32 count) = 0;
@@ -45,7 +45,7 @@ namespace ai
     class FormationSlot
     {
     public:
-        FormationSlot() {}
+        FormationSlot() { }
         virtual ~FormationSlot();
 
     public:
@@ -64,7 +64,7 @@ namespace ai
     class MultiLineUnitPlacer : public UnitPlacer
     {
     public:
-        MultiLineUnitPlacer(float orientation) : UnitPlacer(), orientation(orientation) {}
+        MultiLineUnitPlacer(float orientation) : UnitPlacer(), orientation(orientation) { }
 
     public:
         virtual UnitPosition Place(FormationUnit *unit, uint32 index, uint32 count);
@@ -76,7 +76,7 @@ namespace ai
     class SingleLineUnitPlacer
     {
     public:
-        SingleLineUnitPlacer(float orientation) : orientation(orientation) {}
+        SingleLineUnitPlacer(float orientation) : orientation(orientation) { }
 
     public:
         virtual UnitPosition Place(FormationUnit *unit, uint32 index, uint32 count);
@@ -88,7 +88,7 @@ namespace ai
     class ArrowFormation : public MoveAheadFormation
     {
     public:
-        ArrowFormation() : MoveAheadFormation(ai, "arrow"), built(false), masterUnit(nullptr), botUnit(nullptr) {}
+        ArrowFormation() : MoveAheadFormation(botAI, "arrow"), built(false), masterUnit(nullptr), botUnit(nullptr) { }
 
     public:
         virtual WorldLocation GetLocationInternal();

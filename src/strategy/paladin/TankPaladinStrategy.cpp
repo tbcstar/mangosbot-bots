@@ -3,7 +3,7 @@
 #include "PaladinMultipliers.h"
 #include "TankPaladinStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 TankPaladinStrategy::TankPaladinStrategy(PlayerbotAI* botAI) : GenericPaladinStrategy(botAI)
 {
@@ -14,7 +14,7 @@ NextAction** TankPaladinStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("melee", ACTION_NORMAL), nullptr);
 }
 
-void TankPaladinStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void TankPaladinStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericPaladinStrategy::InitTriggers(triggers);
 

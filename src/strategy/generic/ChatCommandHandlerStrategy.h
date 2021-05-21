@@ -1,15 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PassTroughStrategy.h"
 
-namespace ai
+class PlayerbotAI;
+
+class ChatCommandHandlerStrategy : public PassTroughStrategy
 {
-    class ChatCommandHandlerStrategy : public PassTroughStrategy
-    {
     public:
         ChatCommandHandlerStrategy(PlayerbotAI* botAI);
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "chat"; }
-    };
-}
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "chat"; }
+};

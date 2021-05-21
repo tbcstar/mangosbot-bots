@@ -5,12 +5,12 @@
 #include "../../ServerFacade.h"
 #include "PositionValue.h"
 
-namespace ai
+namespace botAI
 {
     class DistanceValue : public FloatCalculatedValue, public Qualified
 	{
 	public:
-        DistanceValue(PlayerbotAI* botAI) : FloatCalculatedValue(botAI) {}
+        DistanceValue(PlayerbotAI* botAI) : FloatCalculatedValue(botAI) { }
 
     public:
         float Calculate()
@@ -31,7 +31,7 @@ namespace ai
             if (qualifier.find("position_") == 0)
             {
                 string position = qualifier.substr(9);
-                ai::Position pos = context->GetValue<ai::PositionMap&>("position")->Get()[position];
+                botAI::Position pos = context->GetValue<botAI::PositionMap&>("position")->Get()[position];
                 if (!pos.isSet()) return 0.0f;
                 if (botAI->GetBot()->GetMapId() != pos.mapId) return 0.0f;
                 return sServerFacade->GetDistance2d(botAI->GetBot(), pos.x, pos.y);
@@ -73,7 +73,7 @@ namespace ai
     class InsideTargetValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        InsideTargetValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        InsideTargetValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
     public:
         bool Calculate()

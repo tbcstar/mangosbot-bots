@@ -3,7 +3,7 @@
 #include "WarriorMultipliers.h"
 #include "DpsWarriorStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class DpsWarriorStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -48,7 +48,7 @@ NextAction** DpsWarriorStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("bloodthirst", ACTION_NORMAL + 1), new NextAction("melee", ACTION_NORMAL), nullptr);
 }
 
-void DpsWarriorStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void DpsWarriorStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericWarriorStrategy::InitTriggers(triggers);
 
@@ -82,7 +82,7 @@ void DpsWarriorStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 }
 
 
-void DpsWarrirorAoeStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void DpsWarrirorAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "rend on attacker",

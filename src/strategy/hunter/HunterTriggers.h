@@ -2,7 +2,7 @@
 
 #include "../triggers/GenericTriggers.h"
 
-namespace ai
+namespace botAI
 {
     BEGIN_TRIGGER(HunterNoStingsActiveTrigger, Trigger)
     END_TRIGGER()
@@ -10,7 +10,7 @@ namespace ai
     class HunterAspectOfTheHawkTrigger : public BuffTrigger
     {
     public:
-        HunterAspectOfTheHawkTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "aspect of the hawk") {
+        HunterAspectOfTheHawkTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the hawk") {
 			checkInterval = 1;
 		}
     };
@@ -18,7 +18,7 @@ namespace ai
 	class HunterAspectOfTheWildTrigger : public BuffTrigger
 	{
 	public:
-		HunterAspectOfTheWildTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "aspect of the wild") {
+		HunterAspectOfTheWildTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the wild") {
 			checkInterval = 1;
 		}
 	};
@@ -26,7 +26,7 @@ namespace ai
     class HunterAspectOfTheViperTrigger : public BuffTrigger
     {
     public:
-        HunterAspectOfTheViperTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "aspect of the viper") {}
+        HunterAspectOfTheViperTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the viper") { }
         virtual bool IsActive()
         {
             return SpellTrigger::IsActive() && !botAI->HasAura(spell, GetTarget());
@@ -36,7 +36,7 @@ namespace ai
     class HunterAspectOfThePackTrigger : public BuffTrigger
     {
     public:
-        HunterAspectOfThePackTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "aspect of the pack") {}
+        HunterAspectOfThePackTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the pack") { }
         virtual bool IsActive() {
 			return BuffTrigger::IsActive() && !botAI->HasAura("aspect of the cheetah", GetTarget());
         };
@@ -51,37 +51,37 @@ namespace ai
     class BlackArrowTrigger : public DebuffTrigger
     {
     public:
-        BlackArrowTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "black arrow") {}
+        BlackArrowTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "black arrow") { }
     };
 
     class HuntersMarkTrigger : public DebuffTrigger
     {
     public:
-        HuntersMarkTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "hunter's mark") {}
+        HuntersMarkTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "hunter's mark") { }
     };
 
     class FreezingTrapTrigger : public HasCcTargetTrigger
     {
     public:
-        FreezingTrapTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(ai, "freezing trap") {}
+        FreezingTrapTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "freezing trap") { }
     };
 
     class RapidFireTrigger : public BuffTrigger
     {
     public:
-        RapidFireTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "rapid fire") {}
+        RapidFireTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "rapid fire") { }
     };
 
     class TrueshotAuraTrigger : public BuffTrigger
     {
     public:
-        TrueshotAuraTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "trueshot aura") {}
+        TrueshotAuraTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "trueshot aura") { }
     };
 
     class SerpentStingOnAttackerTrigger : public DebuffOnAttackerTrigger
     {
     public:
-        SerpentStingOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(ai, "serpent sting") {}
+        SerpentStingOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(botAI, "serpent sting") { }
     };
 
     BEGIN_TRIGGER(HunterPetNotHappy, Trigger)
@@ -90,12 +90,12 @@ namespace ai
     class ConsussiveShotSnareTrigger : public SnareTargetTrigger
     {
     public:
-        ConsussiveShotSnareTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(ai, "concussive shot") {}
+        ConsussiveShotSnareTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(botAI, "concussive shot") { }
     };
 
     class ScareBeastTrigger : public HasCcTargetTrigger
     {
     public:
-        ScareBeastTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(ai, "scare beast") {}
+        ScareBeastTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "scare beast") { }
     };
 }

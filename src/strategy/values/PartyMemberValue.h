@@ -1,7 +1,7 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class FindPlayerPredicate
     {
@@ -18,7 +18,7 @@ namespace ai
     class PartyMemberValue : public UnitCalculatedValue
 	{
 	public:
-        PartyMemberValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) {}
+        PartyMemberValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) { }
 
     public:
         bool IsTargetOfSpellCast(Player* target, SpellEntryPredicate &predicate);

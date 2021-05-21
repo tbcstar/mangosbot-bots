@@ -2,7 +2,7 @@
 
 #include "GenericMageStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class ArcaneMageStrategy : public GenericMageStrategy
     {
@@ -10,9 +10,9 @@ namespace ai
         ArcaneMageStrategy();
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "arcane"; }
-        virtual NextAction** getDefaultActions();
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "arcane"; }
+        NextAction** getDefaultActions() override;
     };
 
 }

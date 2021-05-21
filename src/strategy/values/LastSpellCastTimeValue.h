@@ -1,11 +1,11 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class LastSpellCastTimeValue : public ManualSetValue<time_t>, public Qualified
 	{
 	public:
-        LastSpellCastTimeValue(PlayerbotAI* botAI) : ManualSetValue<time_t>(ai, 0), Qualified() {}
+        LastSpellCastTimeValue(PlayerbotAI* botAI) : ManualSetValue<time_t>(botAI, 0), Qualified() { }
     };
 }

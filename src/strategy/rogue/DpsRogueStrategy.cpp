@@ -3,7 +3,7 @@
 #include "RogueMultipliers.h"
 #include "DpsRogueStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class DpsRogueStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -80,7 +80,7 @@ NextAction** DpsRogueStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("riposte", ACTION_NORMAL), nullptr);
 }
 
-void DpsRogueStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void DpsRogueStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     CombatStrategy::InitTriggers(triggers);
 
@@ -109,14 +109,14 @@ void DpsRogueStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("backstab", ACTION_NORMAL), nullptr)));
 }
 
-void RogueAoeStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void RogueAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "light aoe",
         NextAction::array(0, new NextAction("blade flurry", ACTION_HIGH), nullptr)));
 }
 
-void RogueBoostStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void RogueBoostStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "adrenaline rush",

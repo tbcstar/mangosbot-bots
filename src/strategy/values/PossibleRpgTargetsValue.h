@@ -3,7 +3,7 @@
 #include "NearestUnitsValue.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace ai
+namespace botAI
 {
     class PossibleRpgTargetsValue : public NearestUnitsValue
 	{

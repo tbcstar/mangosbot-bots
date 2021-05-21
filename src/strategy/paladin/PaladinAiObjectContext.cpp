@@ -10,13 +10,13 @@
 #include "../NamedObjectContext.h"
 #include "HealPaladinStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
-namespace ai
+namespace botAI
 {
     namespace paladin
     {
-        using namespace ai;
+        using namespace botAI;
 
         class StrategyFactoryInternal : public NamedObjectContext<Strategy>
         {
@@ -94,11 +94,11 @@ namespace ai
     };
 };
 
-namespace ai
+namespace botAI
 {
     namespace paladin
     {
-        using namespace ai;
+        using namespace botAI;
 
         class TriggerFactoryInternal : public NamedObjectContext<Trigger>
         {
@@ -164,11 +164,11 @@ namespace ai
     };
 };
 
-namespace ai
+namespace botAI
 {
     namespace paladin
     {
-        using namespace ai;
+        using namespace botAI;
 
         class AiObjectContextInternal : public NamedObjectContext<Action>
         {
@@ -301,10 +301,10 @@ namespace ai
 
 PaladinAiObjectContext::PaladinAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
-    strategyContexts.Add(new ai::paladin::StrategyFactoryInternal());
-    strategyContexts.Add(new ai::paladin::CombatStrategyFactoryInternal());
-    strategyContexts.Add(new ai::paladin::BuffStrategyFactoryInternal());
-    strategyContexts.Add(new ai::paladin::ResistanceStrategyFactoryInternal());
-    actionContexts.Add(new ai::paladin::AiObjectContextInternal());
-    triggerContexts.Add(new ai::paladin::TriggerFactoryInternal());
+    strategyContexts.Add(new botAI::paladin::StrategyFactoryInternal());
+    strategyContexts.Add(new botAI::paladin::CombatStrategyFactoryInternal());
+    strategyContexts.Add(new botAI::paladin::BuffStrategyFactoryInternal());
+    strategyContexts.Add(new botAI::paladin::ResistanceStrategyFactoryInternal());
+    actionContexts.Add(new botAI::paladin::AiObjectContextInternal());
+    triggerContexts.Add(new botAI::paladin::TriggerFactoryInternal());
 }

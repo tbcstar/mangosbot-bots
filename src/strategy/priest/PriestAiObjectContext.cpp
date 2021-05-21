@@ -9,14 +9,14 @@
 #include "../NamedObjectContext.h"
 #include "HolyPriestStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 
-namespace ai
+namespace botAI
 {
     namespace priest
     {
-        using namespace ai;
+        using namespace botAI;
 
         class StrategyFactoryInternal : public NamedObjectContext<Strategy>
         {
@@ -43,7 +43,7 @@ namespace ai
             static Strategy* buff(PlayerbotAI* botAI) { return new PriestBuffStrategy(botAI); }
             static Strategy* nc(PlayerbotAI* botAI) { return new PriestNonCombatStrategy(botAI); }
             static Strategy* shadow_aoe(PlayerbotAI* botAI) { return new ShadowPriestAoeStrategy(botAI); }
-            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(botAI, "shoot"); }
             static Strategy* shadow_debuff(PlayerbotAI* botAI) { return new ShadowPriestDebuffStrategy(botAI); }
             static Strategy* cure(PlayerbotAI* botAI) { return new PriestCureStrategy(botAI); }
         };
@@ -67,11 +67,11 @@ namespace ai
     };
 };
 
-namespace ai
+namespace botAI
 {
     namespace priest
     {
-        using namespace ai;
+        using namespace botAI;
 
         class TriggerFactoryInternal : public NamedObjectContext<Trigger>
         {
@@ -128,11 +128,11 @@ namespace ai
 
 
 
-namespace ai
+namespace botAI
 {
     namespace priest
     {
-        using namespace ai;
+        using namespace botAI;
 
         class AiObjectContextInternal : public NamedObjectContext<Action>
         {
@@ -240,8 +240,8 @@ namespace ai
 
 PriestAiObjectContext::PriestAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
-    strategyContexts.Add(new ai::priest::StrategyFactoryInternal());
-    strategyContexts.Add(new ai::priest::CombatStrategyFactoryInternal());
-    actionContexts.Add(new ai::priest::AiObjectContextInternal());
-    triggerContexts.Add(new ai::priest::TriggerFactoryInternal());
+    strategyContexts.Add(new botAI::priest::StrategyFactoryInternal());
+    strategyContexts.Add(new botAI::priest::CombatStrategyFactoryInternal());
+    actionContexts.Add(new botAI::priest::AiObjectContextInternal());
+    triggerContexts.Add(new botAI::priest::TriggerFactoryInternal());
 }

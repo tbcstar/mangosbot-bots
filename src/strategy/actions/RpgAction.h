@@ -14,7 +14,7 @@ class RpgAction : public MovementAction
         RpgAction(PlayerbotAI* botAI) : MovementAction(botAI, "rpg") { }
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
 
     private:
         typedef void(RpgAction::*RpgElement)(Unit*);

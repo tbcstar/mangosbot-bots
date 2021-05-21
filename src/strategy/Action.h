@@ -44,8 +44,8 @@ class Action : public AiNamedObject
         virtual ~Action(void) { }
 
         virtual bool Execute(Event event) { return true; }
-        virtual bool isPossible() { return true; }
-        virtual bool isUseful() { return true; }
+        virtual bool isPossible() const { return true; }
+        virtual bool isUseful() const { return true; }
         virtual NextAction** getPrerequisites() { return nullptr; }
         virtual NextAction** getAlternatives() { return nullptr; }
         virtual NextAction** getContinuers() { return nullptr; }

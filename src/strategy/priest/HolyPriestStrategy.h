@@ -2,7 +2,7 @@
 
 #include "HealPriestStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class HolyPriestStrategy : public HealPriestStrategy
     {
@@ -10,9 +10,9 @@ namespace ai
         HolyPriestStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual NextAction** getDefaultActions();
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "holy"; }
-        virtual int GetType() { return STRATEGY_TYPE_DPS|STRATEGY_TYPE_RANGED; }
+        NextAction** getDefaultActions() override;
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "holy"; }
+        uint32 GetType() const override { return STRATEGY_TYPE_DPS|STRATEGY_TYPE_RANGED; }
     };
 }

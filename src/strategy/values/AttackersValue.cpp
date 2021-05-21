@@ -7,7 +7,7 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-list<ObjectGuid> AttackersValue::Calculate()
+GuidVector AttackersValue::Calculate()
 {
     set<Unit*> targets;
 
@@ -19,7 +19,7 @@ list<ObjectGuid> AttackersValue::Calculate()
 
     RemoveNonThreating(targets);
 
-    list<ObjectGuid> result;
+    GuidVector result;
 	for (set<Unit*>::iterator i = targets.begin(); i != targets.end(); i++)
 		result.push_back((*i)->GetGUID());
 
@@ -44,7 +44,7 @@ void AttackersValue::AddAttackersOf(Group* group, set<Unit*>& targets)
 
 struct AddGuardiansHelper
 {
-    explicit AddGuardiansHelper(list<Unit*> &units) : units(units) {}
+    explicit AddGuardiansHelper(list<Unit*> &units) : units(units) { }
     void operator()(Unit* target) const
     {
         units.push_back(target);
@@ -122,10 +122,10 @@ bool AttackersValue::IsValidTarget(Unit *attacker, Player *bot)
 bool PossibleAdsValue::Calculate()
 {
      = bot->GetPlayerbotAI();
-    list<ObjectGuid> possible = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets")->Get();
-    list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
+    GuidVector possible = botAI->GetAiObjectContext()->GetValue<GuidVector >("possible targets")->Get();
+    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector >("attackers")->Get();
 
-    for (list<ObjectGuid>::iterator i = possible.begin(); i != possible.end(); ++i)
+    for (GuidVector::iterator i = possible.begin(); i != possible.end(); ++i)
     {
         ObjectGuid guid = *i;
         if (find(attackers.begin(), attackers.end(), guid) != attackers.end()) continue;
@@ -133,7 +133,7 @@ bool PossibleAdsValue::Calculate()
         Unit* add = botAI->GetUnit(guid);
         if (add && !add->GetTargetGuid() && !sServerFacade->GetThreatManager(add).getCurrentVictim() && sServerFacade->IsHostileTo(add, bot))
         {
-            for (list<ObjectGuid>::iterator j = attackers.begin(); j != attackers.end(); ++j)
+            for (GuidVector::iterator j = attackers.begin(); j != attackers.end(); ++j)
             {
                 Unit* attacker = botAI->GetUnit(*j);
                 if (!attacker) continue;

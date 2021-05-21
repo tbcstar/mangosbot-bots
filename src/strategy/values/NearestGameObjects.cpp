@@ -10,7 +10,7 @@
 class AnyGameObjectInObjectRangeCheck
 {
 public:
-    AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) {}
+    AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) { }
     WorldObject const& GetFocusObject() const { return *i_obj; }
     bool operator()(GameObject* u)
     {
@@ -25,7 +25,7 @@ private:
     float i_range;
 };
 
-list<ObjectGuid> NearestGameObjects::Calculate()
+GuidVector NearestGameObjects::Calculate()
 {
     list<GameObject*> targets;
 
@@ -33,7 +33,7 @@ list<ObjectGuid> NearestGameObjects::Calculate()
     GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(targets, u_check);
     Cell::VisitAllObjects((const WorldObject*)bot, searcher, range);
 
-    list<ObjectGuid> result;
+    GuidVector result;
     for(list<GameObject*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
     {
 		GameObject* go = *tIter;

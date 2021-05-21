@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "PaladinActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 string GetActualBlessingOfMight(Unit* target)
 {

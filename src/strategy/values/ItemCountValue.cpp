@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "ItemCountValue.h"
 
-using namespace ai;
+using namespace botAI;
 
 list<Item*> InventoryItemValueBase::Find(string qualifier)
 {

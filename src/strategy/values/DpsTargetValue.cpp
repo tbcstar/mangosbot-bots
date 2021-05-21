@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "DpsTargetValue.h"
 
-using namespace ai;
+using namespace botAI;
 
 class FindLeastHpTargetStrategy : public FindTargetStrategy
 {

@@ -2,7 +2,7 @@
 
 #include "GenericShamanStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class HealShamanStrategy : public GenericShamanStrategy
     {
@@ -10,8 +10,8 @@ namespace ai
         HealShamanStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "heal"; }
-		virtual int GetType() { return STRATEGY_TYPE_HEAL; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "heal"; }
+		uint32 GetType() const override { return STRATEGY_TYPE_HEAL; }
     };
 }

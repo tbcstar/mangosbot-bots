@@ -3,13 +3,13 @@
 #include "../../LootObjectStack.h"
 #include "../../ServerFacade.h"
 
-namespace ai
+namespace botAI
 {
 
     class AvailableLootValue : public ManualSetValue<LootObjectStack*>
 	{
 	public:
-        AvailableLootValue() : ManualSetValue<LootObjectStack*>(ai, nullptr)
+        AvailableLootValue() : ManualSetValue<LootObjectStack*>(botAI, nullptr)
         {
             value = new LootObjectStack(botAI->GetBot());
         }
@@ -24,13 +24,13 @@ namespace ai
     class LootTargetValue : public ManualSetValue<LootObject>
     {
     public:
-        LootTargetValue() : ManualSetValue<LootObject>(ai, LootObject()) {}
+        LootTargetValue() : ManualSetValue<LootObject>(botAI, LootObject()) { }
     };
 
     class CanLootValue : public BoolCalculatedValue
     {
     public:
-        CanLootValue() : BoolCalculatedValue(botAI) {}
+        CanLootValue() : BoolCalculatedValue(botAI) { }
 
         virtual bool Calculate()
         {

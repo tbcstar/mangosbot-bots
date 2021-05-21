@@ -3,7 +3,7 @@
 #include "TankTargetValue.h"
 
 #include "AttackersValue.h"
-using namespace ai;
+using namespace botAI;
 
 class FindTargetForTankStrategy : public FindNonCcTargetStrategy
 {

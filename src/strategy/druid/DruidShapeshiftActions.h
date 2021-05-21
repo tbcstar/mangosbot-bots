@@ -1,53 +1,53 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace ai {
-	class CastBearFormAction : public CastBuffSpellAction { 
-	public: 
-		CastBearFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "bear form") {} 
+#include "../actions/GenericSpellActions.h"
 
-        virtual bool isPossible() {
-			return CastBuffSpellAction::isPossible() && !botAI->HasAura("dire bear form", GetTarget());
-		}
-        virtual bool isUseful() {
-			return CastBuffSpellAction::isUseful() && !botAI->HasAura("dire bear form", GetTarget());
-		}
-	};
+class Event;
+class PlayerbotAI;
 
-	class CastDireBearFormAction : public CastBuffSpellAction { 
-	public: 
-		CastDireBearFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "dire bear form") {} 
-        
-        virtual NextAction** getAlternatives() {
-			return NextAction::merge(NextAction::array(0, new NextAction("bear form"), nullptr), CastSpellAction::getAlternatives());
-		}
-	};
-
-	class CastCatFormAction : public CastBuffSpellAction { 
-	public: 
-		CastCatFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "cat form") {} 
-	};
-
-	class CastTreeFormAction : public CastBuffSpellAction {
+class CastBearFormAction : public CastBuffSpellAction
+{
 	public:
-		CastTreeFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "tree of life") {}
-	};
+		CastBearFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "bear form") { }
 
-	class CastMoonkinFormAction : public CastBuffSpellAction { 
-	public: 
-		CastMoonkinFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "moonkin form") {} 
-	};
+        bool isPossible() const override;
+        bool isUseful() const override;
+};
 
-	class CastCasterFormAction : public CastBuffSpellAction { 
-	public: 
-		CastCasterFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "caster form") {} 
+class CastDireBearFormAction : public CastBuffSpellAction
+{
+	public:
+		CastDireBearFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "dire bear form") { }
 
-		virtual bool isUseful() {
-			return botAI->HasAnyAuraOf(GetTarget(), "dire bear form", "bear form", "cat form", "travel form", "aquatic form", 
-				"flight form", "swift flight form", "moonkin form", "tree of life", nullptr);
-		}
-		virtual bool isPossible() { return true; }
-		
+        NextAction** getAlternatives() override;
+};
+
+class CastCatFormAction : public CastBuffSpellAction
+{
+	public:
+		CastCatFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "cat form") { }
+};
+
+class CastTreeFormAction : public CastBuffSpellAction
+{
+    public:
+        CastTreeFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "tree of life") { }
+};
+
+class CastMoonkinFormAction : public CastBuffSpellAction
+{
+    public:
+        CastMoonkinFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "moonkin form") { }
+};
+
+class CastCasterFormAction : public CastBuffSpellAction
+{
+	public:
+		CastCasterFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "caster form") { }
+
+        bool isUseful() const override;
+        bool isPossible() const override { return true; }
 		bool Execute(Event event) override;
-	};
-
-}
+};

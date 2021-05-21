@@ -376,7 +376,7 @@ bool MovementAction::Flee(Unit *target)
 void MovementAction::ClearIdleState()
 {
     context->GetValue<time_t>("stay time")->Set(0);
-    context->GetValue<ai::PositionMap&>("position")->Get()["random"].Reset();
+    context->GetValue<botAI::PositionMap&>("position")->Get()["random"].Reset();
 }
 
 bool FleeAction::Execute(Event event)

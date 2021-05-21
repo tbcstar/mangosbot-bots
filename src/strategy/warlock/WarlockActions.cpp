@@ -2,4 +2,4 @@
 //#include "../../playerbot.h"
 //#include "WarlockActions.h"
 
-using namespace ai;
+using namespace botAI;

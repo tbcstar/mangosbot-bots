@@ -2,16 +2,16 @@
 #include "../Value.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace ai
+namespace botAI
 {
     class NearestGameObjects : public ObjectGuidListCalculatedValue
 	{
 	public:
         NearestGameObjects(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) :
-            ObjectGuidListCalculatedValue(botAI), range(range) {}
+            ObjectGuidListCalculatedValue(botAI), range(range) { }
 
     protected:
-        virtual list<ObjectGuid> Calculate();
+        virtual GuidVector Calculate();
 
     private:
         float range;

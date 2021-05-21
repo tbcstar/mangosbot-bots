@@ -3,7 +3,7 @@
 #include "../actions/GenericActions.h"
 #include "HunterActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 bool CastSerpentStingAction::isUseful()
 {

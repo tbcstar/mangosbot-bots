@@ -13,7 +13,7 @@ class ReachTargetAction : public MovementAction
         ReachTargetAction(PlayerbotAI* botAI, std::string const& name, float distance) : MovementAction(botAI, name) : distance(distance) { }
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
         std::string const& GetTargetName() override;
 
     protected:
@@ -25,7 +25,7 @@ class CastReachTargetSpellAction : public CastSpellAction
     public:
         CastReachTargetSpellAction(PlayerbotAI* botAI, std::string const& spell, float distance) : CastSpellAction(botAI, spell) : distance(distance) { }
 
-        bool isUseful() override;
+        bool isUseful() const override;
 
     protected:
         float distance;

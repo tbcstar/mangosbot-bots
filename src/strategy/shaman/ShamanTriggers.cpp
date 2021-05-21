@@ -3,7 +3,7 @@
 #include "ShamanTriggers.h"
 #include "ShamanActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 list<string> ShamanWeaponTrigger::spells;
 

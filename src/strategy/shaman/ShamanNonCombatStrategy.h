@@ -3,17 +3,17 @@
 #include "../Strategy.h"
 #include "../generic/NonCombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class ShamanNonCombatStrategy : public NonCombatStrategy
     {
     public:
-        ShamanNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
+        ShamanNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual void InitMultipliers(std::list<Multiplier*> &multipliers);
-        virtual string getName() { return "nc"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        void InitMultipliers(std::vector<Multiplier*>& multipliers) override;
+        std::string const& getName() override { return "nc"; }
 
     };
 }

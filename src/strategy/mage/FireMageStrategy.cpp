@@ -3,14 +3,14 @@
 #include "MageMultipliers.h"
 #include "FireMageStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 NextAction** FireMageStrategy::getDefaultActions()
 {
     return NextAction::array(0, new NextAction("scorch", 7.0f), new NextAction("fireball", 6.0f), new NextAction("fire blast", 5.0f), nullptr);
 }
 
-void FireMageStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void FireMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericMageStrategy::InitTriggers(triggers);
 
@@ -31,7 +31,7 @@ void FireMageStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("dragon's breath", 70.0f), nullptr)));
 }
 
-void FireMageAoeStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void FireMageAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "medium aoe",

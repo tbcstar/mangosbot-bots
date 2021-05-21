@@ -1,64 +1,68 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace ai {
-	class CastFeralChargeCatAction : public CastReachTargetSpellAction
-	{
+#include "../actions/ReachTargetActions.h"
+#include "../actions/GenericSpellActions.h"
+
+class PlayerbotAI;
+
+class CastFeralChargeCatAction : public CastReachTargetSpellAction
+{
 	public:
-		CastFeralChargeCatAction(PlayerbotAI* botAI) : CastReachTargetSpellAction(botAI, "feral charge - cat", 1.5f) {}
-	};
+		CastFeralChargeCatAction(PlayerbotAI* botAI) : CastReachTargetSpellAction(botAI, "feral charge - cat", 1.5f) { }
+};
 
-	class CastCowerAction : public CastBuffSpellAction
-	{
+class CastCowerAction : public CastBuffSpellAction
+{
 	public:
-		CastCowerAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "cower") {}
-	};
+		CastCowerAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "cower") { }
+};
 
-
-	class CastBerserkAction : public CastBuffSpellAction
-	{
+class CastBerserkAction : public CastBuffSpellAction
+{
 	public:
-		CastBerserkAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "berserk") {}
-	};
+		CastBerserkAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "berserk") { }
+};
 
-	class CastTigersFuryAction : public CastBuffSpellAction
-	{
+class CastTigersFuryAction : public CastBuffSpellAction
+{
 	public:
-		CastTigersFuryAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "tiger's fury") {}
-	};
+		CastTigersFuryAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "tiger's fury") { }
+};
 
-	class CastRakeAction : public CastDebuffSpellAction
-	{
+class CastRakeAction : public CastDebuffSpellAction
+{
 	public:
-		CastRakeAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "rake") {}
-	};
+        CastRakeAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "rake") { }
+};
 
-
-	class CastClawAction : public CastMeleeSpellAction {
+class CastClawAction : public CastMeleeSpellAction
+{
 	public:
-		CastClawAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "claw") {}
-	};
+		CastClawAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "claw") { }
+};
 
-	class CastMangleCatAction : public CastMeleeSpellAction {
+class CastMangleCatAction : public CastMeleeSpellAction
+{
+    public:
+		CastMangleCatAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "mangle (cat)") { }
+};
+
+class CastSwipeCatAction : public CastMeleeSpellAction
+{
 	public:
-		CastMangleCatAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "mangle (cat)") {}
-	};
+		CastSwipeCatAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "swipe (cat)") { }
+};
 
-	class CastSwipeCatAction : public CastMeleeSpellAction {
+class CastFerociousBiteAction : public CastMeleeSpellAction
+{
 	public:
-		CastSwipeCatAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "swipe (cat)") {}
-	};
+		CastFerociousBiteAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "ferocious bite") { }
+};
 
-	class CastFerociousBiteAction : public CastMeleeSpellAction {
+class CastRipAction : public CastMeleeSpellAction
+{
 	public:
-		CastFerociousBiteAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "ferocious bite") {}
-	};
-
-
-	class CastRipAction : public CastMeleeSpellAction {
-	public:
-		CastRipAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "rip") {}
-	};
-
-
-
-}
+		CastRipAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "rip") { }
+};

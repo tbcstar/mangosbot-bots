@@ -42,10 +42,10 @@ class Strategy : public PlayerbotAIAware
         virtual ~Strategy() { }
 
         virtual NextAction** getDefaultActions() { return nullptr; }
-        virtual void InitTriggers(std::vector<TriggerNode*> &triggers) {}
-        virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) {}
+        virtual void InitTriggers(std::vector<TriggerNode*> &triggers) { }
+        virtual void InitMultipliers(std::vector<Multiplier*> &multipliers) { }
         virtual std::string const& getName() = 0;
-		virtual uint32 GetType() { return STRATEGY_TYPE_GENERIC; }
+		virtual uint32 GetType() const { return STRATEGY_TYPE_GENERIC; }
         virtual ActionNode* GetAction(std::string const& name);
         void Update() { }
         void Reset() { }

@@ -11,7 +11,7 @@
 class AnyGameObjectInObjectRangeCheck
 {
     public:
-        AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) {}
+        AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) { }
         WorldObject const& GetFocusObject() const { return *i_obj; }
         bool operator()(GameObject* go)
         {

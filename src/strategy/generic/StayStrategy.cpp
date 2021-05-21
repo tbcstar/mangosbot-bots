@@ -1,17 +1,16 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "StayStrategy.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "StayStrategy.h"
+#include "../../Playerbot.h"
 
 NextAction** StayStrategy::getDefaultActions()
 {
     return NextAction::array(0, new NextAction("stay", 1.0f), nullptr);
 }
 
-void SitStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void SitStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    triggers.push_back(new TriggerNode(
-        "sit",
-        NextAction::array(0, new NextAction("sit", 1.5f), nullptr)));
+    triggers.push_back(new TriggerNode("sit", NextAction::array(0, new NextAction("sit", 1.5f), nullptr)));
 }

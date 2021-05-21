@@ -10,13 +10,13 @@
 #include "../NamedObjectContext.h"
 #include "../actions/UseItemAction.h"
 
-using namespace ai;
+using namespace botAI;
 
-namespace ai
+namespace botAI
 {
     namespace warlock
     {
-        using namespace ai;
+        using namespace botAI;
 
         class StrategyFactoryInternal : public NamedObjectContext<Strategy>
         {
@@ -37,7 +37,7 @@ namespace ai
             static Strategy* nc(PlayerbotAI* botAI) { return new GenericWarlockNonCombatStrategy(botAI); }
             static Strategy* aoe(PlayerbotAI* botAI) { return new DpsAoeWarlockStrategy(botAI); }
             static Strategy* dps_debuff(PlayerbotAI* botAI) { return new DpsWarlockDebuffStrategy(botAI); }
-            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(botAI, "shoot"); }
             static Strategy* boost(PlayerbotAI* botAI) { return new WarlockBoostStrategy(botAI); }
             static Strategy* cc(PlayerbotAI* botAI) { return new WarlockCcStrategy(botAI); }
         };
@@ -58,11 +58,11 @@ namespace ai
     };
 };
 
-namespace ai
+namespace botAI
 {
     namespace warlock
     {
-        using namespace ai;
+        using namespace botAI;
 
         class TriggerFactoryInternal : public NamedObjectContext<Trigger>
         {
@@ -113,11 +113,11 @@ namespace ai
     };
 };
 
-namespace ai
+namespace botAI
 {
     namespace warlock
     {
-        using namespace ai;
+        using namespace botAI;
 
         class AiObjectContextInternal : public NamedObjectContext<Action>
         {
@@ -200,8 +200,8 @@ namespace ai
 
 WarlockAiObjectContext::WarlockAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
-    strategyContexts.Add(new ai::warlock::StrategyFactoryInternal());
-    strategyContexts.Add(new ai::warlock::CombatStrategyFactoryInternal());
-    actionContexts.Add(new ai::warlock::AiObjectContextInternal());
-    triggerContexts.Add(new ai::warlock::TriggerFactoryInternal());
+    strategyContexts.Add(new botAI::warlock::StrategyFactoryInternal());
+    strategyContexts.Add(new botAI::warlock::CombatStrategyFactoryInternal());
+    actionContexts.Add(new botAI::warlock::AiObjectContextInternal());
+    triggerContexts.Add(new botAI::warlock::TriggerFactoryInternal());
 }

@@ -1,12 +1,12 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class AoeHealValue : public Uint8CalculatedValue, public Qualified
 	{
 	public:
-    	AoeHealValue() : Uint8CalculatedValue(botAI) {}
+    	AoeHealValue() : Uint8CalculatedValue(botAI) { }
 
     public:
     	virtual uint8 Calculate();

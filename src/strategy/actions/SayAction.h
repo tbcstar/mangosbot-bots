@@ -14,7 +14,7 @@ class SayAction : public Action, public Qualified
         SayAction(PlayerbotAI* botAI);
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
         std::string const& getName() override { return "say::" + qualifier; }
 
     private:

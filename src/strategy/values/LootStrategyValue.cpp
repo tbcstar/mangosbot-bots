@@ -3,10 +3,10 @@
 #include "LootStrategyValue.h"
 #include "../values/ItemUsageValue.h"
 
-using namespace ai;
+using namespace botAI;
 using namespace std;
 
-namespace ai
+namespace botAI
 {
     class NormalLootStrategy : public LootStrategy
     {
@@ -17,7 +17,7 @@ namespace ai
             ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", out.str());
             return usage != ITEM_USAGE_NONE;
         }
-        virtual string GetName() { return "normal"; }
+        std::string const& getName() override { return "normal"; }
     };
 
     class GrayLootStrategy : public NormalLootStrategy
@@ -27,7 +27,7 @@ namespace ai
         {
             return NormalLootStrategy::CanLoot(proto, context) || proto->Quality == ITEM_QUALITY_POOR;
         }
-        virtual string GetName() { return "gray"; }
+        std::string const& getName() override { return "gray"; }
     };
 
     class DisenchantLootStrategy : public NormalLootStrategy
@@ -39,7 +39,7 @@ namespace ai
                     (proto->Quality >= ITEM_QUALITY_UNCOMMON && proto->Bonding != BIND_WHEN_PICKED_UP &&
                     (proto->Class == ITEM_CLASS_ARMOR || proto->Class == ITEM_CLASS_WEAPON));
         }
-        virtual string GetName() { return "disenchant"; }
+        std::string const& getName() override { return "disenchant"; }
     };
 
     class AllLootStrategy : public LootStrategy
@@ -49,7 +49,7 @@ namespace ai
         {
             return true;
         }
-        virtual string GetName() { return "all"; }
+        std::string const& getName() override { return "all"; }
     };
 }
 

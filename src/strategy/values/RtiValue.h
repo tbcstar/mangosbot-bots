@@ -1,7 +1,7 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class RtiValue : public ManualSetValue<string>
 	{

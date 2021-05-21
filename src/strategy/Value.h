@@ -19,7 +19,7 @@ class Unit;
 class UntypedValue : public AiNamedObject
 {
     public:
-        UntypedValue(PlayerbotAI* botAI, std::string const& name) : AiNamedObject(botAI, name) {}
+        UntypedValue(PlayerbotAI* botAI, std::string const& name) : AiNamedObject(botAI, name) { }
         virtual void Update() { }
         virtual void Reset() { }
         virtual std::string const& Format() { return "?"; }
@@ -125,7 +125,7 @@ class ObjectGuidListCalculatedValue : public CalculatedValue<GuidVector>
 {
     public:
         ObjectGuidListCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int checkInterval = 1) :
-            CalculatedValue<GuidVector>(botAI, name, checkInterval) {}
+            CalculatedValue<GuidVector>(botAI, name, checkInterval) { }
 
         std::string const& Format() override
         {

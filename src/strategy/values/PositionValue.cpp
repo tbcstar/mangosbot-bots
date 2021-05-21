@@ -2,10 +2,10 @@
 #include "../../playerbot.h"
 #include "PositionValue.h"
 
-using namespace ai;
+using namespace botAI;
 
 PositionValue::PositionValue(PlayerbotAI* botAI)
-    : ManualSetValue<ai::PositionMap&>(ai, positions)
+    : ManualSetValue<botAI::PositionMap&>(botAI, positions)
 {
 }
 
@@ -13,10 +13,10 @@ string PositionValue::Save()
 {
     ostringstream out;
     bool first = true;
-    for (ai::PositionMap::iterator i = value.begin(); i != value.end(); ++i)
+    for (botAI::PositionMap::iterator i = value.begin(); i != value.end(); ++i)
     {
         string name = i->first;
-        ai::Position pos = i->second;
+        botAI::Position pos = i->second;
         if (pos.isSet())
         {
             if (!first) out << "^";

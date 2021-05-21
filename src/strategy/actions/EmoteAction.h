@@ -28,7 +28,7 @@ class EmoteAction : public EmoteActionBase, public Qualified
         EmoteAction(PlayerbotAI* botAI);
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
 };
 
 class TalkAction : public EmoteActionBase

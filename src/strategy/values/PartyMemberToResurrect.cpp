@@ -3,7 +3,7 @@
 #include "PartyMemberToResurrect.h"
 
 #include "../../ServerFacade.h"
-using namespace ai;
+using namespace botAI;
 
 class IsTargetOfResurrectSpell : public SpellEntryPredicate
 {
@@ -25,7 +25,7 @@ public:
 class FindDeadPlayer : public FindPlayerPredicate
 {
 public:
-    FindDeadPlayer(PartyMemberValue* value) : value(value) {}
+    FindDeadPlayer(PartyMemberValue* value) : value(value) { }
 
     virtual bool Check(Unit* unit)
     {

@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "PriestActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 
 NextAction** CastAbolishDiseaseAction::getAlternatives()

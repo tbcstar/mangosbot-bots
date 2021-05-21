@@ -9,14 +9,14 @@
 #include "WarriorTriggers.h"
 #include "../NamedObjectContext.h"
 
-using namespace ai;
+using namespace botAI;
 
 
-namespace ai
+namespace botAI
 {
     namespace warrior
     {
-        using namespace ai;
+        using namespace botAI;
 
         class StrategyFactoryInternal : public NamedObjectContext<Strategy>
         {
@@ -31,7 +31,7 @@ namespace ai
         private:
             static Strategy* nc(PlayerbotAI* botAI) { return new GenericWarriorNonCombatStrategy(botAI); }
             static Strategy* aoe(PlayerbotAI* botAI) { return new DpsWarrirorAoeStrategy(botAI); }
-            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(botAI, "shoot"); }
         };
 
         class CombatStrategyFactoryInternal : public NamedObjectContext<Strategy>
@@ -50,11 +50,11 @@ namespace ai
     };
 };
 
-namespace ai
+namespace botAI
 {
     namespace warrior
     {
-        using namespace ai;
+        using namespace botAI;
 
         class TriggerFactoryInternal : public NamedObjectContext<Trigger>
         {
@@ -100,11 +100,11 @@ namespace ai
 };
 
 
-namespace ai
+namespace botAI
 {
     namespace warrior
     {
-        using namespace ai;
+        using namespace botAI;
 
         class AiObjectContextInternal : public NamedObjectContext<Action>
         {
@@ -193,8 +193,8 @@ namespace ai
 
 WarriorAiObjectContext::WarriorAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
-    strategyContexts.Add(new ai::warrior::StrategyFactoryInternal());
-    strategyContexts.Add(new ai::warrior::CombatStrategyFactoryInternal());
-    actionContexts.Add(new ai::warrior::AiObjectContextInternal());
-    triggerContexts.Add(new ai::warrior::TriggerFactoryInternal());
+    strategyContexts.Add(new botAI::warrior::StrategyFactoryInternal());
+    strategyContexts.Add(new botAI::warrior::CombatStrategyFactoryInternal());
+    actionContexts.Add(new botAI::warrior::AiObjectContextInternal());
+    triggerContexts.Add(new botAI::warrior::TriggerFactoryInternal());
 }

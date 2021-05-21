@@ -5,7 +5,7 @@
 #include "../../RandomPlayerbotMgr.h"
 #include "../../ServerFacade.h"
 
-using namespace ai;
+using namespace botAI;
 
 Unit* GrindTargetValue::Calculate()
 {
@@ -31,8 +31,8 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
     Group* group = bot->GetGroup();
     Player* master = GetMaster();
 
-    list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
-    for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
+    GuidVector attackers = context->GetValue<GuidVector >("attackers")->Get();
+    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); i++)
     {
         Unit* unit = botAI->GetUnit(*i);
         if (!unit || !sServerFacade->IsAlive(unit))
@@ -41,14 +41,14 @@ Unit* GrindTargetValue::FindTargetForGrinding(int assistCount)
         return unit;
     }
 
-    list<ObjectGuid> targets = *context->GetValue<list<ObjectGuid> >("possible targets");
+    GuidVector targets = *context->GetValue<GuidVector >("possible targets");
 
     if(targets.empty())
         return nullptr;
 
     float distance = 0;
     Unit* result = nullptr;
-    for(list<ObjectGuid>::iterator tIter = targets.begin(); tIter != targets.end(); tIter++)
+    for(GuidVector::iterator tIter = targets.begin(); tIter != targets.end(); tIter++)
     {
         Unit* unit = botAI->GetUnit(*tIter);
         if (!unit)
@@ -117,8 +117,8 @@ int GrindTargetValue::GetTargetingPlayerCount( Unit* unit )
             continue;
 
         PlayerbotAI* botAI = member->GetPlayerbotAI();
-        if ((ai && *botAI->GetAiObjectContext()->GetValue<Unit*>("current target") == unit) ||
-            (!ai && member->GetTarget() == unit->GetGUID()))
+        if ((botAI && *botAI->GetAiObjectContext()->GetValue<Unit*>("current target") == unit) ||
+            (!botAI && member->GetTarget() == unit->GetGUID()))
             count++;
     }
 

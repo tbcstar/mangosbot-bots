@@ -3,7 +3,7 @@
 #include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class GenericShamanStrategy : public CombatStrategy
     {
@@ -11,40 +11,40 @@ namespace ai
         GenericShamanStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
 
     };
 
     class ShamanBuffDpsStrategy : public Strategy
     {
     public:
-        ShamanBuffDpsStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        ShamanBuffDpsStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "bdps"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "bdps"; }
 
     };
 
     class ShamanBuffManaStrategy : public Strategy
     {
     public:
-        ShamanBuffManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        ShamanBuffManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "bmana"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "bmana"; }
 
     };
 
     class ShamanCureStrategy : public Strategy
     {
     public:
-        ShamanCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        ShamanCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "cure"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cure"; }
 
     };
 }

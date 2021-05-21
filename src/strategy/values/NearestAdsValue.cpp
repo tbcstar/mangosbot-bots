@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "NearestAdsValue.h"
 
-using namespace ai;
+using namespace botAI;
 
 bool NearestAdsValue::AcceptUnit(Unit* unit)
 {

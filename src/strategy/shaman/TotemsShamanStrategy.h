@@ -2,7 +2,7 @@
 
 #include "GenericShamanStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class TotemsShamanStrategy : public GenericShamanStrategy
     {
@@ -10,7 +10,7 @@ namespace ai
         TotemsShamanStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "totems"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "totems"; }
     };
 }

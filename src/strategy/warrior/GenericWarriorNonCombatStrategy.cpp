@@ -3,5 +3,5 @@
 #include "WarriorMultipliers.h"
 #include "GenericWarriorNonCombatStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 

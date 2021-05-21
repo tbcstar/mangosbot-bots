@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "OutfitListValue.h"
 
-using namespace ai;
+using namespace botAI;
 using namespace std;
 
 string OutfitListValue::Save()

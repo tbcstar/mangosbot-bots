@@ -1,16 +1,16 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "CombatStrategy.h"
-#pragma once
 
-namespace ai
+class PlayerbotAI;
+
+class RangedCombatStrategy : public CombatStrategy
 {
-    class RangedCombatStrategy : public CombatStrategy
-    {
     public:
-        RangedCombatStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual int GetType() { return STRATEGY_TYPE_COMBAT | STRATEGY_TYPE_RANGED; }
-        virtual string getName() { return "ranged"; }
-    };
-
-
-}
+        RangedCombatStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) { }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        uint32 GetType() const override { return STRATEGY_TYPE_COMBAT | STRATEGY_TYPE_RANGED; }
+        std::string const& getName() override { return "ranged"; }
+};

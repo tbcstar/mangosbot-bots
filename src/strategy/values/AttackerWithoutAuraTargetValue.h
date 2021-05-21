@@ -1,13 +1,13 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class AttackerWithoutAuraTargetValue : public UnitCalculatedValue, public Qualified
 	{
 	public:
         AttackerWithoutAuraTargetValue() :
-            UnitCalculatedValue(ai, "attacker without aura") {}
+            UnitCalculatedValue(botAI, "attacker without aura") { }
 
     protected:
         virtual Unit* Calculate();

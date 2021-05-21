@@ -1,23 +1,20 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "../PassiveMultiplier.h"
-#include "PullStrategy.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "PullStrategy.h"
+#include "../PassiveMultiplier.h"
+#include "../../Playerbot.h"
 
 class MagePullMultiplier : public PassiveMultiplier
 {
-public:
-    MagePullMultiplier(PlayerbotAI* botAI, string action) : PassiveMultiplier(botAI)
-    {
-        this->action = action;
-    }
+    public:
+        MagePullMultiplier(PlayerbotAI* botAI, std::string const& action) : PassiveMultiplier(botAI), actionName(action) { }
 
-public:
-    virtual float GetValue(Action* action);
+        float GetValue(Action* action) override;
 
-private:
-    string action;
+    private:
+        std::string actionName;
 };
 
 float MagePullMultiplier::GetValue(Action* action)
@@ -25,10 +22,8 @@ float MagePullMultiplier::GetValue(Action* action)
     if (!action)
         return 1.0f;
 
-    string name = action->getName();
-    if (this->action == name ||
-        name == "reach spell" ||
-        name == "change strategy")
+    std::string const& name = action->getName();
+    if (actionName == name || name == "reach spell" || name == "change strategy")
         return 1.0f;
 
     return PassiveMultiplier::GetValue(action);
@@ -39,22 +34,20 @@ NextAction** PullStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction(action, 105.0f), new NextAction("follow", 104.0f), new NextAction("end pull", 103.0f), nullptr);
 }
 
-void PullStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void PullStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     CombatStrategy::InitTriggers(triggers);
 }
 
-void PullStrategy::InitMultipliers(std::list<Multiplier*> &multipliers)
+void PullStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
 {
-    multipliers.push_back(new MagePullMultiplier(ai, action));
+    multipliers.push_back(new MagePullMultiplier(botAI, action));
     CombatStrategy::InitMultipliers(multipliers);
 }
 
-void PossibleAdsStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void PossibleAdsStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     Strategy::InitTriggers(triggers);
 
-    triggers.push_back(new TriggerNode(
-        "possible ads",
-        NextAction::array(0, new NextAction("flee with pet", 60), nullptr)));
+    triggers.push_back(new TriggerNode("possible ads", NextAction::array(0, new NextAction("flee with pet", 60), nullptr)));
 }

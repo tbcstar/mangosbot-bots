@@ -2,5 +2,5 @@
 #include "../../playerbot.h"
 #include "WarriorActions.h"
 
-using namespace ai;
+using namespace botAI;
 

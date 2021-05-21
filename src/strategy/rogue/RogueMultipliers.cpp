@@ -3,4 +3,4 @@
 #include "RogueMultipliers.h"
 #include "RogueActions.h"
 
-using namespace ai;
+using namespace botAI;

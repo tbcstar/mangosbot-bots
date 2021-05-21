@@ -1,36 +1,25 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Trigger.h"
 
-namespace ai
+class Event;
+class Player;
+class PlayerbotAI;
+class WorldPacket;
+
+class WorldPacketTrigger : public Trigger
 {
-    class WorldPacketTrigger : public Trigger {
     public:
-        WorldPacketTrigger(PlayerbotAI* botAI, string command) : Trigger(ai, command), triggered(false) {}
+        WorldPacketTrigger(PlayerbotAI* botAI, std::string const& command) : Trigger(botAI, command), triggered(false) { }
 
-        virtual void ExternalEvent(WorldPacket &packet, Player* owner = nullptr)
-        {
-            this->packet = packet;
-            this->owner = owner;
-            triggered = true;
-        }
-
-        virtual Event Check()
-        {
-            if (!triggered)
-                return Event();
-
-            return Event(getName(), packet, owner);
-        }
-
-        virtual void Reset()
-        {
-            triggered = false;
-        }
+        void ExternalEvent(WorldPacket& packet, Player* owner = nullptr) override;
+        Event Check() override;
+        void Reset() override;
 
     private:
         WorldPacket packet;
         bool triggered;
         Player* owner;
-    };
-}
+};

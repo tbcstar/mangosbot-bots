@@ -1,19 +1,19 @@
 #pragma once
 #include "../triggers/GenericTriggers.h"
 
-namespace ai
+namespace botAI
 {
     class ShamanWeaponTrigger : public BuffTrigger {
     public:
-        ShamanWeaponTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "rockbiter weapon", 2) {}
-        virtual bool IsActive();
+        ShamanWeaponTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "rockbiter weapon", 2) { }
+        bool IsActive() override;
     private:
         static list<string> spells;
     };
 
     class TotemTrigger : public Trigger {
     public:
-        TotemTrigger(PlayerbotAI* botAI, string spell, int attackerCount = 0) : Trigger(ai, spell), attackerCount(attackerCount) {}
+        TotemTrigger(PlayerbotAI* botAI, std::string const& spell, int attackerCount = 0) : Trigger(botAI, spell), attackerCount(attackerCount) { }
 
         virtual bool IsActive()
 		{
@@ -26,18 +26,18 @@ namespace ai
 
     class WindfuryTotemTrigger : public TotemTrigger {
     public:
-        WindfuryTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(ai, "windfury totem") {}
+        WindfuryTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(botAI, "windfury totem") { }
     };
 
     class GraceOfAirTotemTrigger : public TotemTrigger
     {
     public:
-        GraceOfAirTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(ai, "grace of air totem") {}
+        GraceOfAirTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(botAI, "grace of air totem") { }
     };
 
     class ManaSpringTotemTrigger : public TotemTrigger {
     public:
-        ManaSpringTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(ai, "mana spring totem") {}
+        ManaSpringTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(botAI, "mana spring totem") { }
         virtual bool IsActive()
         {
             return AI_VALUE(uint8, "attacker count") >= attackerCount &&
@@ -48,51 +48,51 @@ namespace ai
 
     class FlametongueTotemTrigger : public TotemTrigger {
     public:
-        FlametongueTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(ai, "flametongue totem") {}
+        FlametongueTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(botAI, "flametongue totem") { }
     };
 
     class StrengthOfEarthTotemTrigger : public TotemTrigger {
     public:
-        StrengthOfEarthTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(ai, "strength of earth totem") {}
+        StrengthOfEarthTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(botAI, "strength of earth totem") { }
     };
 
     class MagmaTotemTrigger : public TotemTrigger {
     public:
-        MagmaTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(ai, "magma totem", 3) {}
+        MagmaTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(botAI, "magma totem", 3) { }
     };
 
     class SearingTotemTrigger : public TotemTrigger {
     public:
-        SearingTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(ai, "searing totem", 1) {}
+        SearingTotemTrigger(PlayerbotAI* botAI) : TotemTrigger(botAI, "searing totem", 1) { }
     };
 
     class WindShearInterruptSpellTrigger : public InterruptSpellTrigger
     {
     public:
-        WindShearInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(ai, "wind shear") {}
+        WindShearInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(botAI, "wind shear") { }
     };
 
     class WaterShieldTrigger : public BuffTrigger
     {
     public:
-        WaterShieldTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "water shield") {}
+        WaterShieldTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "water shield") { }
     };
 
     class LightningShieldTrigger : public BuffTrigger
     {
     public:
-        LightningShieldTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "lightning shield") {}
+        LightningShieldTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "lightning shield") { }
     };
 
     class PurgeTrigger : public TargetAuraDispelTrigger
     {
     public:
-        PurgeTrigger(PlayerbotAI* botAI) : TargetAuraDispelTrigger(ai, "purge", DISPEL_MAGIC) {}
+        PurgeTrigger(PlayerbotAI* botAI) : TargetAuraDispelTrigger(botAI, "purge", DISPEL_MAGIC) { }
     };
 
     class WaterWalkingTrigger : public BuffTrigger {
     public:
-        WaterWalkingTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "water walking", 7) {}
+        WaterWalkingTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "water walking", 7) { }
 
         virtual bool IsActive()
         {
@@ -102,7 +102,7 @@ namespace ai
 
     class WaterBreathingTrigger : public BuffTrigger {
     public:
-        WaterBreathingTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "water breathing", 5) {}
+        WaterBreathingTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "water breathing", 5) { }
 
         virtual bool IsActive()
         {
@@ -112,7 +112,7 @@ namespace ai
 
     class WaterWalkingOnPartyTrigger : public BuffOnPartyTrigger {
     public:
-        WaterWalkingOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(ai, "water walking on party", 2) {}
+        WaterWalkingOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "water walking on party", 2) { }
 
         virtual bool IsActive()
         {
@@ -122,7 +122,7 @@ namespace ai
 
     class WaterBreathingOnPartyTrigger : public BuffOnPartyTrigger {
     public:
-        WaterBreathingOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(ai, "water breathing on party", 2) {}
+        WaterBreathingOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "water breathing on party", 2) { }
 
         virtual bool IsActive()
         {
@@ -133,95 +133,95 @@ namespace ai
     class CleanseSpiritPoisonTrigger : public NeedCureTrigger
     {
     public:
-        CleanseSpiritPoisonTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "cleanse spirit", DISPEL_POISON) {}
+        CleanseSpiritPoisonTrigger(PlayerbotAI* botAI) : NeedCureTrigger(botAI, "cleanse spirit", DISPEL_POISON) { }
     };
 
     class PartyMemberCleanseSpiritPoisonTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        PartyMemberCleanseSpiritPoisonTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "cleanse spirit", DISPEL_POISON) {}
+        PartyMemberCleanseSpiritPoisonTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(botAI, "cleanse spirit", DISPEL_POISON) { }
     };
 
     class CleanseSpiritCurseTrigger : public NeedCureTrigger
     {
     public:
-        CleanseSpiritCurseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "cleanse spirit", DISPEL_CURSE) {}
+        CleanseSpiritCurseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(botAI, "cleanse spirit", DISPEL_CURSE) { }
     };
 
     class PartyMemberCleanseSpiritCurseTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        PartyMemberCleanseSpiritCurseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "cleanse spirit", DISPEL_CURSE) {}
+        PartyMemberCleanseSpiritCurseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(botAI, "cleanse spirit", DISPEL_CURSE) { }
     };
 
     class CleanseSpiritDiseaseTrigger : public NeedCureTrigger
     {
     public:
-        CleanseSpiritDiseaseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "cleanse spirit", DISPEL_DISEASE) {}
+        CleanseSpiritDiseaseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(botAI, "cleanse spirit", DISPEL_DISEASE) { }
     };
 
     class PartyMemberCleanseSpiritDiseaseTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        PartyMemberCleanseSpiritDiseaseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "cleanse spirit", DISPEL_DISEASE) {}
+        PartyMemberCleanseSpiritDiseaseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(botAI, "cleanse spirit", DISPEL_DISEASE) { }
     };
 
     class ShockTrigger : public DebuffTrigger {
     public:
-        ShockTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "earth shock") {}
-        virtual bool IsActive();
+        ShockTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "earth shock") { }
+        bool IsActive() override;
     };
 
     class FrostShockSnareTrigger : public SnareTargetTrigger {
     public:
-        FrostShockSnareTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(ai, "frost shock") {}
+        FrostShockSnareTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(botAI, "frost shock") { }
     };
 
     class HeroismTrigger : public BoostTrigger
     {
     public:
-        HeroismTrigger(PlayerbotAI* botAI) : BoostTrigger(ai, "heroism") {}
+        HeroismTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "heroism") { }
     };
 
     class BloodlustTrigger : public BoostTrigger
     {
     public:
-        BloodlustTrigger(PlayerbotAI* botAI) : BoostTrigger(ai, "bloodlust") {}
+        BloodlustTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "bloodlust") { }
     };
 
     class MaelstromWeaponTrigger : public HasAuraTrigger
     {
     public:
-        MaelstromWeaponTrigger(PlayerbotAI* botAI) : HasAuraTrigger(ai, "maelstrom weapon") {}
+        MaelstromWeaponTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "maelstrom weapon") { }
     };
 
     class WindShearInterruptEnemyHealerSpellTrigger : public InterruptEnemyHealerTrigger
     {
     public:
-        WindShearInterruptEnemyHealerSpellTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(ai, "wind shear") {}
+        WindShearInterruptEnemyHealerSpellTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(botAI, "wind shear") { }
     };
 
     class CurePoisonTrigger : public NeedCureTrigger
     {
     public:
-        CurePoisonTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "cure poison", DISPEL_POISON) {}
+        CurePoisonTrigger(PlayerbotAI* botAI) : NeedCureTrigger(botAI, "cure poison", DISPEL_POISON) { }
     };
 
     class PartyMemberCurePoisonTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        PartyMemberCurePoisonTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "cure poison", DISPEL_POISON) {}
+        PartyMemberCurePoisonTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(botAI, "cure poison", DISPEL_POISON) { }
     };
 
     class CureDiseaseTrigger : public NeedCureTrigger
     {
     public:
-        CureDiseaseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "cure disease", DISPEL_DISEASE) {}
+        CureDiseaseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(botAI, "cure disease", DISPEL_DISEASE) { }
     };
 
     class PartyMemberCureDiseaseTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        PartyMemberCureDiseaseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "cure disease", DISPEL_DISEASE) {}
+        PartyMemberCureDiseaseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(botAI, "cure disease", DISPEL_DISEASE) { }
     };
 }

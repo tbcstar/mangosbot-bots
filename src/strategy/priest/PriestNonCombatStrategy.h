@@ -3,7 +3,7 @@
 #include "../Strategy.h"
 #include "../generic/NonCombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class PriestNonCombatStrategy : public NonCombatStrategy
     {
@@ -11,27 +11,27 @@ namespace ai
         PriestNonCombatStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "nc"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "nc"; }
     };
 
     class PriestBuffStrategy : public NonCombatStrategy
     {
     public:
-        PriestBuffStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
+        PriestBuffStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "buff"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "buff"; }
     };
 
     class PriestShadowResistanceStrategy : public NonCombatStrategy
     {
     public:
-        PriestShadowResistanceStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
+        PriestShadowResistanceStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "rshadow"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "rshadow"; }
     };
 }

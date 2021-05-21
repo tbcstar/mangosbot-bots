@@ -3,7 +3,7 @@
 #include "PriestTriggers.h"
 #include "PriestActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 bool InnerFireTrigger::IsActive()
 {

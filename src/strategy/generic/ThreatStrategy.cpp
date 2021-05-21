@@ -1,10 +1,10 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "ThreatStrategy.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../actions/GenericSpellActions.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "ThreatStrategy.h"
+#include "../actions/GenericSpellActions.h"
+#include "../../Playerbot.h"
 
 float ThreatMultiplier::GetValue(Action* action)
 {
@@ -22,14 +22,13 @@ float ThreatMultiplier::GetValue(Action* action)
     }
 
     uint8 threat = AI_VALUE2(uint8, "threat", "current target");
-
     if (threat >= 90)
         return 0.0f;
 
     return 1.0f;
 }
 
-void ThreatStrategy::InitMultipliers(std::list<Multiplier*> &multipliers)
+void ThreatStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
 {
     multipliers.push_back(new ThreatMultiplier(botAI));
 }

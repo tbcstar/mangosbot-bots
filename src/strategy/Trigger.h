@@ -4,7 +4,6 @@
 
 #include "Common.h"
 #include "Action.h"
-#include "AiObject.h"
 #include "Value.h"
 
 class Event;
@@ -20,7 +19,7 @@ class clazz : public super \
     public: \
         clazz(PlayerbotAI* botAI) : super(botAI) { } \
     public: \
-        virtual bool IsActive();
+        bool IsActive() override;
 
 #define END_TRIGGER() \
 };
@@ -28,7 +27,7 @@ class clazz : public super \
 class Trigger : public AiNamedObject
 {
 	public:
-        Trigger(PlayerbotAI* botAI, std::string const& name = "trigger", int checkInterval = 1) : AiNamedObject(botAI, name), checkInterval(checkInterval),
+        Trigger(PlayerbotAI* botAI, std::string const& name = "trigger", int32 checkInterval = 1) : AiNamedObject(botAI, name), checkInterval(checkInterval),
             lastCheckTime(time(0) - rand() % checkInterval) { }
 
         virtual ~Trigger() { }
@@ -38,11 +37,11 @@ class Trigger : public AiNamedObject
         virtual void ExternalEvent(WorldPacket& packet, Player* owner = nullptr) { }
         virtual bool IsActive() { return false; }
         virtual NextAction** getHandlers() { return nullptr; }
-        void Update() {}
+        void Update() { }
         virtual void Reset() { }
         virtual Unit* GetTarget();
         virtual Value<Unit*>* GetTargetValue();
-        virtual std::string const& GetTargetName() { return "self target"; }
+        virtual std::string const& GetTargetName() override { return "self target"; }
 
 		bool needCheck()
         {
@@ -60,7 +59,7 @@ class Trigger : public AiNamedObject
 		}
 
     protected:
-		int checkInterval;
+		int32 checkInterval;
 		time_t lastCheckTime;
 };
 

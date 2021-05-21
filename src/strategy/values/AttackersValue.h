@@ -3,13 +3,13 @@
 #include "TargetValue.h"
 #include "NearestUnitsValue.h"
 
-namespace ai
+namespace botAI
 {
     class AttackersValue : public ObjectGuidListCalculatedValue
 	{
 	public:
-        AttackersValue() : ObjectGuidListCalculatedValue(ai, "attackers", 2) {}
-        list<ObjectGuid> Calculate();
+        AttackersValue() : ObjectGuidListCalculatedValue(botAI, "attackers", 2) { }
+        GuidVector Calculate();
 
 	private:
         void AddAttackersOf(Group* group, set<Unit*>& targets);
@@ -24,7 +24,7 @@ namespace ai
     class PossibleAdsValue : public BoolCalculatedValue
     {
     public:
-        PossibleAdsValue(PlayerbotAI* const ai) : BoolCalculatedValue(botAI) {}
+        PossibleAdsValue(PlayerbotAI* const botAI) : BoolCalculatedValue(botAI) { }
         virtual bool Calculate();
     };
 }

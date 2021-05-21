@@ -3,7 +3,7 @@
 #include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class AiObjectContext;
 
@@ -13,29 +13,29 @@ namespace ai
         GenericHunterStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "hunter"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "hunter"; }
     };
 
     class HunterBoostStrategy : public Strategy
     {
     public:
-        HunterBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
-        virtual string getName() { return "boost"; }
-        virtual NextAction** getDefaultActions();
+        HunterBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
+        std::string const& getName() override { return "boost"; }
+        NextAction** getDefaultActions() override;
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
     };
 
     class HunterCcStrategy : public Strategy
     {
     public:
-        HunterCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        HunterCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "cc"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cc"; }
     };
 }
 

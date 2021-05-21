@@ -3,7 +3,7 @@
 #include "WarlockTriggers.h"
 #include "WarlockActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 bool DemonArmorTrigger::IsActive() 
 {

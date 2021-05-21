@@ -107,7 +107,7 @@ class ChatActionContext : public NamedObjectContext<Action>
             creators["chat"] = &ChatActionContext::chat;
             creators["home"] = &ChatActionContext::home;
             creators["destroy"] = &ChatActionContext::destroy;
-            creators["reset ai"] = &ChatActionContext::reset_ai;
+            creators["reset botAI"] = &ChatActionContext::reset_ai;
             creators["buff"] = &ChatActionContext::buff;
             creators["help"] = &ChatActionContext::help;
             creators["gb"] = &ChatActionContext::gb;

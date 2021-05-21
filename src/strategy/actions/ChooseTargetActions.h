@@ -36,10 +36,10 @@ class AttackAnythingAction : public AttackAction
     public:
         AttackAnythingAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack anything") { }
 
-        std::string const& GetTargetName() { return "grind target"; }
+        std::string const& GetTargetName() override { return "grind target"; }
         bool Execute(Event event) override;
-        bool isUseful() override;
-        bool isPossible() override;
+        bool isUseful() const override;
+        bool isPossible() const override;
 };
 
 class AttackLeastHpTargetAction : public AttackAction
@@ -47,7 +47,7 @@ class AttackLeastHpTargetAction : public AttackAction
     public:
         AttackLeastHpTargetAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack least hp target") { }
 
-        std::string const& GetTargetName() { return "least hp target"; }
+        std::string const& GetTargetName() override { return "least hp target"; }
 };
 
 class AttackEnemyPlayerAction : public AttackAction
@@ -55,7 +55,7 @@ class AttackEnemyPlayerAction : public AttackAction
     public:
         AttackEnemyPlayerAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack enemy player") { }
 
-        std::string const& GetTargetName() { return "enemy player target"; }
+        std::string const& GetTargetName() override { return "enemy player target"; }
 };
 
 class AttackRtiTargetAction : public AttackAction
@@ -63,7 +63,7 @@ class AttackRtiTargetAction : public AttackAction
     public:
         AttackRtiTargetAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack rti target") { }
 
-        std::string const& GetTargetName() { return "rti target"; }
+        std::string const& GetTargetName() override { return "rti target"; }
 };
 
 class DropTargetAction : public Action

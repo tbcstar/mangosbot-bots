@@ -3,7 +3,7 @@
 #include "MageMultipliers.h"
 #include "GenericMageStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class GenericMageStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -107,7 +107,7 @@ GenericMageStrategy::GenericMageStrategy(PlayerbotAI* botAI) : CombatStrategy(bo
     actionNodeFactories.Add(new GenericMageStrategyActionNodeFactory());
 }
 
-void GenericMageStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void GenericMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     CombatStrategy::InitTriggers(triggers);
 
@@ -136,7 +136,7 @@ void GenericMageStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("evocation", ACTION_EMERGENCY + 5), nullptr)));
 }
 
-void MageCureStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void MageCureStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "remove curse",
@@ -148,7 +148,7 @@ void MageCureStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 
 }
 
-void MageBoostStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void MageBoostStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "arcane power",
@@ -160,7 +160,7 @@ void MageBoostStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 
 }
 
-void MageCcStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void MageCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "polymorph",

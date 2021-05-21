@@ -3,7 +3,7 @@
 #include "PriestMultipliers.h"
 #include "HolyPriestStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class HolyPriestStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
     {
@@ -23,7 +23,7 @@ namespace ai
     };
 };
 
-using namespace ai;
+using namespace botAI;
 
 HolyPriestStrategy::HolyPriestStrategy(PlayerbotAI* botAI) : HealPriestStrategy(botAI)
 {
@@ -35,7 +35,7 @@ NextAction** HolyPriestStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("holy fire", 10.0f), new NextAction("smite", 10.0f), nullptr);
 }
 
-void HolyPriestStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void HolyPriestStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     HealPriestStrategy::InitTriggers(triggers);
 

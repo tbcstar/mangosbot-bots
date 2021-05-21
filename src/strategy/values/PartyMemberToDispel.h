@@ -2,13 +2,13 @@
 #include "../Value.h"
 #include "PartyMemberValue.h"
 
-namespace ai
+namespace botAI
 {
     class PartyMemberToDispel : public PartyMemberValue, public Qualified
 	{
 	public:
         PartyMemberToDispel(PlayerbotAI* botAI) :
-          PartyMemberValue(botAI), Qualified() {}
+          PartyMemberValue(botAI), Qualified() { }
 
     protected:
         virtual Unit* Calculate();

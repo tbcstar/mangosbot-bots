@@ -1,39 +1,37 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "GenericDruidStrategy.h"
-#include "../generic/CombatStrategy.h"
 
-namespace ai
+class CasterDruidStrategy : public GenericDruidStrategy
 {
-    class CasterDruidStrategy : public GenericDruidStrategy
-    {
     public:
         CasterDruidStrategy();
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "caster"; }
-        virtual NextAction** getDefaultActions();
-        virtual int GetType() { return STRATEGY_TYPE_COMBAT | STRATEGY_TYPE_DPS | STRATEGY_TYPE_RANGED; }
-    };
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "caster"; }
+        NextAction** getDefaultActions() override;
+        uint32 GetType() const override { return STRATEGY_TYPE_COMBAT | STRATEGY_TYPE_DPS | STRATEGY_TYPE_RANGED; }
+};
 
-    class CasterDruidAoeStrategy : public CombatStrategy
-    {
+class CasterDruidAoeStrategy : public CombatStrategy
+{
     public:
-        CasterDruidAoeStrategy() : CombatStrategy(botAI) {}
-
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "caster aoe"; }
-    };
-
-    class CasterDruidDebuffStrategy : public CombatStrategy
-    {
-    public:
-        CasterDruidDebuffStrategy() : CombatStrategy(botAI) {}
+        CasterDruidAoeStrategy() : CombatStrategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "caster debuff"; }
-    };
-}
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "caster aoe"; }
+};
+
+class CasterDruidDebuffStrategy : public CombatStrategy
+{
+    public:
+        CasterDruidDebuffStrategy() : CombatStrategy(botAI) { }
+
+    public:
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "caster debuff"; }
+};

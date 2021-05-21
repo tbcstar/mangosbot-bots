@@ -5,7 +5,7 @@
 #include "AttackersValue.h"
 #include "TargetValue.h"
 
-using namespace ai;
+using namespace botAI;
 using namespace std;
 
 class FindLeastHpTargetStrategy : public FindNonCcTargetStrategy

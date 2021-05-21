@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "MageActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 Value<Unit*>* CastPolymorphAction::GetTargetValue()
 {

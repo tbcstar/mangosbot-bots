@@ -1,35 +1,35 @@
-#pragma once
-#include "../Trigger.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace ai
+#include "GenericTriggers.h"
+
+class PlayerbotAI;
+
+class NeedCureTrigger : public SpellTrigger
 {
-	class SpellTrigger;
-
-    class NeedCureTrigger : public SpellTrigger {
     public:
-        NeedCureTrigger(PlayerbotAI* botAI, string spell, uint32 dispelType) : SpellTrigger(ai, spell, 5)
-  	    {
-			this->dispelType = dispelType;
-        }
-        virtual string GetTargetName() { return "self target"; }
-        virtual bool IsActive();
+        NeedCureTrigger(PlayerbotAI* botAI, std::string spell, uint32 dispelType) : SpellTrigger(botAI, spell, 5), dispelType(dispelType() { }
+
+        std::string const& GetTargetName() override { return "self target"; }
+        bool IsActive() override;
 
     protected:
         uint32 dispelType;
-    };
+};
 
-    class TargetAuraDispelTrigger : public NeedCureTrigger {
+class TargetAuraDispelTrigger : public NeedCureTrigger
+{
     public:
-        TargetAuraDispelTrigger(PlayerbotAI* botAI, string spell, uint32 dispelType) :
-			NeedCureTrigger(ai, spell, dispelType) {}
-		virtual string GetTargetName() { return "current target"; }
-    };
+        TargetAuraDispelTrigger(PlayerbotAI* botAI, std::string const& spell, uint32 dispelType) : NeedCureTrigger(botAI, spell, dispelType) { }
 
-    class PartyMemberNeedCureTrigger : public NeedCureTrigger {
+		std::string const& GetTargetName() override { return "current target"; }
+};
+
+class PartyMemberNeedCureTrigger : public NeedCureTrigger
+{
     public:
-        PartyMemberNeedCureTrigger(PlayerbotAI* botAI, string spell, uint32 dispelType) :
-            NeedCureTrigger(ai, spell, dispelType) {}
+        PartyMemberNeedCureTrigger(PlayerbotAI* botAI, std::string const& spell, uint32 dispelType) : NeedCureTrigger(botAI, spell, dispelType) { }
 
-		virtual Value<Unit*>* GetTargetValue();
-    };
-}
+		Value<Unit*>* GetTargetValue() override;
+};

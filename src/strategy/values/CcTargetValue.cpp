@@ -5,12 +5,12 @@
 #include "../../ServerFacade.h"
 #include "../Action.h"
 
-using namespace ai;
+using namespace botAI;
 
 class FindTargetForCcStrategy : public FindTargetStrategy
 {
 public:
-    FindTargetForCcStrategy(PlayerbotAI* botAI, string spell) : FindTargetStrategy(botAI)
+    FindTargetForCcStrategy(PlayerbotAI* botAI, std::string const& spell) : FindTargetStrategy(botAI)
     {
         this->spell = spell;
         maxDistance = 0;
@@ -86,6 +86,6 @@ private:
 
 Unit* CcTargetValue::Calculate()
 {
-    FindTargetForCcStrategy strategy(ai, qualifier);
+    FindTargetForCcStrategy strategy(botAI, qualifier);
     return FindTarget(&strategy);
 }

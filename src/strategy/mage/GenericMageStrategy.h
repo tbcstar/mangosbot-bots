@@ -3,45 +3,45 @@
 #include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class GenericMageStrategy : public CombatStrategy
     {
     public:
         GenericMageStrategy(PlayerbotAI* botAI);
-        virtual string getName() { return "mage"; }
+        std::string const& getName() override { return "mage"; }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
     };
 
     class MageCureStrategy : public Strategy
     {
     public:
-        MageCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        MageCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "cure"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cure"; }
     };
 
     class MageBoostStrategy : public Strategy
     {
     public:
-        MageBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        MageBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "boost"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "boost"; }
     };
 
     class MageCcStrategy : public Strategy
     {
     public:
-        MageCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        MageCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "cc"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cc"; }
     };
 }

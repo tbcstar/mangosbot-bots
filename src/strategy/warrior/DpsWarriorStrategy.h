@@ -2,7 +2,7 @@
 
 #include "GenericWarriorStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class DpsWarriorStrategy : public GenericWarriorStrategy
     {
@@ -10,19 +10,19 @@ namespace ai
         DpsWarriorStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "dps"; }
-        virtual NextAction** getDefaultActions();
-        virtual int GetType() { return STRATEGY_TYPE_COMBAT | STRATEGY_TYPE_DPS | STRATEGY_TYPE_MELEE; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "dps"; }
+        NextAction** getDefaultActions() override;
+        uint32 GetType() const override { return STRATEGY_TYPE_COMBAT | STRATEGY_TYPE_DPS | STRATEGY_TYPE_MELEE; }
     };
 
     class DpsWarrirorAoeStrategy : public CombatStrategy
     {
     public:
-        DpsWarrirorAoeStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) {}
+        DpsWarrirorAoeStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "aoe"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "aoe"; }
     };
 }

@@ -1,27 +1,27 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../generic/NonCombatStrategy.h"
-#pragma once
 
-namespace ai
+class PlayerbotAI;
+
+class DpsAssistStrategy : public NonCombatStrategy
 {
-    class DpsAssistStrategy : public NonCombatStrategy
-    {
     public:
-        DpsAssistStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
-        virtual string getName() { return "dps assist"; }
-		virtual int GetType() { return STRATEGY_TYPE_DPS; }
+        DpsAssistStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-    };
+        std::string const& getName() override { return "dps assist"; }
+		uint32 GetType() const override { return STRATEGY_TYPE_DPS; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};
 
-    class DpsAoeStrategy : public NonCombatStrategy
-    {
+class DpsAoeStrategy : public NonCombatStrategy
+{
     public:
-        DpsAoeStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
-        virtual string getName() { return "dps aoe"; }
-		virtual int GetType() { return STRATEGY_TYPE_DPS; }
+        DpsAoeStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-    };
-}
+        std::string const& getName() override { return "dps aoe"; }
+		uint32 GetType() const override { return STRATEGY_TYPE_DPS; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};

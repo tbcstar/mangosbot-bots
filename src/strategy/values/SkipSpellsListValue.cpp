@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "SkipSpellsListValue.h"
 
-using namespace ai;
+using namespace botAI;
 using namespace std;
 
 string SkipSpellsListValue::Save()

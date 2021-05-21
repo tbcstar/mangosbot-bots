@@ -1,34 +1,34 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace ai
+#include "../Strategy.h"
+
+class PlayerbotAI;
+
+class LootNonCombatStrategy : public Strategy
 {
-    class LootNonCombatStrategy : public Strategy
-    {
     public:
-        LootNonCombatStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        LootNonCombatStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "loot"; }
-    };
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "loot"; }
+};
 
-    class GatherStrategy : public Strategy
-    {
+class GatherStrategy : public Strategy
+{
     public:
-        GatherStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        GatherStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "gather"; }
-    };
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "gather"; }
+};
 
-    class RevealStrategy : public Strategy
-    {
+class RevealStrategy : public Strategy
+{
     public:
-        RevealStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        RevealStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "reveal"; }
-    };
-}
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "reveal"; }
+};

@@ -2,12 +2,12 @@
 #include "../Value.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace ai
+namespace botAI
 {
     class HasAvailableLootValue : public BoolCalculatedValue
 	{
 	public:
-        HasAvailableLootValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        HasAvailableLootValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
     public:
         virtual bool Calculate()

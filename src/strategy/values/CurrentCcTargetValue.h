@@ -2,13 +2,13 @@
 #include "../Value.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
    
     class CurrentCcTargetValue : public TargetValue, public Qualified
 	{
 	public:
-        CurrentCcTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
+        CurrentCcTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) { }
 
     public:
         Unit* Calculate();

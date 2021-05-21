@@ -1,21 +1,25 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace ai
+#include "../Strategy.h"
+
+class PlayerbotAI;
+
+class FleeStrategy : public Strategy
 {
-    class FleeStrategy : public Strategy
-    {
     public:
-        FleeStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "flee"; };
-    };
+        FleeStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    class FleeFromAddsStrategy : public Strategy
-    {
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "flee"; };
+};
+
+class FleeFromAddsStrategy : public Strategy
+{
     public:
-        FleeFromAddsStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "flee from adds"; };
-    };
+        FleeFromAddsStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-}
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "flee from adds"; };
+};

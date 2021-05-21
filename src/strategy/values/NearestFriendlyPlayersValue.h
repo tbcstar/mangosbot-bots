@@ -3,13 +3,13 @@
 #include "NearestUnitsValue.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace ai
+namespace botAI
 {
     class NearestFriendlyPlayersValue : public NearestUnitsValue
 	{
 	public:
         NearestFriendlyPlayersValue(PlayerbotAI* botAI) :
-          NearestUnitsValue(ai, "nearest friendly players", sPlayerbotAIConfig->sightDistance) {}
+          NearestUnitsValue(botAI, "nearest friendly players", sPlayerbotAIConfig->sightDistance) { }
 
     protected:
         void FindUnits(list<Unit*> &targets);

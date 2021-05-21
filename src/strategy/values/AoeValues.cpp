@@ -4,21 +4,21 @@
 
 #include "../../PlayerbotAIConfig.h"
 #include "../../ServerFacade.h"
-using namespace ai;
+using namespace botAI;
 
-list<ObjectGuid> FindMaxDensity(Player* bot)
+GuidVector FindMaxDensity(Player* bot)
 {
-    list<ObjectGuid> units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<list<ObjectGuid> >("possible targets");
-    map<ObjectGuid, list<ObjectGuid> > groups;
+    GuidVector units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<GuidVector >("possible targets");
+    map<ObjectGuid, GuidVector > groups;
     int maxCount = 0;
     ObjectGuid maxGroup;
-    for (list<ObjectGuid>::iterator i = units.begin(); i != units.end(); ++i)
+    for (GuidVector::iterator i = units.begin(); i != units.end(); ++i)
     {
         Unit* unit = bot->GetPlayerbotAI()->GetUnit(*i);
         if (!unit)
             continue;
 
-        for (list<ObjectGuid>::iterator j = units.begin(); j != units.end(); ++j)
+        for (GuidVector::iterator j = units.begin(); j != units.end(); ++j)
         {
             Unit* other = bot->GetPlayerbotAI()->GetUnit(*j);
             if (!other)
@@ -37,19 +37,19 @@ list<ObjectGuid> FindMaxDensity(Player* bot)
     }
 
     if (!maxCount)
-        return list<ObjectGuid>();
+        return GuidVector();
 
     return groups[maxGroup];
 }
 
 WorldLocation AoePositionValue::Calculate()
 {
-    list<ObjectGuid> group = FindMaxDensity(bot);
+    GuidVector group = FindMaxDensity(bot);
     if (group.empty())
         return WorldLocation();
 
     float x1, y1, x2, y2;
-    for (list<ObjectGuid>::iterator i = group.begin(); i != group.end(); ++i)
+    for (GuidVector::iterator i = group.begin(); i != group.end(); ++i)
     {
         Unit* unit = bot->GetPlayerbotAI()->GetUnit(*i);
         if (!unit)

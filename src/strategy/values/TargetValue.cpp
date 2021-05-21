@@ -6,12 +6,12 @@
 #include "RtiTargetValue.h"
 #include "Unit.h"
 
-using namespace ai;
+using namespace botAI;
 
 Unit* TargetValue::FindTarget(FindTargetStrategy* strategy)
 {
-    list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
-    for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); ++i)
+    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector >("attackers")->Get();
+    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
         Unit* unit = botAI->GetUnit(*i);
         if (!unit)

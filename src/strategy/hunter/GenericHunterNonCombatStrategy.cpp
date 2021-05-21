@@ -3,7 +3,7 @@
 #include "HunterMultipliers.h"
 #include "GenericHunterNonCombatStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class GenericHunterNonCombatStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -36,7 +36,7 @@ GenericHunterNonCombatStrategy::GenericHunterNonCombatStrategy(PlayerbotAI* botA
     actionNodeFactories.Add(new GenericHunterNonCombatStrategyActionNodeFactory());
 }
 
-void GenericHunterNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void GenericHunterNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     NonCombatStrategy::InitTriggers(triggers);
 
@@ -45,7 +45,7 @@ void GenericHunterNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &trigg
         NextAction::array(0, new NextAction("trueshot aura", 2.0f), nullptr)));
 }
 
-void HunterPetStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void HunterPetStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "no pet",

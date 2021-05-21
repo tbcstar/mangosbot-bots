@@ -2,7 +2,7 @@
 #include "../../playerbot.h"
 #include "DuelTargetValue.h"
 
-using namespace ai;
+using namespace botAI;
 
 Unit* DuelTargetValue::Calculate()
 {

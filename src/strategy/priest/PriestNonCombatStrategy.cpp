@@ -4,14 +4,14 @@
 #include "PriestNonCombatStrategy.h"
 #include "PriestNonCombatStrategyActionNodeFactory.h"
 
-using namespace ai;
+using namespace botAI;
 
 PriestNonCombatStrategy::PriestNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI)
 {
     actionNodeFactories.Add(new PriestNonCombatStrategyActionNodeFactory());
 }
 
-void PriestNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void PriestNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     NonCombatStrategy::InitTriggers(triggers);
 
@@ -34,7 +34,7 @@ void PriestNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 		NextAction::array(0, new NextAction("resurrection", 30.0f), nullptr)));
 }
 
-void PriestBuffStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void PriestBuffStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     NonCombatStrategy::InitTriggers(triggers);
 
@@ -47,7 +47,7 @@ void PriestBuffStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("divine spirit on party", 13.0f), nullptr)));
 }
 
-void PriestShadowResistanceStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void PriestShadowResistanceStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     NonCombatStrategy::InitTriggers(triggers);
 

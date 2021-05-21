@@ -3,4 +3,4 @@
 #include "PaladinMultipliers.h"
 #include "PaladinActions.h"
 
-using namespace ai;
+using namespace botAI;

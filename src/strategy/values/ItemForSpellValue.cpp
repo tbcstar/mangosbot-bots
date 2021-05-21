@@ -3,7 +3,7 @@
 #include "ItemForSpellValue.h"
 #include "../../ServerFacade.h"
 
-using namespace ai;
+using namespace botAI;
 
 #ifndef WIN32
 inline int strcmpi(const char* s1, const char* s2)

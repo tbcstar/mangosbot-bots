@@ -1,18 +1,18 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "HealthTriggers.h"
 #include "GenericTriggers.h"
 #include "LootTriggers.h"
-#include "../triggers/GenericTriggers.h"
 #include "LfgTriggers.h"
 #include "RpgTriggers.h"
 #include "RtiTriggers.h"
+#include "../NamedObjectContext.h"
 
-namespace ai
+class PlayerbotAI;
+
+class TriggerContext : public NamedObjectContext<Trigger>
 {
-
-    class TriggerContext : public NamedObjectContext<Trigger>
-    {
     public:
         TriggerContext()
         {
@@ -125,9 +125,9 @@ namespace ai
         static Trigger* collision(PlayerbotAI* botAI) { return new CollisionTrigger(botAI); }
         static Trigger* lfg_proposal_active(PlayerbotAI* botAI) { return new LfgProposalActiveTrigger(botAI); }
         static Trigger* invalid_target(PlayerbotAI* botAI) { return new InvalidTargetTrigger(botAI); }
-        static Trigger* critical_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(ai, "critical aoe heal", "critical", 2); }
-        static Trigger* low_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(ai, "low aoe heal", "low", 2); }
-        static Trigger* medium_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(ai, "medium aoe heal", "medium", 2); }
+        static Trigger* critical_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(botAI, "critical aoe heal", "critical", 2); }
+        static Trigger* low_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(botAI, "low aoe heal", "low", 2); }
+        static Trigger* medium_aoe_heal(PlayerbotAI* botAI) { return new AoeHealTrigger(botAI, "medium aoe heal", "medium", 2); }
         static Trigger* target_changed(PlayerbotAI* botAI) { return new TargetChangedTrigger(botAI); }
         static Trigger* swimming(PlayerbotAI* botAI) { return new IsSwimmingTrigger(botAI); }
         static Trigger* no_possible_targets(PlayerbotAI* botAI) { return new NoPossibleTargetsTrigger(botAI); }
@@ -169,9 +169,9 @@ namespace ai
         static Trigger* not_dps_aoe_target_active(PlayerbotAI* botAI) { return new NotDpsAoeTargetActiveTrigger(botAI); }
         static Trigger* has_nearest_adds(PlayerbotAI* botAI) { return new HasNearestAddsTrigger(botAI); }
         static Trigger* enemy_player_is_attacking(PlayerbotAI* botAI) { return new EnemyPlayerIsAttacking(botAI); }
-        static Trigger* Random(PlayerbotAI* botAI) { return new RandomTrigger(ai, "random", 20); }
-        static Trigger* seldom(PlayerbotAI* botAI) { return new RandomTrigger(ai, "seldom", 300); }
-        static Trigger* often(PlayerbotAI* botAI) { return new RandomTrigger(ai, "often", 5); }
+        static Trigger* Random(PlayerbotAI* botAI) { return new RandomTrigger(botAI, "random", 20); }
+        static Trigger* seldom(PlayerbotAI* botAI) { return new RandomTrigger(botAI, "seldom", 300); }
+        static Trigger* often(PlayerbotAI* botAI) { return new RandomTrigger(botAI, "often", 5); }
         static Trigger* EnemyOutOfMelee(PlayerbotAI* botAI) { return new EnemyOutOfMeleeTrigger(botAI); }
         static Trigger* EnemyOutOfSpell(PlayerbotAI* botAI) { return new EnemyOutOfSpellRangeTrigger(botAI); }
         static Trigger* enemy_too_close_for_spell(PlayerbotAI* botAI) { return new EnemyTooCloseForSpellTrigger(botAI); }
@@ -192,6 +192,4 @@ namespace ai
         static Trigger* random_bot_update_trigger(PlayerbotAI* botAI) { return new RandomBotUpdateTrigger(botAI); }
         static Trigger* no_non_bot_players_around(PlayerbotAI* botAI) { return new NoNonBotPlayersAroundTrigger(botAI); }
         static Trigger* new_player_nearby(PlayerbotAI* botAI) { return new NewPlayerNearbyTrigger(botAI); }
-
-    };
 };

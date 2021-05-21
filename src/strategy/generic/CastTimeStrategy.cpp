@@ -1,18 +1,18 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "CastTimeStrategy.h"
-
-#include "../../ServerFacade.h"
 #include "../actions/GenericSpellActions.h"
-
-using namespace ai;
+#include "../../Playerbot.h"
 
 float CastTimeMultiplier::GetValue(Action* action)
 {
-    if (action == nullptr) return 1.0f;
+    if (action == nullptr)
+        return 1.0f;
 
     uint8 targetHealth = AI_VALUE2(uint8, "health", "current target");
-    string name = action->getName();
+    std::string const& name = action->getName();
 
     if (action->GetTarget() != AI_VALUE(Unit*, "current target"))
         return 1.0f;
@@ -20,30 +20,28 @@ float CastTimeMultiplier::GetValue(Action* action)
     if (targetHealth < sPlayerbotAIConfig->criticalHealth && dynamic_cast<CastSpellAction*>(action))
     {
         uint32 spellId = AI_VALUE2(uint32, "spell id", name);
-        const SpellEntry* const pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
-        if (!pSpellInfo) return 1.0f;
-
-        if (spellId && pSpellInfo->Targets & TARGET_FLAG_DEST_LOCATION)
-            return 1.0f;
-        else if (spellId && pSpellInfo->Targets & TARGET_FLAG_SOURCE_LOCATION)
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+        if (!spellInfo)
             return 1.0f;
 
-        uint32 castTime = GetSpellCastTime(pSpellInfo);
-        if (spellId && castTime >= 3000)
+        if ((spellInfo->Targets & TARGET_FLAG_DEST_LOCATION) != 0|| (spellInfo->Targets & TARGET_FLAG_SOURCE_LOCATION) != 0)
+            return 1.0f;
+
+        uint32 castTime = spellInfo->CalcCastTime();
+        if (castTime >= 3000)
             return 0.0f;
 
-        if (spellId && castTime >= 1500)
+        if (castTime >= 1500)
             return 0.5f;
 
-        if (spellId && castTime >= 1000)
+        if (castTime >= 1000)
             return 0.25f;
     }
 
     return 1.0f;
 }
 
-
-void CastTimeStrategy::InitMultipliers(std::list<Multiplier*> &multipliers)
+void CastTimeStrategy::InitMultipliers(std::vector<Multiplier*> &multipliers)
 {
     multipliers.push_back(new CastTimeMultiplier(botAI));
 }

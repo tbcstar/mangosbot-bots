@@ -5,9 +5,9 @@
 #include "GenericRogueNonCombatStrategy.h"
 #include "RogueActions.h"
 
-using namespace ai;
+using namespace botAI;
 
-void GenericRogueNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void GenericRogueNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     NonCombatStrategy::InitTriggers(triggers);
         

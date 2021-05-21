@@ -15,7 +15,7 @@ class UseItemAction : public Action
 		UseItemAction(PlayerbotAI* botAI, std::string const& name = "use", bool selfOnly = false) : Action(botAI, name), selfOnly(selfOnly) { }
 
         bool Execute(Event event) override;
-        bool isPossible() override;
+        bool isPossible() const override;
 
     protected:
         bool UseItemAuto(Item* item);
@@ -32,9 +32,9 @@ class UseItemAction : public Action
 class UseSpellItemAction : public UseItemAction
 {
     public:
-        UseSpellItemAction(PlayerbotAI* botAI, std::string const& name, bool selfOnly = false) : UseItemAction(botAI, name, selfOnly) {}
+        UseSpellItemAction(PlayerbotAI* botAI, std::string const& name, bool selfOnly = false) : UseItemAction(botAI, name, selfOnly) { }
 
-        bool isUseful() override;
+        bool isUseful() const override;
 };
 
 class UseHealingPotion : public UseItemAction
@@ -42,7 +42,7 @@ class UseHealingPotion : public UseItemAction
     public:
         UseHealingPotion(PlayerbotAI* botAI) : UseItemAction(botAI, "healing potion") { }
 
-        bool isUseful() override;
+        bool isUseful() const override;
 };
 
 class UseManaPotion : public UseItemAction
@@ -50,5 +50,5 @@ class UseManaPotion : public UseItemAction
     public:
         UseManaPotion(PlayerbotAI* botAI) : UseItemAction(botAI, "mana potion") { }
 
-        bool isUseful() override;
+        bool isUseful() const override;
 };

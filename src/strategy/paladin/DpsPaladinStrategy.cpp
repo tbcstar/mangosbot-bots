@@ -3,7 +3,7 @@
 #include "PaladinMultipliers.h"
 #include "DpsPaladinStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class DpsPaladinStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -57,7 +57,7 @@ NextAction** DpsPaladinStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("crusader strike", ACTION_NORMAL + 1), nullptr);
 }
 
-void DpsPaladinStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void DpsPaladinStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericPaladinStrategy::InitTriggers(triggers);
 

@@ -3,13 +3,13 @@
 #include "ShamanMultipliers.h"
 #include "TotemsShamanStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 TotemsShamanStrategy::TotemsShamanStrategy(PlayerbotAI* botAI) : GenericShamanStrategy(botAI)
 {
 }
 
-void TotemsShamanStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void TotemsShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericShamanStrategy::InitTriggers(triggers);
 

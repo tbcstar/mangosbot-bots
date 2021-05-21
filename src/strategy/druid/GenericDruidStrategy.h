@@ -1,48 +1,43 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace ai
-{
-    class AiObjectContext;
+class PlayerbotAI;
 
-    class GenericDruidStrategy : public CombatStrategy
-    {
+class GenericDruidStrategy : public CombatStrategy
+{
     protected:
         GenericDruidStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-    };
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};
 
-    class DruidCureStrategy : public Strategy
-    {
+class DruidCureStrategy : public Strategy
+{
     public:
-        DruidCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        DruidCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "cure"; }
-    };
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cure"; }
+};
 
-    class DruidBoostStrategy : public Strategy
-    {
+class DruidBoostStrategy : public Strategy
+{
     public:
-        DruidBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        DruidBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "boost"; }
-    };
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "boost"; }
+};
 
-    class DruidCcStrategy : public Strategy
-    {
+class DruidCcStrategy : public Strategy
+{
     public:
-        DruidCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        DruidCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "cc"; }
-    };
-}
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cc"; }
+};

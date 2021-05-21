@@ -73,7 +73,7 @@ class MoveOutOfEnemyContactAction : public MovementAction
         MoveOutOfEnemyContactAction(PlayerbotAI* botAI) : MovementAction(botAI, "move out of enemy contact") { }
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
 };
 
 class SetFacingTargetAction : public MovementAction
@@ -82,7 +82,7 @@ class SetFacingTargetAction : public MovementAction
         SetFacingTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set facing") { }
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
 };
 
 class SetBehindTargetAction : public MovementAction
@@ -91,7 +91,7 @@ class SetBehindTargetAction : public MovementAction
         SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set behind") { }
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
 };
 
 class MoveOutOfCollisionAction : public MovementAction
@@ -100,5 +100,5 @@ class MoveOutOfCollisionAction : public MovementAction
         MoveOutOfCollisionAction(PlayerbotAI* botAI) : MovementAction(botAI, "move out of collision") { }
 
         bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
 };

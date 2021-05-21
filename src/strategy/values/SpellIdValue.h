@@ -2,7 +2,7 @@
 #include "../Value.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
 
     class SpellIdValue : public CalculatedValue<uint32>, public Qualified

@@ -1,19 +1,19 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class NewPlayerNearbyValue : public CalculatedValue<ObjectGuid>
 	{
 	public:
-        NewPlayerNearbyValue(PlayerbotAI* botAI) : CalculatedValue<ObjectGuid>(ai, "new player nearby") {}
+        NewPlayerNearbyValue(PlayerbotAI* botAI) : CalculatedValue<ObjectGuid>(botAI, "new player nearby") { }
         virtual ObjectGuid Calculate();
     };
 
     class AlreadySeenPlayersValue : public ManualSetValue<set<ObjectGuid>& >
 	{
 	public:
-        AlreadySeenPlayersValue(PlayerbotAI* botAI) : ManualSetValue<set<ObjectGuid>& >(ai, data, "already seen players") {}
+        AlreadySeenPlayersValue(PlayerbotAI* botAI) : ManualSetValue<set<ObjectGuid>& >(botAI, data, "already seen players") { }
 
     private:
         set<ObjectGuid> data;

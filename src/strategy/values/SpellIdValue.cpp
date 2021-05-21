@@ -4,10 +4,10 @@
 #include "../../PlayerbotAIConfig.h"
 #include "../../ServerFacade.h"
 
-using namespace ai;
+using namespace botAI;
 
 SpellIdValue::SpellIdValue(PlayerbotAI* botAI) :
-        CalculatedValue<uint32>(ai, "spell id")
+        CalculatedValue<uint32>(botAI, "spell id")
 {
 }
 

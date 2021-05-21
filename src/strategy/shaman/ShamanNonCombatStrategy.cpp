@@ -3,9 +3,9 @@
 #include "ShamanMultipliers.h"
 #include "ShamanNonCombatStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
-void ShamanNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void ShamanNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     NonCombatStrategy::InitTriggers(triggers);
 
@@ -58,7 +58,7 @@ void ShamanNonCombatStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("cure disease on party", 30.0f), nullptr)));
 }
 
-void ShamanNonCombatStrategy::InitMultipliers(std::list<Multiplier*> &multipliers)
+void ShamanNonCombatStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
 {
     NonCombatStrategy::InitMultipliers(multipliers);
 }

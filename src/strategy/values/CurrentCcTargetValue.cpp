@@ -2,12 +2,12 @@
 #include "../../playerbot.h"
 #include "CurrentCcTargetValue.h"
 
-using namespace ai;
+using namespace botAI;
 
 class FindCurrentCcTargetStrategy : public FindTargetStrategy
 {
 public:
-    FindCurrentCcTargetStrategy(PlayerbotAI* botAI, string spell) : FindTargetStrategy(botAI)
+    FindCurrentCcTargetStrategy(PlayerbotAI* botAI, std::string const& spell) : FindTargetStrategy(botAI)
     {
         this->spell = spell;
     }
@@ -26,6 +26,6 @@ private:
 
 Unit* CurrentCcTargetValue::Calculate()
 {
-    FindCurrentCcTargetStrategy strategy(ai, qualifier);
+    FindCurrentCcTargetStrategy strategy(botAI, qualifier);
     return FindTarget(&strategy);
 }

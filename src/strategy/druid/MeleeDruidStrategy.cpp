@@ -1,9 +1,9 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "DruidMultipliers.h"
-#include "MeleeDruidStrategy.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "MeleeDruidStrategy.h"
+#include "../../Playerbot.h"
 
 MeleeDruidStrategy::MeleeDruidStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {
@@ -17,11 +17,9 @@ NextAction** MeleeDruidStrategy::getDefaultActions()
             nullptr);
 }
 
-void MeleeDruidStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void MeleeDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    triggers.push_back(new TriggerNode(
-        "omen of clarity",
-        NextAction::array(0, new NextAction("omen of clarity", ACTION_HIGH + 9), nullptr)));
+    triggers.push_back(new TriggerNode("omen of clarity", NextAction::array(0, new NextAction("omen of clarity", ACTION_HIGH + 9), nullptr)));
 
     CombatStrategy::InitTriggers(triggers);
 }

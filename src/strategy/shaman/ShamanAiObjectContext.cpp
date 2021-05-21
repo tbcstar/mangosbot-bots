@@ -10,15 +10,15 @@
 #include "TotemsShamanStrategy.h"
 #include "CasterShamanStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 
 
-namespace ai
+namespace botAI
 {
     namespace shaman
     {
-        using namespace ai;
+        using namespace botAI;
 
         class StrategyFactoryInternal : public NamedObjectContext<Strategy>
         {
@@ -73,11 +73,11 @@ namespace ai
     };
 };
 
-namespace ai
+namespace botAI
 {
     namespace shaman
     {
-        using namespace ai;
+        using namespace botAI;
 
         class TriggerFactoryInternal : public NamedObjectContext<Trigger>
         {
@@ -156,11 +156,11 @@ namespace ai
 };
 
 
-namespace ai
+namespace botAI
 {
     namespace shaman
     {
-        using namespace ai;
+        using namespace botAI;
 
         class AiObjectContextInternal : public NamedObjectContext<Action>
         {
@@ -282,9 +282,9 @@ namespace ai
 
 ShamanAiObjectContext::ShamanAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
-    strategyContexts.Add(new ai::shaman::StrategyFactoryInternal());
-    strategyContexts.Add(new ai::shaman::CombatStrategyFactoryInternal());
-    strategyContexts.Add(new ai::shaman::BuffStrategyFactoryInternal());
-    actionContexts.Add(new ai::shaman::AiObjectContextInternal());
-    triggerContexts.Add(new ai::shaman::TriggerFactoryInternal());
+    strategyContexts.Add(new botAI::shaman::StrategyFactoryInternal());
+    strategyContexts.Add(new botAI::shaman::CombatStrategyFactoryInternal());
+    strategyContexts.Add(new botAI::shaman::BuffStrategyFactoryInternal());
+    actionContexts.Add(new botAI::shaman::AiObjectContextInternal());
+    triggerContexts.Add(new botAI::shaman::TriggerFactoryInternal());
 }

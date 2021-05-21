@@ -3,12 +3,12 @@
 #include "../../PlayerbotAIConfig.h"
 #include "Formations.h"
 
-namespace ai
+namespace botAI
 {
     class Stance : public Formation
     {
     public:
-        Stance(PlayerbotAI* botAI, string name) : Formation (ai, name) {}
+        Stance(PlayerbotAI* botAI, std::string const& name) : Formation (botAI, name) { }
 
     protected:
         virtual Unit* GetTarget();
@@ -17,14 +17,14 @@ namespace ai
 
     public:
         virtual WorldLocation GetLocation();
-        virtual string GetTargetName() { return "current target"; }
+        std::string const& GetTargetName() override { return "current target"; }
         virtual float GetMaxDistance() { return sPlayerbotAIConfig->contactDistance; }
     };
 
     class MoveStance : public Stance
     {
     public:
-        MoveStance(PlayerbotAI* botAI, string name) : Stance (ai, name) {}
+        MoveStance(PlayerbotAI* botAI, std::string const& name) : Stance (botAI, name) { }
 
     protected:
         virtual WorldLocation GetLocationInternal();
@@ -46,7 +46,7 @@ namespace ai
     class SetStanceAction : public Action
     {
     public:
-        SetStanceAction(PlayerbotAI* botAI) : Action(botAI, "set Stance") {}
+        SetStanceAction(PlayerbotAI* botAI) : Action(botAI, "set Stance") { }
         bool Execute(Event event) override;
     };
 };

@@ -3,18 +3,18 @@
 #include "TargetValue.h"
 #include "../../LootObjectStack.h"
 
-namespace ai
+namespace botAI
 {
     class HasTotemValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        HasTotemValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        HasTotemValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
     public:
         bool Calculate()
         {
-            list<ObjectGuid> units = *context->GetValue<list<ObjectGuid> >("nearest npcs");
-            for (list<ObjectGuid>::iterator i = units.begin(); i != units.end(); i++)
+            GuidVector units = *context->GetValue<GuidVector >("nearest npcs");
+            for (GuidVector::iterator i = units.begin(); i != units.end(); i++)
             {
                 Unit* unit = botAI->GetUnit(*i);
                 if (!unit)

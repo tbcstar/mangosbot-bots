@@ -8,14 +8,14 @@
 #include "HunterBuffStrategies.h"
 #include "../NamedObjectContext.h"
 
-using namespace ai;
+using namespace botAI;
 
 
-namespace ai
+namespace botAI
 {
     namespace hunter
     {
-        using namespace ai;
+        using namespace botAI;
 
         class StrategyFactoryInternal : public NamedObjectContext<Strategy>
         {
@@ -62,11 +62,11 @@ namespace ai
 };
 
 
-namespace ai
+namespace botAI
 {
     namespace hunter
     {
-        using namespace ai;
+        using namespace botAI;
 
         class TriggerFactoryInternal : public NamedObjectContext<Trigger>
         {
@@ -115,11 +115,11 @@ namespace ai
 
 
 
-namespace ai
+namespace botAI
 {
     namespace hunter
     {
-        using namespace ai;
+        using namespace botAI;
 
         class AiObjectContextInternal : public NamedObjectContext<Action>
         {
@@ -204,8 +204,8 @@ namespace ai
 
 HunterAiObjectContext::HunterAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
-    strategyContexts.Add(new ai::hunter::StrategyFactoryInternal());
-    strategyContexts.Add(new ai::hunter::BuffStrategyFactoryInternal());
-    actionContexts.Add(new ai::hunter::AiObjectContextInternal());
-    triggerContexts.Add(new ai::hunter::TriggerFactoryInternal());
+    strategyContexts.Add(new botAI::hunter::StrategyFactoryInternal());
+    strategyContexts.Add(new botAI::hunter::BuffStrategyFactoryInternal());
+    actionContexts.Add(new botAI::hunter::AiObjectContextInternal());
+    triggerContexts.Add(new botAI::hunter::TriggerFactoryInternal());
 }

@@ -1,20 +1,20 @@
 #pragma once
 #include "../triggers/GenericTriggers.h"
 
-namespace ai
+namespace botAI
 {
 	class DemonArmorTrigger : public BuffTrigger
 	{
 	public:
-		DemonArmorTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "demon armor") {}
-		virtual bool IsActive();
+		DemonArmorTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "demon armor") { }
+		bool IsActive() override;
 	};
 
     class SpellstoneTrigger : public BuffTrigger
     {
     public:
-        SpellstoneTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "spellstone") {}
-        virtual bool IsActive();
+        SpellstoneTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "spellstone") { }
+        bool IsActive() override;
     };
 
     DEBUFF_TRIGGER(CurseOfAgonyTrigger, "curse of agony", "curse of agony");
@@ -24,19 +24,19 @@ namespace ai
     class CorruptionOnAttackerTrigger : public DebuffOnAttackerTrigger
     {
     public:
-        CorruptionOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(ai, "corruption") {}
+        CorruptionOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(botAI, "corruption") { }
     };
 
     class CastCurseOfAgonyOnAttackerTrigger : public DebuffOnAttackerTrigger
     {
     public:
-        CastCurseOfAgonyOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(ai, "curse of agony") {}
+        CastCurseOfAgonyOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(botAI, "curse of agony") { }
     };
 
     class SiphonLifeOnAttackerTrigger : public DebuffOnAttackerTrigger
     {
     public:
-        SiphonLifeOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(ai, "siphon life") {}
+        SiphonLifeOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(botAI, "siphon life") { }
     };
 
     DEBUFF_TRIGGER(ImmolateTrigger, "immolate", "immolate");
@@ -44,25 +44,25 @@ namespace ai
     class ShadowTranceTrigger : public HasAuraTrigger
     {
     public:
-        ShadowTranceTrigger(PlayerbotAI* botAI) : HasAuraTrigger(ai, "shadow trance") {}
+        ShadowTranceTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "shadow trance") { }
     };
 
     class BacklashTrigger : public HasAuraTrigger
     {
     public:
-        BacklashTrigger(PlayerbotAI* botAI) : HasAuraTrigger(ai, "backlash") {}
+        BacklashTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "backlash") { }
     };
 
     class BanishTrigger : public HasCcTargetTrigger
     {
     public:
-        BanishTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(ai, "banish") {}
+        BanishTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "banish") { }
     };
 
     class WarlockConjuredItemTrigger : public ItemCountTrigger
     {
     public:
-        WarlockConjuredItemTrigger(PlayerbotAI* botAI, string item) : ItemCountTrigger(ai, item, 1) {}
+        WarlockConjuredItemTrigger(PlayerbotAI* botAI, std::string const& item) : ItemCountTrigger(botAI, item, 1) { }
 
         virtual bool IsActive() { return ItemCountTrigger::IsActive() && AI_VALUE2(uint8, "item count", "soul shard") > 0; }
     };
@@ -70,30 +70,30 @@ namespace ai
     class HasSpellstoneTrigger : public WarlockConjuredItemTrigger
     {
     public:
-        HasSpellstoneTrigger(PlayerbotAI* botAI) : WarlockConjuredItemTrigger(ai, "spellstone") {}
+        HasSpellstoneTrigger(PlayerbotAI* botAI) : WarlockConjuredItemTrigger(botAI, "spellstone") { }
     };
 
     class HasFirestoneTrigger : public WarlockConjuredItemTrigger
     {
     public:
-        HasFirestoneTrigger(PlayerbotAI* botAI) : WarlockConjuredItemTrigger(ai, "firestone") {}
+        HasFirestoneTrigger(PlayerbotAI* botAI) : WarlockConjuredItemTrigger(botAI, "firestone") { }
     };
 
     class HasHealthstoneTrigger : public WarlockConjuredItemTrigger
     {
     public:
-        HasHealthstoneTrigger(PlayerbotAI* botAI) : WarlockConjuredItemTrigger(ai, "healthstone") {}
+        HasHealthstoneTrigger(PlayerbotAI* botAI) : WarlockConjuredItemTrigger(botAI, "healthstone") { }
     };
 
     class FearTrigger : public HasCcTargetTrigger
     {
     public:
-        FearTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(ai, "fear") {}
+        FearTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "fear") { }
     };
 
     class AmplifyCurseTrigger : public BuffTrigger
     {
     public:
-        AmplifyCurseTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "amplify curse") {}
+        AmplifyCurseTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "amplify curse") { }
     };
 }

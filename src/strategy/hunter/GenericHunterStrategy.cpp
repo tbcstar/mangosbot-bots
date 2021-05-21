@@ -3,7 +3,7 @@
 #include "GenericHunterStrategy.h"
 #include "HunterAiObjectContext.h"
 
-using namespace ai;
+using namespace botAI;
 
 class GenericHunterStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -44,7 +44,7 @@ GenericHunterStrategy::GenericHunterStrategy(PlayerbotAI* botAI) : CombatStrateg
     actionNodeFactories.Add(new GenericHunterStrategyActionNodeFactory());
 }
 
-void GenericHunterStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void GenericHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     CombatStrategy::InitTriggers(triggers);
 
@@ -66,14 +66,14 @@ NextAction** HunterBoostStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("bestial wrath", 15.0f), nullptr);
 }
 
-void HunterBoostStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void HunterBoostStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "rapid fire",
         NextAction::array(0, new NextAction("rapid fire", 16.0f), nullptr)));
 }
 
-void HunterCcStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void HunterCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "scare beast",

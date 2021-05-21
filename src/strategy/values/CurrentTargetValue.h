@@ -1,12 +1,12 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class CurrentTargetValue : public UnitManualSetValue
 	{
 	public:
-        CurrentTargetValue(PlayerbotAI* botAI) : UnitManualSetValue(ai, nullptr) {}
+        CurrentTargetValue(PlayerbotAI* botAI) : UnitManualSetValue(botAI, nullptr) { }
 
         virtual Unit* Get();
         virtual void Set(Unit* unit);

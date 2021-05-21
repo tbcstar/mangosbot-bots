@@ -3,7 +3,7 @@
 #include "HunterTriggers.h"
 #include "HunterActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 bool HunterNoStingsActiveTrigger::IsActive()
 {

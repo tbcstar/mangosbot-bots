@@ -3,7 +3,7 @@
 #include "PaladinMultipliers.h"
 #include "HealPaladinStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 HealPaladinStrategy::HealPaladinStrategy(PlayerbotAI* botAI) : GenericPaladinStrategy(botAI)
 {
@@ -14,7 +14,7 @@ NextAction** HealPaladinStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("melee", ACTION_NORMAL), nullptr);
 }
 
-void HealPaladinStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void HealPaladinStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericPaladinStrategy::InitTriggers(triggers);
 

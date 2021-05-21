@@ -2,17 +2,17 @@
 
 #include "GenericPriestStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class HealPriestStrategy : public GenericPriestStrategy
     {
     public:
-        HealPriestStrategy(PlayerbotAI* botAI) : GenericPriestStrategy(botAI) {}
+        HealPriestStrategy(PlayerbotAI* botAI) : GenericPriestStrategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual NextAction** getDefaultActions();
-        virtual string getName() { return "heal"; }
-		virtual int GetType() { return STRATEGY_TYPE_HEAL; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        NextAction** getDefaultActions() override;
+        std::string const& getName() override { return "heal"; }
+		uint32 GetType() const override { return STRATEGY_TYPE_HEAL; }
     };
 }

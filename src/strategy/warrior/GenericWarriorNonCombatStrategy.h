@@ -2,12 +2,12 @@
 
 #include "../generic/NonCombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class GenericWarriorNonCombatStrategy : public NonCombatStrategy
     {
     public:
-        GenericWarriorNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
-        virtual string getName() { return "nc"; }
+        GenericWarriorNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
+        std::string const& getName() override { return "nc"; }
    };
 }

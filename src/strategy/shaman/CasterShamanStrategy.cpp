@@ -3,7 +3,7 @@
 #include "ShamanMultipliers.h"
 #include "CasterShamanStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class CasterShamanStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -32,7 +32,7 @@ NextAction** CasterShamanStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("lightning bolt", 10.0f), nullptr);
 }
 
-void CasterShamanStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void CasterShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericShamanStrategy::InitTriggers(triggers);
 
@@ -61,7 +61,7 @@ void CasterShamanStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
         NextAction::array(0, new NextAction("flametongue totem", ACTION_LIGHT_HEAL), nullptr)));
 }
 
-void CasterAoeShamanStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void CasterAoeShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode(
         "light aoe",

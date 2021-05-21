@@ -2,12 +2,12 @@
 #include "../Value.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
     class EnemyPlayerValue : public TargetValue
 	{
 	public:
-        EnemyPlayerValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
+        EnemyPlayerValue(PlayerbotAI* botAI) : TargetValue(botAI) { }
 
     public:
         Unit* Calculate();

@@ -2,10 +2,10 @@
 #include "../../playerbot.h"
 #include "RangeValues.h"
 
-using namespace ai;
+using namespace botAI;
 
 RangeValue::RangeValue(PlayerbotAI* botAI)
-    : ManualSetValue<float>(ai, 0, "range"), Qualified()
+    : ManualSetValue<float>(botAI, 0, "range"), Qualified()
 {
 }
 

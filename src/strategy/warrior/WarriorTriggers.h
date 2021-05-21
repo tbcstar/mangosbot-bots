@@ -1,7 +1,7 @@
 #pragma once
 #include "../triggers/GenericTriggers.h"
 
-namespace ai
+namespace botAI
 {
     BUFF_TRIGGER(BattleShoutTrigger, "battle shout", "battle shout")
     BUFF_TRIGGER(BattleStanceTrigger, "battle stance", "battle stance")
@@ -15,19 +15,19 @@ namespace ai
     class RendDebuffOnAttackerTrigger : public DebuffOnAttackerTrigger
     {
     public:
-        RendDebuffOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(ai, "rend") {}
+        RendDebuffOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(botAI, "rend") { }
     };
 
 	class RevengeAvailableTrigger : public SpellCanBeCastTrigger
 	{
 	public:
-		RevengeAvailableTrigger(PlayerbotAI* botAI) : SpellCanBeCastTrigger(ai, "revenge") {}
+		RevengeAvailableTrigger(PlayerbotAI* botAI) : SpellCanBeCastTrigger(botAI, "revenge") { }
 	};
 
     class BloodrageDebuffTrigger : public DebuffTrigger
     {
     public:
-        BloodrageDebuffTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "bloodrage") {}
+        BloodrageDebuffTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "bloodrage") { }
         virtual bool IsActive()
         {
             return AI_VALUE2(uint8, "health", "self target") >= sPlayerbotAIConfig->mediumHealth &&
@@ -38,43 +38,43 @@ namespace ai
     class ShieldBashInterruptSpellTrigger : public InterruptSpellTrigger
     {
     public:
-        ShieldBashInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(ai, "shield bash") {}
+        ShieldBashInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(botAI, "shield bash") { }
     };
 
     class VictoryRushTrigger : public HasAuraTrigger
     {
     public:
-        VictoryRushTrigger(PlayerbotAI* botAI) : HasAuraTrigger(ai, "victory rush") {}
+        VictoryRushTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "victory rush") { }
     };
 
     class SwordAndBoardTrigger : public HasAuraTrigger
     {
     public:
-        SwordAndBoardTrigger(PlayerbotAI* botAI) : HasAuraTrigger(ai, "sword and board") {}
+        SwordAndBoardTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "sword and board") { }
     };
 
     class ConcussionBlowTrigger : public SnareTargetTrigger
     {
     public:
-        ConcussionBlowTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(ai, "concussion blow") {}
+        ConcussionBlowTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(botAI, "concussion blow") { }
     };
 
     class HamstringTrigger : public SnareTargetTrigger
     {
     public:
-        HamstringTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(ai, "hamstring") {}
+        HamstringTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(botAI, "hamstring") { }
     };
 
     class DeathWishTrigger : public BoostTrigger
     {
     public:
-        DeathWishTrigger(PlayerbotAI* botAI) : BoostTrigger(ai, "death wish") {}
+        DeathWishTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "death wish") { }
     };
 
     class ShieldBashInterruptEnemyHealerSpellTrigger : public InterruptEnemyHealerTrigger
     {
     public:
-        ShieldBashInterruptEnemyHealerSpellTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(ai, "shield bash") {}
+        ShieldBashInterruptEnemyHealerSpellTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(botAI, "shield bash") { }
     };
 
 }

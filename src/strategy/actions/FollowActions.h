@@ -13,5 +13,5 @@ class FollowAction : public MovementAction
 		FollowAction(PlayerbotAI* botAI) : MovementAction(botAI, "follow") { }
 
 		bool Execute(Event event) override;
-        bool isUseful() override;
+        bool isUseful() const override;
 };

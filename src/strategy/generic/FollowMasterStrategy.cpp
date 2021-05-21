@@ -1,17 +1,16 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "FollowMasterStrategy.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace ai;
+#include "FollowMasterStrategy.h"
+#include "../../Playerbot.h"
 
 NextAction** FollowMasterStrategy::getDefaultActions()
 {
     return NextAction::array(0, new NextAction("follow", 1.0f), nullptr);
 }
 
-void FollowMasterStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void FollowMasterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    triggers.push_back(new TriggerNode(
-        "out of react range",
-        NextAction::array(0, new NextAction("tell out of react range", 10.0f), nullptr)));
+    triggers.push_back(new TriggerNode("out of react range", NextAction::array(0, new NextAction("tell out of react range", 10.0f), nullptr)));
 }

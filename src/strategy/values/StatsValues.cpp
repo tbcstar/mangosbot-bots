@@ -3,7 +3,7 @@
 #include "StatsValues.h"
 
 #include "../../ServerFacade.h"
-using namespace ai;
+using namespace botAI;
 
 uint8 HealthValue::Calculate()
 {

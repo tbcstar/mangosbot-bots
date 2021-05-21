@@ -1,12 +1,12 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class IsBehindValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        IsBehindValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        IsBehindValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         virtual bool Calculate() 
         {

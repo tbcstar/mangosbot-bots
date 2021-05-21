@@ -3,7 +3,7 @@
 #include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class AiObjectContext;
 
@@ -13,7 +13,7 @@ namespace ai
         GenericWarriorStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "warrior"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "warrior"; }
     };
 }

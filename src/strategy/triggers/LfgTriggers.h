@@ -1,17 +1,15 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Trigger.h"
 
-namespace ai
-{
+class PlayerbotAI;
+
 class LfgProposalActiveTrigger : public Trigger
 {
-public:
-    LfgProposalActiveTrigger(PlayerbotAI* botAI) : Trigger(ai, "lfg proposal active", 35) {}
+    public:
+        LfgProposalActiveTrigger(PlayerbotAI* botAI) : Trigger(botAI, "lfg proposal active", 35) { }
 
-    virtual bool IsActive()
-    {
-        return AI_VALUE(uint32, "lfg proposal");
-    }
+        bool IsActive() override;
 };
-}

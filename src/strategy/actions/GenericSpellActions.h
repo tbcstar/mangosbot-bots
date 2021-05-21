@@ -29,13 +29,13 @@ class clazz : public CastDebuffSpellAction \
 class clazz : public CastSpellAction \
 { \
     public: \
-        clazz(PlayerbotAI* botAI) : CastSpellAction(botAI, name) {} \
+        clazz(PlayerbotAI* botAI) : CastSpellAction(botAI, name) { } \
 
 #define BEGIN_MELEE_SPELL_ACTION(clazz, name) \
 class clazz : public CastMeleeSpellAction \
 { \
     public: \
-        clazz(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, name) {} \
+        clazz(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, name) { } \
 
 
 #define END_RANGED_SPELL_ACTION() \
@@ -46,7 +46,7 @@ class clazz : public CastMeleeSpellAction \
 class clazz : public BuffOnPartyAction \
 { \
     public: \
-        clazz(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, name) {}
+        clazz(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, name) { }
 
 class CastSpellAction : public Action
 {
@@ -55,8 +55,8 @@ class CastSpellAction : public Action
 
         std::string const& GetTargetName() override { return "current target"; };
         bool Execute(Event event) override;
-        bool isPossible() override;
-		bool isUseful() override;
+        bool isPossible() const override;
+		bool isUseful() const override;
         ActionThreatType getThreatType() override { return ACTION_THREAT_SINGLE; }
 
         NextAction** getPrerequisites() override;
@@ -71,7 +71,7 @@ class CastAuraSpellAction : public CastSpellAction
 	public:
 		CastAuraSpellAction(PlayerbotAI* botAI, std::string const& spell) : CastSpellAction(botAI, spell) { }
 
-		bool isUseful() override;
+		bool isUseful() const override;
 };
 
 class CastMeleeSpellAction : public CastSpellAction
@@ -118,7 +118,7 @@ class CastEnchantItemAction : public CastSpellAction
 			range = botAI->GetRange("spell");
 		}
 
-        bool isPossible() override;
+        bool isPossible() const override;
         std::string const& GetTargetName() override { return "self target"; }
 };
 
@@ -131,7 +131,7 @@ class CastHealingSpellAction : public CastAuraSpellAction
         }
 
         std::string const& GetTargetName() override { return "self target"; }
-        bool isUseful() override;
+        bool isUseful() const override;
         ActionThreatType getThreatType() override { return ACTION_THREAT_AOE; }
 
     protected:
@@ -144,7 +144,7 @@ class CastAoeHealSpellAction : public CastHealingSpellAction
     	CastAoeHealSpellAction(PlayerbotAI* botAI, std::string const& spell, uint8 estAmount = 15.0f) : CastHealingSpellAction(botAI, spell, estAmount) { }
 
 		std::string const& GetTargetName() override { return "party member to heal"; }
-        bool isUseful() override;
+        bool isUseful() const override;
 };
 
 class CastCureSpellAction : public CastSpellAction

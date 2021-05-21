@@ -2,13 +2,13 @@
 #include "../Value.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
    
     class SpellCastUsefulValue : public BoolCalculatedValue, public Qualified
 	{
 	public:
-        SpellCastUsefulValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) {}
+        SpellCastUsefulValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
       
     public:
         virtual bool Calculate();

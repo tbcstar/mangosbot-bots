@@ -1,139 +1,130 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Trigger.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace ai
+class PlayerbotAI;
+
+class ValueInRangeTrigger : public Trigger
 {
-    class ValueInRangeTrigger : public Trigger
-    {
     public:
-        ValueInRangeTrigger(PlayerbotAI* botAI, string name, float maxValue, float minValue) : Trigger(ai, name) {
-            this->maxValue = maxValue;
-            this->minValue = minValue;
-        }
-    public:
+        ValueInRangeTrigger(PlayerbotAI* botAI, std::string const& name, float maxValue, float minValue) : Trigger(botAI, name), maxValue = maxValue), minValue = minValue) { }
+
         virtual float GetValue() = 0;
-        virtual bool IsActive() {
+        bool IsActive() override
+        {
             float value = GetValue();
             return value < maxValue && value >= minValue;
         }
 
     protected:
         float maxValue, minValue;
-    };
+};
 
-	class HealthInRangeTrigger : public ValueInRangeTrigger
-	{
+class HealthInRangeTrigger : public ValueInRangeTrigger
+{
 	public:
-		HealthInRangeTrigger(PlayerbotAI* botAI, string name, float maxValue, float minValue = 0) :
-		  ValueInRangeTrigger(ai, name, maxValue, minValue) {}
+		HealthInRangeTrigger(PlayerbotAI* botAI, std::string const& name, float maxValue, float minValue = 0) : ValueInRangeTrigger(botAI, name, maxValue, minValue) { }
 
-		virtual bool IsActive()
-		{
-		    return ValueInRangeTrigger::IsActive() && !AI_VALUE2(bool, "dead", GetTargetName());
-		}
+        bool IsActive() override;
+		float GetValue() override;
+};
 
-		virtual float GetValue();
-	};
-
-    class LowHealthTrigger : public HealthInRangeTrigger
-    {
+class LowHealthTrigger : public HealthInRangeTrigger
+{
     public:
-        LowHealthTrigger(PlayerbotAI* botAI, string name = "low health",
-            float value = sPlayerbotAIConfig->lowHealth, float minValue = sPlayerbotAIConfig->criticalHealth) :
-            HealthInRangeTrigger(ai, name, value, minValue) {}
+        LowHealthTrigger(PlayerbotAI* botAI, std::string const& name = "low health", float value = sPlayerbotAIConfig->lowHealth, float minValue = sPlayerbotAIConfig->criticalHealth) :
+            HealthInRangeTrigger(botAI, name, value, minValue) { }
 
-		virtual string GetTargetName() { return "self target"; }
-    };
+		std::string const& GetTargetName() override { return "self target"; }
+};
 
-    class CriticalHealthTrigger : public LowHealthTrigger
-    {
+class CriticalHealthTrigger : public LowHealthTrigger
+{
     public:
-        CriticalHealthTrigger(PlayerbotAI* botAI) :
-            LowHealthTrigger(ai, "critical health", sPlayerbotAIConfig->criticalHealth, 0) {}
-    };
+        CriticalHealthTrigger(PlayerbotAI* botAI) : LowHealthTrigger(botAI, "critical health", sPlayerbotAIConfig->criticalHealth, 0) { }
+};
 
-    class MediumHealthTrigger : public LowHealthTrigger
-    {
+class MediumHealthTrigger : public LowHealthTrigger
+{
     public:
-        MediumHealthTrigger(PlayerbotAI* botAI) :
-            LowHealthTrigger(ai, "medium health", sPlayerbotAIConfig->mediumHealth, sPlayerbotAIConfig->lowHealth) {}
-    };
+        MediumHealthTrigger(PlayerbotAI* botAI) : LowHealthTrigger(botAI, "medium health", sPlayerbotAIConfig->mediumHealth, sPlayerbotAIConfig->lowHealth) { }
+};
 
-    class AlmostFullHealthTrigger : public LowHealthTrigger
-    {
+class AlmostFullHealthTrigger : public LowHealthTrigger
+{
     public:
-        AlmostFullHealthTrigger(PlayerbotAI* botAI) :
-            LowHealthTrigger(ai, "almost full health", sPlayerbotAIConfig->almostFullHealth, sPlayerbotAIConfig->mediumHealth) {}
-    };
+        AlmostFullHealthTrigger(PlayerbotAI* botAI) : LowHealthTrigger(botAI, "almost full health", sPlayerbotAIConfig->almostFullHealth, sPlayerbotAIConfig->mediumHealth) { }
+};
 
-    class PartyMemberLowHealthTrigger : public HealthInRangeTrigger
-    {
+class PartyMemberLowHealthTrigger : public HealthInRangeTrigger
+{
     public:
-        PartyMemberLowHealthTrigger(PlayerbotAI* botAI, string name = "party member low health", float value = sPlayerbotAIConfig->lowHealth, float minValue = sPlayerbotAIConfig->criticalHealth) :
-            HealthInRangeTrigger(ai, name, value, minValue) {}
+        PartyMemberLowHealthTrigger(PlayerbotAI* botAI, std::string const& name = "party member low health", float value = sPlayerbotAIConfig->lowHealth, float minValue = sPlayerbotAIConfig->criticalHealth) :
+            HealthInRangeTrigger(botAI, name, value, minValue) { }
 
-        virtual string GetTargetName() { return "party member to heal"; }
-    };
+        std::string const& GetTargetName() override { return "party member to heal"; }
+};
 
-    class PartyMemberCriticalHealthTrigger : public PartyMemberLowHealthTrigger
-    {
+class PartyMemberCriticalHealthTrigger : public PartyMemberLowHealthTrigger
+{
     public:
-        PartyMemberCriticalHealthTrigger(PlayerbotAI* botAI) :
-            PartyMemberLowHealthTrigger(ai, "party member critical health", sPlayerbotAIConfig->criticalHealth, 0) {}
-    };
+        PartyMemberCriticalHealthTrigger(PlayerbotAI* botAI) : PartyMemberLowHealthTrigger(botAI, "party member critical health", sPlayerbotAIConfig->criticalHealth, 0) { }
+};
 
-    class PartyMemberMediumHealthTrigger : public PartyMemberLowHealthTrigger
-    {
+class PartyMemberMediumHealthTrigger : public PartyMemberLowHealthTrigger
+{
     public:
-        PartyMemberMediumHealthTrigger(PlayerbotAI* botAI) :
-            PartyMemberLowHealthTrigger(ai, "party member medium health", sPlayerbotAIConfig->mediumHealth,sPlayerbotAIConfig->lowHealth) {}
-    };
+        PartyMemberMediumHealthTrigger(PlayerbotAI* botAI) : PartyMemberLowHealthTrigger(botAI, "party member medium health", sPlayerbotAIConfig->mediumHealth,sPlayerbotAIConfig->lowHealth) { }
+};
 
-    class PartyMemberAlmostFullHealthTrigger : public PartyMemberLowHealthTrigger
-    {
+class PartyMemberAlmostFullHealthTrigger : public PartyMemberLowHealthTrigger
+{
     public:
-        PartyMemberAlmostFullHealthTrigger(PlayerbotAI* botAI) :
-            PartyMemberLowHealthTrigger(ai, "party member almost full health", sPlayerbotAIConfig->almostFullHealth,sPlayerbotAIConfig->mediumHealth) {}
-    };
+        PartyMemberAlmostFullHealthTrigger(PlayerbotAI* botAI) : PartyMemberLowHealthTrigger(botAI, "party member almost full health", sPlayerbotAIConfig->almostFullHealth,sPlayerbotAIConfig->mediumHealth) { }
+};
 
-    class TargetLowHealthTrigger : public HealthInRangeTrigger {
+class TargetLowHealthTrigger : public HealthInRangeTrigger
+{
     public:
-        TargetLowHealthTrigger(PlayerbotAI* botAI, float value, float minValue = 0) :
-            HealthInRangeTrigger(ai, "target low health", value, minValue) {}
-        virtual string GetTargetName() { return "current target"; }
-    };
+        TargetLowHealthTrigger(PlayerbotAI* botAI, float value, float minValue = 0) : HealthInRangeTrigger(botAI, "target low health", value, minValue) { }
 
-    class TargetCriticalHealthTrigger : public TargetLowHealthTrigger
-    {
+        std::string const& GetTargetName() override { return "current target"; }
+};
+
+class TargetCriticalHealthTrigger : public TargetLowHealthTrigger
+{
     public:
-        TargetCriticalHealthTrigger(PlayerbotAI* botAI) : TargetLowHealthTrigger(ai, 20) {}
-    };
+        TargetCriticalHealthTrigger(PlayerbotAI* botAI) : TargetLowHealthTrigger(botAI, 20) { }
+};
 
-	class PartyMemberDeadTrigger : public Trigger {
+class PartyMemberDeadTrigger : public Trigger
+{
 	public:
-		PartyMemberDeadTrigger(PlayerbotAI* botAI) : Trigger(ai, "resurrect", 3) {}
-        virtual string GetTargetName() { return "party member to resurrect"; }
-		virtual bool IsActive();
-	};
+		PartyMemberDeadTrigger(PlayerbotAI* botAI) : Trigger(botAI, "resurrect", 3) { }
 
-    class DeadTrigger : public Trigger {
-    public:
-        DeadTrigger(PlayerbotAI* botAI) : Trigger(ai, "dead", 30) {}
-        virtual string GetTargetName() { return "self target"; }
-        virtual bool IsActive();
-    };
+        std::string const& GetTargetName() override { return "party member to resurrect"; }
+		bool IsActive() override;
+};
 
-    class AoeHealTrigger : public Trigger {
+class DeadTrigger : public Trigger
+{
     public:
-    	AoeHealTrigger(PlayerbotAI* botAI, string name, string type, int count) :
-    		Trigger(ai, name), type(type), count(count) {}
+        DeadTrigger(PlayerbotAI* botAI) : Trigger(botAI, "dead", 30) { }
+
+        std::string const& GetTargetName() override { return "self target"; }
+        bool IsActive() override;
+};
+
+class AoeHealTrigger : public Trigger
+{
     public:
-        virtual bool IsActive();
+    	AoeHealTrigger(PlayerbotAI* botAI, std::string const& name, std::string const& type, int32 count) : Trigger(botAI, name), type(type), count(count) { }
+        bool IsActive() override;
 
     protected:
-        int count;
+        int32 count;
         string type;
-    };
-
-}
+};

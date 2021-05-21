@@ -2,7 +2,7 @@
 
 #include "GenericWarriorStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class TankWarriorStrategy : public GenericWarriorStrategy
     {
@@ -10,9 +10,9 @@ namespace ai
         TankWarriorStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "tank"; }
-        virtual NextAction** getDefaultActions();
-        virtual int GetType() { return STRATEGY_TYPE_TANK | STRATEGY_TYPE_MELEE; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "tank"; }
+        NextAction** getDefaultActions() override;
+        uint32 GetType() const override { return STRATEGY_TYPE_TANK | STRATEGY_TYPE_MELEE; }
     };
 }

@@ -3,7 +3,7 @@
 #include "MageTriggers.h"
 #include "MageActions.h"
 
-using namespace ai;
+using namespace botAI;
 
 bool MageArmorTrigger::IsActive()
 {

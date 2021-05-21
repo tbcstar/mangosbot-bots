@@ -16,7 +16,7 @@ class AiObjectContext : public PlayerbotAIAware
 {
     public:
         AiObjectContext(PlayerbotAI* botAI);
-        virtual ~AiObjectContext() {}
+        virtual ~AiObjectContext() { }
 
         virtual Strategy* GetStrategy(std::string const& name);
         virtual std::set<std::string> GetSiblingStrategy(std::string const& name);

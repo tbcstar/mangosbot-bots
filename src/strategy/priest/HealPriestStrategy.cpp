@@ -3,14 +3,14 @@
 #include "PriestMultipliers.h"
 #include "HealPriestStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 NextAction** HealPriestStrategy::getDefaultActions()
 {
     return NextAction::array(0, new NextAction("shoot", 5.0f), nullptr);
 }
 
-void HealPriestStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void HealPriestStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericPriestStrategy::InitTriggers(triggers);
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     enum ItemUsage
     {
@@ -17,7 +17,7 @@ namespace ai
     class ItemUsageValue : public CalculatedValue<ItemUsage>, public Qualified
 	{
 	public:
-        ItemUsageValue(PlayerbotAI* botAI) : CalculatedValue<ItemUsage>(botAI) {}
+        ItemUsageValue(PlayerbotAI* botAI) : CalculatedValue<ItemUsage>(botAI) { }
 
     public:
         virtual ItemUsage Calculate();

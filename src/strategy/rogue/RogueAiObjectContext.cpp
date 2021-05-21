@@ -8,14 +8,14 @@
 #include "../generic/PullStrategy.h"
 #include "../NamedObjectContext.h"
 
-using namespace ai;
+using namespace botAI;
 
 
-namespace ai
+namespace botAI
 {
     namespace rogue
     {
-        using namespace ai;
+        using namespace botAI;
 
         class StrategyFactoryInternal : public NamedObjectContext<Strategy>
         {
@@ -34,16 +34,16 @@ namespace ai
             static Strategy* aoe(PlayerbotAI* botAI) { return new RogueAoeStrategy(botAI); }
             static Strategy* dps(PlayerbotAI* botAI) { return new DpsRogueStrategy(botAI); }
             static Strategy* nc(PlayerbotAI* botAI) { return new GenericRogueNonCombatStrategy(botAI); }
-            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(botAI, "shoot"); }
         };
     };
 };
 
-namespace ai
+namespace botAI
 {
     namespace rogue
     {
-        using namespace ai;
+        using namespace botAI;
 
         class TriggerFactoryInternal : public NamedObjectContext<Trigger>
         {
@@ -71,11 +71,11 @@ namespace ai
 };
 
 
-namespace ai
+namespace botAI
 {
     namespace rogue
     {
-        using namespace ai;
+        using namespace botAI;
 
         class AiObjectContextInternal : public NamedObjectContext<Action>
         {
@@ -123,7 +123,7 @@ namespace ai
 
 RogueAiObjectContext::RogueAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
-    strategyContexts.Add(new ai::rogue::StrategyFactoryInternal());
-    actionContexts.Add(new ai::rogue::AiObjectContextInternal());
-    triggerContexts.Add(new ai::rogue::TriggerFactoryInternal());
+    strategyContexts.Add(new botAI::rogue::StrategyFactoryInternal());
+    actionContexts.Add(new botAI::rogue::AiObjectContextInternal());
+    triggerContexts.Add(new botAI::rogue::TriggerFactoryInternal());
 }

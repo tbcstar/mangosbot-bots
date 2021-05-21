@@ -1,12 +1,12 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class ManaSaveLevelValue : public ManualSetValue<double>
 	{
 	public:
-        ManaSaveLevelValue(PlayerbotAI* botAI) : ManualSetValue<double>(ai, 1.0, "mana save level") {}
+        ManaSaveLevelValue(PlayerbotAI* botAI) : ManualSetValue<double>(botAI, 1.0, "mana save level") { }
 
         virtual string Save() { ostringstream out; out << value; return out.str(); }
         virtual bool Load(string text) { value = atof(text.c_str()); return true; }

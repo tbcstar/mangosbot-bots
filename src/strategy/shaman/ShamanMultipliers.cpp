@@ -3,4 +3,4 @@
 #include "ShamanMultipliers.h"
 #include "ShamanActions.h"
 
-using namespace ai;
+using namespace botAI;

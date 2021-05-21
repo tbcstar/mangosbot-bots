@@ -4,7 +4,7 @@
 #include "PaladinAiObjectContext.h"
 #include "../generic/CombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class GenericPaladinStrategy : public CombatStrategy
     {
@@ -12,37 +12,37 @@ namespace ai
         GenericPaladinStrategy(PlayerbotAI* botAI);
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "paladin"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "paladin"; }
     };
 
     class PaladinCureStrategy : public Strategy
     {
     public:
-        PaladinCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        PaladinCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "cure"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cure"; }
     };
 
     class PaladinBoostStrategy : public Strategy
     {
     public:
-        PaladinBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        PaladinBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "boost"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "boost"; }
     };
 
     class PaladinCcStrategy : public Strategy
     {
     public:
-        PaladinCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        PaladinCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "cc"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cc"; }
     };
 }

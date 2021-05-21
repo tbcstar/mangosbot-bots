@@ -5,7 +5,7 @@
 #include "../../ServerFacade.h"
 #include "Arrow.h"
 
-using namespace ai;
+using namespace botAI;
 
 WorldLocation Formation::NullLocation = WorldLocation();
 
@@ -54,26 +54,26 @@ WorldLocation MoveAheadFormation::GetLocation()
     return WorldLocation(master->GetMapId(), x, y, z);
 }
 
-namespace ai
+namespace botAI
 {
     class MeleeFormation : public FollowFormation
     {
     public:
-        MeleeFormation(PlayerbotAI* botAI) : FollowFormation(ai, "melee") {}
-        virtual string GetTargetName() { return "master target"; }
+        MeleeFormation(PlayerbotAI* botAI) : FollowFormation(botAI, "melee") { }
+        std::string const& GetTargetName() override { return "master target"; }
     };
 
     class QueueFormation : public FollowFormation
     {
     public:
-        QueueFormation(PlayerbotAI* botAI) : FollowFormation(ai, "queue") {}
-        virtual string GetTargetName() { return "line target"; }
+        QueueFormation(PlayerbotAI* botAI) : FollowFormation(botAI, "queue") { }
+        std::string const& GetTargetName() override { return "line target"; }
     };
 
     class NearFormation : public MoveAheadFormation
     {
     public:
-        NearFormation(PlayerbotAI* botAI) : MoveAheadFormation(ai, "near") {}
+        NearFormation(PlayerbotAI* botAI) : MoveAheadFormation(botAI, "near") { }
         virtual WorldLocation GetLocationInternal()
         {
             Player* master = GetMaster();
@@ -101,7 +101,7 @@ namespace ai
     class ChaosFormation : public MoveAheadFormation
     {
     public:
-        ChaosFormation(PlayerbotAI* botAI) : MoveAheadFormation(ai, "chaos"), lastChangeTime(0) {}
+        ChaosFormation(PlayerbotAI* botAI) : MoveAheadFormation(botAI, "chaos"), lastChangeTime(0) { }
         virtual WorldLocation GetLocationInternal()
         {
             Player* master = GetMaster();
@@ -141,7 +141,7 @@ namespace ai
     class CircleFormation : public MoveFormation
     {
     public:
-        CircleFormation(PlayerbotAI* botAI) : MoveFormation(ai, "circle") {}
+        CircleFormation(PlayerbotAI* botAI) : MoveFormation(botAI, "circle") { }
         virtual WorldLocation GetLocation()
         {
             float range = 2.0f;
@@ -189,7 +189,7 @@ namespace ai
     class LineFormation : public MoveAheadFormation
     {
     public:
-        LineFormation(PlayerbotAI* botAI) : MoveAheadFormation(ai, "line") {}
+        LineFormation(PlayerbotAI* botAI) : MoveAheadFormation(botAI, "line") { }
         virtual WorldLocation GetLocationInternal()
         {
             Group* group = bot->GetGroup();
@@ -227,7 +227,7 @@ namespace ai
     class ShieldFormation : public MoveFormation
     {
     public:
-        ShieldFormation(PlayerbotAI* botAI) : MoveFormation(ai, "shield") {}
+        ShieldFormation(PlayerbotAI* botAI) : MoveFormation(botAI, "shield") { }
         virtual WorldLocation GetLocation()
         {
             Group* group = bot->GetGroup();
@@ -292,7 +292,7 @@ namespace ai
     class FarFormation : public FollowFormation
     {
     public:
-        FarFormation(PlayerbotAI* botAI) : FollowFormation(ai, "far") {}
+        FarFormation(PlayerbotAI* botAI) : FollowFormation(botAI, "far") { }
         virtual WorldLocation GetLocation()
         {
             float range = sPlayerbotAIConfig->farDistance;
@@ -402,7 +402,7 @@ float Formation::GetFollowAngle()
     return start + (0.125f + 1.75f * index / total + (total == 2 ? 0.125f : 0.0f)) * M_PI;
 }
 
-FormationValue::FormationValue(PlayerbotAI* botAI) : ManualSetValue<Formation*>(ai, new NearFormation(botAI), "formation")
+FormationValue::FormationValue(PlayerbotAI* botAI) : ManualSetValue<Formation*>(botAI, new NearFormation(botAI), "formation")
 {
 }
 

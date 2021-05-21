@@ -3,13 +3,13 @@
 #include "PartyMemberToDispel.h"
 
 #include "../../ServerFacade.h"
-using namespace ai;
+using namespace botAI;
 
 class PartyMemberToDispelPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {
 public:
     PartyMemberToDispelPredicate(PlayerbotAI* botAI, uint32 dispelType) :
-        PlayerbotAIAware(botAI), FindPlayerPredicate(), dispelType(dispelType) {}
+        PlayerbotAIAware(botAI), FindPlayerPredicate(), dispelType(dispelType) { }
 
 public:
     virtual bool Check(Unit* unit)
@@ -29,6 +29,6 @@ Unit* PartyMemberToDispel::Calculate()
 {
     uint32 dispelType = atoi(qualifier.c_str());
 
-    PartyMemberToDispelPredicate predicate(ai, dispelType);
+    PartyMemberToDispelPredicate predicate(botAI, dispelType);
     return FindPartyMember(predicate);
 }

@@ -25,7 +25,7 @@ class AiObject : public PlayerbotAIAware
 class AiNamedObject : public AiObject
 {
     public:
-        AiNamedObject(PlayerbotAI* botAI, string name) : AiObject(botAI), name(name) { }
+        AiNamedObject(PlayerbotAI* botAI, std::string const& name) : AiObject(botAI), name(name) { }
 
     public:
         virtual std::string const& getName() { return name; }

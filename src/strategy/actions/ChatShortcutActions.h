@@ -10,7 +10,7 @@ class PlayerbotAI;
 class ReturnPositionResetAction : public Action
 {
     public:
-        ReturnPositionResetAction(PlayerbotAI* botAI, string name) : Action(botAI, name) { }
+        ReturnPositionResetAction(PlayerbotAI* botAI, std::string const& name) : Action(botAI, name) { }
 
         void ResetReturnPosition();
         void SetReturnPosition(float x, float y, float z);

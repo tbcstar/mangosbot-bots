@@ -1,12 +1,12 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class SelfTargetValue : public UnitCalculatedValue
 	{
 	public:
-        SelfTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) {}
+        SelfTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) { }
 
         virtual Unit* Calculate() { return botAI->GetBot(); }
     };

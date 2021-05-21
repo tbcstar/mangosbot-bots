@@ -1,7 +1,7 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class RangeValue : public ManualSetValue<float>, public Qualified
 	{

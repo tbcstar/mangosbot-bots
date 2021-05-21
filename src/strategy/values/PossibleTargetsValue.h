@@ -3,13 +3,13 @@
 #include "NearestUnitsValue.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace ai
+namespace botAI
 {
     class PossibleTargetsValue : public NearestUnitsValue
 	{
 	public:
-        PossibleTargetsValue(PlayerbotAI* botAI, string name = "possible targets", float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :
-          NearestUnitsValue(ai, name, range, ignoreLos) {}
+        PossibleTargetsValue(PlayerbotAI* botAI, std::string const& name = "possible targets", float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :
+          NearestUnitsValue(botAI, name, range, ignoreLos) { }
 
     protected:
         virtual void FindUnits(list<Unit*> &targets);
@@ -21,6 +21,6 @@ namespace ai
 	{
 	public:
         AllTargetsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) :
-            PossibleTargetsValue(ai, "all targets", range, true) {}
+            PossibleTargetsValue(botAI, "all targets", range, true) { }
 	};
 }

@@ -1,13 +1,13 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class SnareTargetValue : public UnitCalculatedValue, public Qualified
 	{
 	public:
         SnareTargetValue(PlayerbotAI* botAI) :
-            UnitCalculatedValue(ai, "snare target") {}
+            UnitCalculatedValue(botAI, "snare target") { }
 
     protected:
         virtual Unit* Calculate();

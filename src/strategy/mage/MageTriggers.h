@@ -1,115 +1,115 @@
 #pragma once
 #include "../triggers/GenericTriggers.h"
 
-namespace ai
+namespace botAI
 {
     class ArcaneIntellectOnPartyTrigger : public BuffOnPartyTrigger {
     public:
-        ArcaneIntellectOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(ai, "arcane intellect", 2) {}
+        ArcaneIntellectOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "arcane intellect", 2) { }
 
         virtual bool IsActive() { return BuffOnPartyTrigger::IsActive() && !botAI->HasAura("arcane brilliance", GetTarget()); }
     };
 
     class ArcaneIntellectTrigger : public BuffTrigger {
     public:
-        ArcaneIntellectTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "arcane intellect", 2) {}
+        ArcaneIntellectTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "arcane intellect", 2) { }
 
         virtual bool IsActive() { return BuffTrigger::IsActive() && !botAI->HasAura("arcane brilliance", GetTarget()); }
     };
 
     class MageArmorTrigger : public BuffTrigger {
     public:
-        MageArmorTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "mage armor", 5) {}
-        virtual bool IsActive();
+        MageArmorTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "mage armor", 5) { }
+        bool IsActive() override;
     };
 
     class LivingBombTrigger : public DebuffTrigger {
     public:
-        LivingBombTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "living bomb") {}
+        LivingBombTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "living bomb") { }
 	};
 
     class FireballTrigger : public DebuffTrigger {
     public:
-        FireballTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "fireball") {}
+        FireballTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "fireball") { }
 	};
 
     class PyroblastTrigger : public DebuffTrigger {
     public:
-        PyroblastTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "pyroblast") {}
+        PyroblastTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "pyroblast") { }
     };
 
     class HotStreakTrigger : public HasAuraTrigger {
     public:
-        HotStreakTrigger(PlayerbotAI* botAI) : HasAuraTrigger(ai, "hot streak") {}
+        HotStreakTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "hot streak") { }
     };
 
     class MissileBarrageTrigger : public HasAuraTrigger {
     public:
-        MissileBarrageTrigger(PlayerbotAI* botAI) : HasAuraTrigger(ai, "missile barrage") {}
+        MissileBarrageTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "missile barrage") { }
     };
 
     class ArcaneBlastTrigger : public BuffTrigger {
     public:
-        ArcaneBlastTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "arcane blast") {}
+        ArcaneBlastTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "arcane blast") { }
     };
 
     class CounterspellInterruptSpellTrigger : public InterruptSpellTrigger
     {
     public:
-        CounterspellInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(ai, "counterspell") {}
+        CounterspellInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(botAI, "counterspell") { }
     };
 
     class CombustionTrigger : public BoostTrigger
     {
     public:
-        CombustionTrigger(PlayerbotAI* botAI) : BoostTrigger(ai, "combustion") {}
+        CombustionTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "combustion") { }
     };
 
     class IcyVeinsTrigger : public BoostTrigger
     {
     public:
-        IcyVeinsTrigger(PlayerbotAI* botAI) : BoostTrigger(ai, "icy veins") {}
+        IcyVeinsTrigger(PlayerbotAI* botAI) : BoostTrigger(botAI, "icy veins") { }
     };
 
     class PolymorphTrigger : public HasCcTargetTrigger
     {
     public:
-        PolymorphTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(ai, "polymorph") {}
+        PolymorphTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "polymorph") { }
     };
 
     class RemoveCurseTrigger : public NeedCureTrigger
     {
     public:
-        RemoveCurseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(ai, "remove curse", DISPEL_CURSE) {}
+        RemoveCurseTrigger(PlayerbotAI* botAI) : NeedCureTrigger(botAI, "remove curse", DISPEL_CURSE) { }
     };
 
     class PartyMemberRemoveCurseTrigger : public PartyMemberNeedCureTrigger
     {
     public:
-        PartyMemberRemoveCurseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(ai, "remove curse", DISPEL_CURSE) {}
+        PartyMemberRemoveCurseTrigger(PlayerbotAI* botAI) : PartyMemberNeedCureTrigger(botAI, "remove curse", DISPEL_CURSE) { }
     };
 
     class SpellstealTrigger : public TargetAuraDispelTrigger
     {
     public:
-        SpellstealTrigger(PlayerbotAI* botAI) : TargetAuraDispelTrigger(ai, "spellsteal", DISPEL_MAGIC) {}
+        SpellstealTrigger(PlayerbotAI* botAI) : TargetAuraDispelTrigger(botAI, "spellsteal", DISPEL_MAGIC) { }
     };
 
     class CounterspellEnemyHealerTrigger : public InterruptEnemyHealerTrigger
     {
     public:
-        CounterspellEnemyHealerTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(ai, "counterspell") {}
+        CounterspellEnemyHealerTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(botAI, "counterspell") { }
     };
 
     class ArcanePowerTrigger : public BuffTrigger
     {
     public:
-        ArcanePowerTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "arcane power") {}
+        ArcanePowerTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "arcane power") { }
     };
 
     class PresenceOfMindTrigger : public BuffTrigger
     {
     public:
-        PresenceOfMindTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "presence of mind") {}
+        PresenceOfMindTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "presence of mind") { }
     };
 }

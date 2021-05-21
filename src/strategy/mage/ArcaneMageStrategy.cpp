@@ -3,7 +3,7 @@
 #include "MageMultipliers.h"
 #include "ArcaneMageStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class ArcaneMageStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -48,7 +48,7 @@ NextAction** ArcaneMageStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("arcane barrage", 10.0f), nullptr);
 }
 
-void ArcaneMageStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void ArcaneMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericMageStrategy::InitTriggers(triggers);
 

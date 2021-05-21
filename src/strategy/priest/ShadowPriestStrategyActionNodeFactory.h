@@ -1,6 +1,6 @@
 #pragma once
 
-namespace ai
+namespace botAI
 {
     class ShadowPriestStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
     {

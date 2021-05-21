@@ -2,13 +2,13 @@
 #include "../Value.h"
 #include "TargetValue.h"
 
-namespace ai
+namespace botAI
 {
    
     class GrindTargetValue : public TargetValue
 	{
 	public:
-        GrindTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) {}
+        GrindTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) { }
 
     public:
         Unit* Calculate();

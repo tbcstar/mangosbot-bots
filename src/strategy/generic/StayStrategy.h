@@ -1,22 +1,25 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../generic/NonCombatStrategy.h"
-#pragma once
 
-namespace ai
+class PlayerbotAI;
+
+class StayStrategy : public NonCombatStrategy
 {
-    class StayStrategy : public NonCombatStrategy
-    {
     public:
-        StayStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
-        virtual string getName() { return "stay"; }
-        virtual NextAction** getDefaultActions();
-    };
+        StayStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
-    class SitStrategy : public NonCombatStrategy
-    {
+        std::string const& getName() override { return "stay"; }
+        NextAction** getDefaultActions() override;
+};
+
+class SitStrategy : public NonCombatStrategy
+{
     public:
-        SitStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) {}
-        virtual string getName() { return "sit"; }
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-    };
+        SitStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
-}
+        std::string const& getName() override { return "sit"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};

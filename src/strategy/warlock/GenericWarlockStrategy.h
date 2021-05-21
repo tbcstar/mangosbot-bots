@@ -3,36 +3,36 @@
 #include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class GenericWarlockStrategy : public CombatStrategy
     {
     public:
         GenericWarlockStrategy(PlayerbotAI* botAI);
-        virtual string getName() { return "warlock"; }
+        std::string const& getName() override { return "warlock"; }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual NextAction** getDefaultActions();
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        NextAction** getDefaultActions() override;
     };
 
     class WarlockBoostStrategy : public Strategy
     {
     public:
-        WarlockBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
-        virtual string getName() { return "boost"; }
+        WarlockBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) { };
+        std::string const& getName() override { return "boost"; }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
     };
 
     class WarlockCcStrategy : public Strategy
     {
     public:
-        WarlockCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
-        virtual string getName() { return "cc"; }
+        WarlockCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) { };
+        std::string const& getName() override { return "cc"; }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
     };
 }

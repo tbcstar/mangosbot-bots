@@ -1,24 +1,22 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "ConserveManaStrategy.h"
-#include "../../PlayerbotAIConfig.h"
 #include "../actions/GenericSpellActions.h"
 #include "../values/LastSpellCastValue.h"
-#include "../../ServerFacade.h"
-
-using namespace ai;
+#include "../../Playerbot.h"
 
 float ConserveManaMultiplier::GetValue(Action* action)
 {
-    if (action == nullptr) return 1.0f;
+    if (action == nullptr)
+        return 1.0f;
 
     uint8 health = AI_VALUE2(uint8, "health", "self target");
     uint8 targetHealth = AI_VALUE2(uint8, "health", "current target");
     uint8 mana = AI_VALUE2(uint8, "mana", "self target");
     bool hasMana = AI_VALUE2(bool, "has mana", "self target");
     bool mediumMana = hasMana && mana < sPlayerbotAIConfig->mediumMana;
-
-    string name = action->getName();
 
     if (health < sPlayerbotAIConfig->lowHealth)
         return 1.0f;
@@ -33,8 +31,8 @@ float ConserveManaMultiplier::GetValue(Action* action)
 
     string spell = spellAction->getName();
     uint32 spellId = AI_VALUE2(uint32, "spell id", spell);
-    const SpellEntry* const spellInfo = sServerFacade->LookupSpellInfo(spellId);
-    if (!spellInfo || spellInfo->powerType != POWER_MANA)
+    SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+    if (!spellInfo || spellInfo->PowerType != POWER_MANA)
         return 1.0f;
 
     if (mediumMana && dynamic_cast<CastBuffSpellAction*>(action))
@@ -48,7 +46,7 @@ float ConserveManaMultiplier::GetValue(Action* action)
 
 float SaveManaMultiplier::GetValue(Action* action)
 {
-    if (action == nullptr)
+    if (!action)
         return 1.0f;
 
     if (action->GetTarget() != AI_VALUE(Unit*, "current target"))
@@ -64,11 +62,11 @@ float SaveManaMultiplier::GetValue(Action* action)
 
     string spell = spellAction->getName();
     uint32 spellId = AI_VALUE2(uint32, "spell id", spell);
-    const SpellEntry* const spellInfo = sServerFacade->LookupSpellInfo(spellId);
-    if (!spellInfo || spellInfo->powerType != POWER_MANA)
+    SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+    if (!spellInfo || spellInfo->PowerType != POWER_MANA)
         return 1.0f;
 
-    int32 cost = spellInfo->manaCost;
+    int32 cost = spellInfo->ManaCost;
     if (!cost)
         return 1.0f;
 
@@ -83,8 +81,7 @@ float SaveManaMultiplier::GetValue(Action* action)
     return 1.0f;
 }
 
-
-void ConserveManaStrategy::InitMultipliers(std::list<Multiplier*> &multipliers)
+void ConserveManaStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
 {
     multipliers.push_back(new ConserveManaMultiplier(botAI));
 }

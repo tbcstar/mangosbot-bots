@@ -3,13 +3,13 @@
 #include "PartyMemberValue.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace ai
+namespace botAI
 {
     class PartyMemberWithoutItemValue : public PartyMemberValue, public Qualified
     {
     public:
         PartyMemberWithoutItemValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) :
-          PartyMemberValue(botAI) {}
+          PartyMemberValue(botAI) { }
 
     protected:
         virtual Unit* Calculate();
@@ -19,7 +19,7 @@ namespace ai
     class PartyMemberWithoutFoodValue : public PartyMemberWithoutItemValue
     {
     public:
-        PartyMemberWithoutFoodValue(PlayerbotAI* botAI) : PartyMemberWithoutItemValue(botAI) {}
+        PartyMemberWithoutFoodValue(PlayerbotAI* botAI) : PartyMemberWithoutItemValue(botAI) { }
 
     protected:
         virtual FindPlayerPredicate* CreatePredicate();
@@ -28,7 +28,7 @@ namespace ai
     class PartyMemberWithoutWaterValue : public PartyMemberWithoutItemValue
     {
     public:
-        PartyMemberWithoutWaterValue(PlayerbotAI* botAI) : PartyMemberWithoutItemValue(botAI) {}
+        PartyMemberWithoutWaterValue(PlayerbotAI* botAI) : PartyMemberWithoutItemValue(botAI) { }
 
     protected:
         virtual FindPlayerPredicate* CreatePredicate();

@@ -1,36 +1,24 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../Trigger.h"
 
-namespace ai
+class Event;
+class Player;
+class PlayerbotAI;
+
+class ChatCommandTrigger : public Trigger
 {
-    class ChatCommandTrigger : public Trigger {
     public:
-        ChatCommandTrigger(PlayerbotAI* botAI, string command) : Trigger(ai, command), triggered(false) {}
+        ChatCommandTrigger(PlayerbotAI* botAI, std::string const& command) : Trigger(botAI, command), triggered(false) { }
 
-        virtual void ExternalEvent(string param, Player* owner = nullptr)
-        {
-            this->param = param;
-            this->owner = owner;
-            triggered = true;
-        }
-
-        virtual Event Check()
-        {
-            if (!triggered)
-                return Event();
-
-            return Event(getName(), param, owner);
-        }
-
-        virtual void Reset()
-        {
-            triggered = false;
-        }
+        void ExternalEvent(std::string const& param, Player* owner = nullptr) override;
+        Event Check() override;
+        void Reset() override;
 
    private:
-        string param;
+        std::string param;
         bool triggered;
         Player* owner;
-    };
-}
+};

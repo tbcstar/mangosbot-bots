@@ -1,23 +1,19 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "DruidActions.h"
-
-using namespace ai;
-
-bool CastCasterFormAction::Execute(Event event)
-{
-    botAI->RemoveShapeshift();
-    return true;
-}
+#include "../Event.h"
+#include "../../Playerbot.h"
 
 NextAction** CastAbolishPoisonAction::getAlternatives()
 {
-    return NextAction::merge( NextAction::array(0, new NextAction("cure poison"), nullptr), CastSpellAction::getPrerequisites());
+    return NextAction::merge(NextAction::array(0, new NextAction("cure poison"), nullptr), CastSpellAction::getPrerequisites());
 }
 
 NextAction** CastAbolishPoisonOnPartyAction::getAlternatives()
 {
-    return NextAction::merge( NextAction::array(0, new NextAction("cure poison on party"), nullptr), CastSpellAction::getPrerequisites());
+    return NextAction::merge(NextAction::array(0, new NextAction("cure poison on party"), nullptr), CastSpellAction::getPrerequisites());
 }
 
 Value<Unit*>* CastEntanglingRootsCcAction::GetTargetValue()
@@ -38,4 +34,14 @@ Value<Unit*>* CastHibernateCcAction::GetTargetValue()
 bool CastHibernateCcAction::Execute(Event event)
 {
     return botAI->CastSpell("hibernate", GetTarget());
+}
+
+NextAction** CastReviveAction::getPrerequisites()
+{
+    return NextAction::merge(NextAction::array(0, new NextAction("caster form"), nullptr), ResurrectPartyMemberAction::getPrerequisites());
+}
+
+NextAction** CastRebirthAction::getPrerequisites()
+{
+    return NextAction::merge(NextAction::array(0, new NextAction("caster form"), nullptr), ResurrectPartyMemberAction::getPrerequisites());
 }

@@ -2,12 +2,12 @@
 #include "../../LootObjectStack.h"
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class LootStrategyValue : public ManualSetValue<LootStrategy*>
 	{
 	public:
-        LootStrategyValue(PlayerbotAI* botAI) : ManualSetValue<LootStrategy*>(ai, normal) {}
+        LootStrategyValue(PlayerbotAI* botAI) : ManualSetValue<LootStrategy*>(botAI, normal) { }
         virtual ~LootStrategyValue() { delete defaultValue; }
 
         virtual string Save();

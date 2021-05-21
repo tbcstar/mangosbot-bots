@@ -72,7 +72,7 @@
 #include "SnareTargetValue.h"
 #include "Stances.h"
 
-namespace ai
+namespace botAI
 {
     class ValueContext : public NamedObjectContext<UntypedValue>
     {

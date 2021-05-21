@@ -3,7 +3,7 @@
 #include "CurrentTargetValue.h"
 
 #include "../../ServerFacade.h"
-using namespace ai;
+using namespace botAI;
 
 Unit* CurrentTargetValue::Get()
 {

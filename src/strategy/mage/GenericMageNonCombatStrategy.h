@@ -3,45 +3,45 @@
 #include "GenericMageStrategy.h"
 #include "../generic/NonCombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class GenericMageNonCombatStrategy : public NonCombatStrategy
     {
     public:
         GenericMageNonCombatStrategy(PlayerbotAI* botAI);
-        virtual string getName() { return "nc"; }
+        std::string const& getName() override { return "nc"; }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
     };
 
     class MageBuffManaStrategy : public Strategy
     {
     public:
-        MageBuffManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        MageBuffManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "bmana"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "bmana"; }
     };
 
     class MageBuffDpsStrategy : public Strategy
     {
     public:
-        MageBuffDpsStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        MageBuffDpsStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "bdps"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "bdps"; }
     };
 
     class MageBuffStrategy : public Strategy
     {
     public:
-        MageBuffStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+        MageBuffStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "buff"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "buff"; }
     };
 }

@@ -1,11 +1,11 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class ChatValue : public ManualSetValue<ChatMsg>
 	{
 	public:
-        ChatValue(PlayerbotAI* botAI) : ManualSetValue<ChatMsg>(ai, CHAT_MSG_WHISPER) {}
+        ChatValue(PlayerbotAI* botAI) : ManualSetValue<ChatMsg>(botAI, CHAT_MSG_WHISPER) { }
     };
 }

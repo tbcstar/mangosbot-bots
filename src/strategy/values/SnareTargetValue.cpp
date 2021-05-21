@@ -5,15 +5,15 @@
 #include "../../ServerFacade.h"
 #include "MotionGenerators/TargetedMovementGenerator.h"
 
-using namespace ai;
+using namespace botAI;
 
 Unit* SnareTargetValue::Calculate()
 {
     string spell = qualifier;
 
-    list<ObjectGuid> attackers = botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("attackers")->Get();
+    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector >("attackers")->Get();
     Unit* target = botAI->GetAiObjectContext()->GetValue<Unit*>("current target")->Get();
-    for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); ++i)
+    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); ++i)
     {
         Unit* unit = botAI->GetUnit(*i);
         if (!unit || unit == target)

@@ -4,13 +4,13 @@
 #include "../../PlayerbotAIConfig.h"
 #include "PossibleTargetsValue.h"
 
-namespace ai
+namespace botAI
 {
     class NearestAdsValue : public PossibleTargetsValue
 	{
 	public:
         NearestAdsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->tooCloseDistance) :
-            PossibleTargetsValue(ai, "nearest ads", range) {}
+            PossibleTargetsValue(botAI, "nearest ads", range) { }
 
     protected:
         bool AcceptUnit(Unit* unit);

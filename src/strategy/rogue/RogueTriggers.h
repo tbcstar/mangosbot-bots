@@ -1,42 +1,42 @@
 #pragma once
 #include "../triggers/GenericTriggers.h"
 
-namespace ai
+namespace botAI
 {
 
     class KickInterruptSpellTrigger : public InterruptSpellTrigger
     {
     public:
-        KickInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(ai, "kick") {}
+        KickInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(botAI, "kick") { }
     };
 
     class SliceAndDiceTrigger : public BuffTrigger
     {
     public:
-        SliceAndDiceTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "slice and dice") {}
+        SliceAndDiceTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "slice and dice") { }
     };
 
     class AdrenalineRushTrigger : public BuffTrigger
     {
     public:
-        AdrenalineRushTrigger(PlayerbotAI* botAI) : BuffTrigger(ai, "adrenaline rush") {}
+        AdrenalineRushTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "adrenaline rush") { }
     };
 
     class RuptureTrigger : public DebuffTrigger
     {
     public:
-        RuptureTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "rupture") {}
+        RuptureTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "rupture") { }
     };
 
     class ExposeArmorTrigger : public DebuffTrigger
     {
     public:
-        ExposeArmorTrigger(PlayerbotAI* botAI) : DebuffTrigger(ai, "expose armor") {}
+        ExposeArmorTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "expose armor") { }
     };
 
     class KickInterruptEnemyHealerSpellTrigger : public InterruptEnemyHealerTrigger
     {
     public:
-        KickInterruptEnemyHealerSpellTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(ai, "kick") {}
+        KickInterruptEnemyHealerSpellTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(botAI, "kick") { }
     };
 }

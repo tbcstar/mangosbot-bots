@@ -5,7 +5,7 @@
 #include "../../../ahbot/AhBot.h"
 #include "../../GuildTaskMgr.h"
 #include "../../RandomItemMgr.h"
-using namespace ai;
+using namespace botAI;
 
 ItemUsage ItemUsageValue::Calculate()
 {

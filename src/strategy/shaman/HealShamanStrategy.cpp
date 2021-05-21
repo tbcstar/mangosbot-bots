@@ -3,7 +3,7 @@
 #include "ShamanMultipliers.h"
 #include "HealShamanStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 class HealShamanStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
@@ -36,7 +36,7 @@ HealShamanStrategy::HealShamanStrategy(PlayerbotAI* botAI) : GenericShamanStrate
     actionNodeFactories.Add(new HealShamanStrategyActionNodeFactory());
 }
 
-void HealShamanStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void HealShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericShamanStrategy::InitTriggers(triggers);
 

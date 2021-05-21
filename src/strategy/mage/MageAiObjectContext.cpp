@@ -11,14 +11,14 @@
 #include "MageTriggers.h"
 #include "../NamedObjectContext.h"
 
-using namespace ai;
+using namespace botAI;
 
 
-namespace ai
+namespace botAI
 {
     namespace mage
     {
-        using namespace ai;
+        using namespace botAI;
 
         class StrategyFactoryInternal : public NamedObjectContext<Strategy>
         {
@@ -37,7 +37,7 @@ namespace ai
 
         private:
             static Strategy* nc(PlayerbotAI* botAI) { return new GenericMageNonCombatStrategy(botAI); }
-            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(ai, "shoot"); }
+            static Strategy* pull(PlayerbotAI* botAI) { return new PullStrategy(botAI, "shoot"); }
             static Strategy* fire_aoe(PlayerbotAI* botAI) { return new FireMageAoeStrategy(botAI); }
             static Strategy* frost_aoe(PlayerbotAI* botAI) { return new FrostMageAoeStrategy(botAI); }
             static Strategy* cure(PlayerbotAI* botAI) { return new MageCureStrategy(botAI); }
@@ -79,11 +79,11 @@ namespace ai
 };
 
 
-namespace ai
+namespace botAI
 {
     namespace mage
     {
-        using namespace ai;
+        using namespace botAI;
 
         class TriggerFactoryInternal : public NamedObjectContext<Trigger>
         {
@@ -137,11 +137,11 @@ namespace ai
 };
 
 
-namespace ai
+namespace botAI
 {
     namespace mage
     {
-        using namespace ai;
+        using namespace botAI;
 
         class AiObjectContextInternal : public NamedObjectContext<Action>
         {
@@ -233,9 +233,9 @@ namespace ai
 
 MageAiObjectContext::MageAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)
 {
-    strategyContexts.Add(new ai::mage::StrategyFactoryInternal());
-    strategyContexts.Add(new ai::mage::MageStrategyFactoryInternal());
-    strategyContexts.Add(new ai::mage::MageBuffStrategyFactoryInternal());
-    actionContexts.Add(new ai::mage::AiObjectContextInternal());
-    triggerContexts.Add(new ai::mage::TriggerFactoryInternal());
+    strategyContexts.Add(new botAI::mage::StrategyFactoryInternal());
+    strategyContexts.Add(new botAI::mage::MageStrategyFactoryInternal());
+    strategyContexts.Add(new botAI::mage::MageBuffStrategyFactoryInternal());
+    actionContexts.Add(new botAI::mage::AiObjectContextInternal());
+    triggerContexts.Add(new botAI::mage::TriggerFactoryInternal());
 }

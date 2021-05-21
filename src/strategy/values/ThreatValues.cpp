@@ -5,15 +5,15 @@
 #include "../../ServerFacade.h"
 #include "ThreatManager.h"
 
-using namespace ai;
+using namespace botAI;
 
 uint8 ThreatValue::Calculate()
 {
     if (qualifier == "aoe")
     {
         uint8 maxThreat = 0;
-        list<ObjectGuid> attackers = context->GetValue<list<ObjectGuid> >("attackers")->Get();
-        for (list<ObjectGuid>::iterator i = attackers.begin(); i != attackers.end(); i++)
+        GuidVector attackers = context->GetValue<GuidVector >("attackers")->Get();
+        for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); i++)
         {
             Unit* unit = botAI->GetUnit(*i);
             if (!unit || !sServerFacade->IsAlive(unit))

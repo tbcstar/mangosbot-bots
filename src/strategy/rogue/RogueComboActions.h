@@ -1,11 +1,11 @@
 #pragma once
 
-namespace ai
+namespace botAI
 {
 	class CastComboAction : public CastMeleeSpellAction
 	{
 	public:
-	    CastComboAction(PlayerbotAI* botAI, string name) : CastMeleeSpellAction(ai, name) {}
+	    CastComboAction(PlayerbotAI* botAI, std::string const& name) : CastMeleeSpellAction(botAI, name) { }
 
 	    virtual bool isUseful()
 	    {
@@ -16,30 +16,30 @@ namespace ai
 	class CastSinisterStrikeAction : public CastComboAction
 	{
 	public:
-		CastSinisterStrikeAction(PlayerbotAI* botAI) : CastComboAction(botAI, "sinister strike") {}
+		CastSinisterStrikeAction(PlayerbotAI* botAI) : CastComboAction(botAI, "sinister strike") { }
 	};
 
     class CastMutilateAction : public CastComboAction
     {
     public:
-        CastMutilateAction(PlayerbotAI* botAI) : CastComboAction(botAI, "mutilate") {}
+        CastMutilateAction(PlayerbotAI* botAI) : CastComboAction(botAI, "mutilate") { }
     };
 
     class CastRiposteAction : public CastComboAction
     {
     public:
-        CastRiposteAction(PlayerbotAI* botAI) : CastComboAction(botAI, "riposte") {}
+        CastRiposteAction(PlayerbotAI* botAI) : CastComboAction(botAI, "riposte") { }
     };
 
 	class CastGougeAction : public CastComboAction
 	{
 	public:
-		CastGougeAction(PlayerbotAI* botAI) : CastComboAction(botAI, "gouge") {}
+		CastGougeAction(PlayerbotAI* botAI) : CastComboAction(botAI, "gouge") { }
 	};
 
     class CastBackstabAction : public CastComboAction
     {
     public:
-        CastBackstabAction(PlayerbotAI* botAI) : CastComboAction(botAI, "backstab") {}
+        CastBackstabAction(PlayerbotAI* botAI) : CastComboAction(botAI, "backstab") { }
     };
 }

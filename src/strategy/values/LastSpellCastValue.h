@@ -1,12 +1,12 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class LastSpellCast 
     {
     public:
-        LastSpellCast() : id(0),time(0) {}
+        LastSpellCast() : id(0),time(0) { }
 
     public:
         void Set(uint32 id, ObjectGuid target, time_t time)
@@ -31,7 +31,7 @@ namespace ai
     class LastSpellCastValue : public ManualSetValue<LastSpellCast&>
 	{
 	public:
-        LastSpellCastValue(PlayerbotAI* botAI) : ManualSetValue<LastSpellCast&>(ai, data) {}
+        LastSpellCastValue(PlayerbotAI* botAI) : ManualSetValue<LastSpellCast&>(botAI, data) { }
 
     private:
         LastSpellCast data;

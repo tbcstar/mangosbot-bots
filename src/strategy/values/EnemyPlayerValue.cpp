@@ -3,7 +3,7 @@
 #include "EnemyPlayerValue.h"
 #include "TargetValue.h"
 
-using namespace ai;
+using namespace botAI;
 using namespace std;
 
 class FindEnemyPlayerStrategy : public FindTargetStrategy

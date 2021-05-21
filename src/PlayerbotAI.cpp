@@ -671,7 +671,7 @@ namespace acore
     class UnitByGuidInRangeCheck
     {
         public:
-            UnitByGuidInRangeCheck(WorldObject const* obj, ObjectGuid guid, float range) : i_obj(obj), i_range(range), i_guid(guid) {}
+            UnitByGuidInRangeCheck(WorldObject const* obj, ObjectGuid guid, float range) : i_obj(obj), i_range(range), i_guid(guid) { }
             WorldObject const& GetFocusObject() const { return *i_obj; }
             bool operator()(Unit* u)
             {
@@ -686,7 +686,7 @@ namespace acore
     class GameObjectByGuidInRangeCheck
     {
         public:
-            GameObjectByGuidInRangeCheck(WorldObject const* obj, ObjectGuid guid, float range) : i_obj(obj), i_range(range), i_guid(guid) {}
+            GameObjectByGuidInRangeCheck(WorldObject const* obj, ObjectGuid guid, float range) : i_obj(obj), i_range(range), i_guid(guid) { }
             WorldObject const& GetFocusObject() const { return *i_obj; }
             bool operator()(GameObject* u)
             {

@@ -1,16 +1,14 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../generic/NonCombatStrategy.h"
-#pragma once
 
-namespace ai
+class AttackEnemyPlayersStrategy : public NonCombatStrategy
 {
-    class AttackEnemyPlayersStrategy : public NonCombatStrategy
-    {
     public:
-        AttackEnemyPlayersStrategy() : NonCombatStrategy(botAI) {}
-        virtual string getName() { return "pvp"; }
+        AttackEnemyPlayersStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
-    public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-    };
-
-}
+        std::string const& getName() override { return "pvp"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+};

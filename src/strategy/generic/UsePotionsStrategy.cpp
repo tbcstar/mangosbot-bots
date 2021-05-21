@@ -1,18 +1,14 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "UsePotionsStrategy.h"
+#include "../../Playerbot.h"
 
-using namespace ai;
-
-void UsePotionsStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void UsePotionsStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     Strategy::InitTriggers(triggers);
 
-    triggers.push_back(new TriggerNode(
-        "critical health",
-        NextAction::array(0, new NextAction("healing potion", ACTION_MEDIUM_HEAL), nullptr)));
-
-    triggers.push_back(new TriggerNode(
-        "low mana",
-        NextAction::array(0,  new NextAction("mana potion", ACTION_EMERGENCY), nullptr)));
+    triggers.push_back(new TriggerNode("critical health", NextAction::array(0, new NextAction("healing potion", ACTION_MEDIUM_HEAL), nullptr)));
+    triggers.push_back(new TriggerNode("low mana", NextAction::array(0,  new NextAction("mana potion", ACTION_EMERGENCY), nullptr)));
 }

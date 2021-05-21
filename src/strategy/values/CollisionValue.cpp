@@ -8,7 +8,7 @@
 #include "GridNotifiersImpl.h"
 #include "CellImpl.h"
 
-using namespace ai;
+using namespace botAI;
 
 bool CollisionValue::Calculate()
 {

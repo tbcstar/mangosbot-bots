@@ -2,15 +2,15 @@
 
 #include "../generic/NonCombatStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class GenericPaladinNonCombatStrategy : public NonCombatStrategy
     {
     public:
         GenericPaladinNonCombatStrategy(PlayerbotAI* botAI);
-        virtual string getName() { return "nc"; }
+        std::string const& getName() override { return "nc"; }
     
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
    };
 }

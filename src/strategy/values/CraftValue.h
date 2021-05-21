@@ -1,12 +1,12 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class CraftData
     {
     public:
-        CraftData() : itemId(0) {}
+        CraftData() : itemId(0) { }
         CraftData(const CraftData& other) : itemId(other.itemId)
         {
             required.insert(other.required.begin(), other.required.end());
@@ -55,7 +55,7 @@ namespace ai
     class CraftValue : public ManualSetValue<CraftData&>
 	{
 	public:
-        CraftValue(PlayerbotAI* botAI) : ManualSetValue<CraftData&>(ai, data) {}
+        CraftValue(PlayerbotAI* botAI) : ManualSetValue<CraftData&>(botAI, data) { }
 
 	private:
         CraftData data;

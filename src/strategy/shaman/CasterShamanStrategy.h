@@ -3,7 +3,7 @@
 #include "GenericShamanStrategy.h"
 #include "MeleeShamanStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class CasterShamanStrategy : public GenericShamanStrategy
     {
@@ -11,19 +11,19 @@ namespace ai
         CasterShamanStrategy();
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual NextAction** getDefaultActions();
-        virtual string getName() { return "caster"; }
-        virtual int GetType() { return STRATEGY_TYPE_COMBAT | STRATEGY_TYPE_DPS | STRATEGY_TYPE_RANGED; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        NextAction** getDefaultActions() override;
+        std::string const& getName() override { return "caster"; }
+        uint32 GetType() const override { return STRATEGY_TYPE_COMBAT | STRATEGY_TYPE_DPS | STRATEGY_TYPE_RANGED; }
     };
 
     class CasterAoeShamanStrategy : public CombatStrategy
     {
     public:
-        CasterAoeShamanStrategy() : CombatStrategy(botAI) {}
+        CasterAoeShamanStrategy() : CombatStrategy(botAI) { }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual string getName() { return "caster aoe"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "caster aoe"; }
     };
 }

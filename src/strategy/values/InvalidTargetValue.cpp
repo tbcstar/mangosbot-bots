@@ -5,7 +5,7 @@
 #include "../../PlayerbotAIConfig.h"
 #include "../../ServerFacade.h"
 
-using namespace ai;
+using namespace botAI;
 
 
 bool InvalidTargetValue::Calculate()

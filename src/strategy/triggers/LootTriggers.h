@@ -1,30 +1,31 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Trigger.h"
-#include "../values/LastMovementValue.h"
 
-namespace ai
+class PlayerbotAI;
+
+class LootAvailableTrigger : public Trigger
 {
-    class LootAvailableTrigger : public Trigger
-    {
     public:
-        LootAvailableTrigger(PlayerbotAI* botAI) : Trigger(ai, "loot available") {}
+        LootAvailableTrigger(PlayerbotAI* botAI) : Trigger(botAI, "loot available") { }
 
-        virtual bool IsActive();
-    };
+        bool IsActive() override;
+};
 
-    class FarFromCurrentLootTrigger : public Trigger
-    {
+class FarFromCurrentLootTrigger : public Trigger
+{
     public:
-        FarFromCurrentLootTrigger(PlayerbotAI* botAI) : Trigger(ai, "far from current loot") {}
+        FarFromCurrentLootTrigger(PlayerbotAI* botAI) : Trigger(botAI, "far from current loot") { }
 
-        virtual bool IsActive();
-    };
+        bool IsActive() override;
+};
 
-    class CanLootTrigger : public Trigger
-    {
+class CanLootTrigger : public Trigger
+{
     public:
-        CanLootTrigger(PlayerbotAI* botAI) : Trigger(ai, "can loot") {}
+        CanLootTrigger(PlayerbotAI* botAI) : Trigger(botAI, "can loot") { }
 
-        virtual bool IsActive();
-    };
-}
+        bool IsActive() override;
+};

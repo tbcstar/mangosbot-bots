@@ -3,7 +3,7 @@
 #include "WarriorMultipliers.h"
 #include "TankWarriorStrategy.h"
 
-using namespace ai;
+using namespace botAI;
 
 
 TankWarriorStrategy::TankWarriorStrategy(PlayerbotAI* botAI) : GenericWarriorStrategy(botAI)
@@ -15,7 +15,7 @@ NextAction** TankWarriorStrategy::getDefaultActions()
     return NextAction::array(0, new NextAction("sunder armor", ACTION_NORMAL + 1), new NextAction("melee", ACTION_NORMAL), nullptr);
 }
 
-void TankWarriorStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
+void TankWarriorStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericWarriorStrategy::InitTriggers(triggers);
 

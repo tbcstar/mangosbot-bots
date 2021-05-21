@@ -4,7 +4,7 @@
 #include "../../PlayerbotAIConfig.h"
 #include "../../ServerFacade.h"
 
-using namespace ai;
+using namespace botAI;
 
 class IsTargetOfHealingSpell : public SpellEntryPredicate
 {

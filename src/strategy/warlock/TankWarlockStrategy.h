@@ -2,16 +2,16 @@
 
 #include "GenericWarlockStrategy.h"
 
-namespace ai
+namespace botAI
 {
     class TankWarlockStrategy : public GenericWarlockStrategy
     {
     public:
         TankWarlockStrategy(PlayerbotAI* botAI);
-        virtual string getName() { return "tank"; }
+        std::string const& getName() override { return "tank"; }
 
     public:
-        virtual void InitTriggers(std::list<TriggerNode*> &triggers);
-        virtual NextAction** getDefaultActions();
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        NextAction** getDefaultActions() override;
     };
 }

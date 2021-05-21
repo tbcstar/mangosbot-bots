@@ -3,21 +3,21 @@
 #include "../../PlayerbotAIConfig.h"
 #include "../../ServerFacade.h"
 
-namespace ai
+namespace botAI
 {
     class NearestUnitsValue : public ObjectGuidListCalculatedValue
 	{
 	public:
-        NearestUnitsValue(PlayerbotAI* botAI, string name, float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :
-            ObjectGuidListCalculatedValue(ai, name, 2), range(range), ignoreLos(ignoreLos) {}
+        NearestUnitsValue(PlayerbotAI* botAI, std::string const& name, float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :
+            ObjectGuidListCalculatedValue(botAI, name, 2), range(range), ignoreLos(ignoreLos) { }
 
 	public:
-        list<ObjectGuid> Calculate()
+        GuidVector Calculate()
         {
             list<Unit*> targets;
             FindUnits(targets);
 
-            list<ObjectGuid> results;
+            GuidVector results;
             for(list<Unit *>::iterator i = targets.begin(); i!= targets.end(); ++i)
             {
                 Unit* unit = *i;

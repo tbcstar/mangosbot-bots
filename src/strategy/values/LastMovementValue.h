@@ -1,7 +1,7 @@
 #pragma once
 #include "../Value.h"
 
-namespace ai
+namespace botAI
 {
     class LastMovement
     {
@@ -53,7 +53,7 @@ namespace ai
     class LastMovementValue : public ManualSetValue<LastMovement&>
 	{
 	public:
-        LastMovementValue(PlayerbotAI* botAI) : ManualSetValue<LastMovement&>(ai, data) {}
+        LastMovementValue(PlayerbotAI* botAI) : ManualSetValue<LastMovement&>(botAI, data) { }
 
     private:
         LastMovement data;
@@ -62,6 +62,6 @@ namespace ai
     class StayTimeValue : public ManualSetValue<time_t>
 	{
 	public:
-        StayTimeValue(PlayerbotAI* botAI) : ManualSetValue<time_t>(ai, 0) {}
+        StayTimeValue(PlayerbotAI* botAI) : ManualSetValue<time_t>(botAI, 0) { }
     };
 }
