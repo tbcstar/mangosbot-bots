@@ -1,70 +1,72 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "PartyMemberToHeal.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "PartyMemberToHeal.h"
+#include "../../Playerbot.h"
 
 class IsTargetOfHealingSpell : public SpellEntryPredicate
 {
-public:
-    virtual bool Check(SpellEntry const* spell) {
-        for (int i=0; i<3; i++) {
-            if (spell->Effect[i] == SPELL_EFFECT_HEAL ||
-                spell->Effect[i] == SPELL_EFFECT_HEAL_MAX_HEALTH ||
-                spell->Effect[i] == SPELL_EFFECT_HEAL_MECHANICAL)
-                return true;
-        }
-        return false;
-    }
+    public:
+        bool Check(SpellInfo const* spellInfo) override
+        {
+            for (uint8 i = 0; i < 3; ++i)
+            {
+                if (spellInfo->Effects[i].Effect == SPELL_EFFECT_HEAL || spellInfo->Effects[i].Effect == SPELL_EFFECT_HEAL_MAX_HEALTH ||
+                    spellInfo->Effects[i].Effect == SPELL_EFFECT_HEAL_MECHANICAL)
+                    return true;
+            }
 
+            return false;
+        }
 };
 
-bool compareByHealth(const Unit *u1, const Unit *u2)
+inline bool compareByHealth(Unit const* u1, Unit const* u2)
 {
-    return u1->GetHealthPercent() < u2->GetHealthPercent();
+    return u1->GetHealthPct() < u2->GetHealthPct();
 }
 
 Unit* PartyMemberToHeal::Calculate()
 {
-
-    IsTargetOfHealingSpell predicate;
-
     Group* group = bot->GetGroup();
     if (!group)
         return nullptr;
 
-    vector<Unit*> needHeals;
+    IsTargetOfHealingSpell predicate;
+    std::vector<Unit*> needHeals;
     for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
     {
-        Player* player = gref->getSource();
-        if (!Check(player) || !sServerFacade->IsAlive(player))
+        Player* player = gref->GetSource();
+        if (!Check(player) || !player->IsAlive())
             continue;
 
-        uint8 health = player->GetHealthPercent();
+        uint8 health = player->GetHealthPct();
         if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(player, predicate))
             needHeals.push_back(player);
 
-        Pet* pet = player->GetPet();
-        if (pet && CanHealPet(pet))
+        if (Pet* pet = player->GetPet())
         {
-            health = pet->GetHealthPercent();
-            if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(player, predicate))
+            health = pet->GetHealthPct();
+            if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(pet, predicate))
                 needHeals.push_back(pet);
         }
     }
+
     if (needHeals.empty())
         return nullptr;
 
-    sort(needHeals.begin(), needHeals.end(), compareByHealth);
+    std::sort(needHeals.begin(), needHeals.end(), compareByHealth);
 
-    int healerIndex = 0;
+    uint32 healerIndex = 0;
     for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
     {
-        Player* player = gref->getSource();
-        if (!player) continue;
-        if (player == bot) break;
+        Player* player = gref->GetSource();
+        if (!player)
+            continue;
+
+        if (player == bot)
+            break;
+
         if (botAI->IsHeal(player))
         {
             float percent = (float)player->GetPower(POWER_MANA) / (float)player->GetMaxPower(POWER_MANA) * 100.0;
@@ -72,17 +74,12 @@ Unit* PartyMemberToHeal::Calculate()
                 healerIndex++;
         }
     }
+
     healerIndex = healerIndex % needHeals.size();
     return needHeals[healerIndex];
 }
 
-bool PartyMemberToHeal::CanHealPet(Pet* pet)
-{
-    return MINI_PET != pet->getPetType();
-}
-
 bool PartyMemberToHeal::Check(Unit* player)
 {
-    return player && player != bot && player->GetMapId() == bot->GetMapId() &&
-        bot->GetDistance(player) < sPlayerbotAIConfig->spellDistance;
+    return player && player != bot && player->GetMapId() == bot->GetMapId() && bot->GetDistance(player) < sPlayerbotAIConfig->spellDistance;
 }

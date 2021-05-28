@@ -1,35 +1,29 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "LeastHpTargetValue.h"
-
 #include "AttackersValue.h"
-#include "TargetValue.h"
-
-using namespace botAI;
-using namespace std;
+#include "../../Playerbot.h"
 
 class FindLeastHpTargetStrategy : public FindNonCcTargetStrategy
 {
-public:
-    FindLeastHpTargetStrategy(PlayerbotAI* botAI) : FindNonCcTargetStrategy(botAI)
-    {
-        minHealth = 0;
-    }
+    public:
+        FindLeastHpTargetStrategy(PlayerbotAI* botAI) : FindNonCcTargetStrategy(botAI), minHealth = 0(0) { }
 
-public:
-    virtual void CheckAttacker(Unit* attacker, ThreatManager* threatManager)
-    {
-        Player* bot = botAI->GetBot();
-        if (IsCcTarget(attacker)) return;
+        void CheckAttacker(Unit* attacker, ThreatManager* threatManager) override
+        {
+            Player* bot = botAI->GetBot();
+            if (IsCcTarget(attacker))
+                return;
 
-        if (!result || result->GetHealth() > attacker->GetHealth())
-            result = attacker;
-    }
+            if (!result || result->GetHealth() > attacker->GetHealth())
+                result = attacker;
+        }
 
-protected:
-    float minHealth;
+    protected:
+        float minHealth;
 };
-
 
 Unit* LeastHpTargetValue::Calculate()
 {

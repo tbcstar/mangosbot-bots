@@ -1,17 +1,19 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Value.h"
 
-namespace botAI
-{
-    class SkipSpellsListValue : public ManualSetValue<set<uint32>&>
-	{
-	public:
-        SkipSpellsListValue(PlayerbotAI* botAI) : ManualSetValue<set<uint32>&>(botAI, list) { }
+class PlayerbotAI;
 
-        virtual string Save();
-        virtual bool Load(string value);
+class SkipSpellsListValue : public ManualSetValue<std::set<uint32>&>
+{
+	public:
+        SkipSpellsListValue(PlayerbotAI* botAI) : ManualSetValue<std::set<uint32>&>(botAI, list) { }
+
+        std::string const& Save() override;
+        bool Load(std::string const& value) override;
 
     private:
-        set<uint32> list;
-    };
-}
+        std::set<uint32> list;
+};

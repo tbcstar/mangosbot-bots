@@ -1,24 +1,24 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "Formations.h"
-
-#include "../../ServerFacade.h"
 #include "Arrow.h"
-
-using namespace botAI;
+#include "../Event.h"
+#include "../../Playerbot.h"
+#include "../../ServerFacade.h"
 
 WorldLocation Formation::NullLocation = WorldLocation();
 
 bool IsSameLocation(WorldLocation const &a, WorldLocation const &b)
 {
-	return a.GetPositionX() == b.GetPositionX() && a.GetPositionY() == b.GetPositionY() && a.GetPositionZ() == b.GetPositionZ() && a.mapid == b.mapid;
+	return a.GetPositionX() == b.GetPositionX() && a.GetPositionY() == b.GetPositionY() && a.GetPositionZ() == b.GetPositionZ() && a.GetMapId() == b.GetMapId();
 }
 
 bool Formation::IsNullLocation(WorldLocation const& loc)
 {
 	return IsSameLocation(loc, Formation::NullLocation);
 }
-
 
 WorldLocation MoveAheadFormation::GetLocation()
 {
@@ -34,7 +34,8 @@ WorldLocation MoveAheadFormation::GetLocation()
     float y = loc.GetPositionY();
     float z = loc.GetPositionZ();
 
-    if (sServerFacade->isMoving(master)) {
+    if (master->isMoving())
+    {
         float ori = master->GetOrientation();
         float x1 = x + sPlayerbotAIConfig->tooCloseDistance * cos(ori);
         float y1 = y + sPlayerbotAIConfig->tooCloseDistance * sin(ori);
@@ -45,6 +46,7 @@ WorldLocation MoveAheadFormation::GetLocation()
             y = y1;
         }
     }
+
     float ground = master->GetMap()->GetHeight(x, y, z);
     if (ground <= INVALID_HEIGHT)
         return Formation::NullLocation;
@@ -54,27 +56,28 @@ WorldLocation MoveAheadFormation::GetLocation()
     return WorldLocation(master->GetMapId(), x, y, z);
 }
 
-namespace botAI
+class MeleeFormation : public FollowFormation
 {
-    class MeleeFormation : public FollowFormation
-    {
     public:
         MeleeFormation(PlayerbotAI* botAI) : FollowFormation(botAI, "melee") { }
-        std::string const& GetTargetName() override { return "master target"; }
-    };
 
-    class QueueFormation : public FollowFormation
-    {
+        std::string const& GetTargetName() override { return "master target"; }
+};
+
+class QueueFormation : public FollowFormation
+{
     public:
         QueueFormation(PlayerbotAI* botAI) : FollowFormation(botAI, "queue") { }
-        std::string const& GetTargetName() override { return "line target"; }
-    };
 
-    class NearFormation : public MoveAheadFormation
-    {
+        std::string const& GetTargetName() override { return "line target"; }
+};
+
+class NearFormation : public MoveAheadFormation
+{
     public:
         NearFormation(PlayerbotAI* botAI) : MoveAheadFormation(botAI, "near") { }
-        virtual WorldLocation GetLocationInternal()
+
+        WorldLocation GetLocationInternal() override
         {
             Player* master = GetMaster();
             if (!master)
@@ -94,15 +97,15 @@ namespace botAI
             return WorldLocation(master->GetMapId(), x, y, z);
         }
 
-        virtual float GetMaxDistance() { return sPlayerbotAIConfig->followDistance; }
-    };
+        float GetMaxDistance() override { return sPlayerbotAIConfig->followDistance; }
+};
 
-
-    class ChaosFormation : public MoveAheadFormation
-    {
+class ChaosFormation : public MoveAheadFormation
+{
     public:
         ChaosFormation(PlayerbotAI* botAI) : MoveAheadFormation(botAI, "chaos"), lastChangeTime(0) { }
-        virtual WorldLocation GetLocationInternal()
+
+        WorldLocation GetLocationInternal() override
         {
             Player* master = GetMaster();
             if (!master)
@@ -112,7 +115,8 @@ namespace botAI
 			float angle = GetFollowAngle();
 
             time_t now = time(0);
-            if (!lastChangeTime || now - lastChangeTime >= 3) {
+            if (!lastChangeTime || now - lastChangeTime >= 3)
+            {
                 lastChangeTime = now;
                 dx = (urand(0, 10) / 10.0 - 0.5) * sPlayerbotAIConfig->tooCloseDistance;
                 dy = (urand(0, 10) / 10.0 - 0.5) * sPlayerbotAIConfig->tooCloseDistance;
@@ -131,18 +135,21 @@ namespace botAI
             return WorldLocation(master->GetMapId(), x, y, z);
         }
 
-        virtual float GetMaxDistance() { return sPlayerbotAIConfig->followDistance + dr; }
+        float GetMaxDistance() override { return sPlayerbotAIConfig->followDistance + dr; }
 
     private:
         time_t lastChangeTime;
-        float dx = 0, dy = 0, dr = 0;
-    };
+        float dx = 0.f;
+        float dy = 0.f;
+        float dr = 0.f;
+};
 
-    class CircleFormation : public MoveFormation
-    {
+class CircleFormation : public MoveFormation
+{
     public:
         CircleFormation(PlayerbotAI* botAI) : MoveFormation(botAI, "circle") { }
-        virtual WorldLocation GetLocation()
+
+        WorldLocation GetLocation() override
         {
             float range = 2.0f;
 
@@ -156,20 +163,20 @@ namespace botAI
 
             switch (bot->getClass())
             {
-            case CLASS_HUNTER:
-            case CLASS_MAGE:
-            case CLASS_PRIEST:
-            case CLASS_WARLOCK:
-                range = botAI->GetRange("flee");
-                break;
-            case CLASS_DRUID:
-                if (!botAI->IsTank(bot))
+                case CLASS_HUNTER:
+                case CLASS_MAGE:
+                case CLASS_PRIEST:
+                case CLASS_WARLOCK:
                     range = botAI->GetRange("flee");
-                break;
-            case CLASS_SHAMAN:
-                if (botAI->IsHeal(bot))
-                    range = botAI->GetRange("flee");
-                break;
+                    break;
+                case CLASS_DRUID:
+                    if (!botAI->IsTank(bot))
+                        range = botAI->GetRange("flee");
+                    break;
+                case CLASS_SHAMAN:
+                    if (botAI->IsHeal(bot))
+                        range = botAI->GetRange("flee");
+                    break;
             }
 
             float angle = GetFollowAngle();
@@ -182,15 +189,17 @@ namespace botAI
 
             z += CONTACT_DISTANCE;
             bot->UpdateAllowedPositionZ(x, y, z);
+
             return WorldLocation(bot->GetMapId(), x, y, z);
         }
-    };
+};
 
-    class LineFormation : public MoveAheadFormation
-    {
+class LineFormation : public MoveAheadFormation
+{
     public:
         LineFormation(PlayerbotAI* botAI) : MoveAheadFormation(botAI, "line") { }
-        virtual WorldLocation GetLocationInternal()
+
+        WorldLocation GetLocationInternal() override
         {
             Group* group = bot->GetGroup();
             if (!group)
@@ -207,11 +216,11 @@ namespace botAI
             float z = master->GetPositionZ();
             float orientation = master->GetOrientation();
 
-            vector<Player*> players;
+            std::vector<Player*> players;
             GroupReference* gref = group->GetFirstMember();
-            while( gref )
+            while (gref)
             {
-                Player* member = gref->getSource();
+                Player* member = gref->GetSource();
                 if (member != master)
                     players.push_back(member);
 
@@ -222,13 +231,14 @@ namespace botAI
 
             return MoveLine(players, 0.0f, x, y, z, orientation, range);
         }
-    };
+};
 
-    class ShieldFormation : public MoveFormation
-    {
+class ShieldFormation : public MoveFormation
+{
     public:
         ShieldFormation(PlayerbotAI* botAI) : MoveFormation(botAI, "shield") { }
-        virtual WorldLocation GetLocation()
+
+        WorldLocation GetLocation() override
         {
             Group* group = bot->GetGroup();
             if (!group)
@@ -245,12 +255,12 @@ namespace botAI
             float z = master->GetPositionZ();
             float orientation = master->GetOrientation();
 
-            vector<Player*> tanks;
-            vector<Player*> dps;
+            std::vector<Player*> tanks;
+            std::vector<Player*> dps;
             GroupReference* gref = group->GetFirstMember();
-            while( gref )
+            while (gref)
             {
-                Player* member = gref->getSource();
+                Player* member = gref->GetSource();
                 if (member != master)
                 {
                     if (botAI->IsTank(member))
@@ -271,29 +281,34 @@ namespace botAI
             {
                 return MoveLine(tanks, 0.0f, x, y, z, orientation, range);
             }
+
             if (!botAI->IsTank(bot) && !botAI->IsTank(master))
             {
                 return MoveLine(dps, 0.0f, x, y, z, orientation, range);
             }
+
             if (botAI->IsTank(bot) && !botAI->IsTank(master))
             {
                 float diff = tanks.size() % 2 == 0 ? -sPlayerbotAIConfig->tooCloseDistance / 2.0f : 0.0f;
                 return MoveLine(tanks, diff, x + cos(orientation) * range, y + sin(orientation) * range, z, orientation, range);
             }
+
             if (!botAI->IsTank(bot) && botAI->IsTank(master))
             {
                 float diff = dps.size() % 2 == 0 ? -sPlayerbotAIConfig->tooCloseDistance / 2.0f : 0.0f;
                 return MoveLine(dps, diff, x - cos(orientation) * range, y - sin(orientation) * range, z, orientation, range);
             }
+
             return Formation::NullLocation;
         }
-    };
+};
 
-    class FarFormation : public FollowFormation
-    {
+class FarFormation : public FollowFormation
+{
     public:
         FarFormation(PlayerbotAI* botAI) : FollowFormation(botAI, "far") { }
-        virtual WorldLocation GetLocation()
+
+        WorldLocation GetLocation() override
         {
             float range = sPlayerbotAIConfig->farDistance;
             float followRange = sPlayerbotAIConfig->followDistance;
@@ -311,6 +326,7 @@ namespace botAI
             float x = master->GetPositionX() + cos(angle) * range + cos(followAngle) * followRange;
             float y = master->GetPositionY() + sin(angle) * range + sin(followAngle) * followRange;
             float z = master->GetPositionZ();
+
             float ground = master->GetMap()->GetHeight(x, y, z);
             if (ground <= INVALID_HEIGHT)
             {
@@ -328,6 +344,7 @@ namespace botAI
                         minY = y;
                     }
                 }
+
                 if (minDist)
                 {
                     z += CONTACT_DISTANCE;
@@ -342,7 +359,6 @@ namespace botAI
             bot->UpdateAllowedPositionZ(x, y, z);
             return WorldLocation(bot->GetMapId(), x, y, z);
         }
-    };
 };
 
 float Formation::GetFollowAngle()
@@ -350,48 +366,66 @@ float Formation::GetFollowAngle()
     Player* master = GetMaster();
     Group* group = bot->GetGroup();
     PlayerbotAI* botAI = bot->GetPlayerbotAI();
-    int index = 1, total = 1;
+
+    uint32 index = 1;
+    uint32 total = 1;
     if (!group && master)
     {
         for (PlayerBotMap::const_iterator i = master->GetPlayerbotMgr()->GetPlayerBotsBegin(); i != master->GetPlayerbotMgr()->GetPlayerBotsEnd(); ++i)
         {
-            if (i->second == bot) index = total;
+            if (i->second == bot)
+                index = total;
+
             total++;
         }
     }
     else if (group)
     {
-        vector<Player*> roster;
+        std::vector<Player*> roster;
         for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
         {
-            Player* member = ref->getSource();
-            if (member && member != master && !botAI->IsTank(member) && !botAI->IsHeal(member))
+            if (Player* member = ref->GetSource())
             {
-                roster.insert(roster.begin() + roster.size() / 2, member);
-            }
-        }
-        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
-        {
-            Player* member = ref->getSource();
-            if (member && member != master && botAI->IsHeal(member))
-            {
-                roster.insert(roster.begin() + roster.size() / 2, member);
-            }
-        }
-        bool left = true;
-        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
-        {
-            Player* member = ref->getSource();
-            if (member && member != master && botAI->IsTank(member))
-            {
-                if (left) roster.push_back(member); else roster.insert(roster.begin(), member);
-                left = !left;
+                if (member != master && !botAI->IsTank(member) && !botAI->IsHeal(member))
+                {
+                    roster.insert(roster.begin() + roster.size() / 2, member);
+                }
             }
         }
 
-        for (vector<Player*>::iterator i = roster.begin(); i != roster.end(); ++i)
+        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
         {
-            if (*i == bot) break;
+            if (Player* member = ref->GetSource())
+            {
+                if (member != master && botAI->IsHeal(member))
+                {
+                    roster.insert(roster.begin() + roster.size() / 2, member);
+                }
+            }
+        }
+
+        bool left = true;
+        for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
+        {
+            if (Player* member = ref->GetSource())
+            {
+                if (member != master && botAI->IsTank(member))
+                {
+                    if (left)
+                        roster.push_back(member);
+                    else
+                        roster.insert(roster.begin(), member);
+
+                    left = !left;
+                }
+            }
+        }
+
+        for (Player* playerRoster : roster)
+        {
+            if (playerRoster == bot)
+                break;
+
             index++;
         }
 
@@ -406,72 +440,100 @@ FormationValue::FormationValue(PlayerbotAI* botAI) : ManualSetValue<Formation*>(
 {
 }
 
-string FormationValue::Save()
+FormationValue::~FormationValue()
+{
+    if (value)
+    {
+        delete value;
+        value = nullptr;
+    }
+}
+
+std::string const& FormationValue::Save()
 {
     return value ? value->getName() : "?";
 }
 
-bool FormationValue::Load(string formation)
+bool FormationValue::Load(std::string const& formation)
 {
     if (formation == "melee")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new MeleeFormation(botAI);
     }
     else if (formation == "queue")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new QueueFormation(botAI);
     }
     else if (formation == "chaos")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new ChaosFormation(botAI);
     }
     else if (formation == "circle")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new CircleFormation(botAI);
     }
     else if (formation == "line")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new LineFormation(botAI);
     }
     else if (formation == "shield")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new ShieldFormation(botAI);
     }
     else if (formation == "arrow")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new ArrowFormation(botAI);
     }
     else if (formation == "near" || formation == "default")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new NearFormation(botAI);
     }
     else if (formation == "far")
     {
-        if (value) delete value;
+        if (value)
+            delete value;
+
         value = new FarFormation(botAI);
     }
-    else return false;
+    else
+        return false;
 
     return true;
 }
 
-
 bool SetFormationAction::Execute(Event event)
 {
-    string formation = event.getParam();
+    std::string const& formation = event.getParam();
 
     FormationValue* value = (FormationValue*)context->GetValue<Formation*>("formation");
     if (formation == "?" || formation.empty())
     {
-        ostringstream str; str << "Formation: |cff00ff00" << value->Get()->getName();
+        std::ostringstream str;
+        str << "Formation: |cff00ff00" << value->Get()->getName();
         botAI->TellMaster(str);
         return true;
     }
@@ -487,33 +549,35 @@ bool SetFormationAction::Execute(Event event)
 
     if (!value->Load(formation))
     {
-        ostringstream str; str << "Invalid formation: |cffff0000" << formation;
+        std::ostringstream str;
+        str << "Invalid formation: |cffff0000" << formation;
         botAI->TellMaster(str);
         botAI->TellMaster("Please set to any of:|cffffffff near (default), queue, chaos, circle, line, shield, arrow, melee, far");
         return false;
     }
 
-    ostringstream str; str << "Formation set to: " << formation;
+    std::ostringstream str;
+    str << "Formation set to: " << formation;
     botAI->TellMaster(str);
     return true;
 }
 
-
-WorldLocation MoveFormation::MoveLine(vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range)
+WorldLocation MoveFormation::MoveLine(std::vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range)
 {
     if (line.size() < 5)
     {
         return MoveSingleLine(line, diff, cx, cy, cz, orientation, range);
     }
 
-    int lines = ceil((double)line.size() / 5.0);
-    for (int i = 0; i < lines; i++)
+    uint32 lines = ceil((double)line.size() / 5.0);
+    for (uint32 i = 0; i < lines; i++)
     {
         float radius = range * i;
         float x = cx + cos(orientation) * radius;
         float y = cy + sin(orientation) * radius;
-        vector<Player*> singleLine;
-        for (int j = 0; j < 5 && !line.empty(); j++)
+
+        std::vector<Player*> singleLine;
+        for (uint32 j = 0; j < 5 && !line.empty(); j++)
         {
             singleLine.push_back(line[line.size() - 1]);
             line.pop_back();
@@ -527,18 +591,16 @@ WorldLocation MoveFormation::MoveLine(vector<Player*> line, float diff, float cx
     return Formation::NullLocation;
 }
 
-WorldLocation MoveFormation::MoveSingleLine(vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range)
+WorldLocation MoveFormation::MoveSingleLine(std::vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range)
 {
     float count = line.size();
     float angle = orientation - M_PI / 2.0f;
     float x = cx + cos(angle) * (range * floor(count / 2.0f) + diff);
     float y = cy + sin(angle) * (range * floor(count / 2.0f) + diff);
 
-    int index = 0;
-    for (vector<Player*>::iterator i = line.begin(); i != line.end(); i++)
+    uint32 index = 0;
+    for (Player* member : line)
     {
-        Player* member = *i;
-
         if (member == bot)
         {
             float angle = orientation + M_PI / 2.0f;

@@ -1,23 +1,24 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Value.h"
 
-namespace botAI
+class PlayerbotAI;
+class WorldLocation;
+
+class AoePositionValue : public CalculatedValue<WorldLocation>
 {
-    class AoePositionValue : public CalculatedValue<WorldLocation>
-	{
 	public:
-        AoePositionValue() : CalculatedValue<WorldLocation>(botAI, "aoe position") { }
+        AoePositionValue(PlayerbotAI* botAI) : CalculatedValue<WorldLocation>(botAI, "aoe position") { }
 
-	public:
-        virtual WorldLocation Calculate();
-    };
+        WorldLocation Calculate() override
+};
 
-    class AoeCountValue : public CalculatedValue<uint8>
-	{
+class AoeCountValue : public CalculatedValue<uint8>
+{
 	public:
-        AoeCountValue() : CalculatedValue<uint8>(botAI, "aoe count") { }
+        AoeCountValue(PlayerbotAI* botAI) : CalculatedValue<uint8>(botAI, "aoe count") { }
 
-	public:
-        virtual uint8 Calculate();
-    };
-}
+        uint8 Calculate() override;
+};

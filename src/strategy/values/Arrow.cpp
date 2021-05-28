@@ -1,21 +1,22 @@
-#include "../../../botpch.h"
-#include "../../playerbot.h"
-#include "Formations.h"
-#include "Arrow.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "Arrow.h"
+#include "../../Playerbot.h"
 
 WorldLocation ArrowFormation::GetLocationInternal()
 {
-    if (!bot->GetGroup()) return Formation::NullLocation;
+    if (!bot->GetGroup())
+        return Formation::NullLocation;
 
     Build();
 
-    int tankLines = 1 + tanks.Size() / 6;
-    int meleeLines = 1 + melee.Size() / 6;
-    int rangedLines = 1 + ranged.Size() / 6;
-    int healerLines = 1 + healers.Size() / 6;
-    float offset = 0;
+    uint32 tankLines = 1 + tanks.Size() / 6;
+    uint32 meleeLines = 1 + melee.Size() / 6;
+    uint32 rangedLines = 1 + ranged.Size() / 6;
+    uint32 healerLines = 1 + healers.Size() / 6;
+    float offset = 0.f;
 
     Player* master = botAI->GetMaster();
     float orientation = master->GetOrientation();
@@ -45,8 +46,6 @@ WorldLocation ArrowFormation::GetLocationInternal()
         return Formation::NullLocation;
 
     return WorldLocation(master->GetMapId(), x, y, 0.05f + ground);
-
-
 }
 
 void ArrowFormation::Build()
@@ -79,7 +78,7 @@ void ArrowFormation::FillSlotsExceptMaster()
     uint32 index = 0;
     while (gref)
     {
-        Player* member = gref->getSource();
+        Player* member = gref->GetSource();
 
         if (member == bot)
             FindSlot(member)->AddLast(botUnit = new FormationUnit(index, false));
@@ -98,7 +97,7 @@ void ArrowFormation::AddMasterToSlot()
     uint32 index = 0;
     while (gref)
     {
-        Player* member = gref->getSource();
+        Player* member = gref->GetSource();
 
         if (member == botAI->GetMaster())
         {
@@ -115,9 +114,8 @@ void FormationSlot::PlaceUnits(UnitPlacer* placer)
 {
     uint32 index = 0;
     uint32 count = units.size();
-    for (vector<FormationUnit*>::iterator i = units.begin(); i != units.end(); ++i)
+    for (FormationUnit* unit : units)
     {
-        FormationUnit* unit = *i;
         unit->SetLocation(placer->Place(unit, index, count));
         index++;
     }
@@ -129,9 +127,9 @@ UnitPosition MultiLineUnitPlacer::Place(FormationUnit *unit, uint32 index, uint3
     if (count <= 6)
         return placer.Place(unit, index, count);
 
-    int lineNo = index / 6;
-    int indexInLine = index % 6;
-    int lineSize = max(count - lineNo * 6, uint32(6));
+    uint32 lineNo = index / 6;
+    uint32 indexInLine = index % 6;
+    uint32 lineSize = std::max(count - lineNo * 6, uint32(6));
     float x = cos(orientation) * sPlayerbotAIConfig->followDistance * lineNo;
     float y = sin(orientation) * sPlayerbotAIConfig->followDistance * lineNo;
     return placer.Place(unit, indexInLine, lineSize);
@@ -147,19 +145,18 @@ UnitPosition SingleLineUnitPlacer::Place(FormationUnit *unit, uint32 index, uint
 
 void FormationSlot::Move(float dx, float dy)
 {
-    for (vector<FormationUnit*>::iterator i = units.begin(); i != units.end(); ++i)
+    for (FormationUnit* unit : units)
     {
-        FormationUnit* unit = *i;
         unit->SetLocation(unit->GetX() + dx, unit->GetY() + dy);
     }
 }
 
 FormationSlot::~FormationSlot()
 {
-    for (vector<FormationUnit*>::iterator i = units.begin(); i != units.end(); ++i)
+    for (FormationUnit* unit : units)
     {
-        FormationUnit* unit = *i;
         delete unit;
     }
+
     units.clear();
 }

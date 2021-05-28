@@ -1,16 +1,23 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
+#include "../Action.h"
+#include "../NamedObjectContext.h"
 #include "../Value.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace botAI
-{
-    class Formation : public AiNamedObject
-    {
-    public:
-        Formation(PlayerbotAI* botAI, std::string const& name) : AiNamedObject (botAI, name) { }
+class Event;
+class Player;
+class PlayerbotAI;
+class WorldLocation;
 
+class Formation : public AiNamedObject
+{
     public:
-        std::string const& GetTargetName() override { return ""; }
+        Formation(PlayerbotAI* botAI, std::string const& name) : AiNamedObject(botAI, name) { }
+
+        virtual std::string const& GetTargetName() { return ""; }
         virtual WorldLocation GetLocation() { return NullLocation; }
         virtual float GetMaxDistance() { return sPlayerbotAIConfig->followDistance; }
         static WorldLocation NullLocation;
@@ -18,46 +25,48 @@ namespace botAI
 
     protected:
         float GetFollowAngle();
-    };
+};
 
-    class FollowFormation : public Formation
-    {
+class FollowFormation : public Formation
+{
     public:
         FollowFormation(PlayerbotAI* botAI, std::string const& name) : Formation(botAI, name) { }
-    };
+};
 
-    class MoveFormation : public Formation
-    {
+class MoveFormation : public Formation
+{
     public:
         MoveFormation(PlayerbotAI* botAI, std::string const& name) : Formation(botAI, name) { }
 
     protected:
-        WorldLocation MoveLine(vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range);
-        WorldLocation MoveSingleLine(vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range);
-    };
+        WorldLocation MoveLine(std::vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range);
+        WorldLocation MoveSingleLine(std::vector<Player*> line, float diff, float cx, float cy, float cz, float orientation, float range);
+};
 
-    class MoveAheadFormation : public MoveFormation
-    {
+class MoveAheadFormation : public MoveFormation
+{
     public:
         MoveAheadFormation(PlayerbotAI* botAI, std::string const& name) : MoveFormation(botAI, name) { }
-        virtual WorldLocation GetLocation();
-        virtual WorldLocation GetLocationInternal() { return NullLocation; }
-    };
 
-    class FormationValue : public ManualSetValue<Formation*>
-	{
+        WorldLocation GetLocation() override;
+        virtual WorldLocation GetLocationInternal() { return NullLocation; }
+};
+
+class FormationValue : public ManualSetValue<Formation*>
+{
 	public:
         FormationValue(PlayerbotAI* botAI);
-        ~FormationValue() { if (value) { delete value; value = nullptr; } }
-        virtual string Save();
-        virtual bool Load(string value);
-    };
+        ~FormationValue();
 
-    class SetFormationAction : public Action
-    {
+        std::string const& Save() override;
+        bool Load(std::string const& value) override;
+};
+
+class SetFormationAction : public Action
+{
     public:
         SetFormationAction(PlayerbotAI* botAI) : Action(botAI, "set formation") { }
+
         bool Execute(Event event) override;
-    };
 };
 

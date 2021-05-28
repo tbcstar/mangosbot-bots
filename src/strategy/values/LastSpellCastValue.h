@@ -1,39 +1,30 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Value.h"
 
-namespace botAI
-{
-    class LastSpellCast 
-    {
-    public:
-        LastSpellCast() : id(0),time(0) { }
+class ObjectGuid;
+class PlayerbotAI;
 
+class LastSpellCast
+{
     public:
-        void Set(uint32 id, ObjectGuid target, time_t time)
-        {
-            this->id = id;
-            this->target = target;
-            this->time = time;
-        }
-        
-        void Reset()
-        {
-            id = 0;
-            target.Set(0);
-            time = 0;
-        }
-    public:
+        LastSpellCast() : id(0), time(0) { }
+
+        void Set(uint32 id, ObjectGuid target, time_t time);
+        void Reset();
+
         uint32 id;
         ObjectGuid target;
         time_t time;
-    };
-   
-    class LastSpellCastValue : public ManualSetValue<LastSpellCast&>
-	{
+};
+
+class LastSpellCastValue : public ManualSetValue<LastSpellCast&>
+{
 	public:
         LastSpellCastValue(PlayerbotAI* botAI) : ManualSetValue<LastSpellCast&>(botAI, data) { }
 
     private:
         LastSpellCast data;
-    };
-}
+};

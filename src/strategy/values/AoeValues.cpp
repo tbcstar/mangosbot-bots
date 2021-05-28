@@ -1,16 +1,17 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "AoeValues.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../../PlayerbotAIConfig.h"
+#include "AoeValues.h"
+#include "../../Playerbot.h"
 #include "../../ServerFacade.h"
-using namespace botAI;
 
 GuidVector FindMaxDensity(Player* bot)
 {
-    GuidVector units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<GuidVector >("possible targets");
-    map<ObjectGuid, GuidVector > groups;
-    int maxCount = 0;
+    GuidVector units = *bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<GuidVector>("possible targets");
+
+    std::map<ObjectGuid, GuidVector> groups;
+    uint32 maxCount = 0;
     ObjectGuid maxGroup;
     for (GuidVector::iterator i = units.begin(); i != units.end(); ++i)
     {
@@ -48,7 +49,10 @@ WorldLocation AoePositionValue::Calculate()
     if (group.empty())
         return WorldLocation();
 
-    float x1, y1, x2, y2;
+    float x1 = 0.f;
+    float y1 = 0.f;
+    float x2 = 0.f;
+    float y2 = 0.f;
     for (GuidVector::iterator i = group.begin(); i != group.end(); ++i)
     {
         Unit* unit = bot->GetPlayerbotAI()->GetUnit(*i);
@@ -57,13 +61,17 @@ WorldLocation AoePositionValue::Calculate()
 
         if (i == group.begin() || x1 > unit->GetPositionX())
             x1 = unit->GetPositionX();
+
         if (i == group.begin() || x2 < unit->GetPositionX())
             x2 = unit->GetPositionX();
+
         if (i == group.begin() || y1 > unit->GetPositionY())
             y1 = unit->GetPositionY();
+
         if (i == group.begin() || y2 < unit->GetPositionY())
             y2 = unit->GetPositionY();
     }
+
     float x = (x1 + x2) / 2;
     float y = (y1 + y2) / 2;
     float z = bot->GetPositionZ() + CONTACT_DISTANCE;;

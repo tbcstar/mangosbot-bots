@@ -25,7 +25,7 @@
 std::vector<std::string> split(std::string const& s, char delim);
 void split(std::vector<std::string>& dest, std::string const& str, char const* delim);
 #ifndef WIN32
-int strcmpi(std::string s1, std::string s2);
+int strcmpi(char const* s1, char const* s2);
 #endif
 
 #define CAST_ANGLE_IN_FRONT (2 * M_PI_F / 3)
@@ -36,5 +36,5 @@ int strcmpi(std::string s1, std::string s2);
 
 // Ultranix: missing death knighta
 // Ultranix: sLog->outdebug
-// Ultranix: nullptr --> nullptr
-// Ultranix: RACE_DRAENEI
+// Ultranix: RACE_DRAENEI and RACE_BLOOD_ELF
+// Ultranix: "... botAI"

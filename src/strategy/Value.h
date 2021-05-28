@@ -5,14 +5,6 @@
 #include "AiObject.h"
 #include "ObjectGuid.h"
 
-/*
-#include "Action.h"
-#include "Event.h"
-#include "../PlayerbotAIAware.h"
-#include "../PerformanceMonitor.h"
-
-*/
-
 class PlayerbotAI;
 class Unit;
 

@@ -1,10 +1,9 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "AttackerCountValues.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "AttackerCountValues.h"
+#include "../../Playerbot.h"
 
 uint8 MyAttackerCountValue::Calculate()
 {
@@ -17,28 +16,33 @@ bool HasAggroValue::Calculate()
     if (!target)
         return true;
 
-    HostileReference *ref = sServerFacade->GetHostileRefManager(bot).getFirst();
+    HostileReference *ref = bot->getHostileRefManager().getFirst();
     if (!ref)
         return true; // simulate as target is not atacking anybody yet
 
     while( ref )
     {
-        ThreatManager *threatManager = ref->getSource();
-        Unit *attacker = threatManager->getOwner();
-        Unit *victim = attacker->getVictim();
+        ThreatManager* threatManager = ref->GetSource();
+        Unit* attacker = threatManager->GetOwner();
+        Unit* victim = attacker->GetVictim();
         if (victim == bot && target == attacker)
             return true;
+
         ref = ref->next();
     }
 
-    ref = target->GetThreatManager().getCurrentVictim();
+    ref = target->getThreatManager().getCurrentVictim();
     if (ref)
     {
-        Unit* victim = ref->getTarget();
-        if (victim)
+        if (Unit* victim = ref->getTarget())
         {
-            Player* pl = dynamic_cast<Player*>(victim);
-            if (pl && botAI->IsTank(pl)) return true;
+            if (Player* pl = victim->ToPlayer())
+            {
+                if (botAI->IsTank(pl))
+                {
+                    return true;
+                }
+            }
         }
     }
 
@@ -47,14 +51,14 @@ bool HasAggroValue::Calculate()
 
 uint8 AttackerCountValue::Calculate()
 {
-    int count = 0;
+    uint32 count = 0;
     float range = sPlayerbotAIConfig->sightDistance;
 
     GuidVector attackers = context->GetValue<GuidVector >("attackers")->Get();
-    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); i++)
+    for (ObjectGuid const guid : attackers)
     {
-        Unit* unit = botAI->GetUnit(*i);
-        if (!unit || !sServerFacade->IsAlive(unit))
+        Unit* unit = botAI->GetUnit(guid);
+        if (!unit || !unit->IsAlive())
             continue;
 
         float distance = bot->GetDistance(unit);
@@ -70,44 +74,44 @@ uint8 BalancePercentValue::Calculate()
     float playerLevel = 0,
         attackerLevel = 0;
 
-    Group* group = bot->GetGroup();
-    if (group)
+    if (Group* group = bot->GetGroup())
     {
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
             Player *player = ObjectAccessor::FindPlayer(itr->guid);
-            if (!player || !sServerFacade->IsAlive(player))
+            if (!player || !player->IsAlive())
                 continue;
 
             playerLevel += player->getLevel();
         }
     }
 
-    GuidVector v = context->GetValue<GuidVector >("attackers")->Get();
-
-    for (GuidVector::iterator i = v.begin(); i!=v.end(); i++)
+    GuidVector v = context->GetValue<GuidVector>("attackers")->Get();
+    for (ObjectGuid const guid : v)
     {
-        Creature* creature = botAI->GetCreature((*i));
-        if (!creature || !sServerFacade->IsAlive(creature))
+        Creature* creature = botAI->GetCreature((guid));
+        if (!creature || !creature->IsAlive())
             continue;
 
         uint32 level = creature->getLevel();
 
-        switch (creature->GetCreatureInfo()->Rank) {
-        case CREATURE_ELITE_RARE:
-            level *= 2;
-            break;
-        case CREATURE_ELITE_ELITE:
-            level *= 3;
-            break;
-        case CREATURE_ELITE_RAREELITE:
-            level *= 3;
-            break;
-        case CREATURE_ELITE_WORLDBOSS:
-            level *= 5;
-            break;
+        switch (creature->GetCreatureTemplate()->rank)
+        {
+            case CREATURE_ELITE_RARE:
+                level *= 2;
+                break;
+            case CREATURE_ELITE_ELITE:
+                level *= 3;
+                break;
+            case CREATURE_ELITE_RAREELITE:
+                level *= 3;
+                break;
+            case CREATURE_ELITE_WORLDBOSS:
+                level *= 5;
+                break;
         }
+
         attackerLevel += level;
     }
 
@@ -118,3 +122,26 @@ uint8 BalancePercentValue::Calculate()
     return percent <= 200 ? (uint8)percent : 200;
 }
 
+Unit* AttackerCountValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}
+
+Unit* MyAttackerCountValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}
+
+Unit* HasAggroValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}
+
+Unit* BalancePercentValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}

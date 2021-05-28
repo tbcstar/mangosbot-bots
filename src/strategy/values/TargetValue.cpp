@@ -1,23 +1,26 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "TargetValue.h"
-
-#include "../../ServerFacade.h"
 #include "RtiTargetValue.h"
-#include "Unit.h"
+#include "../../Playerbot.h"
 
-using namespace botAI;
+Unit* FindTargetStrategy::GetResult()
+{
+    return result;
+}
 
 Unit* TargetValue::FindTarget(FindTargetStrategy* strategy)
 {
-    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector >("attackers")->Get();
-    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); ++i)
+    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector>("attackers")->Get();
+    for (ObjectGuid const guid : attackers)
     {
-        Unit* unit = botAI->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(guid);
         if (!unit)
             continue;
 
-        ThreatManager &threatManager = sServerFacade->GetThreatManager(unit);
+        ThreatManager &threatManager = unit->getThreatManager();
         strategy->CheckAttacker(unit, &threatManager);
     }
 
@@ -27,42 +30,40 @@ Unit* TargetValue::FindTarget(FindTargetStrategy* strategy)
 
 bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
 {
-    Group* group = botAI->GetBot()->GetGroup();
-    if (group)
+    if (Group* group = botAI->GetBot()->GetGroup())
     {
         Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
         for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
         {
             Player *member = ObjectAccessor::FindPlayer(itr->guid);
-            if (!member || !sServerFacade->IsAlive(member))
+            if (!member || !member->IsAlive())
                 continue;
 
-            PlayerbotAI* botAI = member->GetPlayerbotAI();
-            if (botAI)
+            if (PlayerbotAI* botAI = member->GetPlayerbotAI())
             {
                 if (botAI->GetAiObjectContext()->GetValue<Unit*>("rti cc target")->Get() == attacker)
                     return true;
 
-                string rti = botAI->GetAiObjectContext()->GetValue<string>("rti cc")->Get();
-                int index = RtiTargetValue::GetRtiIndex(rti);
+                std::string const& rti = botAI->GetAiObjectContext()->GetValue<string>("rti cc")->Get();
+                int32 index = RtiTargetValue::GetRtiIndex(rti);
                 if (index != -1)
                 {
-                    ObjectGuid guid = group->GetTargetIcon(index);
-                    if (guid && attacker->GetGUID() == guid)
-                        return true;
+                    if (ObjectGuid guid = group->GetTargetIcon(index))
+                        if (attacker->GetGUID() == guid)
+                            return true;
                 }
             }
         }
 
-        ObjectGuid guid = group->GetTargetIcon(4);
-        if (guid && attacker->GetGUID() == guid)
-            return true;
+        if (ObjectGuid guid = group->GetTargetIcon(4))
+            if (attacker->GetGUID() == guid)
+                return true;
     }
 
     return false;
 }
 
-void FindTargetStrategy::GetPlayerCount(Unit* creature, int* tankCount, int* dpsCount)
+void FindTargetStrategy::GetPlayerCount(Unit* creature, uint32* tankCount, uint32* dpsCount)
 {
     Player* bot = botAI->GetBot();
     if (tankCountCache.find(creature) != tankCountCache.end())
@@ -76,13 +77,12 @@ void FindTargetStrategy::GetPlayerCount(Unit* creature, int* tankCount, int* dps
     *dpsCount = 0;
 
     Unit::AttackerSet attackers(creature->getAttackers());
-    for (set<Unit*>::const_iterator i = attackers.begin(); i != attackers.end(); i++)
+    for (Unit* attacker : attackers)
     {
-        Unit* attacker = *i;
-        if (!attacker || !sServerFacade->IsAlive(attacker) || attacker == bot)
+        if (!attacker || !attacker->IsAlive() || attacker == bot)
             continue;
 
-        Player* player = dynamic_cast<Player*>(attacker);
+        Player* player = attacker->ToPlayer();
         if (!player)
             continue;
 

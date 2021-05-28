@@ -1,19 +1,19 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "EnemyHealerTargetValue.h"
-#include "../../PlayerbotAIConfig.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "EnemyHealerTargetValue.h"
+#include "../../Playerbot.h"
 
 Unit* EnemyHealerTargetValue::Calculate()
 {
-    string spell = qualifier;
+    std::string const& spell = qualifier;
 
-    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector >("attackers")->Get();
+    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector>("attackers")->Get();
     Unit* target = botAI->GetAiObjectContext()->GetValue<Unit*>("current target")->Get();
-    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); ++i)
+    for (ObjectGuid const guid : attackers)
     {
-        Unit* unit = botAI->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(guid);
         if (!unit || unit == target)
             continue;
 
@@ -24,11 +24,11 @@ Unit* EnemyHealerTargetValue::Calculate()
             continue;
 
         Spell* spell = unit->GetCurrentSpell(CURRENT_GENERIC_SPELL);
-        if (spell && IsPositiveSpell(spell->m_spellInfo))
+        if (spell && spell->m_spellInfo->IsPositive())
             return unit;
 
         spell = unit->GetCurrentSpell(CURRENT_CHANNELED_SPELL);
-        if (spell && IsPositiveSpell(spell->m_spellInfo))
+        if (spell && spell->m_spellInfo->IsPositive())
             return unit;
     }
 

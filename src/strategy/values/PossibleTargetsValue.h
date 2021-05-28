@@ -1,26 +1,25 @@
-#pragma once
-#include "../Value.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "NearestUnitsValue.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class PossibleTargetsValue : public NearestUnitsValue
 {
-    class PossibleTargetsValue : public NearestUnitsValue
-	{
 	public:
-        PossibleTargetsValue(PlayerbotAI* botAI, std::string const& name = "possible targets", float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :
+        PossibleTargetsValue(PlayerbotAI* botAI, std::string const& name = "possible targets", float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false):
           NearestUnitsValue(botAI, name, range, ignoreLos) { }
 
     protected:
-        virtual void FindUnits(list<Unit*> &targets);
-        virtual bool AcceptUnit(Unit* unit);
+        void FindUnits(std::list<Unit*>& targets) override;
+        bool AcceptUnit(Unit* unit) override;
+};
 
-	};
-
-    class AllTargetsValue : public PossibleTargetsValue
-	{
+class AllTargetsValue : public PossibleTargetsValue
+{
 	public:
-        AllTargetsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) :
-            PossibleTargetsValue(botAI, "all targets", range, true) { }
-	};
-}
+        AllTargetsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) : PossibleTargetsValue(botAI, "all targets", range, true) { }
+};

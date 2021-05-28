@@ -1,167 +1,131 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
+#include "../NamedObjectContext.h"
 #include "../Value.h"
 
+class PlayerbotAI;
 class Unit;
 
-namespace botAI
+class HealthValue : public Uint8CalculatedValue, public Qualified
 {
-    class HealthValue : public Uint8CalculatedValue, public Qualified
-    {
     public:
         HealthValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};
 
-    class IsDeadValue : public BoolCalculatedValue, public Qualified
-    {
+class IsDeadValue : public BoolCalculatedValue, public Qualified
+{
     public:
         IsDeadValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual bool Calculate();
-    };
+        Unit* GetTarget();
+        bool Calculate() override;
+};
 
-    class PetIsDeadValue : public BoolCalculatedValue
-    {
+class PetIsDeadValue : public BoolCalculatedValue
+{
     public:
         PetIsDeadValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
-        virtual bool Calculate();
-    };
 
-    class PetIsHappyValue : public BoolCalculatedValue
-    {
+        bool Calculate() override;
+};
+
+class PetIsHappyValue : public BoolCalculatedValue
+{
     public:
         PetIsHappyValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
-        virtual bool Calculate();
-    };
 
-    class RageValue : public Uint8CalculatedValue, public Qualified
-    {
+        bool Calculate() override;
+};
+
+class RageValue : public Uint8CalculatedValue, public Qualified
+{
     public:
         RageValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};
 
-    class EnergyValue : public Uint8CalculatedValue, public Qualified
-    {
+class EnergyValue : public Uint8CalculatedValue, public Qualified
+{
     public:
         EnergyValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};
 
-    class ManaValue : public Uint8CalculatedValue, public Qualified
-    {
+class ManaValue : public Uint8CalculatedValue, public Qualified
+{
     public:
         ManaValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};
 
-    class HasManaValue : public BoolCalculatedValue, public Qualified
-    {
+class HasManaValue : public BoolCalculatedValue, public Qualified
+{
     public:
         HasManaValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual bool Calculate();
-    };
+        Unit* GetTarget();
+        bool Calculate() override;
+};
 
-    class ComboPointsValue : public Uint8CalculatedValue, public Qualified
-    {
+class ComboPointsValue : public Uint8CalculatedValue, public Qualified
+{
     public:
         ComboPointsValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};
 
-    class IsMountedValue : public BoolCalculatedValue, public Qualified
-    {
+class IsMountedValue : public BoolCalculatedValue, public Qualified
+{
     public:
         IsMountedValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual bool Calculate();
-    };
+        Unit* GetTarget();
+        bool Calculate() override;
+};
 
-    class IsInCombatValue : public BoolCalculatedValue, public Qualified
-    {
+class IsInCombatValue : public BoolCalculatedValue, public Qualified
+{
     public:
         IsInCombatValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual bool Calculate() ;
-    };
+        Unit* GetTarget();
+        bool Calculate() override;
+};
 
-    class BagSpaceValue : public Uint8CalculatedValue
-    {
+class BagSpaceValue : public Uint8CalculatedValue
+{
     public:
         BagSpaceValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        virtual uint8 Calculate();
-    };
+        uint8 Calculate() override;
+};
 
-    class SpeedValue : public Uint8CalculatedValue, public Qualified
-    {
+class SpeedValue : public Uint8CalculatedValue, public Qualified
+{
     public:
         SpeedValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};
 
-    class IsInGroupValue : public BoolCalculatedValue
-    {
+class IsInGroupValue : public BoolCalculatedValue
+{
     public:
         IsInGroupValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        virtual bool Calculate() { return bot->GetGroup(); }
-    };
-}
+        bool Calculate() override;
+};

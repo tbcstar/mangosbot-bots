@@ -1,9 +1,9 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "LineTargetValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../../ServerFacade.h"
-using namespace botAI;
+#include "LineTargetValue.h"
+#include "../../Playerbot.h"
 
 Unit* LineTargetValue::Calculate()
 {
@@ -20,7 +20,7 @@ Unit* LineTargetValue::Calculate()
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
         Player *player = ObjectAccessor::FindPlayer(itr->guid);
-        if (!player || !sServerFacade->IsAlive(player) || player == master)
+        if (!player || !player->IsAlive() || player == master)
             continue;
 
         if (player == bot)

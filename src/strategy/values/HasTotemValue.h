@@ -1,34 +1,16 @@
-#pragma once
-#include "../Value.h"
-#include "TargetValue.h"
-#include "../../LootObjectStack.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../NamedObjectContext.h"
+#include "../Value.h"
+
+class PlayerbotAI;
+
+class HasTotemValue : public BoolCalculatedValue, public Qualified
 {
-    class HasTotemValue : public BoolCalculatedValue, public Qualified
-	{
 	public:
         HasTotemValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-    public:
-        bool Calculate()
-        {
-            GuidVector units = *context->GetValue<GuidVector >("nearest npcs");
-            for (GuidVector::iterator i = units.begin(); i != units.end(); i++)
-            {
-                Unit* unit = botAI->GetUnit(*i);
-                if (!unit)
-                    continue;
-
-                Creature* creature = dynamic_cast<Creature*>(unit);
-                if (!creature || !creature->IsTotem())
-                    continue;
-
-                if (strstri(creature->GetName(), qualifier.c_str()) && bot->GetDistance(creature) <= botAI->GetRange("spell"))
-                    return true;
-            }
-
-            return false;
-        }
-    };
-}
+        bool Calculate() override;
+};

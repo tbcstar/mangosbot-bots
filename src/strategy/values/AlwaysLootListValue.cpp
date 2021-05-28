@@ -1,21 +1,24 @@
-#include "botpch.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "AlwaysLootListValue.h"
-#include "../../playerbot.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+#include "../../Playerbot.h"
 
-using namespace botAI;
-
-string AlwaysLootListValue::Save()
+std::string const& AlwaysLootListValue::Save()
 {
-    ostringstream out;
+    std::ostringstream out;
     bool first = true;
-    for (set<uint32>::iterator i = value.begin(); i != value.end(); ++i)
+    for (std::set<uint32>::iterator i = value.begin(); i != value.end(); ++i)
     {
-        if (!first) out << ",";
-        else first = false;
+        if (!first)
+            out << ",";
+        else
+            first = false;
+
         out << *i;
     }
+
     return out.str();
 }
 

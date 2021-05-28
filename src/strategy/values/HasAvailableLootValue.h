@@ -1,19 +1,15 @@
-#pragma once
-#include "../Value.h"
-#include "../../PlayerbotAIConfig.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../Value.h"
+
+class PlayerbotAI;
+
+class HasAvailableLootValue : public BoolCalculatedValue
 {
-    class HasAvailableLootValue : public BoolCalculatedValue
-	{
 	public:
         HasAvailableLootValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-    public:
-        virtual bool Calculate()
-        {
-            return !AI_VALUE(bool, "can loot") &&
-                    AI_VALUE(LootObjectStack*, "available loot")->CanLoot(sPlayerbotAIConfig->lootDistance);
-        }
-    };
-}
+        bool Calculate() override;
+};

@@ -1,15 +1,18 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
+#include "../NamedObjectContext.h"
 #include "../Value.h"
 
-namespace botAI
+class PlayerbotAI;
+class Unit;
+
+class SnareTargetValue : public UnitCalculatedValue, public Qualified
 {
-    class SnareTargetValue : public UnitCalculatedValue, public Qualified
-	{
 	public:
-        SnareTargetValue(PlayerbotAI* botAI) :
-            UnitCalculatedValue(botAI, "snare target") { }
+        SnareTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI, "snare target") { }
 
     protected:
-        virtual Unit* Calculate();
-	};
-}
+        Unit* Calculate() override;
+};

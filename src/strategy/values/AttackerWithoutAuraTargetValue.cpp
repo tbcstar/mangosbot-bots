@@ -1,17 +1,17 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "AttackerWithoutAuraTargetValue.h"
-#include "../../PlayerbotAIConfig.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "AttackerWithoutAuraTargetValue.h"
+#include "../../Playerbot.h"
 
 Unit* AttackerWithoutAuraTargetValue::Calculate()
 {
     GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector >("attackers")->Get();
     Unit* target = botAI->GetAiObjectContext()->GetValue<Unit*>("current target")->Get();
-    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); ++i)
+    for (ObjectGuid const guid : attackers)
     {
-        Unit* unit = botAI->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(guid);
         if (!unit || unit == target)
             continue;
 

@@ -1,35 +1,38 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
+#include "Item.h"
+#include "../NamedObjectContext.h"
 #include "../Value.h"
-#include "../ItemVisitors.h"
 #include "../actions/InventoryAction.h"
 
-namespace botAI
+class Event;
+class PlayerbotAI;
+
+class InventoryItemValueBase : public InventoryAction
 {
-    class InventoryItemValueBase : public InventoryAction
-    {
     public:
         InventoryItemValueBase(PlayerbotAI* botAI) : InventoryAction(botAI, "empty") { }
-        virtual bool Execute(Event event) { return false; }
+
+        bool Execute(Event event) override { return false; }
 
     protected:
-        list<Item*> Find(string qualifier);
-    };
+        std::vector<Item*> Find(std::string const& qualifier);
+};
 
-    class ItemCountValue : public Uint8CalculatedValue, public Qualified, InventoryItemValueBase
-	{
+class ItemCountValue : public Uint8CalculatedValue, public Qualified, InventoryItemValueBase
+{
 	public:
         ItemCountValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI), InventoryItemValueBase(botAI) { }
 
-    public:
-        virtual uint8 Calculate();
-	};
+        uint8 Calculate() override;
+};
 
-    class InventoryItemValue : public CalculatedValue<list<Item*> >, public Qualified, InventoryItemValueBase
-    {
+class InventoryItemValue : public CalculatedValue<std::vector<Item*>>, public Qualified, InventoryItemValueBase
+{
     public:
-        InventoryItemValue(PlayerbotAI* botAI) : CalculatedValue<list<Item*> >(botAI), InventoryItemValueBase(botAI) { }
+        InventoryItemValue(PlayerbotAI* botAI) : CalculatedValue<std::vector<Item*>>(botAI), InventoryItemValueBase(botAI) { }
 
-    public:
-        virtual list<Item*> Calculate();
-    };
-}
+        std::vector<Item*> Calculate() override;
+};

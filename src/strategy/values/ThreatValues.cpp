@@ -1,11 +1,10 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "ThreatValues.h"
-
-#include "../../ServerFacade.h"
 #include "ThreatManager.h"
-
-using namespace botAI;
+#include "../../Playerbot.h"
 
 uint8 ThreatValue::Calculate()
 {
@@ -13,10 +12,10 @@ uint8 ThreatValue::Calculate()
     {
         uint8 maxThreat = 0;
         GuidVector attackers = context->GetValue<GuidVector >("attackers")->Get();
-        for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); i++)
+        for (ObjectGuid const guid : attackers)
         {
-            Unit* unit = botAI->GetUnit(*i);
-            if (!unit || !sServerFacade->IsAlive(unit))
+            Unit* unit = botAI->GetUnit(guid);
+            if (!unit || !unit->IsAlive())
                 continue;
 
             uint8 threat = Calculate(unit);
@@ -43,19 +42,19 @@ uint8 ThreatValue::Calculate(Unit* target)
     if (!group)
         return 0;
 
-    float botThreat = sServerFacade->GetThreatManager(target).getThreat(bot);
+    float botThreat = target->getThreatManager().getThreat(bot);
     float maxThreat = -1.0f;
 
     Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
     for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
     {
         Player *player = ObjectAccessor::FindPlayer(itr->guid);
-        if (!player || !sServerFacade->IsAlive(player) || player == bot)
+        if (!player || !player->IsAlive() || player == bot)
             continue;
 
         if (botAI->IsTank(player))
         {
-            float threat = sServerFacade->GetThreatManager(target).getThreat(player);
+            float threat = target->getThreatManager().getThreat(player);
             if (maxThreat < threat)
                 maxThreat = threat;
         }

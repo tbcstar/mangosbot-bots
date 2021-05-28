@@ -1,10 +1,9 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "AoeHealValues.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "AoeHealValues.h"
+#include "../../Playerbot.h"
 
 uint8 AoeHealValue::Calculate()
 {
@@ -24,8 +23,8 @@ uint8 AoeHealValue::Calculate()
 	Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
 	for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
 	{
-		Player *player = ObjectAccessor::FindPlayer(itr->guid);
-		if (!player || !sServerFacade->IsAlive(player))
+		Player* player = ObjectAccessor::FindPlayer(itr->guid);
+		if (!player || !player->IsAlive())
 			continue;
 
 	    float percent = (static_cast<float> (player->GetHealth()) / player->GetMaxHealth()) * 100;

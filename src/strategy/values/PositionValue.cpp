@@ -1,46 +1,53 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PositionValue.h"
+#include "../../Playerbot.h"
 
-using namespace botAI;
-
-PositionValue::PositionValue(PlayerbotAI* botAI)
-    : ManualSetValue<botAI::PositionMap&>(botAI, positions)
+PositionValue::PositionValue(PlayerbotAI* botAI) : ManualSetValue<PositionMap&>(botAI, positions)
 {
 }
 
-string PositionValue::Save()
+std::string const& PositionValue::Save()
 {
-    ostringstream out;
+    std::ostringstream out;
     bool first = true;
-    for (botAI::PositionMap::iterator i = value.begin(); i != value.end(); ++i)
+    for (PositionMap::iterator i = value.begin(); i != value.end(); ++i)
     {
-        string name = i->first;
-        botAI::Position pos = i->second;
+        std::string const& name = i->first;
+        PositionInfo pos = i->second;
         if (pos.isSet())
         {
-            if (!first) out << "^";
-            else first = false;
+            if (!first)
+                out << "^";
+            else
+                first = false;
 
             out << name << "=" << pos.x << "," << pos.y << "," << pos.z << "," << pos.mapId;
         }
     }
+
     return out.str();
 }
 
-bool PositionValue::Load(string text)
+bool PositionValue::Load(std::string const& text)
 {
     value.clear();
 
-    vector<string> ss = split(text, '^');
-    for (vector<string>::iterator i = ss.begin(); i != ss.end(); ++i)
+    std::vector<std::string> ss = split(text, '^');
+    for (std::vector<std::string>::iterator i = ss.begin(); i != ss.end(); ++i)
     {
-        vector<string> s1 = split(*i, '=');
-        if (s1.size() != 2) continue;
-        string name = s1[0];
+        std::vector<std::string> s1 = split(*i, '=');
+        if (s1.size() != 2)
+            continue;
 
-        vector<string> s2 = split(s1[1], ',');
-        if (s2.size() != 4) continue;
+        std::string const& name = s1[0];
+
+        std::vector<string> s2 = split(s1[1], ',');
+        if (s2.size() != 4)
+            continue;
+
         double x = atof(s2[0].c_str());
         double y = atof(s2[1].c_str());
         double z = atof(s2[2].c_str());
@@ -48,5 +55,6 @@ bool PositionValue::Load(string text)
 
         value[name].Set(x, y, z, mapId);
     }
+
     return true;
 }

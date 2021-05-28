@@ -1,43 +1,30 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Value.h"
-#include "../../LootObjectStack.h"
-#include "../../ServerFacade.h"
 
-namespace botAI
+class LootObject;
+class LootObjectStack;
+class PlayerbotAI;
+
+class AvailableLootValue : public ManualSetValue<LootObjectStack*>
 {
-
-    class AvailableLootValue : public ManualSetValue<LootObjectStack*>
-	{
 	public:
-        AvailableLootValue() : ManualSetValue<LootObjectStack*>(botAI, nullptr)
-        {
-            value = new LootObjectStack(botAI->GetBot());
-        }
+        AvailableLootValue(PlayerbotAI* botAI);
+        virtual ~AvailableLootValue();
+};
 
-        virtual ~AvailableLootValue()
-        {
-            if (value)
-                delete value;
-        }
-    };
-
-    class LootTargetValue : public ManualSetValue<LootObject>
-    {
+class LootTargetValue : public ManualSetValue<LootObject>
+{
     public:
-        LootTargetValue() : ManualSetValue<LootObject>(botAI, LootObject()) { }
-    };
+        LootTargetValue(PlayerbotAI* botAI);
+};
 
-    class CanLootValue : public BoolCalculatedValue
-    {
+class CanLootValue : public BoolCalculatedValue
+{
     public:
-        CanLootValue() : BoolCalculatedValue(botAI) { }
+        CanLootValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        virtual bool Calculate()
-        {
-            LootObject loot = AI_VALUE(LootObject, "loot target");
-            return !loot.IsEmpty() &&
-                    loot.GetWorldObject(bot) &&
-                    sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "loot target"), INTERACTION_DISTANCE);
-        }
-    };
-}
+        bool Calculate() override;
+};

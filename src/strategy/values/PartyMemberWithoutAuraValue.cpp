@@ -1,38 +1,34 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PartyMemberWithoutAuraValue.h"
+#include "../../Playerbot.h"
 
-#include "../../ServerFacade.h"
-using namespace botAI;
-
-extern vector<string> split(const string &s, char delim);
+extern std::vector<std::string> split(std::string const& s, char delim);
 
 class PlayerWithoutAuraPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {
-public:
-    PlayerWithoutAuraPredicate(PlayerbotAI* botAI, std::string const& aura) :
-        PlayerbotAIAware(botAI), FindPlayerPredicate(), auras(split(aura, ',')) { }
+    public:
+        PlayerWithoutAuraPredicate(PlayerbotAI* botAI, std::string const& aura) : PlayerbotAIAware(botAI), FindPlayerPredicate(), auras(split(aura, ',')) { }
 
-public:
-    virtual bool Check(Unit* unit)
-    {
-        Pet* pet = dynamic_cast<Pet*>(unit);
-        if (pet && (pet->getPetType() == MINI_PET || pet->getPetType() == SUMMON_PET))
-            return false;
-
-        if (!sServerFacade->IsAlive(unit)) return false;
-
-        for (vector<string>::iterator i = auras.begin(); i != auras.end(); ++i)
+    public:
+        bool Check(Unit* unit) override
         {
-            if (botAI->HasAura(*i, unit))
+            if (!unit->IsAlive())
                 return false;
+
+            for (std::vector<std::string>::iterator i = auras.begin(); i != auras.end(); ++i)
+            {
+                if (botAI->HasAura(*i, unit))
+                    return false;
+            }
+
+            return true;
         }
 
-        return true;
-    }
-
-private:
-    vector<string> auras;
+    private:
+        std::vector<std::string> auras;
 };
 
 Unit* PartyMemberWithoutAuraValue::Calculate()

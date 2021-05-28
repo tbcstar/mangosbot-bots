@@ -1,25 +1,23 @@
-#pragma once
-#include "../Value.h"
-#include "RtiTargetValue.h"
-#include "TargetValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "RtiTargetValue.h"
+
+class PlayerbotAI;
+
+class DpsTargetValue : public RtiTargetValue
 {
-    class DpsTargetValue : public RtiTargetValue
-	{
 	public:
         DpsTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) { }
 
-    public:
-        Unit* Calculate();
-    };
+        Unit* Calculate() override;
+};
 
-    class DpsAoeTargetValue : public RtiTargetValue
-	{
+class DpsAoeTargetValue : public RtiTargetValue
+{
 	public:
         DpsAoeTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) { }
 
-    public:
-        Unit* Calculate();
-    };
-}
+        Unit* Calculate() override;
+};

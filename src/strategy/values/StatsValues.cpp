@@ -1,16 +1,30 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "StatsValues.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
+#include "StatsValues.h"
+#include "../../Playerbot.h"
 #include "../../ServerFacade.h"
-using namespace botAI;
+
+Unit* HealthValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}
 
 uint8 HealthValue::Calculate()
 {
     Unit* target = GetTarget();
     if (!target)
         return 100;
+
     return (static_cast<float> (target->GetHealth()) / target->GetMaxHealth()) * 100;
+}
+
+Unit* IsDeadValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
 }
 
 bool IsDeadValue::Calculate()
@@ -18,7 +32,8 @@ bool IsDeadValue::Calculate()
     Unit* target = GetTarget();
     if (!target)
         return false;
-    return sServerFacade->GetDeathState(target) != ALIVE;
+
+    return target->getDeathState() != ALIVE;
 }
 
 bool PetIsDeadValue::Calculate()
@@ -26,17 +41,17 @@ bool PetIsDeadValue::Calculate()
     if (!bot->GetPet())
     {
         uint32 ownerid = bot->GetGUID().GetCounter();
-        QueryResult* result = CharacterDatabase.PQuery("SELECT id FROM character_pet WHERE owner = '%u'", ownerid);
+        QueryResult result = CharacterDatabase.PQuery("SELECT id FROM character_pet WHERE owner = '%u'", ownerid);
         if (!result)
             return false;
 
-        delete result;
         return true;
     }
-    if (bot->GetPetGuid() && !bot->GetPet())
+
+    if (bot->GetPetGUID() && !bot->GetPet())
         return true;
 
-    return bot->GetPet() && sServerFacade->GetDeathState(bot->GetPet()) != ALIVE;
+    return bot->GetPet() && bot->GetPet()->getDeathState() != ALIVE;
 }
 
 bool PetIsHappyValue::Calculate()
@@ -44,12 +59,25 @@ bool PetIsHappyValue::Calculate()
     return !bot->GetPet() || bot->GetPet()->GetHappinessState() == HAPPY;
 }
 
+Unit* RageValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}
+
 uint8 RageValue::Calculate()
 {
     Unit* target = GetTarget();
     if (!target)
         return 0;
+
     return (static_cast<float> (target->GetPower(POWER_RAGE)));
+}
+
+Unit* EnergyValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
 }
 
 uint8 EnergyValue::Calculate()
@@ -57,7 +85,14 @@ uint8 EnergyValue::Calculate()
     Unit* target = GetTarget();
     if (!target)
         return 0;
+
     return (static_cast<float> (target->GetPower(POWER_ENERGY)));
+}
+
+Unit* ManaValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
 }
 
 uint8 ManaValue::Calculate()
@@ -65,7 +100,14 @@ uint8 ManaValue::Calculate()
     Unit* target = GetTarget();
     if (!target)
         return 100;
+
     return (static_cast<float> (target->GetPower(POWER_MANA)) / target->GetMaxPower(POWER_MANA)) * 100;
+}
+
+Unit* HasManaValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
 }
 
 bool HasManaValue::Calculate()
@@ -73,17 +115,29 @@ bool HasManaValue::Calculate()
     Unit* target = GetTarget();
     if (!target)
         return false;
+
     return target->GetPower(POWER_MANA);
 }
 
+Unit* ComboPointsValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}
 
 uint8 ComboPointsValue::Calculate()
 {
     Unit *target = GetTarget();
-	if (!target || target->GetGUID() != bot->GetComboTargetGuid())
+	if (!target || target->GetGUID() != bot->GetComboTarget())
 		return 0;
 
     return bot->GetComboPoints();
+}
+
+Unit* IsMountedValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
 }
 
 bool IsMountedValue::Calculate()
@@ -95,6 +149,11 @@ bool IsMountedValue::Calculate()
     return target->IsMounted();
 }
 
+Unit* IsInCombatValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}
 
 bool IsInCombatValue::Calculate()
 {
@@ -102,21 +161,22 @@ bool IsInCombatValue::Calculate()
     if (!target)
         return false;
 
-    if (sServerFacade->IsInCombat(target)) return true;
+    if (target->IsInCombat())
+        return true;
 
     if (target == bot)
     {
-        Group* group = bot->GetGroup();
-        if (group)
+        if (Group* group = bot->GetGroup())
         {
             Group::MemberSlotList const& groupSlot = group->GetMemberSlots();
             for (Group::member_citerator itr = groupSlot.begin(); itr != groupSlot.end(); itr++)
             {
                 Player *member = ObjectAccessor::FindPlayer(itr->guid);
-                if (!member || member == bot) continue;
+                if (!member || member == bot)
+                    continue;
 
-                if (sServerFacade->IsInCombat(member) &&
-                        sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(member, bot), sPlayerbotAIConfig->reactDistance)) return true;
+                if (member->IsInCombat() && sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(member, bot), sPlayerbotAIConfig->reactDistance))
+                    return true;
             }
         }
     }
@@ -136,7 +196,7 @@ uint8 BagSpaceValue::Calculate()
     uint32 totalfree = 16 - totalused;
     for (uint8 bag = INVENTORY_SLOT_BAG_START; bag < INVENTORY_SLOT_BAG_END; ++bag)
     {
-        const Bag* const pBag = (Bag*) bot->GetItemByPos(INVENTORY_SLOT_BAG_0, bag);
+        const Bag* const pBag = (Bag*)bot->GetItemByPos(INVENTORY_SLOT_BAG_0, bag);
         if (pBag)
         {
             ItemTemplate const* pBagProto = pBag->GetTemplate();
@@ -152,6 +212,12 @@ uint8 BagSpaceValue::Calculate()
     return (static_cast<float> (totalused) / total) * 100;
 }
 
+Unit* SpeedValue::GetTarget()
+{
+    AiObjectContext* ctx = AiObject::context;
+    return ctx->GetValue<Unit*>(qualifier)->Get();
+}
+
 uint8 SpeedValue::Calculate()
 {
     Unit* target = GetTarget();
@@ -161,3 +227,7 @@ uint8 SpeedValue::Calculate()
     return (uint8) (100.0f * target->GetSpeedRate(MOVE_RUN));
 }
 
+bool IsInGroupValue::Calculate()
+{
+    return bot->GetGroup();
+}

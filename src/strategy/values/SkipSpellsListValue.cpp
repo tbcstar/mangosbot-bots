@@ -1,31 +1,36 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "SkipSpellsListValue.h"
+#include "../../Playerbot.h"
 
-using namespace botAI;
-using namespace std;
-
-string SkipSpellsListValue::Save()
+std::string const& SkipSpellsListValue::Save()
 {
-    ostringstream out;
+    std::ostringstream out;
     bool first = true;
     for (set<uint32>::iterator i = value.begin(); i != value.end(); ++i)
     {
-        if (!first) out << ",";
-        else first = false;
+        if (!first)
+            out << ",";
+        else
+            first = false;
+
         out << *i;
     }
+
     return out.str();
 }
 
-bool SkipSpellsListValue::Load(string text)
+bool SkipSpellsListValue::Load(std::string const& text)
 {
     value.clear();
 
-    vector<string> ss = split(text, ',');
-    for (vector<string>::iterator i = ss.begin(); i != ss.end(); ++i)
+    std::vector<std::string> ss = split(text, ',');
+    for (std::vector<std::string>::iterator i = ss.begin(); i != ss.end(); ++i)
     {
         value.insert(atoi(i->c_str()));
     }
+
     return true;
 }

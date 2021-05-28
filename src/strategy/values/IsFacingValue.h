@@ -1,20 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
+#include "../NamedObjectContext.h"
 #include "../Value.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class IsFacingValue : public BoolCalculatedValue, public Qualified
 {
-    class IsFacingValue : public BoolCalculatedValue, public Qualified
-	{
 	public:
         IsFacingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        virtual bool Calculate()
-        {
-            Unit* target = AI_VALUE(Unit*, qualifier);
-            if (!target)
-                return false;
-
-            return sServerFacade->IsInFront(bot, target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT);
-        }
-    };
-}
+        bool Calculate() override;
+};

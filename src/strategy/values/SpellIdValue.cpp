@@ -1,31 +1,27 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "SpellIdValue.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+#include "../../ChatHelper.h"
+#include "../../Playerbot.h"
 
-using namespace botAI;
-
-SpellIdValue::SpellIdValue(PlayerbotAI* botAI) :
-        CalculatedValue<uint32>(botAI, "spell id")
+SpellIdValue::SpellIdValue(PlayerbotAI* botAI) : CalculatedValue<uint32>(botAI, "spell id")
 {
 }
 
 uint32 SpellIdValue::Calculate()
 {
-    string namepart = qualifier;
+    std::string namepart = qualifier;
     ItemIds itemIds = ChatHelper::parseItems(namepart);
 
     PlayerbotChatHandler handler(bot);
     uint32 extractedSpellId = handler.extractSpellId(namepart);
     if (extractedSpellId)
-    {
-        const SpellEntry* pSpellInfo = sServerFacade->LookupSpellInfo(extractedSpellId);
-        if (pSpellInfo) namepart = pSpellInfo->SpellName[0];
-    }
+        if (SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(extractedSpellId))
+            namepart = spellInfo->SpellName[0];
 
     wstring wnamepart;
-
     if (!Utf8toWStr(namepart, wnamepart))
         return 0;
 
@@ -33,34 +29,34 @@ uint32 SpellIdValue::Calculate()
     char firstSymbol = tolower(namepart[0]);
     int spellLength = wnamepart.length();
 
-    int loc = bot->GetSession()->GetSessionDbcLocale();
+    LocaleConstant loc = bot->GetSession()->GetSessionDbcLocale();
 
-    set<uint32> spellIds;
+    std::set<uint32> spellIds;
     for (PlayerSpellMap::iterator itr = bot->GetSpellMap().begin(); itr != bot->GetSpellMap().end(); ++itr)
     {
         uint32 spellId = itr->first;
 
-        if (itr->second.state == PLAYERSPELL_REMOVED || itr->second.disabled || IsPassiveSpell(spellId))
+        if (itr->second->State == PLAYERSPELL_REMOVED || !itr->second->Active)
             continue;
 
-        const SpellEntry* pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
-        if (!pSpellInfo)
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+        if (!spellInfo || spellInfo->IsPassive())
             continue;
 
-        if (pSpellInfo->Effect[0] == SPELL_EFFECT_LEARN_SPELL)
+        if (spellInfo->Effects[0].Effect == SPELL_EFFECT_LEARN_SPELL)
             continue;
 
         bool useByItem = false;
-        for (int i = 0; i < 3; ++i)
+        for (uint8 i = 0; i < 3; ++i)
         {
-            if (pSpellInfo->Effect[i] == SPELL_EFFECT_CREATE_ITEM && itemIds.find(pSpellInfo->EffectItemType[i]) != itemIds.end())
+            if (spellInfo->Effects[i].Effect == SPELL_EFFECT_CREATE_ITEM && itemIds.find(spellInfo->Effects[i].ItemType) != itemIds.end())
             {
                 useByItem = true;
                 break;
             }
         }
 
-        char* spellName = pSpellInfo->SpellName[loc];
+        char* spellName = spellInfo->SpellName[loc];
         if (!useByItem && (tolower(spellName[0]) != firstSymbol || strlen(spellName) != spellLength || !Utf8FitTo(spellName, wnamepart)))
             continue;
 
@@ -72,18 +68,18 @@ uint32 SpellIdValue::Calculate()
     {
         for (PetSpellMap::const_iterator itr = pet->m_spells.begin(); itr != pet->m_spells.end(); ++itr)
         {
-            if(itr->second.state == PETSPELL_REMOVED)
+            if (itr->second.state == PETSPELL_REMOVED)
                 continue;
 
             uint32 spellId = itr->first;
-            const SpellEntry* pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
-            if (!pSpellInfo)
+            SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+            if (!spellInfo)
                 continue;
 
-            if (pSpellInfo->Effect[0] == SPELL_EFFECT_LEARN_SPELL)
+            if (spellInfo->Effects[0].Effect == SPELL_EFFECT_LEARN_SPELL)
                 continue;
 
-            char* spellName = pSpellInfo->SpellName[loc];
+            char* spellName = spellInfo->SpellName[loc];
             if (tolower(spellName[0]) != firstSymbol || strlen(spellName) != spellLength || !Utf8FitTo(spellName, wnamepart))
                 continue;
 
@@ -93,14 +89,18 @@ uint32 SpellIdValue::Calculate()
 
     if (spellIds.empty()) return 0;
 
-    int saveMana = (int) round(AI_VALUE(double, "mana save level"));
-    int rank = 1;
-    int highest = 0;
-    int lowest = 0;
-    for (set<uint32>::reverse_iterator i = spellIds.rbegin(); i != spellIds.rend(); ++i)
+    int32 saveMana = (int32)round(AI_VALUE(double, "mana save level"));
+    int32 rank = 1;
+    int32 highest = 0;
+    int32 lowest = 0;
+    for (std::set<uint32>::reverse_iterator i = spellIds.rbegin(); i != spellIds.rend(); ++i)
     {
-        if (!highest) highest = *i;
-        if (saveMana == rank) return *i;
+        if (!highest)
+            highest = *i;
+
+        if (saveMana == rank)
+            return *i;
+
         lowest = *i;
         rank++;
     }

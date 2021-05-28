@@ -1,68 +1,26 @@
-#pragma once
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
-#include "../Value.h"
-#include "Group.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "TargetValue.h"
 
-namespace botAI
+class PlayerbotAI;
+class Unit;
+
+class RtiTargetValue : public TargetValue
 {
-    class RtiTargetValue : public TargetValue
-    {
     public:
-        RtiTargetValue(PlayerbotAI* botAI, std::string const& type = "rti") : type(type), TargetValue(botAI)
-        { }
+        RtiTargetValue(PlayerbotAI* botAI, std::string const& type = "rti") : type(type), TargetValue(botAI) { }
 
-    public:
-        static int GetRtiIndex(string rti)
-        {
-            int index = -1;
-            if(rti == "star") index = 0;
-            else if(rti == "circle") index = 1;
-            else if(rti == "diamond") index = 2;
-            else if(rti == "triangle") index = 3;
-            else if(rti == "moon") index = 4;
-            else if(rti == "square") index = 5;
-            else if(rti == "cross") index = 6;
-            else if(rti == "skull") index = 7;
-            return index;
-        }
-
-        Unit *Calculate()
-        {
-            Group* group = bot->GetGroup();
-            if(!group)
-                return nullptr;
-
-            string rti = AI_VALUE(string, type);
-            int index = GetRtiIndex(rti);
-
-            if (index == -1)
-                return nullptr;
-
-            ObjectGuid guid = group->GetTargetIcon(index);
-            if (!guid)
-                return nullptr;
-
-            GuidVector attackers = context->GetValue<GuidVector >("attackers")->Get();
-            if (find(attackers.begin(), attackers.end(), guid) == attackers.end()) return nullptr;
-
-            Unit* unit = botAI->GetUnit(guid);
-            if (!unit || sServerFacade->UnitIsDead(unit) ||
-                    !sServerFacade->IsWithinLOSInMap(bot, unit) ||
-                    sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, unit), sPlayerbotAIConfig->sightDistance))
-                return nullptr;
-
-            return unit;
-        }
+        static int32 GetRtiIndex(std::string const& rti);
+        Unit* Calculate() override;
 
     private:
-        string type;
-    };
+        std::string type;
+};
 
-    class RtiCcTargetValue : public RtiTargetValue
-    {
+class RtiCcTargetValue : public RtiTargetValue
+{
     public:
         RtiCcTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI, "rti cc") { }
-    };
-}
+};

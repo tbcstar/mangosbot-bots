@@ -12,7 +12,7 @@ class Qualified
         Qualified() { };
 
         virtual void Qualify(std::string const& qual) { qualifier = qual; }
-        std::string const GetQualifier() { return qualifier; }
+        std::string const& GetQualifier() { return qualifier; }
 
     protected:
         std::string qualifier;

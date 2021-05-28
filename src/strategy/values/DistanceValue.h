@@ -1,90 +1,24 @@
-#pragma once
-#include "../Value.h"
-#include "TargetValue.h"
-#include "../../LootObjectStack.h"
-#include "../../ServerFacade.h"
-#include "PositionValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../NamedObjectContext.h"
+#include "../Value.h"
+
+class PlayerbotAI;
+
+class DistanceValue : public FloatCalculatedValue, public Qualified
 {
-    class DistanceValue : public FloatCalculatedValue, public Qualified
-	{
 	public:
         DistanceValue(PlayerbotAI* botAI) : FloatCalculatedValue(botAI) { }
 
-    public:
-        float Calculate()
-        {
-            if (qualifier == "loot target")
-            {
-                LootObject loot = AI_VALUE(LootObject, qualifier);
-                if (loot.IsEmpty())
-                    return 0.0f;
+        float Calculate() override;
+};
 
-                WorldObject* obj = loot.GetWorldObject(bot);
-                if (!obj)
-                    return 0.0f;
-
-                return sServerFacade->GetDistance2d(botAI->GetBot(), obj);
-            }
-
-            if (qualifier.find("position_") == 0)
-            {
-                string position = qualifier.substr(9);
-                botAI::Position pos = context->GetValue<botAI::PositionMap&>("position")->Get()[position];
-                if (!pos.isSet()) return 0.0f;
-                if (botAI->GetBot()->GetMapId() != pos.mapId) return 0.0f;
-                return sServerFacade->GetDistance2d(botAI->GetBot(), pos.x, pos.y);
-            }
-
-            Unit* target = nullptr;
-            if (qualifier == "rpg target")
-            {
-                ObjectGuid rpgTarget = AI_VALUE(ObjectGuid, qualifier);
-                target = botAI->GetUnit(rpgTarget);
-            }
-            else if (qualifier == "current target")
-            {
-                Stance* stance = AI_VALUE(Stance*, "stance");
-                WorldLocation loc = stance->GetLocation();
-                return sServerFacade->GetDistance2d(botAI->GetBot(), loc.GetPositionX(), loc.GetPositionY());
-            }
-            else
-            {
-                target = AI_VALUE(Unit*, qualifier);
-                if (target && target == GetMaster())
-                {
-                    Formation* formation = AI_VALUE(Formation*, "formation");
-                    WorldLocation loc = formation->GetLocation();
-                    return sServerFacade->GetDistance2d(botAI->GetBot(), loc.GetPositionX(), loc.GetPositionY());
-                }
-            }
-
-            if (!target || !target->IsInWorld())
-                return 0.0f;
-
-            if (target == botAI->GetBot())
-                return 0.0f;
-
-            return sServerFacade->GetDistance2d(botAI->GetBot(), target);
-        }
-    };
-
-    class InsideTargetValue : public BoolCalculatedValue, public Qualified
-	{
+class InsideTargetValue : public BoolCalculatedValue, public Qualified
+{
 	public:
         InsideTargetValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-    public:
-        bool Calculate()
-        {
-            Unit* target = AI_VALUE(Unit*, qualifier);
-
-            if (!target || !target->IsInWorld() || target == botAI->GetBot())
-                return false;
-
-            float dist = sServerFacade->GetDistance2d(botAI->GetBot(), target->GetPositionX(), target->GetPositionY());
-            return sServerFacade->IsDistanceLessThan(dist, target->GetObjectBoundingRadius());
-        }
-    };
-}
+        bool Calculate() override;
+};

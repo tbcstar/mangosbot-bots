@@ -1,18 +1,18 @@
-#pragma once
-#include "../Value.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "NearestUnitsValue.h"
 #include "../../PlayerbotAIConfig.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class NearestNonBotPlayersValue : public NearestUnitsValue
 {
-    class NearestNonBotPlayersValue : public NearestUnitsValue
-	{
 	public:
-        NearestNonBotPlayersValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->grindDistance) :
-          NearestUnitsValue(botAI, "nearest non bot players", range, true) { }
+        NearestNonBotPlayersValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->grindDistance) : NearestUnitsValue(botAI, "nearest non bot players", range, true) { }
 
     protected:
-        void FindUnits(list<Unit*> &targets);
-        bool AcceptUnit(Unit* unit);
-	};
-}
+        void FindUnits(std::list<Unit*> &targets) override;
+        bool AcceptUnit(Unit* unit) override;
+};

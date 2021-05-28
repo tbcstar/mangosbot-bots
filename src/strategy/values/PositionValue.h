@@ -1,33 +1,52 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Value.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class PositionInfo
 {
-    class PositionInfo
-    {
     public:
         PositionInfo() : valueSet(false), x(0), y(0), z(0), mapId(0) { }
-        PositionInfo(const PositionInfo&other) : valueSet(other.valueSet), x(other.x), y(other.y), z(other.z), mapId(other.mapId) { }
-        void Set(double x, double y, double z, uint32 mapId) { this->x = x; this->y = y; this->z = z; this->mapId = mapId; this->valueSet = true; }
-        void Reset() { valueSet = false; }
-        bool isSet() { return valueSet; }
+        PositionInfo(PositionInfo const& other) : valueSet(other.valueSet), x(other.x), y(other.y), z(other.z), mapId(other.mapId) { }
 
-        double x, y, z;
+        void Set(double newX, double newY, double newZ, uint32 newMapId)
+        {
+            x = newX;
+            y = newY;
+            z = newZ;
+            mapId = newMapId;
+            valueSet = true;
+        }
+
+        void Reset()
+        {
+            valueSet = false;
+        }
+
+        bool isSet()
+        {
+            return valueSet;
+        }
+
+        double x;
+        double y;
+        double z;
         bool valueSet;
         uint32 mapId;
-    };
+};
 
-    typedef map<string, PositionInfo> PositionMap;
-
-    class PositionValue : public ManualSetValue<PositionMap&>
-	{
+typedef std::map<std::string, PositionInfo> PositionMap;
+class PositionValue : public ManualSetValue<PositionMap&>
+{
 	public:
         PositionValue(PlayerbotAI* botAI);
 
-        virtual string Save();
-        virtual bool Load(string value);
+        std::string const& Save() override;
+        bool Load(std::string const& value) override;
 
 	private:
         PositionMap positions;
-    };
-}
+};

@@ -1,18 +1,16 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PossibleTargetsValue.h"
-
-#include "../../ServerFacade.h"
 #include "AttackersValue.h"
-#include "GridNotifiers.h"
-#include "GridNotifiersImpl.h"
-#include "CellImpl.h"
+#include "../../Playerbot.h"
 
-void PossibleTargetsValue::FindUnits(list<Unit*> &targets)
+void PossibleTargetsValue::FindUnits(std::list<Unit*>& targets)
 {
-    acore::AnyUnfriendlyUnitInObjectRangeCheck u_check(bot, range);
-    acore::UnitListSearcher<acore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects(bot, searcher, range);
+    acore::AnyUnfriendlyUnitInObjectRangeCheck u_check(bot, bot, range);
+    acore::UnitListSearcher<acore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    bot->VisitNearbyObject(range, searcher);
 }
 
 bool PossibleTargetsValue::AcceptUnit(Unit* unit)

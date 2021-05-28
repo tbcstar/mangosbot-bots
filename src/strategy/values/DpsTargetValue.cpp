@@ -1,39 +1,37 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "DpsTargetValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "DpsTargetValue.h"
+#include "../../Playerbot.h"
 
 class FindLeastHpTargetStrategy : public FindTargetStrategy
 {
-public:
-    FindLeastHpTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI)
-    {
-        minHealth = 0;
-    }
+    public:
+        FindLeastHpTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI), minHealth(0) { }
 
-public:
-    virtual void CheckAttacker(Unit* attacker, ThreatManager* threatManager)
-    {
-        Group* group = botAI->GetBot()->GetGroup();
-        if (group)
+        void CheckAttacker(Unit* attacker, ThreatManager* threatManager) override
         {
-            ObjectGuid guid = group->GetTargetIcon(4);
-            if (guid && attacker->GetGUID() == guid)
-                return;
-        }
-        if (!result || result->GetHealth() > attacker->GetHealth())
-            result = attacker;
-    }
+            if (Group* group = botAI->GetBot()->GetGroup())
+            {
+                ObjectGuid guid = group->GetTargetIcon(4);
+                if (guid && attacker->GetGUID() == guid)
+                    return;
+            }
 
-protected:
-    float minHealth;
+            if (!result || result->GetHealth() > attacker->GetHealth())
+                result = attacker;
+        }
+
+    protected:
+        float minHealth;
 };
 
 Unit* DpsTargetValue::Calculate()
 {
     Unit* rti = RtiTargetValue::Calculate();
-    if (rti) return rti;
+    if (rti)
+        return rti;
 
     FindLeastHpTargetStrategy strategy(botAI);
     return TargetValue::FindTarget(&strategy);
@@ -41,34 +39,31 @@ Unit* DpsTargetValue::Calculate()
 
 class FindMaxHpTargetStrategy : public FindTargetStrategy
 {
-public:
-    FindMaxHpTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI)
-    {
-        maxHealth = 0;
-    }
+    public:
+        FindMaxHpTargetStrategy(PlayerbotAI* botAI) : FindTargetStrategy(botAI), maxHealth(0) { }
 
-public:
-    virtual void CheckAttacker(Unit* attacker, ThreatManager* threatManager)
-    {
-        Group* group = botAI->GetBot()->GetGroup();
-        if (group)
+        void CheckAttacker(Unit* attacker, ThreatManager* threatManager) override
         {
-            ObjectGuid guid = group->GetTargetIcon(4);
-            if (guid && attacker->GetGUID() == guid)
-                return;
-        }
-        if (!result || result->GetHealth() < attacker->GetHealth())
-            result = attacker;
-    }
+            if (Group* group = botAI->GetBot()->GetGroup())
+            {
+                ObjectGuid guid = group->GetTargetIcon(4);
+                if (guid && attacker->GetGUID() == guid)
+                    return;
+            }
 
-protected:
-    float maxHealth;
+            if (!result || result->GetHealth() < attacker->GetHealth())
+                result = attacker;
+        }
+
+    protected:
+        float maxHealth;
 };
 
 Unit* DpsAoeTargetValue::Calculate()
 {
     Unit* rti = RtiTargetValue::Calculate();
-    if (rti) return rti;
+    if (rti)
+        return rti;
 
     FindMaxHpTargetStrategy strategy(botAI);
     return TargetValue::FindTarget(&strategy);

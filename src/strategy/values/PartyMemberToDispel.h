@@ -1,16 +1,17 @@
-#pragma once
-#include "../Value.h"
-#include "PartyMemberValue.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "PartyMemberValue.h"
+#include "../NamedObjectContext.h"
+
+class PlayerbotAI;
+
+class PartyMemberToDispel : public PartyMemberValue, public Qualified
 {
-    class PartyMemberToDispel : public PartyMemberValue, public Qualified
-	{
 	public:
-        PartyMemberToDispel(PlayerbotAI* botAI) :
-          PartyMemberValue(botAI), Qualified() { }
+        PartyMemberToDispel(PlayerbotAI* botAI) : PartyMemberValue(botAI), Qualified() { }
 
     protected:
-        virtual Unit* Calculate();
-	};
-}
+        Unit* Calculate() override;
+};

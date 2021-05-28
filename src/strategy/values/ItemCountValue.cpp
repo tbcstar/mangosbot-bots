@@ -1,37 +1,36 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "ItemCountValue.h"
+#include "../../Playerbot.h"
 
-using namespace botAI;
-
-list<Item*> InventoryItemValueBase::Find(string qualifier)
+std::vector<Item*> InventoryItemValueBase::Find(std::string const& qualifier)
 {
-    list<Item*> result;
+    std::vector<Item*> result;
 
     Player* bot = InventoryAction::botAI->GetBot();
 
-    list<Item*> items = InventoryAction::parseItems(qualifier);
-    for (list<Item*>::iterator i = items.begin(); i != items.end(); i++)
-        result.push_back(*i);
+    std::list<Item*> items = InventoryAction::parseItems(qualifier);
+    for (Item* item : items)
+        result.push_back(item);
 
     return result;
 }
 
-
 uint8 ItemCountValue::Calculate()
 {
     uint8 count = 0;
-    list<Item*> items = Find(qualifier);
-    for (list<Item*>::iterator i = items.begin(); i != items.end(); ++i)
+    std::vector<Item*> items = Find(qualifier);
+    for (Item* item : items)
     {
-        Item* item = *i;
         count += item->GetCount();
     }
 
     return count;
 }
 
-list<Item*> InventoryItemValue::Calculate()
+std::vector<Item*> InventoryItemValue::Calculate()
 {
     return Find(qualifier);
 }

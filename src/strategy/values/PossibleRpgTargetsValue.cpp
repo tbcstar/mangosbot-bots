@@ -1,17 +1,14 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "PossibleRpgTargetsValue.h"
-
+#include "../../Playerbot.h"
 #include "../../ServerFacade.h"
-#include "GridNotifiers.h"
-#include "GridNotifiersImpl.h"
-#include "CellImpl.h"
-#include "NearestUnitsValue.h"
 
-vector<uint32> PossibleRpgTargetsValue::allowedNpcFlags;
+std::vector<uint32> PossibleRpgTargetsValue::allowedNpcFlags;
 
-PossibleRpgTargetsValue::PossibleRpgTargetsValue(PlayerbotAI* botAI, float range) :
-        NearestUnitsValue(botAI, "possible rpg targets", range, true)
+PossibleRpgTargetsValue::PossibleRpgTargetsValue(PlayerbotAI* botAI, float range) : NearestUnitsValue(botAI, "possible rpg targets", range, true)
 {
     if (allowedNpcFlags.empty())
     {
@@ -40,22 +37,23 @@ PossibleRpgTargetsValue::PossibleRpgTargetsValue(PlayerbotAI* botAI, float range
 
 void PossibleRpgTargetsValue::FindUnits(list<Unit*> &targets)
 {
-    AnyUnitInObjectRangeCheck u_check(bot, range);
-    UnitListSearcher<AnyUnitInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects(bot, searcher, range);
+    acore::AnyUnitInObjectRangeCheck u_check(bot, range);
+    acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    bot->VisitNearbyObject(range, searcher);
 }
 
 bool PossibleRpgTargetsValue::AcceptUnit(Unit* unit)
 {
-    if (sServerFacade->IsHostileTo(unit, bot) || dynamic_cast<Player*>(unit))
+    if (unit->IsHostileTo(bot) || unit->GetTypeId() == TYPEID_PLAYER)
         return false;
 
     if (sServerFacade->GetDistance2d(bot, unit) <= sPlayerbotAIConfig->tooCloseDistance)
         return false;
 
-    for (vector<uint32>::iterator i = allowedNpcFlags.begin(); i != allowedNpcFlags.end(); ++i)
+    for (uint32 npcFlag : allowedNpcFlags)
     {
-        if (unit->HasFlag(UNIT_NPC_FLAGS, *i)) return true;
+        if (unit->HasFlag(UNIT_NPC_FLAGS, npcFlag))
+            return true;
     }
 
     return false;

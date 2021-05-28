@@ -1,26 +1,36 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "Formations.h"
+
+class Player;
+class PlayerbotAI;
+class WorldLocation;
+
+class UnitPosition
 {
-    class UnitPosition
-    {
     public:
         UnitPosition(float x, float y) : x(x), y(y) { }
-        UnitPosition(const UnitPosition& other) { x = other.x; y = other.y; }
-        float x, y;
-    };
+        UnitPosition(UnitPosition const& other)
+        {
+            x = other.x;
+            y = other.y;
+        }
 
-    class FormationUnit
-    {
+        float x, y;
+};
+
+class FormationUnit
+{
     public:
         FormationUnit(uint32 groupIndex, bool master) : groupIndex(groupIndex), master(master), position(0, 0) { }
-        FormationUnit(const FormationUnit& other) : position(other.position.x, other.position.y)
+        FormationUnit(FormationUnit const& other) : position(other.position.x, other.position.y)
         {
             groupIndex = other.groupIndex;
             master = other.master;
         }
 
-    public:
         uint32 GetGroupIdex() { return groupIndex; }
         void SetLocation(UnitPosition pos) { position = pos; }
         void SetLocation(float x, float y) { position.x = x; position.y = y; }
@@ -31,67 +41,61 @@ namespace botAI
         uint32 groupIndex;
         bool master;
         UnitPosition position;
-    };
+};
 
-    class UnitPlacer
-    {
+class UnitPlacer
+{
     public:
         UnitPlacer() { }
 
-    public:
-        virtual UnitPosition Place(FormationUnit *unit, uint32 index, uint32 count) = 0;
-    };
+        virtual UnitPosition Place(FormationUnit* unit, uint32 index, uint32 count) = 0;
+};
 
-    class FormationSlot
-    {
+class FormationSlot
+{
     public:
         FormationSlot() { }
         virtual ~FormationSlot();
 
-    public:
         void AddLast(FormationUnit* unit) { units.push_back(unit); }
         void InsertAtCenter(FormationUnit* unit) { units.insert(units.begin() + (units.size() + 1) / 2, unit); }
         void PlaceUnits(UnitPlacer* placer);
         void Move(float dx, float dy);
-        int Size() { return units.size(); }
+        uint32 Size() const { return units.size(); }
 
     private:
         WorldLocation center;
-        vector<FormationUnit*> units;
-    };
+        std::vector<FormationUnit*> units;
+};
 
-
-    class MultiLineUnitPlacer : public UnitPlacer
-    {
+class MultiLineUnitPlacer : public UnitPlacer
+{
     public:
         MultiLineUnitPlacer(float orientation) : UnitPlacer(), orientation(orientation) { }
 
-    public:
-        virtual UnitPosition Place(FormationUnit *unit, uint32 index, uint32 count);
+        UnitPosition Place(FormationUnit* unit, uint32 index, uint32 count) override;
 
     private:
         float orientation;
-    };
+};
 
-    class SingleLineUnitPlacer
-    {
+class SingleLineUnitPlacer
+{
     public:
         SingleLineUnitPlacer(float orientation) : orientation(orientation) { }
 
-    public:
-        virtual UnitPosition Place(FormationUnit *unit, uint32 index, uint32 count);
+        virtual UnitPosition Place(FormationUnit* unit, uint32 index, uint32 count);
 
     private:
         float orientation;
-    };
+};
 
-    class ArrowFormation : public MoveAheadFormation
-    {
+class ArrowFormation : public MoveAheadFormation
+{
     public:
-        ArrowFormation() : MoveAheadFormation(botAI, "arrow"), built(false), masterUnit(nullptr), botUnit(nullptr) { }
+        ArrowFormation(PlayerbotAI* botAI) : MoveAheadFormation(botAI, "arrow"), built(false), masterUnit(nullptr), botUnit(nullptr) { }
 
-    public:
-        virtual WorldLocation GetLocationInternal();
+        WorldLocation GetLocationInternal() override;
 
     private:
         void Build();
@@ -100,10 +104,12 @@ namespace botAI
         FormationSlot* FindSlot(Player* member);
 
     private:
-        FormationSlot tanks, melee, ranged, healers;
-        FormationUnit *masterUnit, *botUnit;
+        FormationSlot tanks;
+        FormationSlot melee;
+        FormationSlot ranged;
+        FormationSlot healers;
+        FormationUnit* masterUnit;
+        FormationUnit* botUnit;
         bool built;
-    };
-
-}
+};
 

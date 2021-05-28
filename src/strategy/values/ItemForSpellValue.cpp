@@ -1,15 +1,15 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "ItemForSpellValue.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "ItemForSpellValue.h"
+#include "../../Playerbot.h"
 
 #ifndef WIN32
-inline int strcmpi(const char* s1, const char* s2)
+inline int strcmpi(char const* s1, char const* s2)
 {
     for (; *s1 && *s2 && (toupper(*s1) == toupper(*s2)); ++s1, ++s2);
-    return *s1 - *s2;
+        return *s1 - *s2;
 }
 #endif
 
@@ -19,7 +19,7 @@ Item* ItemForSpellValue::Calculate()
     if (!spellid)
         return nullptr;
 
-    SpellEntry const *spellInfo = sServerFacade->LookupSpellInfo(spellid );
+    SpellInfo const *spellInfo = sSpellMgr->GetSpellInfo(spellid);
     if (!spellInfo)
         return nullptr;
 
@@ -45,11 +45,8 @@ Item* ItemForSpellValue::Calculate()
     }
 
     // Workaround as some spells have no item mask (e.g. shaman weapon enhancements)
-    if (!strcmpi(spellInfo->SpellName[0], "rockbiter weapon") ||
-            !strcmpi(spellInfo->SpellName[0], "flametongue weapon") ||
-            !strcmpi(spellInfo->SpellName[0], "earthliving weapon") ||
-            !strcmpi(spellInfo->SpellName[0], "frostbrand weapon") ||
-            !strcmpi(spellInfo->SpellName[0], "windfury weapon"))
+    if (!strcmpi(spellInfo->SpellName[0], "rockbiter weapon") || !strcmpi(spellInfo->SpellName[0], "flametongue weapon") || !strcmpi(spellInfo->SpellName[0], "earthliving weapon") ||
+        !strcmpi(spellInfo->SpellName[0], "frostbrand weapon") || !strcmpi(spellInfo->SpellName[0], "windfury weapon"))
     {
         itemForSpell = GetItemFitsToSpellRequirements(EQUIPMENT_SLOT_MAINHAND, spellInfo);
         if (itemForSpell && itemForSpell->GetTemplate()->Class == ITEM_CLASS_WEAPON)
@@ -68,15 +65,17 @@ Item* ItemForSpellValue::Calculate()
     if (!strcmpi(spellInfo->SpellName[0], "disenchant"))
         return nullptr;
 
-    for( uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; slot++ ) {
+    for (uint8 slot = EQUIPMENT_SLOT_START; slot < EQUIPMENT_SLOT_END; slot++ )
+    {
         itemForSpell = GetItemFitsToSpellRequirements(slot, spellInfo);
         if (itemForSpell)
             return itemForSpell;
     }
+
     return nullptr;
 }
 
-Item* ItemForSpellValue::GetItemFitsToSpellRequirements(uint8 slot, SpellEntry const *spellInfo)
+Item* ItemForSpellValue::GetItemFitsToSpellRequirements(uint8 slot, SpellInfo const *spellInfo)
 {
     Item* const itemForSpell = bot->GetItemByPos( INVENTORY_SLOT_BAG_0, slot );
     if (!itemForSpell || itemForSpell->GetEnchantmentId(TEMP_ENCHANTMENT_SLOT))

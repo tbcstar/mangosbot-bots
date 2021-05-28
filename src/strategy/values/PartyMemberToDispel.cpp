@@ -1,28 +1,22 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "PartyMemberToDispel.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../../ServerFacade.h"
-using namespace botAI;
+#include "PartyMemberToDispel.h"
+#include "../../Playerbot.h"
 
 class PartyMemberToDispelPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {
-public:
-    PartyMemberToDispelPredicate(PlayerbotAI* botAI, uint32 dispelType) :
-        PlayerbotAIAware(botAI), FindPlayerPredicate(), dispelType(dispelType) { }
+    public:
+        PartyMemberToDispelPredicate(PlayerbotAI* botAI, uint32 dispelType) : PlayerbotAIAware(botAI), FindPlayerPredicate(), dispelType(dispelType) { }
 
-public:
-    virtual bool Check(Unit* unit)
-    {
-        Pet* pet = dynamic_cast<Pet*>(unit);
-        if (pet && (pet->getPetType() == MINI_PET || pet->getPetType() == SUMMON_PET))
-            return false;
+        bool Check(Unit* unit) override
+        {
+            return unit->IsAlive() && botAI->HasAuraToDispel(unit, dispelType);
+        }
 
-        return sServerFacade->IsAlive(unit) && botAI->HasAuraToDispel(unit, dispelType);
-    }
-
-private:
-    uint32 dispelType;
+    private:
+        uint32 dispelType;
 };
 
 Unit* PartyMemberToDispel::Calculate()

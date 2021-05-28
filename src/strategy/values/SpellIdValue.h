@@ -1,17 +1,17 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
+#include "../NamedObjectContext.h"
 #include "../Value.h"
-#include "TargetValue.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class SpellIdValue : public CalculatedValue<uint32>, public Qualified
 {
-
-    class SpellIdValue : public CalculatedValue<uint32>, public Qualified
-	{
 	public:
         SpellIdValue(PlayerbotAI* botAI);
 
-    public:
-        virtual uint32 Calculate();
+        uint32 Calculate() override;
 
-    };
-}
+};

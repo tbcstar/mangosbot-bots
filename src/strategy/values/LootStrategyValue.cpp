@@ -1,62 +1,82 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "LootStrategyValue.h"
+#include "../AiObjectContext.h"
 #include "../values/ItemUsageValue.h"
+#include "../../LootObjectStack.h"
+#include "../../Playerbot.h"
 
-using namespace botAI;
-using namespace std;
-
-namespace botAI
+class NormalLootStrategy : public LootStrategy
 {
-    class NormalLootStrategy : public LootStrategy
-    {
     public:
-        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context)
+        bool CanLoot(ItemTemplate const* proto, AiObjectContext* context) override
         {
-            ostringstream out; out << proto->ItemId;
+            std::ostringstream out;
+            out << proto->ItemId;
             ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", out.str());
             return usage != ITEM_USAGE_NONE;
         }
-        std::string const& getName() override { return "normal"; }
-    };
 
-    class GrayLootStrategy : public NormalLootStrategy
-    {
+        std::string const& GetName() override
+        {
+            return "normal";
+        }
+};
+
+class GrayLootStrategy : public NormalLootStrategy
+{
     public:
-        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context)
+        bool CanLoot(ItemTemplate const* proto, AiObjectContext* context) override
         {
             return NormalLootStrategy::CanLoot(proto, context) || proto->Quality == ITEM_QUALITY_POOR;
         }
-        std::string const& getName() override { return "gray"; }
-    };
 
-    class DisenchantLootStrategy : public NormalLootStrategy
-    {
-    public:
-        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context)
+        std::string const& GetName() override
         {
-            return NormalLootStrategy::CanLoot(proto, context) ||
-                    (proto->Quality >= ITEM_QUALITY_UNCOMMON && proto->Bonding != BIND_WHEN_PICKED_UP &&
+            return "gray";
+        }
+};
+
+class DisenchantLootStrategy : public NormalLootStrategy
+{
+    public:
+        bool CanLoot(ItemTemplate const* proto, AiObjectContext* context) override
+        {
+            return NormalLootStrategy::CanLoot(proto, context) || (proto->Quality >= ITEM_QUALITY_UNCOMMON && proto->Bonding != BIND_WHEN_PICKED_UP &&
                     (proto->Class == ITEM_CLASS_ARMOR || proto->Class == ITEM_CLASS_WEAPON));
         }
-        std::string const& getName() override { return "disenchant"; }
-    };
 
-    class AllLootStrategy : public LootStrategy
-    {
+        std::string const& GetName() override
+        {
+            return "disenchant";
+        }
+};
+
+class AllLootStrategy : public LootStrategy
+{
     public:
-        virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context)
+        bool CanLoot(ItemTemplate const* proto, AiObjectContext* context) override
         {
             return true;
         }
-        std::string const& getName() override { return "all"; }
-    };
+
+        std::string const& GetName() override
+        {
+            return "all";
+        }
+};
+
+LootStrategyValue::~LootStrategyValue()
+{
+    delete defaultValue;
 }
 
-LootStrategy *LootStrategyValue::normal = new NormalLootStrategy();
-LootStrategy *LootStrategyValue::gray = new GrayLootStrategy();
-LootStrategy *LootStrategyValue::disenchant = new DisenchantLootStrategy();
-LootStrategy *LootStrategyValue::all = new AllLootStrategy();
+LootStrategy* LootStrategyValue::normal = new NormalLootStrategy();
+LootStrategy* LootStrategyValue::gray = new GrayLootStrategy();
+LootStrategy* LootStrategyValue::disenchant = new DisenchantLootStrategy();
+LootStrategy* LootStrategyValue::all = new AllLootStrategy();
 
 LootStrategy* LootStrategyValue::instance(string strategy)
 {
@@ -72,12 +92,12 @@ LootStrategy* LootStrategyValue::instance(string strategy)
     return normal;
 }
 
-string LootStrategyValue::Save()
+std::string const& LootStrategyValue::Save()
 {
     return value ? value->GetName() : "?";
 }
 
-bool LootStrategyValue::Load(string text)
+bool LootStrategyValue::Load(std::string const& text)
 {
     value = LootStrategyValue::instance(text);
     return true;

@@ -1,21 +1,20 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "SnareTargetValue.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
-#include "MotionGenerators/TargetedMovementGenerator.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "SnareTargetValue.h"
+#include "../../Playerbot.h"
+#include "../../ServerFacade.h"
 
 Unit* SnareTargetValue::Calculate()
 {
-    string spell = qualifier;
+    std::string const& spell = qualifier;
 
-    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector >("attackers")->Get();
+    GuidVector attackers = botAI->GetAiObjectContext()->GetValue<GuidVector>("attackers")->Get();
     Unit* target = botAI->GetAiObjectContext()->GetValue<Unit*>("current target")->Get();
-    for (GuidVector::iterator i = attackers.begin(); i != attackers.end(); ++i)
+    for (ObjectGuid const guid : attackers)
     {
-        Unit* unit = botAI->GetUnit(*i);
+        Unit* unit = botAI->GetUnit(guid);
         if (!unit || unit == target)
             continue;
 
@@ -25,15 +24,15 @@ Unit* SnareTargetValue::Calculate()
         Unit* chaseTarget;
         switch (unit->GetMotionMaster()->GetCurrentMovementGeneratorType())
         {
-        case FLEEING_MOTION_TYPE:
-            return unit;
-        case CHASE_MOTION_TYPE:
-            chaseTarget = sServerFacade->GetChaseTarget(unit);
-            if (!chaseTarget) continue;
-            Player* chaseTargetPlayer = ObjectAccessor::FindPlayer(chaseTarget->GetGUID());
-            if (chaseTargetPlayer && !botAI->IsTank(chaseTargetPlayer)) {
+            case FLEEING_MOTION_TYPE:
                 return unit;
-            }
+            case CHASE_MOTION_TYPE:
+                chaseTarget = sServerFacade->GetChaseTarget(unit);
+                if (!chaseTarget)
+                    continue;
+                if (Player* chaseTargetPlayer = ObjectAccessor::FindPlayer(chaseTarget->GetGUID()))
+                    if (!botAI->IsTank(chaseTargetPlayer))
+                        return unit;
         }
     }
 

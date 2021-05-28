@@ -1,18 +1,22 @@
-#include "botpch.h"
-#include "ActiveSpellValue.h"
-#include "../../playerbot.h"
-#include "../../PlayerbotAIConfig.h"
-#include "../../ServerFacade.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "ActiveSpellValue.h"
+#include "../../Playerbot.h"
 
 uint32 ActiveSpellValue::Calculate()
 {
     Player* bot = botAI->GetBot();
-    for (int type = CURRENT_MELEE_SPELL; type <= CURRENT_CHANNELED_SPELL; ++type)
+    for (uint8 type = CURRENT_MELEE_SPELL; type <= CURRENT_CHANNELED_SPELL; ++type)
     {
-        Spell *spell = bot->GetCurrentSpell((CurrentSpellTypes)type);
-        if (spell && spell->m_spellInfo) return spell->m_spellInfo->Id;
+        if (Spell* spell = bot->GetCurrentSpell((CurrentSpellTypes)type))
+        {
+            if (spell->m_spellInfo)
+            {
+                return spell->m_spellInfo->Id;
+            }
+        }
     }
 
     return 0;

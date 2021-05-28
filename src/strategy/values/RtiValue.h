@@ -1,23 +1,25 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "../Value.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class RtiValue : public ManualSetValue<std::string>
 {
-    class RtiValue : public ManualSetValue<string>
-	{
 	public:
         RtiValue(PlayerbotAI* botAI);
 
-        virtual string Save() { return value; }
-        virtual bool Load(string text) { value = text; return true; }
-	};
+        std::string const& Save() override;
+        bool Load(std::string const& text) override;
+};
 
-    class RtiCcValue : public ManualSetValue<string>
-	{
+class RtiCcValue : public ManualSetValue<std::string>
+{
 	public:
         RtiCcValue(PlayerbotAI* botAI);
 
-        virtual string Save() { return value; }
-        virtual bool Load(string text) { value = text; return true; }
-	};
-}
+        std::string const& Save() override;
+        bool Load(std::string const& text) override;
+};

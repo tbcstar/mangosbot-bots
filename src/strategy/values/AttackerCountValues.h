@@ -1,59 +1,45 @@
-#pragma once
-#include "StatsValues.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../NamedObjectContext.h"
+#include "../Value.h"
+
+class PlayerbotAI;
+class Unit;
+
+class AttackerCountValue : public Uint8CalculatedValue, public Qualified
 {
-
-    class AttackerCountValue : public Uint8CalculatedValue, public Qualified
-    {
     public:
-        AttackerCountValue() : Uint8CalculatedValue(botAI) { }
+        AttackerCountValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};
 
-    class MyAttackerCountValue : public Uint8CalculatedValue, public Qualified
-    {
+class MyAttackerCountValue : public Uint8CalculatedValue, public Qualified
+{
     public:
-        MyAttackerCountValue() : Uint8CalculatedValue(botAI) { }
+        MyAttackerCountValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};
 
-    class HasAggroValue : public BoolCalculatedValue, public Qualified
-    {
+class HasAggroValue : public BoolCalculatedValue, public Qualified
+{
     public:
-        HasAggroValue() : BoolCalculatedValue(botAI) { }
+        HasAggroValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual bool Calculate();
-    };
+        Unit* GetTarget();
+        bool Calculate() override;
+};
 
-    class BalancePercentValue : public Uint8CalculatedValue, public Qualified
-    {
+class BalancePercentValue : public Uint8CalculatedValue, public Qualified
+{
     public:
-        BalancePercentValue() : Uint8CalculatedValue(botAI) { }
+        BalancePercentValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
 
-        Unit* GetTarget()
-        {
-            AiObjectContext* ctx = AiObject::context;
-            return ctx->GetValue<Unit*>(qualifier)->Get();
-        }
-        virtual uint8 Calculate();
-    };
-
-}
+        Unit* GetTarget();
+        uint8 Calculate() override;
+};

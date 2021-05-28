@@ -1,43 +1,39 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "NearestGameObjects.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../../ServerFacade.h"
-#include "GridNotifiers.h"
-#include "GridNotifiersImpl.h"
-#include "CellImpl.h"
+#include "NearestGameObjects.h"
+#include "../../Playerbot.h"
 
 class AnyGameObjectInObjectRangeCheck
 {
-public:
-    AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) { }
-    WorldObject const& GetFocusObject() const { return *i_obj; }
-    bool operator()(GameObject* u)
-    {
-        if (u && i_obj->IsWithinDistInMap(u, i_range) && sServerFacade->isSpawned(u) && u->GetGOInfo())
-            return true;
+    public:
+        AnyGameObjectInObjectRangeCheck(WorldObject const* obj, float range) : i_obj(obj), i_range(range) { }
+        WorldObject const& GetFocusObject() const { return *i_obj; }
+        bool operator()(GameObject* u)
+        {
+            if (u && i_obj->IsWithinDistInMap(u, i_range) && u->isSpawned() && u->GetGOInfo())
+                return true;
 
-        return false;
-    }
+            return false;
+        }
 
-private:
-    WorldObject const* i_obj;
-    float i_range;
+    private:
+        WorldObject const* i_obj;
+        float i_range;
 };
 
 GuidVector NearestGameObjects::Calculate()
 {
-    list<GameObject*> targets;
-
+    std::list<GameObject*> targets;
     AnyGameObjectInObjectRangeCheck u_check(bot, range);
-    GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(targets, u_check);
-    Cell::VisitAllObjects((const WorldObject*)bot, searcher, range);
+    acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(bot, targets, u_check);
+    bot->VisitNearbyObject(range, searcher);
 
     GuidVector result;
-    for(list<GameObject*>::iterator tIter = targets.begin(); tIter != targets.end(); ++tIter)
+    for (GameObject* go : targets)
     {
-		GameObject* go = *tIter;
-        if(sServerFacade->IsWithinLOSInMap(bot, go))
+        if (bot->IsWithinLOSInMap(go))
 			result.push_back(go->GetGUID());
     }
 

@@ -1,41 +1,40 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "PartyMemberToResurrect.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../../ServerFacade.h"
-using namespace botAI;
+#include "PartyMemberToResurrect.h"
+#include "../../Playerbot.h"
 
 class IsTargetOfResurrectSpell : public SpellEntryPredicate
 {
-public:
-    virtual bool Check(SpellEntry const* spell)
-    {
-        for (int i=0; i<3; i++)
+    public:
+        bool Check(SpellInfo const* spellInfo) override
         {
-            if (spell->Effect[i] == SPELL_EFFECT_RESURRECT ||
-                spell->Effect[i] == SPELL_EFFECT_RESURRECT_NEW ||
-                spell->Effect[i] == SPELL_EFFECT_SELF_RESURRECT)
-                return true;
-        }
-        return false;
-    }
+            for (uint8 i = 0; i < 3; ++i)
+            {
+                if (spellInfo->Effects[i].Effect == SPELL_EFFECT_RESURRECT || spellInfo->Effects[i].Effect == SPELL_EFFECT_RESURRECT_NEW ||
+                    spellInfo->Effects[i].Effect == SPELL_EFFECT_SELF_RESURRECT)
+                    return true;
+            }
 
+            return false;
+        }
 };
 
 class FindDeadPlayer : public FindPlayerPredicate
 {
-public:
-    FindDeadPlayer(PartyMemberValue* value) : value(value) { }
+    public:
+        FindDeadPlayer(PartyMemberValue* value) : value(value) { }
 
-    virtual bool Check(Unit* unit)
-    {
-        Player* player = dynamic_cast<Player*>(unit);
-        return player && sServerFacade->GetDeathState(player) == CORPSE && !value->IsTargetOfSpellCast(player, predicate);
-    }
+        bool Check(Unit* unit) override
+        {
+            Player* player = unit->ToPlayer();
+            return player && player->getDeathState() == CORPSE && !value->IsTargetOfSpellCast(player, predicate);
+        }
 
-private:
-    PartyMemberValue* value;
-    IsTargetOfResurrectSpell predicate;
+    private:
+        PartyMemberValue* value;
+        IsTargetOfResurrectSpell predicate;
 };
 
 Unit* PartyMemberToResurrect::Calculate()

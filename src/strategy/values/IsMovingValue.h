@@ -1,39 +1,24 @@
-#pragma once
-#include "../Value.h"
-#include "MotionGenerators/TargetedMovementGenerator.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../NamedObjectContext.h"
+#include "../Value.h"
+
+class PlayerbotAI;
+
+class IsMovingValue : public BoolCalculatedValue, public Qualified
 {
-    class IsMovingValue : public BoolCalculatedValue, public Qualified
-	{
 	public:
         IsMovingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        virtual bool Calculate()
-        {
-            Unit* target = AI_VALUE(Unit*, qualifier);
-            Unit* chaseTarget;
+        bool Calculate() override;
+};
 
-            if (!target)
-                return false;
-
-            return sServerFacade->isMoving(target);
-        }
-    };
-
-    class IsSwimmingValue : public BoolCalculatedValue, public Qualified
-	{
+class IsSwimmingValue : public BoolCalculatedValue, public Qualified
+{
 	public:
         IsSwimmingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
-        virtual bool Calculate()
-        {
-            Unit* target = AI_VALUE(Unit*, qualifier);
-
-            if (!target)
-                return false;
-
-            return sServerFacade->IsUnderwater(target) || target->IsInWater();
-        }
-    };
-}
+        bool Calculate() override;
+};
