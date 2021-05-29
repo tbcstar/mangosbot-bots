@@ -1,11 +1,11 @@
-#include "botpch.h"
-#include "../../playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "ShamanTriggers.h"
-#include "ShamanActions.h"
+#include "../../Playerbot.h"
 
-using namespace botAI;
-
-list<string> ShamanWeaponTrigger::spells;
+std::vector<std::string> ShamanWeaponTrigger::spells;
 
 bool ShamanWeaponTrigger::IsActive()
 {
@@ -18,7 +18,7 @@ bool ShamanWeaponTrigger::IsActive()
         spells.push_back("windfury weapon");
     }
 
-    for (list<string>::iterator i = spells.begin(); i != spells.end(); ++i)
+    for (std::vector<std::string>::iterator i = spells.begin(); i != spells.end(); ++i)
     {
         uint32 spellId = AI_VALUE2(uint32, "spell id", spell);
         if (!spellId)
@@ -33,6 +33,35 @@ bool ShamanWeaponTrigger::IsActive()
 
 bool ShockTrigger::IsActive()
 {
-    return SpellTrigger::IsActive()
-            && !botAI->HasAnyAuraOf(GetTarget(), "frost shock", "earth shock", "flame shock", nullptr);
+    return SpellTrigger::IsActive() && !botAI->HasAnyAuraOf(GetTarget(), "frost shock", "earth shock", "flame shock", nullptr);
+}
+
+bool TotemTrigger::IsActive()
+{
+    return AI_VALUE(uint8, "attacker count") >= attackerCount && !AI_VALUE2(bool, "has totem", name);
+}
+
+bool ManaSpringTotemTrigger::IsActive()
+{
+    return AI_VALUE(uint8, "attacker count") >= attackerCount && !AI_VALUE2(bool, "has totem", "mana tide totem") && !AI_VALUE2(bool, "has totem", name);
+}
+
+bool WaterWalkingTrigger::IsActive()
+{
+    return BuffTrigger::IsActive() && AI_VALUE2(bool, "swimming", "self target");
+}
+
+bool WaterBreathingTrigger::IsActive()
+{
+    return BuffTrigger::IsActive() && AI_VALUE2(bool, "swimming", "self target");
+}
+
+bool WaterWalkingOnPartyTrigger::IsActive()
+{
+    return BuffOnPartyTrigger::IsActive() && AI_VALUE2(bool, "swimming", "self target");
+}
+
+bool WaterBreathingOnPartyTrigger::IsActive()
+{
+    return BuffOnPartyTrigger::IsActive() && AI_VALUE2(bool, "swimming", "self target");
 }

@@ -38,3 +38,4 @@ int strcmpi(char const* s1, char const* s2);
 // Ultranix: sLog->outdebug
 // Ultranix: RACE_DRAENEI and RACE_BLOOD_ELF
 // Ultranix: "... botAI"
+// Ultranix: strategy for dk

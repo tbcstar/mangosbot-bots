@@ -1,5 +1,47 @@
-#include "botpch.h"
-//#include "../../playerbot.h"
-//#include "WarlockActions.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "WarlockActions.h"
+#include "../Event.h"
+#include "../../Playerbot.h"
+
+bool CastDrainSoulAction::isUseful() const
+{
+    return AI_VALUE2(uint8, "item count", "soul shard") < 2;
+}
+
+Value<Unit*>* CastBanishAction::GetTargetValue()
+{
+    return context->GetValue<Unit*>("cc target", "banish");
+}
+
+bool CastBanishAction::Execute(Event event)
+{
+    return botAI->CastSpell("banish", GetTarget());
+}
+
+Value<Unit*>* CastFearOnCcAction::GetTargetValue()
+{
+    return context->GetValue<Unit*>("cc target", "fear");
+}
+
+bool CastFearOnCcAction::Execute(Event event)
+{
+    return botAI->CastSpell("fear", GetTarget());
+}
+
+bool CastFearOnCcAction::isPossible()
+{
+    return botAI->CanCastSpell("fear", GetTarget());
+}
+
+bool CastFearOnCcAction::isUseful() const
+{
+    return true;
+}
+
+bool CastLifeTapAction::isUseful() const
+{
+    return AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->lowHealth;
+}

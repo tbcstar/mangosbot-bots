@@ -1,19 +1,16 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace botAI
-{
-    class AiObjectContext;
+class PlayerbotAI;
 
-    class GenericWarriorStrategy : public CombatStrategy
-    {
+class GenericWarriorStrategy : public CombatStrategy
+{
     public:
         GenericWarriorStrategy(PlayerbotAI* botAI);
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "warrior"; }
-    };
-}
+};

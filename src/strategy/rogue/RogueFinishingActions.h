@@ -1,35 +1,37 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../actions/GenericSpellActions.h"
+
+class PlayerbotAI;
+
+class CastEviscerateAction : public CastMeleeSpellAction
 {
-	class CastEviscerateAction : public CastMeleeSpellAction 
-	{ 
-	public: 
-		CastEviscerateAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "eviscerate") { } 
-	};
+	public:
+		CastEviscerateAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "eviscerate") { }
+};
 
-	class CastSliceAndDiceAction : public CastMeleeSpellAction 
-	{ 
-	public: 
-		CastSliceAndDiceAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "slice and dice") { } 
-	};
+class CastSliceAndDiceAction : public CastMeleeSpellAction
+{
+	public:
+		CastSliceAndDiceAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "slice and dice") { }
+};
 
-	class CastExposeArmorAction : public CastMeleeSpellAction 
-	{ 
-	public: 
-		CastExposeArmorAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "expose armor") { } 
-	};
+class CastExposeArmorAction : public CastMeleeSpellAction
+{
+	public:
+		CastExposeArmorAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "expose armor") { }
+};
 
-	class CastRuptureAction : public CastMeleeSpellAction 
-	{ 
-	public: 
-		CastRuptureAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "rupture") { } 
-	};
-	
-	class CastKidneyShotAction : public CastMeleeSpellAction 
-	{ 
-	public: 
-		CastKidneyShotAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "kidney shot") { } 
-	};
-	
-}
+class CastRuptureAction : public CastMeleeSpellAction
+{
+	public:
+		CastRuptureAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "rupture") { }
+};
+
+class CastKidneyShotAction : public CastMeleeSpellAction
+{
+	public:
+		CastKidneyShotAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "kidney shot") { }
+};

@@ -1,9 +1,9 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "MageMultipliers.h"
-#include "FireMageStrategy.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "FireMageStrategy.h"
+#include "../../Playerbot.h"
 
 NextAction** FireMageStrategy::getDefaultActions()
 {
@@ -14,31 +14,15 @@ void FireMageStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericMageStrategy::InitTriggers(triggers);
 
-    triggers.push_back(new TriggerNode(
-        "pyroblast",
-        NextAction::array(0, new NextAction("pyroblast", 10.0f), nullptr)));
-
-    triggers.push_back(new TriggerNode(
-        "hot streak",
-        NextAction::array(0, new NextAction("pyroblast", 25.0f), nullptr)));
-
-    triggers.push_back(new TriggerNode(
-        "combustion",
-        NextAction::array(0, new NextAction("combustion", 50.0f), nullptr)));
-
-    triggers.push_back(new TriggerNode(
-        "enemy too close for spell",
-        NextAction::array(0, new NextAction("dragon's breath", 70.0f), nullptr)));
+    triggers.push_back(new TriggerNode("pyroblast", NextAction::array(0, new NextAction("pyroblast", 10.0f), nullptr)));
+    triggers.push_back(new TriggerNode("hot streak", NextAction::array(0, new NextAction("pyroblast", 25.0f), nullptr)));
+    triggers.push_back(new TriggerNode("combustion", NextAction::array(0, new NextAction("combustion", 50.0f), nullptr)));
+    triggers.push_back(new TriggerNode("enemy too close for spell", NextAction::array(0, new NextAction("dragon's breath", 70.0f), nullptr)));
 }
 
 void FireMageAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    triggers.push_back(new TriggerNode(
-        "medium aoe",
-        NextAction::array(0, new NextAction("flamestrike", 20.0f), nullptr)));
-
-    triggers.push_back(new TriggerNode(
-        "living bomb",
-        NextAction::array(0, new NextAction("living bomb", 25.0f), nullptr)));
+    triggers.push_back(new TriggerNode("medium aoe", NextAction::array(0, new NextAction("flamestrike", 20.0f), nullptr)));
+    triggers.push_back(new TriggerNode("living bomb", NextAction::array(0, new NextAction("living bomb", 25.0f), nullptr)));
 }
 

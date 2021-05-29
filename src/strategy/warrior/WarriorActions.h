@@ -1,199 +1,220 @@
-#pragma once
-#include "../actions/GenericActions.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../actions/GenericSpellActions.h"
+
+class PlayerbotAI;
+
+// all
+class CastHeroicStrikeAction : public CastMeleeSpellAction
 {
-    // all
-    class CastHeroicStrikeAction : public CastMeleeSpellAction {
     public:
         CastHeroicStrikeAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "heroic strike") { }
-    };
+};
 
-    // all
-    class CastCleaveAction : public CastMeleeSpellAction {
+// all
+class CastCleaveAction : public CastMeleeSpellAction
+{
     public:
         CastCleaveAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "cleave") { }
-    };
+};
 
-    // battle, berserker
-    class CastMockingBlowAction : public CastMeleeSpellAction {
+// battle, berserker
+class CastMockingBlowAction : public CastMeleeSpellAction
+{
     public:
         CastMockingBlowAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "mocking blow") { }
-    };
+};
 
-    class CastBloodthirstAction : public CastMeleeSpellAction {
+class CastBloodthirstAction : public CastMeleeSpellAction
+{
     public:
         CastBloodthirstAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "bloodthirst") { }
-    };
+};
 
-    // battle, berserker
-    class CastExecuteAction : public CastMeleeSpellAction {
+// battle, berserker
+class CastExecuteAction : public CastMeleeSpellAction
+{
     public:
         CastExecuteAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "execute") { }
-    };
+};
 
-    // battle
-    class CastOverpowerAction : public CastMeleeSpellAction {
+// battle
+class CastOverpowerAction : public CastMeleeSpellAction
+{
     public:
         CastOverpowerAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "overpower") { }
-    };
+};
 
-    // battle, berserker
-    class CastHamstringAction : public CastSnareSpellAction {
+// battle, berserker
+class CastHamstringAction : public CastSnareSpellAction
+{
     public:
         CastHamstringAction(PlayerbotAI* botAI) : CastSnareSpellAction(botAI, "hamstring") { }
-    };
+};
 
-    // defensive
-    class CastTauntAction : public CastMeleeSpellAction {
+// defensive
+class CastTauntAction : public CastMeleeSpellAction
+{
     public:
         CastTauntAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "taunt") { }
-    };
+};
 
-    // defensive
-    class CastShieldBlockAction : public CastBuffSpellAction {
+// defensive
+class CastShieldBlockAction : public CastBuffSpellAction
+{
     public:
         CastShieldBlockAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "shield block") { }
-    };
+};
 
-    // defensive
-    class CastShieldWallAction : public CastMeleeSpellAction {
+// defensive
+class CastShieldWallAction : public CastMeleeSpellAction
+{
     public:
         CastShieldWallAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "shield wall") { }
-    };
+};
 
-    class CastBloodrageAction : public CastBuffSpellAction {
+class CastBloodrageAction : public CastBuffSpellAction
+{
     public:
         CastBloodrageAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "bloodrage") { }
-    };
+};
 
-    // defensive
-    class CastDevastateAction : public CastMeleeSpellAction {
+// defensive
+class CastDevastateAction : public CastMeleeSpellAction
+{
     public:
         CastDevastateAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "devastate") { }
-    };
+};
 
-    // all
-    class CastSlamAction : public CastMeleeSpellAction {
+// all
+class CastSlamAction : public CastMeleeSpellAction
+{
     public:
         CastSlamAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "slam") { }
-    };
+};
 
-	// all
-	class CastShieldSlamAction : public CastMeleeSpellAction {
+// all
+class CastShieldSlamAction : public CastMeleeSpellAction
+{
 	public:
 		CastShieldSlamAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "shield slam") { }
-	};
+};
 
-    // after dodge
-    BEGIN_MELEE_SPELL_ACTION(CastRevengeAction, "revenge")
-    END_SPELL_ACTION()
+// after dodge
+BEGIN_MELEE_SPELL_ACTION(CastRevengeAction, "revenge")
+END_SPELL_ACTION()
 
+//debuffs
+BEGIN_DEBUFF_ACTION(CastRendAction, "rend")
+END_SPELL_ACTION()
 
-    //debuffs
-    BEGIN_DEBUFF_ACTION(CastRendAction, "rend")
-    END_SPELL_ACTION()
-
-    class CastRendOnAttackerAction : public CastDebuffSpellOnAttackerAction
-    {
+class CastRendOnAttackerAction : public CastDebuffSpellOnAttackerAction
+{
     public:
         CastRendOnAttackerAction(PlayerbotAI* botAI) : CastDebuffSpellOnAttackerAction(botAI, "rend") { }
-    };
+};
 
-    BEGIN_DEBUFF_ACTION(CastDisarmAction, "disarm")
-    END_SPELL_ACTION()
+BEGIN_DEBUFF_ACTION(CastDisarmAction, "disarm")
+END_SPELL_ACTION()
 
-    class CastSunderArmorAction : public CastDebuffSpellAction
-    {
+class CastSunderArmorAction : public CastDebuffSpellAction
+{
     public:
-        CastSunderArmorAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "sunder armor") {
-            range = ATTACK_DISTANCE;
-        }
-        virtual bool isUseful() { return CastSpellAction::isUseful(); }
-    };
+        CastSunderArmorAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "sunder armor"), range(ATTACK_DISTANCE) { }
 
-    class CastDemoralizingShoutAction : public CastDebuffSpellAction {
+        bool isUseful() const override;
+};
+
+class CastDemoralizingShoutAction : public CastDebuffSpellAction
+{
     public:
-        CastDemoralizingShoutAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "demoralizing shout") {
-            range = ATTACK_DISTANCE;
-        }
-    };
+        CastDemoralizingShoutAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "demoralizing shout"), range(ATTACK_DISTANCE) { }
+};
 
-    BEGIN_MELEE_SPELL_ACTION(CastChallengingShoutAction, "challenging shout")
-    END_SPELL_ACTION()
+BEGIN_MELEE_SPELL_ACTION(CastChallengingShoutAction, "challenging shout")
+END_SPELL_ACTION()
 
-    // stuns
-    BEGIN_MELEE_SPELL_ACTION(CastShieldBashAction, "shield bash")
-    END_SPELL_ACTION()
+// stuns
+BEGIN_MELEE_SPELL_ACTION(CastShieldBashAction, "shield bash")
+END_SPELL_ACTION()
 
-    BEGIN_MELEE_SPELL_ACTION(CastIntimidatingShoutAction, "intimidating shout")
-    END_SPELL_ACTION()
+BEGIN_MELEE_SPELL_ACTION(CastIntimidatingShoutAction, "intimidating shout")
+END_SPELL_ACTION()
 
-    BEGIN_MELEE_SPELL_ACTION(CastThunderClapAction, "thunder clap")
-    END_SPELL_ACTION()
+BEGIN_MELEE_SPELL_ACTION(CastThunderClapAction, "thunder clap")
+END_SPELL_ACTION()
 
-    // buffs
-	class CastBattleShoutAction : public CastBuffSpellAction {
+// buffs
+class CastBattleShoutAction : public CastBuffSpellAction
+{
 	public:
-		CastBattleShoutAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "battle shout") {
-		    range = ATTACK_DISTANCE;
-		}
-		virtual bool isUseful() { return CastSpellAction::isUseful(); }
-	};
+		CastBattleShoutAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "battle shout"), range(ATTACK_DISTANCE) { }
 
-	class CastDefensiveStanceAction : public CastBuffSpellAction {
+        bool isUseful() const override;
+};
+
+class CastDefensiveStanceAction : public CastBuffSpellAction
+{
 	public:
 		CastDefensiveStanceAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "defensive stance") { }
-	};
+};
 
-	class CastBattleStanceAction : public CastBuffSpellAction {
+class CastBattleStanceAction : public CastBuffSpellAction
+{
 	public:
 		CastBattleStanceAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "battle stance") { }
-	};
+};
 
-    BEGIN_RANGED_SPELL_ACTION(CastChargeAction, "charge")
-    END_SPELL_ACTION()
+BEGIN_RANGED_SPELL_ACTION(CastChargeAction, "charge")
+END_SPELL_ACTION()
 
-	class CastDeathWishAction : public CastBuffSpellAction {
+class CastDeathWishAction : public CastBuffSpellAction
+{
 	public:
 		CastDeathWishAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "death wish") { }
-	};
+};
 
-	class CastBerserkerRageAction : public CastBuffSpellAction {
+class CastBerserkerRageAction : public CastBuffSpellAction
+{
 	public:
 		CastBerserkerRageAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "berserker rage") { }
-	};
+};
 
-	class CastLastStandAction : public CastBuffSpellAction {
+class CastLastStandAction : public CastBuffSpellAction
+{
 	public:
 		CastLastStandAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "last stand") { }
-	};
+};
 
-	// defensive
-	class CastShockwaveAction : public CastMeleeSpellAction {
+// defensive
+class CastShockwaveAction : public CastMeleeSpellAction
+{
 	public:
 		CastShockwaveAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "shockwave") { }
-	};
+};
 
-	// defensive
-	class CastConcussionBlowAction : public CastSnareSpellAction {
+// defensive
+class CastConcussionBlowAction : public CastSnareSpellAction
+{
 	public:
 		CastConcussionBlowAction(PlayerbotAI* botAI) : CastSnareSpellAction(botAI, "concussion blow") { }
-	};
+};
 
-	BEGIN_MELEE_SPELL_ACTION(CastVictoryRushAction, "victory rush")
-	END_SPELL_ACTION()
+BEGIN_MELEE_SPELL_ACTION(CastVictoryRushAction, "victory rush")
+END_SPELL_ACTION()
 
-    class CastShieldBashOnEnemyHealerAction : public CastSpellOnEnemyHealerAction
-    {
+class CastShieldBashOnEnemyHealerAction : public CastSpellOnEnemyHealerAction
+{
     public:
         CastShieldBashOnEnemyHealerAction(PlayerbotAI* botAI) : CastSpellOnEnemyHealerAction(botAI, "shield bash") { }
-    };
+};
 
-    class CastBattleShoutTauntAction : public CastMeleeSpellAction
-    {
+class CastBattleShoutTauntAction : public CastMeleeSpellAction
+{
     public:
 	    CastBattleShoutTauntAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "battle shout") { }
-	    virtual bool isUseful() { return CastSpellAction::isUseful(); }
-    };
-}
+
+        bool isUseful() const override;
+};

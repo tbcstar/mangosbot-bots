@@ -1,9 +1,14 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../Action.h"
+#include "../NamedObjectContext.h"
+
+class PlayerbotAI;
+
+class GenericPaladinStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
-    class GenericPaladinStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
-    {
     public:
         GenericPaladinStrategyActionNodeFactory()
         {
@@ -39,6 +44,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* blessing_of_kings(PlayerbotAI* botAI)
         {
             return new ActionNode ("blessing of kings",
@@ -46,6 +52,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* blessing_of_wisdom(PlayerbotAI* botAI)
         {
             return new ActionNode ("blessing of wisdom",
@@ -53,6 +60,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* blessing_of_kings_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("blessing of kings on party",
@@ -60,6 +68,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* blessing_of_wisdom_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("blessing of wisdom on party",
@@ -67,6 +76,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* retribution_aura(PlayerbotAI* botAI)
         {
             return new ActionNode ("retribution aura",
@@ -74,6 +84,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("devotion aura"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* lay_on_hands(PlayerbotAI* botAI)
         {
             return new ActionNode ("lay on hands",
@@ -81,6 +92,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("divine shield"), new NextAction("flash of light"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* lay_on_hands_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("lay on hands on party",
@@ -88,6 +100,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("flash of light"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* seal_of_light(PlayerbotAI* botAI)
         {
             return new ActionNode ("seal of light",
@@ -95,6 +108,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("seal of justice"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* cleanse_poison(PlayerbotAI* botAI)
         {
             return new ActionNode ("cleanse poison",
@@ -102,6 +116,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("purify poison"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* cleanse_magic(PlayerbotAI* botAI)
         {
             return new ActionNode ("cleanse magic",
@@ -109,6 +124,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* cleanse_disease(PlayerbotAI* botAI)
         {
             return new ActionNode ("cleanse disease",
@@ -116,6 +132,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("purify disease"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* cleanse_poison_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("cleanse poison on party",
@@ -123,6 +140,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("purify poison on party"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* cleanse_disease_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("cleanse disease on party",
@@ -130,6 +148,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("purify disease on party"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* seal_of_wisdom(PlayerbotAI* botAI)
         {
             return new ActionNode ("seal of wisdom",
@@ -137,6 +156,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("seal of justice"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* seal_of_justice(PlayerbotAI* botAI)
         {
             return new ActionNode ("seal of justice",
@@ -144,6 +164,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("seal of righteousness"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* hand_of_reckoning(PlayerbotAI* botAI)
         {
             return new ActionNode ("hand of reckoning",
@@ -151,6 +172,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("judgement of justice"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* judgement_of_wisdom(PlayerbotAI* botAI)
         {
             return new ActionNode ("judgement of wisdom",
@@ -165,6 +187,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("divine protection"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* flash_of_light(PlayerbotAI* botAI)
         {
             return new ActionNode ("flash of light",
@@ -172,6 +195,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("holy light"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* flash_of_light_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("flash of light on party",
@@ -179,6 +203,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("holy light on party"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* holy_wrath(PlayerbotAI* botAI)
         {
             return new ActionNode ("holy wrath",
@@ -186,6 +211,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("consecration"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* hammer_of_wrath(PlayerbotAI* botAI)
         {
             return new ActionNode ("hammer of wrath",
@@ -193,6 +219,4 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("melee"), nullptr),
                 /*C*/ nullptr);
         }
-    };
-
 };

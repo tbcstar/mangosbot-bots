@@ -1,47 +1,43 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "GenericMageStrategy.h"
 #include "../generic/NonCombatStrategy.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class GenericMageNonCombatStrategy : public NonCombatStrategy
 {
-    class GenericMageNonCombatStrategy : public NonCombatStrategy
-    {
     public:
         GenericMageNonCombatStrategy(PlayerbotAI* botAI);
+
         std::string const& getName() override { return "nc"; }
-
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
-    };
+};
 
-    class MageBuffManaStrategy : public Strategy
-    {
+class MageBuffManaStrategy : public Strategy
+{
     public:
         MageBuffManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "bmana"; }
-    };
+};
 
-    class MageBuffDpsStrategy : public Strategy
-    {
+class MageBuffDpsStrategy : public Strategy
+{
     public:
         MageBuffDpsStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "bdps"; }
-    };
+};
 
-    class MageBuffStrategy : public Strategy
-    {
+class MageBuffStrategy : public Strategy
+{
     public:
         MageBuffStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "buff"; }
-    };
-}
+};

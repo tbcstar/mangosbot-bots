@@ -1,10 +1,17 @@
-#include "botpch.h"
-#include "../../playerbot.h"
-#include "MageActions.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-using namespace botAI;
+#include "MageActions.h"
+#include "../../Playerbot.h"
+#include "../../ServerFacade.h"
 
 Value<Unit*>* CastPolymorphAction::GetTargetValue()
 {
     return context->GetValue<Unit*>("cc target", getName());
+}
+
+bool CastFrostNovaAction::isUseful() const
+{
+    return sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", GetTargetName()), sPlayerbotAIConfig->tooCloseDistance);
 }

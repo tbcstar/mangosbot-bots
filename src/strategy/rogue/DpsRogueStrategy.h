@@ -1,38 +1,35 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class DpsRogueStrategy : public CombatStrategy
 {
-    class DpsRogueStrategy : public CombatStrategy
-    {
     public:
         DpsRogueStrategy(PlayerbotAI* botAI);
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "dps"; }
         NextAction** getDefaultActions() override;
-    };
+};
 
-    class RogueAoeStrategy : public Strategy
-    {
+class RogueAoeStrategy : public Strategy
+{
     public:
         RogueAoeStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "aoe"; }
-    };
+};
 
-    class RogueBoostStrategy : public Strategy
-    {
+class RogueBoostStrategy : public Strategy
+{
     public:
         RogueBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "boost"; }
-    };
-}
+};

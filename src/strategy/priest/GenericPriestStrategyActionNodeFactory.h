@@ -1,9 +1,14 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-namespace botAI
+#include "../Action.h"
+#include "../NamedObjectContext.h"
+
+class PlayerbotAI;
+
+class GenericPriestStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
-    class GenericPriestStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
-    {
     public:
         GenericPriestStrategyActionNodeFactory()
         {
@@ -28,6 +33,7 @@ namespace botAI
             creators["psychic scream"] = &psychic_scream;
             creators["fade"] = &fade;
         }
+
     private:
         static ActionNode* inner_fire(PlayerbotAI* botAI)
         {
@@ -36,6 +42,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* holy_nova(PlayerbotAI* botAI)
         {
             return new ActionNode ("holy nova",
@@ -43,6 +50,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* power_word_fortitude(PlayerbotAI* botAI)
         {
             return new ActionNode ("power word: fortitude",
@@ -50,6 +58,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* power_word_fortitude_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("power word: fortitude on party",
@@ -57,6 +66,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* divine_spirit(PlayerbotAI* botAI)
         {
             return new ActionNode ("divine spirit",
@@ -64,6 +74,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* divine_spirit_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("divine spirit on party",
@@ -71,6 +82,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* power_word_shield(PlayerbotAI* botAI)
         {
             return new ActionNode ("power word: shield",
@@ -78,6 +90,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("renew", 50.0f), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* power_word_shield_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("power word: shield on party",
@@ -85,6 +98,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("renew on party", 50.0f), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* renew(PlayerbotAI* botAI)
         {
             return new ActionNode ("renew",
@@ -92,6 +106,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* renew_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("renew on party",
@@ -99,6 +114,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* greater_heal(PlayerbotAI* botAI)
         {
             return new ActionNode ("greater heal",
@@ -106,6 +122,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("heal"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* greater_heal_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("greater heal on party",
@@ -113,6 +130,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("heal on party"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* heal(PlayerbotAI* botAI)
         {
             return new ActionNode ("heal",
@@ -120,6 +138,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("lesser heal"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* heal_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("heal on party",
@@ -127,6 +146,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("lesser heal on party"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* lesser_heal(PlayerbotAI* botAI)
         {
             return new ActionNode ("lesser heal",
@@ -134,6 +154,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* lesser_heal_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("lesser heal on party",
@@ -141,6 +162,7 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
         static ActionNode* flash_heal(PlayerbotAI* botAI)
         {
             return new ActionNode ("flash heal",
@@ -148,6 +170,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("greater heal"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* flash_heal_on_party(PlayerbotAI* botAI)
         {
             return new ActionNode ("flash heal on party",
@@ -155,6 +178,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("greater heal on party"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* psychic_scream(PlayerbotAI* botAI)
         {
             return new ActionNode ("psychic scream",
@@ -162,6 +186,7 @@ namespace botAI
                 /*A*/ NextAction::array(0, new NextAction("fade"), nullptr),
                 /*C*/ nullptr);
         }
+
         static ActionNode* fade(PlayerbotAI* botAI)
         {
             return new ActionNode ("fade",
@@ -169,5 +194,4 @@ namespace botAI
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
-    };
 };

@@ -1,47 +1,43 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
-#include "../Strategy.h"
 #include "../generic/CombatStrategy.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class GenericMageStrategy : public CombatStrategy
 {
-    class GenericMageStrategy : public CombatStrategy
-    {
     public:
         GenericMageStrategy(PlayerbotAI* botAI);
+
         std::string const& getName() override { return "mage"; }
-
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
-    };
+};
 
-    class MageCureStrategy : public Strategy
-    {
+class MageCureStrategy : public Strategy
+{
     public:
         MageCureStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "cure"; }
-    };
+};
 
-    class MageBoostStrategy : public Strategy
-    {
+class MageBoostStrategy : public Strategy
+{
     public:
         MageBoostStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "boost"; }
-    };
+};
 
-    class MageCcStrategy : public Strategy
-    {
+class MageCcStrategy : public Strategy
+{
     public:
         MageCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "cc"; }
-    };
-}
+};

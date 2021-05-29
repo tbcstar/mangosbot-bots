@@ -1,39 +1,35 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "GenericWarlockStrategy.h"
-#include "../generic/CombatStrategy.h"
 
-namespace botAI
+class PlayerbotAI;
+
+class DpsWarlockStrategy : public GenericWarlockStrategy
 {
-    class DpsWarlockStrategy : public GenericWarlockStrategy
-    {
     public:
         DpsWarlockStrategy(PlayerbotAI* botAI);
-        std::string const& getName() override { return "dps"; }
 
-    public:
+        std::string const& getName() override { return "dps"; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         NextAction** getDefaultActions() override;
-    };
+};
 
-    class DpsAoeWarlockStrategy : public CombatStrategy
-    {
+class DpsAoeWarlockStrategy : public CombatStrategy
+{
     public:
         DpsAoeWarlockStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "aoe"; }
-    };
+};
 
-    class DpsWarlockDebuffStrategy : public CombatStrategy
-    {
+class DpsWarlockDebuffStrategy : public CombatStrategy
+{
     public:
         DpsWarlockDebuffStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) { }
 
-    public:
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "dps debuff"; }
-    };
-
-}
+};

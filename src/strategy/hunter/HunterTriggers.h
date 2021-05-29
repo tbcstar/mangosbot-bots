@@ -1,101 +1,95 @@
-#pragma once
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
 
 #include "../triggers/GenericTriggers.h"
 
-namespace botAI
+class PlayerbotAI;
+
+BEGIN_TRIGGER(HunterNoStingsActiveTrigger, Trigger)
+END_TRIGGER()
+
+class HunterAspectOfTheHawkTrigger : public BuffTrigger
 {
-    BEGIN_TRIGGER(HunterNoStingsActiveTrigger, Trigger)
-    END_TRIGGER()
-
-    class HunterAspectOfTheHawkTrigger : public BuffTrigger
-    {
     public:
-        HunterAspectOfTheHawkTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the hawk") {
-			checkInterval = 1;
-		}
-    };
+        HunterAspectOfTheHawkTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the hawk"), checkInterval(1) { }
+};
 
-	class HunterAspectOfTheWildTrigger : public BuffTrigger
-	{
+class HunterAspectOfTheWildTrigger : public BuffTrigger
+{
 	public:
-		HunterAspectOfTheWildTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the wild") {
-			checkInterval = 1;
-		}
-	};
+		HunterAspectOfTheWildTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the wild"), checkInterval(1) { }
+};
 
-    class HunterAspectOfTheViperTrigger : public BuffTrigger
-    {
+class HunterAspectOfTheViperTrigger : public BuffTrigger
+{
     public:
         HunterAspectOfTheViperTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the viper") { }
-        virtual bool IsActive()
-        {
-            return SpellTrigger::IsActive() && !botAI->HasAura(spell, GetTarget());
-        }
-    };
 
-    class HunterAspectOfThePackTrigger : public BuffTrigger
-    {
+        bool IsActive() override;
+};
+
+class HunterAspectOfThePackTrigger : public BuffTrigger
+{
     public:
         HunterAspectOfThePackTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "aspect of the pack") { }
-        virtual bool IsActive() {
-			return BuffTrigger::IsActive() && !botAI->HasAura("aspect of the cheetah", GetTarget());
-        };
-    };
 
-    BEGIN_TRIGGER(HuntersPetDeadTrigger, Trigger)
-    END_TRIGGER()
+        bool IsActive() override;
+};
 
-    BEGIN_TRIGGER(HuntersPetLowHealthTrigger, Trigger)
-    END_TRIGGER()
+BEGIN_TRIGGER(HuntersPetDeadTrigger, Trigger)
+END_TRIGGER()
 
-    class BlackArrowTrigger : public DebuffTrigger
-    {
+BEGIN_TRIGGER(HuntersPetLowHealthTrigger, Trigger)
+END_TRIGGER()
+
+class BlackArrowTrigger : public DebuffTrigger
+{
     public:
         BlackArrowTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "black arrow") { }
-    };
+};
 
-    class HuntersMarkTrigger : public DebuffTrigger
-    {
+class HuntersMarkTrigger : public DebuffTrigger
+{
     public:
         HuntersMarkTrigger(PlayerbotAI* botAI) : DebuffTrigger(botAI, "hunter's mark") { }
-    };
+};
 
-    class FreezingTrapTrigger : public HasCcTargetTrigger
-    {
+class FreezingTrapTrigger : public HasCcTargetTrigger
+{
     public:
         FreezingTrapTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "freezing trap") { }
-    };
+};
 
-    class RapidFireTrigger : public BuffTrigger
-    {
+class RapidFireTrigger : public BuffTrigger
+{
     public:
         RapidFireTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "rapid fire") { }
-    };
+};
 
-    class TrueshotAuraTrigger : public BuffTrigger
-    {
+class TrueshotAuraTrigger : public BuffTrigger
+{
     public:
         TrueshotAuraTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "trueshot aura") { }
-    };
+};
 
-    class SerpentStingOnAttackerTrigger : public DebuffOnAttackerTrigger
-    {
+class SerpentStingOnAttackerTrigger : public DebuffOnAttackerTrigger
+{
     public:
         SerpentStingOnAttackerTrigger(PlayerbotAI* botAI) : DebuffOnAttackerTrigger(botAI, "serpent sting") { }
-    };
+};
 
-    BEGIN_TRIGGER(HunterPetNotHappy, Trigger)
-    END_TRIGGER()
+BEGIN_TRIGGER(HunterPetNotHappy, Trigger)
+END_TRIGGER()
 
-    class ConsussiveShotSnareTrigger : public SnareTargetTrigger
-    {
+class ConsussiveShotSnareTrigger : public SnareTargetTrigger
+{
     public:
         ConsussiveShotSnareTrigger(PlayerbotAI* botAI) : SnareTargetTrigger(botAI, "concussive shot") { }
-    };
+};
 
-    class ScareBeastTrigger : public HasCcTargetTrigger
-    {
+class ScareBeastTrigger : public HasCcTargetTrigger
+{
     public:
         ScareBeastTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "scare beast") { }
-    };
-}
+};
