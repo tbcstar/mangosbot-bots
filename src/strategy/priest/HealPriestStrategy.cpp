@@ -3,7 +3,7 @@
  */
 
 #include "HealPriestStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 NextAction** HealPriestStrategy::getDefaultActions()
 {

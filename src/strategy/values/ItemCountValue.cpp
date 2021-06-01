@@ -3,7 +3,7 @@
  */
 
 #include "ItemCountValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 std::vector<Item*> InventoryItemValueBase::Find(std::string const& qualifier)
 {

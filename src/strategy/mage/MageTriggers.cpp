@@ -4,7 +4,7 @@
 
 #include "MageActions.h"
 #include "MageTriggers.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool ArcaneIntellectOnPartyTrigger::IsActive()
 {

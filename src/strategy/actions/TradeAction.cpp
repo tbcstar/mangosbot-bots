@@ -3,11 +3,11 @@
  */
 
 #include "TradeAction.h"
-#include "../Event.h"
-#include "../ItemVisitors.h"
-#include "../values/ItemCountValue.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemVisitors.h"
+#include "ItemCountValue.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool TradeAction::Execute(Event event)
 {

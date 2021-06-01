@@ -72,7 +72,7 @@ class MinValueCalculator
 class PacketHandlingHelper
 {
     public:
-        void AddHandler(uint16 opcode, string handler);
+        void AddHandler(uint16 opcode, std::string const& handler);
         void Handle(ExternalEventHelper &helper);
         void AddPacket(WorldPacket const& packet);
 
@@ -108,7 +108,7 @@ class PlayerbotAI : public PlayerbotAIBase
 
 	    virtual void UpdateAIInternal(uint32 elapsed);
         std::string HandleRemoteCommand(std::string command);
-        void HandleCommand(uint32 type, string const& text, Player* fromPlayer);
+        void HandleCommand(uint32 type, std::string const& text, Player* fromPlayer);
 	    void HandleBotOutgoingPacket(WorldPacket const& packet);
         void HandleMasterIncomingPacket(WorldPacket const& packet);
         void HandleMasterOutgoingPacket(WorldPacket const& packet);
@@ -118,7 +118,7 @@ class PlayerbotAI : public PlayerbotAIBase
         void DoSpecificAction(std::string name);
         void ChangeStrategy(std::string name, BotState type);
         void ClearStrategies(BotState type);
-        std::vector<string> GetStrategies(BotState type);
+        std::vector<std::string> GetStrategies(BotState type);
         bool ContainsStrategy(StrategyType type);
         bool HasStrategy(std::string name, BotState type);
         void ResetStrategies(bool load = true);

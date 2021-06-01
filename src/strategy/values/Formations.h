@@ -2,10 +2,10 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
-#include "../Action.h"
-#include "../NamedObjectContext.h"
-#include "../Value.h"
-#include "../../PlayerbotAIConfig.h"
+#include "Action.h"
+#include "NamedObjectContext.h"
+#include "Value.h"
+#include "PlayerbotAIConfig.h"
 
 class Event;
 class Player;
@@ -65,7 +65,7 @@ class FormationValue : public ManualSetValue<Formation*>
 class SetFormationAction : public Action
 {
     public:
-        SetFormationAction(PlayerbotAI* botAI) : Action(botAI, "set formation") { }
+        SetFormationAction(PlayerbotAI* botAI) : Action(botAI, "std::set formation") { }
 
         bool Execute(Event event) override;
 };

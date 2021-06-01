@@ -3,7 +3,7 @@
  */
 
 #include "PossibleTargetsValue.h"
-#include "../../PlayerbotAIConfig.h"
+#include "PlayerbotAIConfig.h"
 
 class PlayerbotAI;
 

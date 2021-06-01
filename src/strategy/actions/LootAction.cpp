@@ -3,12 +3,12 @@
  */
 
 #include "LootAction.h"
-#include "../Event.h"
-#include "../values/LootStrategyValue.h"
-#include "../../LootObjectStack.h"
-#include "../../GuildTaskMgr.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "LootStrategyValue.h"
+#include "LootObjectStack.h"
+#include "GuildTaskMgr.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 bool LootAction::Execute(Event event)
 {
@@ -303,7 +303,7 @@ bool StoreLootAction::IsLootAllowed(uint32 itemid, PlayerbotAI* botAI)
     AiObjectContext* context = botAI->GetAiObjectContext();
     LootStrategy* lootStrategy = AI_VALUE(LootStrategy*, "loot strategy");
 
-    std::set<uint32>& lootItems = AI_VALUE(set<uint32>&, "always loot list");
+    std::set<uint32>& lootItems = AI_VALUE(std::set<uint32>&, "always loot std::list");
     if (lootItems.find(itemid) != lootItems.end())
         return true;
 

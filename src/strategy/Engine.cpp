@@ -6,8 +6,8 @@
 #include "Action.h"
 #include "Event.h"
 #include "Queue.h"
-#include "../PerformanceMonitor.h"
-#include "../Playerbot.h"
+#include "PerformanceMonitor.h"
+#include "Playerbot.h"
 
 Engine::Engine(PlayerbotAI* botAI, AiObjectContext* factory) : PlayerbotAIAware(botAI), aiObjectContext(factory)
 {
@@ -106,7 +106,7 @@ void Engine::Init()
 {
     Reset();
 
-    for (std::map<string, Strategy*>::iterator i = strategies.begin(); i != strategies.end(); i++)
+    for (std::map<std::string, Strategy*>::iterator i = strategies.begin(); i != strategies.end(); i++)
     {
         Strategy* strategy = i->second;
         strategy->InitMultipliers(multipliers);

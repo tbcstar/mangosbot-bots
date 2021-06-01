@@ -3,7 +3,7 @@
  */
 
 #include "TargetValue.h"
-#include "../NamedObjectContext.h"
+#include "NamedObjectContext.h"
 
 class PlayerbotAI;
 

@@ -3,7 +3,7 @@
  */
 
 #include "GuardStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 NextAction** GuardStrategy::getDefaultActions()
 {

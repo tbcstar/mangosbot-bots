@@ -3,7 +3,7 @@
  */
 
 #include "CureTriggers.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool NeedCureTrigger::IsActive()
 {

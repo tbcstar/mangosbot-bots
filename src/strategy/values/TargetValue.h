@@ -3,7 +3,7 @@
  */
 
 #include "Unit.h"
-#include "../Value.h"
+#include "Value.h"
 
 class PlayerbotAI;
 class ThreatManager;

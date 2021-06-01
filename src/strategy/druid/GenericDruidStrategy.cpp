@@ -3,7 +3,7 @@
  */
 
 #include "GenericDruidStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class GenericDruidStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

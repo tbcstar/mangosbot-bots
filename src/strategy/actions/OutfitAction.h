@@ -3,7 +3,7 @@
  */
 
 #include "EquipAction.h"
-#include "../../ChatHelper.h"
+#include "ChatHelper.h"
 
 class Event;
 class PlayerbotAI;

@@ -4,9 +4,9 @@
 
 #include "Formations.h"
 #include "Arrow.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 WorldLocation Formation::NullLocation = WorldLocation();
 
@@ -552,12 +552,12 @@ bool SetFormationAction::Execute(Event event)
         std::ostringstream str;
         str << "Invalid formation: |cffff0000" << formation;
         botAI->TellMaster(str);
-        botAI->TellMaster("Please set to any of:|cffffffff near (default), queue, chaos, circle, line, shield, arrow, melee, far");
+        botAI->TellMaster("Please std::set to any of:|cffffffff near (default), queue, chaos, circle, line, shield, arrow, melee, far");
         return false;
     }
 
     std::ostringstream str;
-    str << "Formation set to: " << formation;
+    str << "Formation std::set to: " << formation;
     botAI->TellMaster(str);
     return true;
 }

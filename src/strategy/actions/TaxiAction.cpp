@@ -3,9 +3,9 @@
  */
 
 #include "TaxiAction.h"
-#include "../Event.h"
-#include "../values/LastMovementValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "LastMovementValue.h"
+#include "Playerbot.h"
 
 bool TaxiAction::Execute(Event event)
 {

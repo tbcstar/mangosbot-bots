@@ -3,7 +3,7 @@
  */
 
 #include "SayStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void SayStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

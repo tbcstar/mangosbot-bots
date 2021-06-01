@@ -3,7 +3,7 @@
  */
 
 #include "DpsWarriorStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class DpsWarriorStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

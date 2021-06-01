@@ -3,8 +3,8 @@
  */
 
 #include "AcceptResurrectAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool AcceptResurrectAction::Execute(Event event)
 {

@@ -3,7 +3,7 @@
  */
 
 #include "RunawayStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void RunawayStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

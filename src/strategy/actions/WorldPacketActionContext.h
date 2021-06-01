@@ -24,7 +24,7 @@
 #include "TellMasterAction.h"
 #include "TradeStatusAction.h"
 #include "UseMeetingStoneAction.h"
-#include "../NamedObjectContext.h"
+#include "NamedObjectContext.h"
 
 class PlayerbotAI;
 

@@ -4,16 +4,16 @@
 
 #include "AiFactory.h"
 #include "Playerbot.h"
-#include "strategy/Engine.h"
-#include "strategy/priest/PriestAiObjectContext.h"
-#include "strategy/mage/MageAiObjectContext.h"
-#include "strategy/warlock/WarlockAiObjectContext.h"
-#include "strategy/warrior/WarriorAiObjectContext.h"
-#include "strategy/shaman/ShamanAiObjectContext.h"
-#include "strategy/paladin/PaladinAiObjectContext.h"
-#include "strategy/druid/DruidAiObjectContext.h"
-#include "strategy/hunter/HunterAiObjectContext.h"
-#include "strategy/rogue/RogueAiObjectContext.h"
+#include "Engine.h"
+#include "PriestAiObjectContext.h"
+#include "MageAiObjectContext.h"
+#include "WarlockAiObjectContext.h"
+#include "WarriorAiObjectContext.h"
+#include "ShamanAiObjectContext.h"
+#include "PaladinAiObjectContext.h"
+#include "DruidAiObjectContext.h"
+#include "HunterAiObjectContext.h"
+#include "RogueAiObjectContext.h"
 
 AiObjectContext* AiFactory::createAiObjectContext(Player* player, PlayerbotAI* botAI)
 {

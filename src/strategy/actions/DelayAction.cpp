@@ -3,8 +3,8 @@
  */
 
 #include "DelayAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool DelayAction::Execute(Event event)
 {

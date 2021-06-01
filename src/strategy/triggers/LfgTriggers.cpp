@@ -3,7 +3,7 @@
  */
 
 #include "LfgTriggers.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool LfgProposalActiveTrigger::IsActive()
 {

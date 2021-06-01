@@ -149,10 +149,10 @@ bool RandomItemMgr::HandleConsoleCommand(ChatHandler* handler, char const* args)
 
 RandomItemList RandomItemMgr::Query(uint32 level, RandomItemType type, RandomItemPredicate* predicate)
 {
-    RandomItemList& list = randomItemCache[(level - 1) / 10][type];
+    RandomItemList& std::list = randomItemCache[(level - 1) / 10][type];
 
     RandomItemList result;
-    for (RandomItemList::iterator i = list.begin(); i != list.end(); ++i)
+    for (RandomItemList::iterator i = list.begin; i != list.end(); ++i)
     {
         uint32 itemId = *i;
         ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
@@ -234,10 +234,10 @@ void RandomItemMgr::BuildRandomItemCache()
         {
             for (uint32 type = RANDOM_ITEM_GUILD_TASK; type <= RANDOM_ITEM_GUILD_TASK_REWARD_TRADE_RARE; type++)
             {
-                RandomItemList list = randomItemCache[level][(RandomItemType)type];
-                sLog->outString("    Level %d..%d Type %d - %u random items cached", level * 10, level * 10 + 9, type, list.size());
+                RandomItemList std::list = randomItemCache[level][(RandomItemType)type];
+                sLog->outString("    Level %d..%d Type %d - %u random items cached", level * 10, level * 10 + 9, type, std::list.size());
 
-                for (RandomItemList::iterator i = list.begin(); i != list.end(); ++i)
+                for (RandomItemList::iterator i = list.begin; i != list.end(); ++i)
                 {
                     uint32 itemId = *i;
                     ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
@@ -253,12 +253,12 @@ void RandomItemMgr::BuildRandomItemCache()
 
 uint32 RandomItemMgr::GetRandomItem(uint32 level, RandomItemType type, RandomItemPredicate* predicate)
 {
-    RandomItemList const& list = Query(level, type, predicate);
-    if (list.empty())
+    RandomItemList const& std::list = Query(level, type, predicate);
+    if (std::list.empty())
         return 0;
 
-    uint32 index = urand(0, list.size() - 1);
-    uint32 itemId = list[index];
+    uint32 index = urand(0, std::list.size() - 1);
+    uint32 itemId = std::list[index];
 
     return itemId;
 }

@@ -19,7 +19,7 @@ std::map<uint32, T> filterList(std::vector<T> src, std::string const& filter)
 
     if (filter.find("-") != std::string::npos)
     {
-        std::vector<string> ss = split(filter, '-');
+        std::vector<std::string> ss = split(filter, '-');
         uint32 from = 0;
         uint32 to = src.size() - 1;
 

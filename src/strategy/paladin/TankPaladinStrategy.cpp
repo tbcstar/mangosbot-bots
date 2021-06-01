@@ -3,7 +3,7 @@
  */
 
 #include "TankPaladinStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 TankPaladinStrategy::TankPaladinStrategy(PlayerbotAI* botAI) : GenericPaladinStrategy(botAI)
 {

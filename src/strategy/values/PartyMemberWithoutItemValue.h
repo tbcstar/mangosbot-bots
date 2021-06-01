@@ -3,8 +3,8 @@
  */
 
 #include "PartyMemberValue.h"
-#include "../NamedObjectContext.h"
-#include "../../PlayerbotAIConfig.h"
+#include "NamedObjectContext.h"
+#include "PlayerbotAIConfig.h"
 
 class PlayerbotAI;
 

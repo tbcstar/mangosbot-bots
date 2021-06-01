@@ -3,9 +3,9 @@
  */
 
 #include "EquipAction.h"
-#include "../Event.h"
-#include "../values/ItemCountValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemCountValue.h"
+#include "Playerbot.h"
 
 bool EquipAction::Execute(Event event)
 {

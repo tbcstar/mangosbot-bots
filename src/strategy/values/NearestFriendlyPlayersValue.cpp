@@ -3,7 +3,7 @@
  */
 
 #include "NearestFriendlyPlayersValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void NearestFriendlyPlayersValue::FindUnits(std::list<Unit*> &targets)
 {

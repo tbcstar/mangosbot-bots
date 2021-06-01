@@ -3,11 +3,11 @@
  */
 
 #include "GoAction.h"
-#include "../Event.h"
-#include "../values/Formations.h"
-#include "../values/PositionValue.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "Formations.h"
+#include "PositionValue.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 std::vector<std::string> split(std::string const& s, char delim);
 char* strstri(char const* haystack, char const* needle);

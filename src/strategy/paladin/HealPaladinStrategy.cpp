@@ -3,7 +3,7 @@
  */
 
 #include "HealPaladinStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 HealPaladinStrategy::HealPaladinStrategy(PlayerbotAI* botAI) : GenericPaladinStrategy(botAI)
 {

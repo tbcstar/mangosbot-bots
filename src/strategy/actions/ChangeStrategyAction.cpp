@@ -3,8 +3,8 @@
  */
 
 #include "ChangeStrategyAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool ChangeCombatStrategyAction::Execute(Event event)
 {

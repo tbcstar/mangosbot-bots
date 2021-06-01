@@ -3,7 +3,7 @@
  */
 
 #include "UsePotionsStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void UsePotionsStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

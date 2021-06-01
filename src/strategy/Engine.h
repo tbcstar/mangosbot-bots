@@ -6,7 +6,7 @@
 #include "Multiplier.h"
 #include "Trigger.h"
 #include "Strategy.h"
-#include "../PlayerbotAIAware.h"
+#include "PlayerbotAIAware.h"
 
 class Action;
 class ActionNode;

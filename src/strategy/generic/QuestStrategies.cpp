@@ -3,7 +3,7 @@
  */
 
 #include "QuestStrategies.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 QuestStrategy::QuestStrategy(PlayerbotAI* botAI) : PassTroughStrategy(botAI)
 {

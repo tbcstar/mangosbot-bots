@@ -3,7 +3,7 @@
  */
 
 #include "SelfTargetValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 Unit* SelfTargetValue::Calculate()
 {

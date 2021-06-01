@@ -3,8 +3,8 @@
  */
 
 #include "LogLevelAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool LogLevelAction::Execute(Event event)
 {
@@ -15,7 +15,7 @@ bool LogLevelAction::Execute(Event event)
     if (param != "?")
     {
         value->Set(string2logLevel(param));
-        out << "My log level set to " << logLevel2string(value->Get());
+        out << "My log level std::set to " << logLevel2string(value->Get());
     }
     else
     {

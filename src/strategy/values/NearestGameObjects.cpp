@@ -3,7 +3,7 @@
  */
 
 #include "NearestGameObjects.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class AnyGameObjectInObjectRangeCheck
 {

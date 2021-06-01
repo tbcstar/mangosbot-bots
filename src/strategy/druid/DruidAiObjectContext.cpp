@@ -11,7 +11,7 @@
 #include "DruidTriggers.h"
 #include "HealDruidStrategy.h"
 #include "MeleeDruidStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class DruidStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

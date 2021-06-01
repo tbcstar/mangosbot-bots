@@ -3,7 +3,7 @@
  */
 
 #include "DruidShapeshiftActions.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool CastBearFormAction::isPossible() const
 {

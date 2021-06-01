@@ -3,9 +3,9 @@
  */
 
 #include "RewardAction.h"
-#include "../Event.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool RewardAction::Execute(Event event)
 {

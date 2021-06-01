@@ -3,7 +3,7 @@
  */
 
 #include "ChatCommandTrigger.h"
-#include "../NamedObjectContext.h"
+#include "NamedObjectContext.h"
 
 class PlayerbotAI;
 

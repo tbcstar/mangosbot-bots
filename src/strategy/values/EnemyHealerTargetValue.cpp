@@ -3,7 +3,7 @@
  */
 
 #include "EnemyHealerTargetValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 Unit* EnemyHealerTargetValue::Calculate()
 {

@@ -3,7 +3,7 @@
  */
 
 #include "QuestAction.h"
-#include "../Action.h"
+#include "Action.h"
 
 class Event;
 class Quest;

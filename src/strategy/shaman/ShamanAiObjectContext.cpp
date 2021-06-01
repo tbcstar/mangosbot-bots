@@ -10,8 +10,8 @@
 #include "ShamanNonCombatStrategy.h"
 #include "ShamanTriggers.h"
 #include "TotemsShamanStrategy.h"
-#include "../NamedObjectContext.h"
-#include "../../Playerbot.h"
+#include "NamedObjectContext.h"
+#include "Playerbot.h"
 
 class ShamanStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

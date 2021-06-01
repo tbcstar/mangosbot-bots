@@ -3,8 +3,8 @@
  */
 
 #include "CastTimeStrategy.h"
-#include "../actions/GenericSpellActions.h"
-#include "../../Playerbot.h"
+#include "GenericSpellActions.h"
+#include "Playerbot.h"
 
 float CastTimeMultiplier::GetValue(Action* action)
 {

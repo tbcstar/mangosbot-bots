@@ -4,10 +4,10 @@
 
 #include "SendMailAction.h"
 #include "Mail.h"
-#include "../Event.h"
-#include "../ItemVisitors.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemVisitors.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool SendMailAction::Execute(Event event)
 {

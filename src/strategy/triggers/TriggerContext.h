@@ -7,7 +7,7 @@
 #include "LfgTriggers.h"
 #include "RpgTriggers.h"
 #include "RtiTriggers.h"
-#include "../NamedObjectContext.h"
+#include "NamedObjectContext.h"
 
 class PlayerbotAI;
 

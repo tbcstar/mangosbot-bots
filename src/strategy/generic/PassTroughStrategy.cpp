@@ -3,7 +3,7 @@
  */
 
 #include "PassTroughStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void PassTroughStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

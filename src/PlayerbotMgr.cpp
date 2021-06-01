@@ -11,7 +11,7 @@ PlayerbotHolder::PlayerbotHolder() : PlayerbotAIBase()
 {
 }
 
-void PlayerbotHolder::UpdateSessions(uint32 elapsed)
+void PlayerbotHolder::UpdateSessions(uint32 /*elapsed*/)
 {
     for (PlayerBotMap::const_iterator itr = GetPlayerBotsBegin(); itr != GetPlayerBotsEnd(); ++itr)
     {
@@ -245,11 +245,11 @@ bool PlayerbotMgr::HandlePlayerbotMgrCommand(ChatHandler* handler, char const* a
 
 std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* args, Player* master)
 {
-    std::vector<string> messages;
+    std::vector<std::string> messages;
 
     if (!*args)
     {
-        messages.push_back("usage: list or add/init/remove PLAYERNAME");
+        messages.push_back("usage: std::list or add/init/remove PLAYERNAME");
         return std::move(messages);
     }
 
@@ -257,11 +257,11 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
     char* charname = strtok (nullptr, " ");
     if (!cmd)
     {
-        messages.push_back("usage: list or add/init/remove PLAYERNAME");
+        messages.push_back("usage: std::list or add/init/remove PLAYERNAME");
         return std::move(messages);
     }
 
-    if (!strcmp(cmd, "list"))
+    if (!strcmp(cmd, "std::list"))
     {
         messages.push_back(ListBots(master));
         return std::move(messages);
@@ -269,7 +269,7 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
 
     if (!charname)
     {
-        messages.push_back("usage: list or add/init/remove PLAYERNAME");
+        messages.push_back("usage: std::list or add/init/remove PLAYERNAME");
         return std::move(messages);
     }
 
@@ -390,7 +390,7 @@ string PlayerbotHolder::ListBots(Player* master)
     classNames[CLASS_WARRIOR] = "Warrior";
 
     std::map<std::string, std::string> online;
-    std::list<string> names;
+    std::list<std::string> names;
     std::map<std::string, std::string> classes;
 
     for (PlayerBotMap::const_iterator it = GetPlayerBotsBegin(); it != GetPlayerBotsEnd(); ++it)
@@ -446,7 +446,7 @@ string PlayerbotHolder::ListBots(Player* master)
     std::ostringstream out;
     bool first = true;
     out << "Bot roster: ";
-    for (std::list<string>::iterator i = names.begin(); i != names.end(); ++i)
+    for (std::list<std::string>::iterator i = names.begin(); i != names.end(); ++i)
     {
         if (first)
             first = false;

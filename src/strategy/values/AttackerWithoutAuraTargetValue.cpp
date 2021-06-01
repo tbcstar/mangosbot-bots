@@ -3,7 +3,7 @@
  */
 
 #include "AttackerWithoutAuraTargetValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 Unit* AttackerWithoutAuraTargetValue::Calculate()
 {

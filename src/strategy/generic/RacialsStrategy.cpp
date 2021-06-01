@@ -3,7 +3,7 @@
  */
 
 #include "RacialsStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class RacialsStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

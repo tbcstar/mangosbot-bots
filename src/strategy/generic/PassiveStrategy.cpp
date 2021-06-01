@@ -3,8 +3,8 @@
  */
 
 #include "PassiveStrategy.h"
-#include "../PassiveMultiplier.h"
-#include "../../Playerbot.h"
+#include "PassiveMultiplier.h"
+#include "Playerbot.h"
 
 void PassiveStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
 {

@@ -3,8 +3,8 @@
  */
 
 #include "GenericSpellActions.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool CastSpellAction::Execute(Event event)
 {

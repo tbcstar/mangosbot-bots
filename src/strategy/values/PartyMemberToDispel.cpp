@@ -3,7 +3,7 @@
  */
 
 #include "PartyMemberToDispel.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class PartyMemberToDispelPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {

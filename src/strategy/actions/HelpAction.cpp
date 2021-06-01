@@ -4,8 +4,8 @@
 
 #include "HelpAction.h"
 #include "ChatActionContext.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 HelpAction::HelpAction(PlayerbotAI* botAI) : Action(botAI, "help")
 {

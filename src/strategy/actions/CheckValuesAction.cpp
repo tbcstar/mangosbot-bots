@@ -3,9 +3,9 @@
  */
 
 #include "CheckValuesAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 CheckValuesAction::CheckValuesAction(PlayerbotAI* botAI) : Action(botAI, "check values")
 {

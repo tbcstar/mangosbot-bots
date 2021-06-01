@@ -3,9 +3,9 @@
  */
 
 #include "StatsAction.h"
-#include "../Event.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool StatsAction::Execute(Event event)
 {
@@ -38,7 +38,7 @@ void StatsAction::ListBagSlots(ostringstream &out)
 {
     uint32 totalused = 0, total = 16;
 
-    // list out items in main backpack
+    // std::list out items in main backpack
     for (uint8 slot = INVENTORY_SLOT_ITEM_START; slot < INVENTORY_SLOT_ITEM_END; slot++)
     {
         if (bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
@@ -49,7 +49,7 @@ void StatsAction::ListBagSlots(ostringstream &out)
 
     uint32 totalfree = 16 - totalused;
 
-    // list out items in other removable backpacks
+    // std::list out items in other removable backpacks
     for (uint8 bag = INVENTORY_SLOT_BAG_START; bag < INVENTORY_SLOT_BAG_END; ++bag)
     {
         if (Bag const* pBag = (Bag*)bot->GetItemByPos(INVENTORY_SLOT_BAG_0, bag))

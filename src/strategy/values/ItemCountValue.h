@@ -3,9 +3,9 @@
  */
 
 #include "Item.h"
-#include "../NamedObjectContext.h"
-#include "../Value.h"
-#include "../actions/InventoryAction.h"
+#include "NamedObjectContext.h"
+#include "Value.h"
+#include "InventoryAction.h"
 
 class Event;
 class PlayerbotAI;

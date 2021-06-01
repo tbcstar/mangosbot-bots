@@ -3,7 +3,7 @@
  */
 
 #include "CasterShamanStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class CasterShamanStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

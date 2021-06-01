@@ -3,12 +3,12 @@
  */
 
 #include "FlagAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool FlagAction::TellUsage()
 {
-    botAI->TellError("Usage: flag cloak/helm/pvp on/set/off/clear/toggle/?");
+    botAI->TellError("Usage: flag cloak/helm/pvp on/std::set/off/clear/toggle/?");
     return false;
 }
 
@@ -19,7 +19,7 @@ bool FlagAction::Execute(Event event)
     if (ss.size() != 2)
         return TellUsage();
 
-    bool setFlag = (ss[1] == "set" || ss[1] == "on");
+    bool setFlag = (ss[1] == "std::set" || ss[1] == "on");
     bool clearFlag = (ss[1] == "clear" || ss[1] == "off");
     bool toggleFlag = (ss[1] == "toggle");
     if (ss[0] == "pvp")

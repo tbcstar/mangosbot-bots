@@ -3,7 +3,7 @@
  */
 
 #include "PetTargetValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 Unit* PetTargetValue::Calculate()
 {

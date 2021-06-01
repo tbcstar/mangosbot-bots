@@ -6,14 +6,14 @@
 #include "Action.h"
 #include "StrategyContext.h"
 #include "Trigger.h"
-#include "actions/ActionContext.h"
-#include "actions/ChatActionContext.h"
-#include "actions/WorldPacketActionContext.h"
-#include "triggers/ChatTriggerContext.h"
-#include "triggers/TriggerContext.h"
-#include "triggers/WorldPacketTriggerContext.h"
-#include "values/ValueContext.h"
-#include "../Playerbot.h"
+#include "ActionContext.h"
+#include "ChatActionContext.h"
+#include "WorldPacketActionContext.h"
+#include "ChatTriggerContext.h"
+#include "TriggerContext.h"
+#include "WorldPacketTriggerContext.h"
+#include "ValueContext.h"
+#include "Playerbot.h"
 
 AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
 {
@@ -51,7 +51,7 @@ void AiObjectContext::Reset()
 
 std::vector<std::string> AiObjectContext::Save()
 {
-    std::vector<string> result;
+    std::vector<std::string> result;
 
     std::set<std::string> names = valueContexts.GetCreated();
     for (std::set<std::string>::iterator i = names.begin(); i != names.end(); ++i)

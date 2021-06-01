@@ -3,7 +3,7 @@
  */
 
 #include "CurrentCcTargetValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class FindCurrentCcTargetStrategy : public FindTargetStrategy
 {

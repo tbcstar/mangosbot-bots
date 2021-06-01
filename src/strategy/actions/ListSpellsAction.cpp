@@ -3,8 +3,8 @@
  */
 
 #include "ListSpellsAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 std::map<uint32, SkillLineAbilityEntry const*> ListSpellsAction::skillSpells;
 std::set<uint32> ListSpellsAction::vendorItems;
@@ -111,7 +111,7 @@ bool ListSpellsAction::Execute(Event event)
     uint32 maxLevel = 0;
     if (filter.find("-") != std::string::npos)
     {
-        std::vector<string> ff = split(filter, '-');
+        std::vector<std::string> ff = split(filter, '-');
         minLevel = atoi(ff[0].c_str());
         maxLevel = atoi(ff[1].c_str());
         filter = "";

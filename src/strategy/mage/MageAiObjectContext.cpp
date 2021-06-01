@@ -9,9 +9,9 @@
 #include "GenericMageNonCombatStrategy.h"
 #include "MageActions.h"
 #include "MageTriggers.h"
-#include "../NamedObjectContext.h"
-#include "../generic/PullStrategy.h"
-#include "../../Playerbot.h"
+#include "NamedObjectContext.h"
+#include "PullStrategy.h"
+#include "Playerbot.h"
 
 class MageStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

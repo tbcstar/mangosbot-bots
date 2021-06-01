@@ -3,7 +3,7 @@
  */
 
 #include "AlwaysLootListValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 std::string const& AlwaysLootListValue::Save()
 {
@@ -26,8 +26,8 @@ bool AlwaysLootListValue::Load(string text)
 {
     value.clear();
 
-    vector<string> ss = split(text, ',');
-    for (vector<string>::iterator i = ss.begin(); i != ss.end(); ++i)
+    std::vector<std::string> ss = split(text, ',');
+    for (std::vector<std::string>::iterator i = ss.begin(); i != ss.end(); ++i)
     {
         value.insert(atoi(i->c_str()));
     }

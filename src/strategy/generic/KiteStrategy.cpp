@@ -3,7 +3,7 @@
  */
 
 #include "KiteStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 KiteStrategy::KiteStrategy(PlayerbotAI* botAI) : Strategy(botAI)
 {

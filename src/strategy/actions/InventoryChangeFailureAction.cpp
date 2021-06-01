@@ -3,8 +3,8 @@
  */
 
 #include "InventoryChangeFailureAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 std::map<InventoryResult, std::string> InventoryChangeFailureAction::messages;
 

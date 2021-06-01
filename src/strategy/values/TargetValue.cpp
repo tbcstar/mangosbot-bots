@@ -4,7 +4,7 @@
 
 #include "TargetValue.h"
 #include "RtiTargetValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 Unit* FindTargetStrategy::GetResult()
 {
@@ -44,7 +44,7 @@ bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
                 if (botAI->GetAiObjectContext()->GetValue<Unit*>("rti cc target")->Get() == attacker)
                     return true;
 
-                std::string const& rti = botAI->GetAiObjectContext()->GetValue<string>("rti cc")->Get();
+                std::string const& rti = botAI->GetAiObjectContext()->GetValue<std::string>("rti cc")->Get();
                 int32 index = RtiTargetValue::GetRtiIndex(rti);
                 if (index != -1)
                 {

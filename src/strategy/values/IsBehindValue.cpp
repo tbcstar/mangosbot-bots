@@ -3,7 +3,7 @@
  */
 
 #include "IsBehindValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool IsBehindValue::Calculate()
 {

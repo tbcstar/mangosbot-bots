@@ -3,7 +3,7 @@
  */
 
 #include "ObjectGuid.h"
-#include "../Value.h"
+#include "Value.h"
 
 class PlayerbotAI;
 
@@ -15,10 +15,10 @@ class NewPlayerNearbyValue : public CalculatedValue<ObjectGuid>
         ObjectGuid Calculate() override;
 };
 
-class AlreadySeenPlayersValue : public ManualSetValue<set<ObjectGuid>& >
+class AlreadySeenPlayersValue : public ManualSetValue<std::set<ObjectGuid>& >
 {
 	public:
-        AlreadySeenPlayersValue(PlayerbotAI* botAI) : ManualSetValue<set<ObjectGuid>& >(botAI, data, "already seen players") { }
+        AlreadySeenPlayersValue(PlayerbotAI* botAI) : ManualSetValue<std::set<ObjectGuid>& >(botAI, data, "already seen players") { }
 
         GuidSet data;
 };

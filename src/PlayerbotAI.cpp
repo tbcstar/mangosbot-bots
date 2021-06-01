@@ -11,12 +11,12 @@
 #include "PlayerbotDbStore.h"
 #include "PlayerbotMgr.h"
 #include "PlayerbotSecurity.h"
-#include "strategy/Engine.h"
-#include "strategy/ExternalEventHelper.h"
-#include "strategy/actions/LogLevelAction.h"
-#include "strategy/values/LastSpellCastValue.h"
-#include "strategy/values/LastMovementValue.h"
-#include "strategy/values/PositionValue.h"
+#include "Engine.h"
+#include "ExternalEventHelper.h"
+#include "LogLevelAction.h"
+#include "LastSpellCastValue.h"
+#include "LastMovementValue.h"
+#include "PositionValue.h"
 
 std::vector<std::string>& split(string const& s, char delim, std::vector<std::string>& elems);
 std::vector<std::string> split(string const& s, char delim);
@@ -34,7 +34,7 @@ uint32 PlayerbotChatHandler::extractQuestId(std::string str)
     return cId ? atol(cId) : 0;
 }
 
-void PacketHandlingHelper::AddHandler(uint16 opcode, string handler)
+void PacketHandlingHelper::AddHandler(uint16 opcode, std::string const& handler)
 {
     handlers[opcode] = handler;
 }
@@ -92,7 +92,7 @@ PlayerbotAI::PlayerbotAI(Player* bot) : PlayerbotAIBase(), bot(bot), chatHelper(
     botOutgoingPacketHandlers.AddHandler(SMSG_GROUP_INVITE, "group invite");
     botOutgoingPacketHandlers.AddHandler(BUY_ERR_NOT_ENOUGHT_MONEY, "not enough money");
     botOutgoingPacketHandlers.AddHandler(BUY_ERR_REPUTATION_REQUIRE, "not enough reputation");
-    botOutgoingPacketHandlers.AddHandler(SMSG_GROUP_SET_LEADER, "group set leader");
+    botOutgoingPacketHandlers.AddHandler(SMSG_GROUP_SET_LEADER, "group std::set leader");
     botOutgoingPacketHandlers.AddHandler(SMSG_FORCE_RUN_SPEED_CHANGE, "check mount state");
     botOutgoingPacketHandlers.AddHandler(SMSG_RESURRECT_REQUEST, "resurrect request");
     botOutgoingPacketHandlers.AddHandler(SMSG_INVENTORY_CHANGE_FAILURE, "cannot equip");
@@ -1201,7 +1201,7 @@ void PlayerbotAI::RemoveAura(string name)
         bot->RemoveAurasDueToSpell(spellid);
 }
 
-bool PlayerbotAI::IsInterruptableSpellCasting(Unit* target, string spell)
+bool PlayerbotAI::IsInterruptableSpellCasting(Unit* target, std::string const& spell)
 {
 	uint32 spellid = aiObjectContext->GetValue<uint32>("spell id", spell)->Get();
 	if (!spellid || !target->IsNonMeleeSpellCast(true))
@@ -1568,21 +1568,6 @@ std::string PlayerbotAI::HandleRemoteCommand(std::string command)
 bool PlayerbotAI::HasSkill(SkillType skill)
 {
     return bot->HasSkill(skill) && bot->GetSkillValue(skill) > 1;
-}
-
-bool ChatHandler::HandlePlayerbotCommand(char* args)
-{
-    return PlayerbotMgr::HandlePlayerbotMgrCommand(this, args);
-}
-
-bool ChatHandler::HandleRandomPlayerbotCommand(char* args)
-{
-    return RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(this, args);
-}
-
-bool ChatHandler::HandleGuildTaskCommand(char* args)
-{
-    return GuildTaskMgr::HandleConsoleCommand(this, args);
 }
 
 float PlayerbotAI::GetRange(string type)

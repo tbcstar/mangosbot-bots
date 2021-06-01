@@ -3,9 +3,9 @@
  */
 
 #include "ResetAiAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../PlayerbotDbStore.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "PlayerbotDbStore.h"
 
 bool ResetAiAction::Execute(Event event)
 {

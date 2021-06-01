@@ -4,7 +4,7 @@
 
 #include "Common.h"
 #include "Item.h"
-#include "../ChatHelper.h"
+#include "ChatHelper.h"
 
 class Player;
 

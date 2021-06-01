@@ -3,10 +3,10 @@
  */
 
 #include "RevealGatheringItemAction.h"
-#include "../Event.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 class AnyGameObjectInObjectRangeCheck
 {

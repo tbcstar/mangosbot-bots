@@ -4,7 +4,7 @@
 
 #include "PriestNonCombatStrategy.h"
 #include "PriestNonCombatStrategyActionNodeFactory.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 PriestNonCombatStrategy::PriestNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI)
 {

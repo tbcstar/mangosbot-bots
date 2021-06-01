@@ -3,8 +3,8 @@
  */
 
 #include "WithinAreaTrigger.h"
-#include "../values/LastMovementValue.h"
-#include "../../Playerbot.h"
+#include "LastMovementValue.h"
+#include "Playerbot.h"
 
 bool WithinAreaTrigger::IsActive()
 {

@@ -3,7 +3,7 @@
  */
 
 #include "LastMovementValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void LastMovement::Set(Unit* follow)
 {

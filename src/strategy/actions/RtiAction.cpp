@@ -3,9 +3,9 @@
  */
 
 #include "RtiAction.h"
-#include "../Event.h"
-#include "../values/RtiTargetValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "RtiTargetValue.h"
+#include "Playerbot.h"
 
 bool RtiAction::Execute(Event event)
 {
@@ -31,10 +31,10 @@ bool RtiAction::Execute(Event event)
         return true;
     }
 
-    context->GetValue<string>(type)->Set(text);
+    context->GetValue<std::string>(type)->Set(text);
 
     std::ostringstream out;
-    out << type << " set to: ";
+    out << type << " std::set to: ";
     AppendRti(out, type);
     botAI->TellMaster(out);
     return true;

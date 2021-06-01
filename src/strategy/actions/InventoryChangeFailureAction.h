@@ -3,7 +3,7 @@
  */
 
 #include "Item.h"
-#include "../Action.h"
+#include "Action.h"
 
 class Event;
 class PlayerbotAI;

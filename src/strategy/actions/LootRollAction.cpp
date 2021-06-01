@@ -3,9 +3,9 @@
  */
 
 #include "LootRollAction.h"
-#include "../Event.h"
-#include "../values/ItemUsageValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemUsageValue.h"
+#include "Playerbot.h"
 
 bool LootRollAction::Execute(Event event)
 {

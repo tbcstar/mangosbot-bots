@@ -7,7 +7,7 @@
 #include "NamedObjectContext.h"
 #include "Multiplier.h"
 #include "Trigger.h"
-#include "../PlayerbotAIAware.h"
+#include "PlayerbotAIAware.h"
 
 enum StrategyType : uint32
 {

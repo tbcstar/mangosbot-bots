@@ -4,8 +4,8 @@
 
 #include "Stances.h"
 #include "Arrow.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 Unit* Stance::GetTarget()
 {
@@ -234,12 +234,12 @@ bool SetStanceAction::Execute(Event event)
         std::ostringstream str;
         str << "Invalid stance: |cffff0000" << stance;
         botAI->TellMaster(str);
-        botAI->TellMaster("Please set to any of:|cffffffff near (default), tank, turnback, behind");
+        botAI->TellMaster("Please std::set to any of:|cffffffff near (default), tank, turnback, behind");
         return false;
     }
 
     std::ostringstream str;
-    str << "Stance set to: " << stance;
+    str << "Stance std::set to: " << stance;
     botAI->TellMaster(str);
     return true;
 }

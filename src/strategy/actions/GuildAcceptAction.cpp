@@ -3,9 +3,9 @@
  */
 
 #include "GuildAcceptAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../PlayerbotSecurity.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "PlayerbotSecurity.h"
 
 bool GuildAcceptAction::Execute(Event event)
 {

@@ -3,9 +3,9 @@
  */
 
 #include "ReachTargetActions.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 bool ReachTargetAction::Execute(Event event)
 {

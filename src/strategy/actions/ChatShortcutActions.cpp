@@ -3,9 +3,9 @@
  */
 
 #include "ChatShortcutActions.h"
-#include "../Event.h"
-#include "../values/PositionValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "PositionValue.h"
+#include "Playerbot.h"
 
 void ReturnPositionResetAction::ResetReturnPosition()
 {

@@ -7,9 +7,9 @@
 #include "GenericRogueNonCombatStrategy.h"
 #include "RogueActions.h"
 #include "RogueTriggers.h"
-#include "../NamedObjectContext.h"
-#include "../generic/PullStrategy.h"
-#include "../../Playerbot.h"
+#include "NamedObjectContext.h"
+#include "PullStrategy.h"
+#include "Playerbot.h"
 
 class RogueStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

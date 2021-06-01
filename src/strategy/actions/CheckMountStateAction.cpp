@@ -3,9 +3,9 @@
  */
 
 #include "CheckMountStateAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 bool CheckMountStateAction::Execute(Event event)
 {

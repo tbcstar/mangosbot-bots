@@ -3,7 +3,7 @@
  */
 
 #include "Event.h"
-#include "../Playerbot.h"
+#include "Playerbot.h"
 
 ObjectGuid Event::getObject()
 {

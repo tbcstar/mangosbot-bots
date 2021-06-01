@@ -76,7 +76,7 @@ void GuildTaskMgr::Update(Player* player, Player* guildMaster)
         SetTaskValue(owner, guildId, "activeTask", task, time);
         SetTaskValue(owner, guildId, "advertisement", 1, urand(sPlayerbotAIConfig->minGuildTaskAdvertisementTime, sPlayerbotAIConfig->maxGuildTaskAdvertisementTime));
 
-        sLog->outDebug("%s / %s: guild task %u is set for %u secs", guild->GetName(), player->GetName(), task, time);
+        sLog->outDebug("%s / %s: guild task %u is std::set for %u secs", guild->GetName(), player->GetName(), task, time);
         return;
     }
 

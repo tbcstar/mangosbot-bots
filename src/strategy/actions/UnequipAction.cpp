@@ -3,11 +3,11 @@
  */
 
 #include "UnequipAction.h"
-#include "../Event.h"
-#include "../values/ItemCountValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemCountValue.h"
+#include "Playerbot.h"
 
-std::vector<string> split(std::string const& s, char delim);
+std::vector<std::string> split(std::string const& s, char delim);
 
 bool UnequipAction::Execute(Event event)
 {

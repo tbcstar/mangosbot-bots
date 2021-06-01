@@ -84,7 +84,7 @@ class ValueContext : public NamedObjectContext<UntypedValue>
             creators["active spell"] = &ValueContext::active_spell;
             creators["craft"] = &ValueContext::craft;
             creators["collision"] = &ValueContext::collision;
-            creators["skip spells list"] = &ValueContext::skip_spells_list_value;
+            creators["skip spells std::list"] = &ValueContext::skip_spells_list_value;
             creators["nearest game objects"] = &ValueContext::nearest_game_objects;
             creators["nearest npcs"] = &ValueContext::nearest_npcs;
             creators["nearest friendly players"] = &ValueContext::nearest_friendly_players;
@@ -135,7 +135,7 @@ class ValueContext : public NamedObjectContext<UntypedValue>
             creators["loot target"] = &ValueContext::loot_target;
             creators["available loot"] = &ValueContext::available_loot;
             creators["has available loot"] = &ValueContext::has_available_loot;
-            creators["always loot list"] = &ValueContext::always_loot_list;
+            creators["always loot std::list"] = &ValueContext::always_loot_list;
             creators["loot strategy"] = &ValueContext::loot_strategy;
             creators["last movement"] = &ValueContext::last_movement;
             creators["stay time"] = &ValueContext::stay_time;
@@ -183,7 +183,7 @@ class ValueContext : public NamedObjectContext<UntypedValue>
 
             creators["aoe count"] = &ValueContext::aoe_count;
             creators["aoe position"] = &ValueContext::aoe_position;
-            creators["outfit list"] = &ValueContext::outfit_list_value;
+            creators["outfit std::list"] = &ValueContext::outfit_list_value;
 
             creators["random bot update"] = &ValueContext::random_bot_update_value;
             creators["nearest non bot players"] = &ValueContext::nearest_non_bot_players;

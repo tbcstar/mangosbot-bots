@@ -3,8 +3,8 @@
  */
 
 #include "ReleaseSpiritAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool ReleaseSpiritAction::Execute(Event event)
 {

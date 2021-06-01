@@ -3,8 +3,8 @@
  */
 
 #include "DBCStructure.h"
-#include "../Action.h"
-#include "../values/CraftValue.h"
+#include "Action.h"
+#include "CraftValue.h"
 
 class Event;
 class PlayerbotAI;

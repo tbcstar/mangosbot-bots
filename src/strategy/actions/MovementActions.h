@@ -2,8 +2,8 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
-#include "../Action.h"
-#include "../../PlayerbotAIConfig.h"
+#include "Action.h"
+#include "PlayerbotAIConfig.h"
 
 class Event;
 class PlayerbotAI;
@@ -79,7 +79,7 @@ class MoveOutOfEnemyContactAction : public MovementAction
 class SetFacingTargetAction : public MovementAction
 {
     public:
-        SetFacingTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set facing") { }
+        SetFacingTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "std::set facing") { }
 
         bool Execute(Event event) override;
         bool isUseful() const override;
@@ -88,7 +88,7 @@ class SetFacingTargetAction : public MovementAction
 class SetBehindTargetAction : public MovementAction
 {
     public:
-        SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set behind") { }
+        SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "std::set behind") { }
 
         bool Execute(Event event) override;
         bool isUseful() const override;

@@ -3,9 +3,9 @@
  */
 
 #include "EmoteAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 std::map<std::string, uint32> EmoteActionBase::emotes;
 std::map<std::string, uint32> EmoteActionBase::textEmotes;

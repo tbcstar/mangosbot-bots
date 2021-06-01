@@ -8,9 +8,9 @@
 #include "TankWarriorStrategy.h"
 #include "WarriorActions.h"
 #include "WarriorTriggers.h"
-#include "../NamedObjectContext.h"
-#include "../generic/PullStrategy.h"
-#include "../../Playerbot.h"
+#include "NamedObjectContext.h"
+#include "PullStrategy.h"
+#include "Playerbot.h"
 
 class WarriorStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

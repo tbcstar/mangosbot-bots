@@ -3,10 +3,10 @@
  */
 
 #include "BuyAction.h"
-#include "../Event.h"
-#include "../ItemVisitors.h"
-#include "../values/ItemCountValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemVisitors.h"
+#include "ItemCountValue.h"
+#include "Playerbot.h"
 
 bool BuyAction::Execute(Event event)
 {

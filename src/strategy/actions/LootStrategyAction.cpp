@@ -4,17 +4,17 @@
 
 #include "LootStrategyAction.h"
 #include "LootAction.h"
-#include "../Event.h"
-#include "../values/LootStrategyValue.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "LootStrategyValue.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool LootStrategyAction::Execute(Event event)
 {
     std::string const& strategy = event.getParam();
 
     LootObjectStack* lootItems = AI_VALUE(LootObjectStack*, "available loot");
-    std::set<uint32>& alwaysLootItems = AI_VALUE(std::set<uint32>&, "always loot list");
+    std::set<uint32>& alwaysLootItems = AI_VALUE(std::set<uint32>&, "always loot std::list");
     Value<LootStrategy*>* lootStrategy = context->GetValue<LootStrategy*>("loot strategy");
 
     if (strategy == "?")
@@ -51,7 +51,7 @@ bool LootStrategyAction::Execute(Event event)
             lootStrategy->Set(LootStrategyValue::instance(strategy));
 
             std::ostringstream out;
-            out << "Loot strategy set to " << lootStrategy->Get()->GetName();
+            out << "Loot strategy std::set to " << lootStrategy->Get()->GetName();
             botAI->TellMaster(out);
             return true;
         }
@@ -75,12 +75,12 @@ bool LootStrategyAction::Execute(Event event)
                 if (j != alwaysLootItems.end())
                     alwaysLootItems.erase(j);
 
-                botAI->TellMaster("Item(s) removed from always loot list");
+                botAI->TellMaster("Item(s) removed from always loot std::list");
             }
             else
             {
                 alwaysLootItems.insert(itemid);
-                botAI->TellMaster("Item(s) added to always loot list");
+                botAI->TellMaster("Item(s) added to always loot std::list");
             }
         }
     }

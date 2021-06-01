@@ -4,8 +4,8 @@
 
 #include "GossipHelloAction.h"
 #include "GossipDef.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool GossipHelloAction::Execute(Event event)
 {

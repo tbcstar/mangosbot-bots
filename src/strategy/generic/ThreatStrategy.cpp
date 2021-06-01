@@ -3,8 +3,8 @@
  */
 
 #include "ThreatStrategy.h"
-#include "../actions/GenericSpellActions.h"
-#include "../../Playerbot.h"
+#include "GenericSpellActions.h"
+#include "Playerbot.h"
 
 float ThreatMultiplier::GetValue(Action* action)
 {

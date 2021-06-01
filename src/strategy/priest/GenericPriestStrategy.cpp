@@ -5,7 +5,7 @@
 #include "GenericPriestStrategy.h"
 #include "GenericPriestStrategyActionNodeFactory.h"
 #include "HealPriestStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 GenericPriestStrategy::GenericPriestStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {

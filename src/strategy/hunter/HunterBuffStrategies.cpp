@@ -3,7 +3,7 @@
  */
 
 #include "HunterBuffStrategies.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void HunterBuffDpsStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

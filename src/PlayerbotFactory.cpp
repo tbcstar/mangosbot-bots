@@ -8,8 +8,8 @@
 #include "Playerbot.h"
 #include "RandomItemMgr.h"
 #include "RandomPlayerbotFactory.h"
-#include "strategy/ItemVisitors.h"
-#include "strategy/actions/InventoryAction.h"
+#include "ItemVisitors.h"
+#include "InventoryAction.h"
 
 #include <random>
 
@@ -190,7 +190,7 @@ void PlayerbotFactory::Randomize(bool incremental)
         pmo->finish();
 
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_EqSets");
-    sLog->outDetail("Initializing second equipment set...");
+    sLog->outDetail("Initializing second equipment std::set...");
     InitSecondEquipmentSet();
     if (pmo)
         pmo->finish();
@@ -777,7 +777,7 @@ void PlayerbotFactory::InitSecondEquipmentSet()
         std::vector<uint32>& ids = i->second;
         if (ids.empty())
         {
-            sLog->outDebug(  "%s: no items to make second equipment set for slot %d", bot->GetName(), i->first);
+            sLog->outDebug(  "%s: no items to make second equipment std::set for slot %d", bot->GetName(), i->first);
             continue;
         }
 
@@ -1476,7 +1476,7 @@ void PlayerbotFactory::InitInventoryTrade()
 
 void PlayerbotFactory::InitInventoryEquip()
 {
-    vector<uint32> ids;
+    std::vector<uint32> ids;
 
     uint32 desiredQuality = itemQuality;
     if (urand(0, 100) < 100 * sPlayerbotAIConfig->randomGearLoweringChance && desiredQuality > ITEM_QUALITY_NORMAL)

@@ -20,7 +20,7 @@
 #include "PlayerbotAIConfig.h"
 #include "PlayerbotMgr.h"
 #include "RandomPlayerbotMgr.h"
-#include "strategy/AiObjectContext.h"
+#include "AiObjectContext.h"
 
 std::vector<std::string> split(std::string const& s, char delim);
 void split(std::vector<std::string>& dest, std::string const& str, char const* delim);

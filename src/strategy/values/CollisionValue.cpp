@@ -3,8 +3,8 @@
  */
 
 #include "CollisionValue.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 bool CollisionValue::Calculate()
 {

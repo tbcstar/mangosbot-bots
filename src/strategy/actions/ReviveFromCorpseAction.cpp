@@ -3,9 +3,9 @@
  */
 
 #include "ReviveFromCorpseAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../PlayerbotFactory.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "PlayerbotFactory.h"
 
 bool ReviveFromCorpseAction::Execute(Event event)
 {

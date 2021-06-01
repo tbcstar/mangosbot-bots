@@ -803,8 +803,8 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
         return true;
     }
 
-    std::vector<string> messages = sRandomPlayerbotMgr->HandlePlayerbotCommand(args, nullptr);
-    for (std::vector<string>::iterator i = messages.begin(); i != messages.end(); ++i)
+    std::vector<std::string> messages = sRandomPlayerbotMgr->HandlePlayerbotCommand(args);
+    for (std::vector<std::string>::iterator i = messages.begin(); i != messages.end(); ++i)
     {
         sLog->outString(i->c_str());
     }

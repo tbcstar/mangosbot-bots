@@ -5,7 +5,7 @@
 #include "Common.h"
 #include "NamedObjectContext.h"
 #include "Value.h"
-#include "../PlayerbotAIAware.h"
+#include "PlayerbotAIAware.h"
 
 class Action;
 class PlayerbotAI;

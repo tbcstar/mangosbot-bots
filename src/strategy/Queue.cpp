@@ -4,7 +4,7 @@
 
 #include "Queue.h"
 #include "Log.h"
-#include "../PlayerbotAIConfig.h"
+#include "PlayerbotAIConfig.h"
 
 void Queue::Push(ActionBasket *action)
 {

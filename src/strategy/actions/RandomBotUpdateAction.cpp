@@ -3,8 +3,8 @@
  */
 
 #include "RandomBotUpdateAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool RandomBotUpdateAction::Execute(Event event)
 {

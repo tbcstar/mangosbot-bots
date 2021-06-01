@@ -53,7 +53,7 @@ class NamedObjectFactory
         std::set<std::string> supports()
         {
             std::set<std::string> keys;
-            for (typename map<string, ActionCreator>::iterator it = creators.begin(); it != creators.end(); it++)
+            for (typename map<std::string, ActionCreator>::iterator it = creators.begin(); it != creators.end(); it++)
                 keys.insert(it->first);
 
             return std::move(keys);
@@ -181,8 +181,8 @@ class NamedObjectContextList
                 if (!(*i)->IsSupportsSiblings())
                     continue;
 
-                std::set<string> supported = (*i)->supports();
-                std::set<string>::iterator found = supported.find(name);
+                std::set<std::string> supported = (*i)->supports();
+                std::set<std::string>::iterator found = supported.find(name);
                 if (found == supported.end())
                     continue;
 
@@ -190,18 +190,18 @@ class NamedObjectContextList
                 return supported;
             }
 
-            return std::move(set<string>());
+            return std::move(std::set<std::string>());
         }
 
         std::set<std::string> supports()
         {
-            std::set<string> std::result;
+            std::set<std::string> std::result;
 
             for (typename std::vector<NamedObjectContext<T>*>::iterator i = contexts.begin(); i != contexts.end(); i++)
             {
                 std::set<std::string> supported = (*i)->supports();
 
-                for (set<string>::iterator j = supported.begin(); j != supported.end(); j++)
+                for (std::set<std::string>::iterator j = supported.begin(); j != supported.end(); j++)
                     result.insert(*j);
             }
 

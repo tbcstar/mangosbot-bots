@@ -3,9 +3,9 @@
  */
 
 #include "QueryQuestAction.h"
-#include "../Event.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 void QueryQuestAction::TellObjective(std::string const& name, uint32 available, uint32 required)
 {

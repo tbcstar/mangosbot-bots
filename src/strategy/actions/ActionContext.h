@@ -38,7 +38,7 @@ class ActionContext : public NamedObjectContext<Action>
         ActionContext()
         {
             creators["mark rti"] = &ActionContext::mark_rti;
-            creators["set return position"] = &ActionContext::set_return_position;
+            creators["std::set return position"] = &ActionContext::set_return_position;
             creators["rpg"] = &ActionContext::rpg;
             creators["choose rpg target"] = &ActionContext::choose_rpg_target;
             creators["move to rpg target"] = &ActionContext::move_to_rpg_target;
@@ -87,8 +87,8 @@ class ActionContext : public NamedObjectContext<Action>
             creators["open loot"] = &ActionContext::open_loot;
             creators["guard"] = &ActionContext::guard;
             creators["move out of enemy contact"] = &ActionContext::move_out_of_enemy_contact;
-            creators["set facing"] = &ActionContext::set_facing;
-            creators["set behind"] = &ActionContext::set_behind;
+            creators["std::set facing"] = &ActionContext::set_facing;
+            creators["std::set behind"] = &ActionContext::set_behind;
             creators["attack duel opponent"] = &ActionContext::attack_duel_opponent;
             creators["drop target"] = &ActionContext::drop_target;
             creators["check mail"] = &ActionContext::check_mail;

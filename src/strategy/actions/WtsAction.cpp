@@ -3,11 +3,11 @@
  */
 
 #include "WtsAction.h"
-#include "../Event.h"
-#include "../ItemVisitors.h"
-#include "../values/ItemUsageValue.h"
-#include "../../AiFactory.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemVisitors.h"
+#include "ItemUsageValue.h"
+#include "AiFactory.h"
+#include "Playerbot.h"
 
 bool WtsAction::Execute(Event event)
 {

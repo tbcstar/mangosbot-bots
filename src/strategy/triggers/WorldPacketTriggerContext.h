@@ -4,7 +4,7 @@
 
 #include "WorldPacketTrigger.h"
 #include "WithinAreaTrigger.h"
-#include "../NamedObjectContext.h"
+#include "NamedObjectContext.h"
 
 class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
 {
@@ -13,7 +13,7 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
         {
             creators["gossip hello"] = &WorldPacketTriggerContext::gossip_hello;
             creators["group invite"] = &WorldPacketTriggerContext::group_invite;
-            creators["group set leader"] = &WorldPacketTriggerContext::group_set_leader;
+            creators["group std::set leader"] = &WorldPacketTriggerContext::group_set_leader;
             creators["not enough money"] = &WorldPacketTriggerContext::no_money;
             creators["not enough reputation"] = &WorldPacketTriggerContext::no_reputation;
             creators["cannot equip"] = &WorldPacketTriggerContext::cannot_equip;
@@ -75,7 +75,7 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* resurrect_request(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "resurrect request"); }
         static Trigger* gossip_hello(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "gossip hello"); }
         static Trigger* group_invite(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "group invite"); }
-        static Trigger* group_set_leader(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "group set leader"); }
+        static Trigger* group_set_leader(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "group std::set leader"); }
         static Trigger* no_money(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "not enough money"); }
         static Trigger* no_reputation(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "not enough reputation"); }
         static Trigger* use_game_object(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "use game object"); }

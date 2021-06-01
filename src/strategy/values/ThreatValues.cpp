@@ -4,7 +4,7 @@
 
 #include "ThreatValues.h"
 #include "ThreatManager.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 uint8 ThreatValue::Calculate()
 {

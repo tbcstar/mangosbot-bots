@@ -3,7 +3,7 @@
  */
 
 #include "EnemyPlayerValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class FindEnemyPlayerStrategy : public FindTargetStrategy
 {

@@ -3,9 +3,9 @@
  */
 
 #include "PositionAction.h"
-#include "../Event.h"
-#include "../values/PositionValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "PositionValue.h"
+#include "Playerbot.h"
 
 void TellPosition(PlayerbotAI* botAI, std::string const& name, PositionInfo pos)
 {
@@ -17,10 +17,10 @@ void TellPosition(PlayerbotAI* botAI, std::string const& name, PositionInfo pos)
         float x = pos.x;
         float y = pos.y;
         Map2ZoneCoordinates(x, y, botAI->GetBot()->GetZoneId());
-        out << " is set to " << x << "," << y;
+        out << " is std::set to " << x << "," << y;
     }
     else
-        out << " is not set";
+        out << " is not std::set";
 
     botAI->TellMaster(out);
 }
@@ -50,7 +50,7 @@ bool PositionAction::Execute(Event event)
     std::vector<std::string> params = split(param, ' ');
     if (params.size() != 2)
     {
-        botAI->TellMaster("Whisper position <name> ?/set/reset");
+        botAI->TellMaster("Whisper position <name> ?/std::set/reset");
         return false;
     }
 
@@ -70,18 +70,18 @@ bool PositionAction::Execute(Event event)
         posMap[name] = pos;
 
         std::ostringstream out;
-        out << "Position " << name << " is set";
+        out << "Position " << name << " is std::set";
         botAI->TellMaster(out);
         return true;
     }
 
-	if (action == "set")
+	if (action == "std::set")
 	{
 	    pos.Set( bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ(), botAI->GetBot()->GetMapId());
 	    posMap[name] = pos;
 
         std::ostringstream out;
-        out << "Position " << name << " is set";
+        out << "Position " << name << " is std::set";
 	    botAI->TellMaster(out);
 	    return true;
 	}
@@ -106,7 +106,7 @@ bool MoveToPositionAction::Execute(Event event)
     if (!pos.isSet())
     {
         std::ostringstream out;
-        out << "Position " << qualifier << " is not set";
+        out << "Position " << qualifier << " is not std::set";
         botAI->TellMaster(out);
         return false;
     }
@@ -117,7 +117,7 @@ bool MoveToPositionAction::Execute(Event event)
 bool MoveToPositionAction::isUseful()
 {
     PositionInfo pos = context->GetValue<PositionMap&>("position")->Get()[qualifier];
-    float distance = AI_VALUE2(float, "distance", string("position_") + qualifier);
+    float distance = AI_VALUE2(float, "distance", std::string("position_") + qualifier);
     return pos.isSet() && distance > sPlayerbotAIConfig->followDistance && distance < sPlayerbotAIConfig->reactDistance;
 }
 

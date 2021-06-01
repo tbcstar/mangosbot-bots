@@ -3,7 +3,7 @@
  */
 
 #include "ShamanTriggers.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 std::vector<std::string> ShamanWeaponTrigger::spells;
 

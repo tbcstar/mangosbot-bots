@@ -3,8 +3,8 @@
  */
 
 #include "DropQuestAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool DropQuestAction::Execute(Event event)
 {

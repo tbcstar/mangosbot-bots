@@ -3,12 +3,12 @@
  */
 
 #include "NewPlayerNearbyValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 ObjectGuid NewPlayerNearbyValue::Calculate()
 {
     GuidVector players = botAI->GetAiObjectContext()->GetValue<GuidVector>("nearest friendly players")->Get();
-    GuidSet& alreadySeenPlayers = botAI->GetAiObjectContext()->GetValue<set<ObjectGuid>& >("already seen players")->Get();
+    GuidSet& alreadySeenPlayers = botAI->GetAiObjectContext()->GetValue<std::set<ObjectGuid>& >("already seen players")->Get();
     for (ObjectGuid const guid : players)
     {
         if (alreadySeenPlayers.find(guid) == alreadySeenPlayers.end())

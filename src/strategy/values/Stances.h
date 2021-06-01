@@ -3,8 +3,8 @@
  */
 
 #include "Formations.h"
-#include "../Action.h"
-#include "../Value.h"
+#include "Action.h"
+#include "Value.h"
 
 class Event;
 class PlayerbotAI;
@@ -49,7 +49,7 @@ class StanceValue : public ManualSetValue<Stance*>
 class SetStanceAction : public Action
 {
     public:
-        SetStanceAction(PlayerbotAI* botAI) : Action(botAI, "set Stance") { }
+        SetStanceAction(PlayerbotAI* botAI) : Action(botAI, "std::set Stance") { }
 
         bool Execute(Event event) override;
 };

@@ -3,8 +3,8 @@
  */
 
 #include "GreetAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 GreetAction::GreetAction(PlayerbotAI* botAI) : Action(botAI, "greet")
 {

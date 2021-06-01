@@ -3,7 +3,7 @@
  */
 
 #include "ShamanActions.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool CastTotemAction::isUseful() const
 {

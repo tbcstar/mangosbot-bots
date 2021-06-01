@@ -4,7 +4,7 @@
 
 #include "PossibleTargetsValue.h"
 #include "AttackersValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void PossibleTargetsValue::FindUnits(std::list<Unit*>& targets)
 {

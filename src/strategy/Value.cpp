@@ -3,7 +3,7 @@
  */
 
 #include "Value.h"
-#include "../PerformanceMonitor.h"
+#include "PerformanceMonitor.h"
 
 template<class T>
 T CalculatedValue<T>::Get()

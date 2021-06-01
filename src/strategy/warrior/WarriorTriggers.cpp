@@ -3,7 +3,7 @@
  */
 
 #include "WarriorTriggers.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool BloodrageDebuffTrigger::IsActive()
 {

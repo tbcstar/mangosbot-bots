@@ -3,9 +3,9 @@
  */
 
 #include "OutfitAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
-#include "../../strategy/ItemVisitors.h"
+#include "Event.h"
+#include "Playerbot.h"
+#include "ItemVisitors.h"
 
 bool OutfitAction::Execute(Event event)
 {
@@ -126,8 +126,8 @@ bool OutfitAction::Execute(Event event)
 
 void OutfitAction::Save(std::string const& name, ItemIds items)
 {
-    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit list");
-    for (std::vector<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
+    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit std::list");
+    for (std::vector<std::string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
         std::string const& outfit = *i;
         if (name == parseOutfitName(outfit))
@@ -159,8 +159,8 @@ void OutfitAction::Save(std::string const& name, ItemIds items)
 
 void OutfitAction::List()
 {
-    std::vector<string>& outfits = AI_VALUE(std::vector<string>&, "outfit list");
-    for (std::vector<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
+    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit std::list");
+    for (std::vector<std::string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
         std::string const& outfit = *i;
         std::string const& name = parseOutfitName(outfit);

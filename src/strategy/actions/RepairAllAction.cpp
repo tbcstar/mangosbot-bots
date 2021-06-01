@@ -3,9 +3,9 @@
  */
 
 #include "RepairAllAction.h"
-#include "../Event.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool RepairAllAction::Execute(Event event)
 {

@@ -3,7 +3,7 @@
  */
 
 #include "ChangeTalentsAction.h"
-#include "../Event.h"
+#include "Event.h"
 
 bool ChangeTalentsAction::Execute(Event event)
 {

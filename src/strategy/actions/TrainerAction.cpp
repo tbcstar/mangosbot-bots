@@ -3,8 +3,8 @@
  */
 
 #include "TrainerAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 void TrainerAction::Learn(uint32 cost, TrainerSpell const* tSpell, std::ostringstream& msg)
 {
@@ -96,7 +96,7 @@ bool TrainerAction::Execute(Event event)
         return false;
     }
 
-    // check present spell in trainer spell list
+    // check present spell in trainer spell std::list
     TrainerSpellData const* cSpells = creature->GetTrainerSpells();
     if (!cSpells)
     {

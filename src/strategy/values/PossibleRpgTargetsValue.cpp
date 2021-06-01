@@ -3,8 +3,8 @@
  */
 
 #include "PossibleRpgTargetsValue.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 std::vector<uint32> PossibleRpgTargetsValue::allowedNpcFlags;
 
@@ -35,7 +35,7 @@ PossibleRpgTargetsValue::PossibleRpgTargetsValue(PlayerbotAI* botAI, float range
     }
 }
 
-void PossibleRpgTargetsValue::FindUnits(list<Unit*> &targets)
+void PossibleRpgTargetsValue::FindUnits(std::list<Unit*> &targets)
 {
     acore::AnyUnitInObjectRangeCheck u_check(bot, range);
     acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);

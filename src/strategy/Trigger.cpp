@@ -4,7 +4,7 @@
 
 #include "Trigger.h"
 #include "Event.h"
-#include "../Playerbot.h"
+#include "Playerbot.h"
 
 
 Event Trigger::Check()

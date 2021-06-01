@@ -4,13 +4,13 @@
 
 #include "TradeStatusAction.h"
 #include "SetCraftAction.h"
-#include "../Event.h"
-#include "../ItemVisitors.h"
-#include "../values/CraftValue.h"
-#include "../values/ItemUsageValue.h"
-#include "../../GuildTaskMgr.h"
-#include "../../Playerbot.h"
-#include "../../PlayerbotSecurity.h"
+#include "Event.h"
+#include "ItemVisitors.h"
+#include "CraftValue.h"
+#include "ItemUsageValue.h"
+#include "GuildTaskMgr.h"
+#include "Playerbot.h"
+#include "PlayerbotSecurity.h"
 
 bool TradeStatusAction::Execute(Event event)
 {

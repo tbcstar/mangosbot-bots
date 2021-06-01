@@ -3,9 +3,9 @@
  */
 
 #include "ItemUsageValue.h"
-#include "../../GuildTaskMgr.h"
-#include "../../Playerbot.h"
-#include "../../RandomItemMgr.h"
+#include "GuildTaskMgr.h"
+#include "Playerbot.h"
+#include "RandomItemMgr.h"
 
 ItemUsage ItemUsageValue::Calculate()
 {

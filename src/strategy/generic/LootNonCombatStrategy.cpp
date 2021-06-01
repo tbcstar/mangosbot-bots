@@ -3,7 +3,7 @@
  */
 
 #include "LootNonCombatStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void LootNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

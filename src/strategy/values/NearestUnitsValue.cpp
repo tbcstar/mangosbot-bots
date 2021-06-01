@@ -3,7 +3,7 @@
  */
 
 #include "NearestUnitsValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 GuidVector NearestUnitsValue::Calculate()
 {

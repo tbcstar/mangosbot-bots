@@ -33,15 +33,15 @@ std::string PlayerbotTextMgr::Format(std::string const& key, std::map<std::strin
     if (templates.empty())
         LoadTemplates();
 
-    std::vector<std::string>& list = templates[key];
-    if (list.empty())
+    std::vector<std::string>& std::list = templates[key];
+    if (std::list.empty())
     {
         std::ostringstream out;
         out << "Unknown text: " << key;
         return out.str();
     }
 
-    std::string str = list[urand(0, list.size() - 1)];
+    std::string str = std::list[urand(0, std::list.size() - 1)];
     for (std::map<std::string, std::string>::iterator i = placeholders.begin(); i != placeholders.end(); ++i)
         replaceAll(str, i->first, i->second);
 

@@ -3,8 +3,8 @@
  */
 
 #include "AvailableLootValue.h"
-#include "../../LootObjectStack.h"
-#include "../../Playerbot.h"
+#include "LootObjectStack.h"
+#include "Playerbot.h"
 
 AvailableLootValue::AvailableLootValue(PlayerbotAI* botAI) : ManualSetValue<LootObjectStack*>(botAI, nullptr)
 {

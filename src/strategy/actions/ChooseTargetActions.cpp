@@ -3,9 +3,9 @@
  */
 
 #include "ChooseTargetActions.h"
-#include "../Event.h"
-#include "../values/PossibleRpgTargetsValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "PossibleRpgTargetsValue.h"
+#include "Playerbot.h"
 
 bool DropTargetAction::Execute(Event event)
 {

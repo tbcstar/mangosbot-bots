@@ -3,10 +3,10 @@
  */
 
 #include "InventoryAction.h"
-#include "../Event.h"
-#include "../ItemVisitors.h"
-#include "../values/ItemCountValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemVisitors.h"
+#include "ItemCountValue.h"
+#include "Playerbot.h"
 
 void InventoryAction::IterateItems(IterateItemsVisitor* visitor, IterateItemsMask mask)
 {
@@ -302,8 +302,8 @@ uint32 InventoryAction::GetItemCount(FindItemVisitor* visitor, IterateItemsMask 
 
 ItemIds InventoryAction::FindOutfitItems(std::string const& name)
 {
-    std::vector<string>& outfits = AI_VALUE(std::vector<string>&, "outfit list");
-    for (std::vector<string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
+    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit std::list");
+    for (std::vector<std::string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
         std::string const& outfit = *i;
         if (name == parseOutfitName(outfit))

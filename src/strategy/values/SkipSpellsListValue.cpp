@@ -3,13 +3,13 @@
  */
 
 #include "SkipSpellsListValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 std::string const& SkipSpellsListValue::Save()
 {
     std::ostringstream out;
     bool first = true;
-    for (set<uint32>::iterator i = value.begin(); i != value.end(); ++i)
+    for (std::set<uint32>::iterator i = value.begin(); i != value.end(); ++i)
     {
         if (!first)
             out << ",";

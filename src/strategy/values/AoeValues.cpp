@@ -3,8 +3,8 @@
  */
 
 #include "AoeValues.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 GuidVector FindMaxDensity(Player* bot)
 {

@@ -3,9 +3,9 @@
  */
 
 #include "BuffAction.h"
-#include "../Event.h"
-#include "../values/ItemCountValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ItemCountValue.h"
+#include "Playerbot.h"
 
 class FindBuffVisitor : public IterateItemsVisitor
 {
@@ -42,7 +42,7 @@ class FindBuffVisitor : public IterateItemsVisitor
                     return true;
 
                 if (items.find(proto->SubClass) == items.end())
-                    items[proto->SubClass] = list<Item*>();
+                    items[proto->SubClass] = std::list<Item*>();
 
                 items[proto->SubClass].push_back(item);
                 break;

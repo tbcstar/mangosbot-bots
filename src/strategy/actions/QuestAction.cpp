@@ -3,9 +3,9 @@
  */
 
 #include "QuestAction.h"
-#include "../Event.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool QuestAction::Execute(Event event)
 {

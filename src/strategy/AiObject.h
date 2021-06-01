@@ -3,7 +3,7 @@
  */
 
 #include "Common.h"
-#include "../PlayerbotAIAware.h"
+#include "PlayerbotAIAware.h"
 
 class AiObjectContext;
 class ChatHelper;

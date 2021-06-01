@@ -17,7 +17,7 @@
 */
 
 template <class T>
-void LoadList(std::string const& value, T& list)
+void LoadList(std::string const& value, T& std::list)
 {
     std::vector<std::string> ids = split(value, ',');
     for (std::vector<std::string>::iterator i = ids.begin(); i != ids.end(); i++)
@@ -26,7 +26,7 @@ void LoadList(std::string const& value, T& list)
         if (!id)
             continue;
 
-        list.push_back(id);
+        std::list.push_back(id);
     }
 }
 
@@ -64,7 +64,7 @@ bool PlayerbotAIConfig::Initialize()
     sightDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.SightDistance", 75.0f);
     spellDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.SpellDistance", 22.0f);
     shootDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.ShootDistance", 25.0f);
-    healDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.HealDistance", 20.0f);
+    healDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.healDistance", 20.0f);
     lootDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.LootDistance", 15.0f);
     fleeDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.FleeDistance", 7.5f);
     aggroDistance = sConfigMgr->GetFloatDefault("AiPlayerbot.AggroDistance", 22.0f);

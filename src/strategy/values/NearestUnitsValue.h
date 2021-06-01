@@ -3,8 +3,8 @@
  */
 
 #include "Unit.h"
-#include "../Value.h"
-#include "../../PlayerbotAIConfig.h"
+#include "Value.h"
+#include "PlayerbotAIConfig.h"
 
 class PlayerbotAI;
 

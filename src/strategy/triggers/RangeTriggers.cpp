@@ -3,7 +3,7 @@
  */
 
 #include "RangeTriggers.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool EnemyTooCloseForSpellTrigger::IsActive()
 {

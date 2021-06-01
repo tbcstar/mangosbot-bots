@@ -4,7 +4,7 @@
 
 #include "ChatFilter.h"
 #include "Playerbot.h"
-#include "strategy/values/RtiTargetValue.h"
+#include "RtiTargetValue.h"
 
 std::string ChatFilter::Filter(std::string message)
 {
@@ -183,7 +183,7 @@ class RtiChatFilter : public ChatFilter
         }
 
     private:
-        std::vector<string> rtis;
+        std::vector<std::string> rtis;
 };
 
 class ClassChatFilter : public ChatFilter

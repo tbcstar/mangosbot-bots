@@ -3,8 +3,8 @@
  */
 
 #include "InviteToGroupAction.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool InviteToGroupAction::Execute(Event event)
 {

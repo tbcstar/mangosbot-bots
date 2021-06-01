@@ -4,8 +4,8 @@
 
 #include "TellTargetAction.h"
 #include "ThreatManager.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool TellTargetAction::Execute(Event event)
 {

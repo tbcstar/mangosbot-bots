@@ -3,10 +3,10 @@
  */
 
 #include "LootStrategyValue.h"
-#include "../AiObjectContext.h"
-#include "../values/ItemUsageValue.h"
-#include "../../LootObjectStack.h"
-#include "../../Playerbot.h"
+#include "AiObjectContext.h"
+#include "ItemUsageValue.h"
+#include "LootObjectStack.h"
+#include "Playerbot.h"
 
 class NormalLootStrategy : public LootStrategy
 {

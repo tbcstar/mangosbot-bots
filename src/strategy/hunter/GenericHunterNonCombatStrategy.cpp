@@ -3,7 +3,7 @@
  */
 
 #include "GenericHunterNonCombatStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 class GenericHunterNonCombatStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

@@ -3,7 +3,7 @@
  */
 
 #include "ShamanNonCombatStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void ShamanNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

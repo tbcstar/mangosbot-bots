@@ -4,7 +4,7 @@
 
 #include "RangeTriggers.h"
 #include "HealthTriggers.h"
-#include "../Trigger.h"
+#include "Trigger.h"
 
 class PlayerbotAI;
 class Unit;
@@ -593,7 +593,7 @@ class ReturnTrigger : public StayTimeTrigger
 class GiveItemTrigger : public Trigger
 {
     public:
-        GiveItemTrigger(PlayerbotAI* botAI, std::string const& name, string item) : Trigger(botAI, name, 2), item(item) { }
+        GiveItemTrigger(PlayerbotAI* botAI, std::string const& name, std::string const& item) : Trigger(botAI, name, 2), item(item) { }
 
         bool IsActive() override;
 

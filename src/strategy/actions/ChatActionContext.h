@@ -62,9 +62,9 @@
 #include "UseMeetingStoneAction.h"
 #include "WhoAction.h"
 #include "WtsAction.h"
-#include "../NamedObjectContext.h"
-#include "../values/Formations.h"
-#include "../values/Stances.h"
+#include "NamedObjectContext.h"
+#include "Formations.h"
+#include "Stances.h"
 
 class ChatActionContext : public NamedObjectContext<Action>
 {

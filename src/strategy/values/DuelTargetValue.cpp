@@ -3,7 +3,7 @@
  */
 
 #include "DuelTargetValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 Unit* DuelTargetValue::Calculate()
 {

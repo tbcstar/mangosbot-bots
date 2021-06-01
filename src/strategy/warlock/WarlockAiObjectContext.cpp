@@ -8,10 +8,10 @@
 #include "TankWarlockStrategy.h"
 #include "WarlockActions.h"
 #include "WarlockTriggers.h"
-#include "../NamedObjectContext.h"
-#include "../actions/UseItemAction.h"
-#include "../generic/PullStrategy.h"
-#include "../../Playerbot.h"
+#include "NamedObjectContext.h"
+#include "UseItemAction.h"
+#include "PullStrategy.h"
+#include "Playerbot.h"
 
 class WarlockStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

@@ -3,7 +3,7 @@
  */
 
 #include "GenericTriggers.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool LowManaTrigger::IsActive()
 {
@@ -94,7 +94,7 @@ bool AoeTrigger::IsActive()
 
 bool NoFoodTrigger::IsActive()
 {
-    return AI_VALUE2(list<Item*>, "inventory items", "conjured food").empty();
+    return AI_VALUE2(std::list<Item*>, "inventory items", "conjured food").empty();
 }
 
 bool NoDrinkTrigger::IsActive()

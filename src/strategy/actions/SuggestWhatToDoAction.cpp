@@ -4,12 +4,12 @@
 
 #include "SuggestWhatToDoAction.h"
 #include "ChannelMgr.h"
-#include "../Event.h"
-#include "../ItemVisitors.h"
-#include "../../AiFactory.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
-#include "../../PlayerbotTextMgr.h"
+#include "Event.h"
+#include "ItemVisitors.h"
+#include "AiFactory.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
+#include "PlayerbotTextMgr.h"
 
 std::map<std::string, uint8> SuggestWhatToDoAction::instances;
 std::map<std::string, uint8> SuggestWhatToDoAction::factions;
@@ -86,8 +86,8 @@ void SuggestWhatToDoAction::instance()
         instances["Halls of Reflection"] = 80;
     }
 
-    std::vector<string> allowedInstances;
-    for (std::map<string, uint8>::iterator i = instances.begin(); i != instances.end(); ++i)
+    std::vector<std::string> allowedInstances;
+    for (std::map<std::string, uint8>::iterator i = instances.begin(); i != instances.end(); ++i)
     {
         if (bot->getLevel() >= i->second)
             allowedInstances.push_back(i->first);
@@ -235,7 +235,7 @@ void SuggestWhatToDoAction::grindReputation()
     levels.push_back("exalted");
 
     std::vector<std::string> allowedFactions;
-    for (std::map<string, uint8>::iterator i = factions.begin(); i != factions.end(); ++i)
+    for (std::map<std::string, uint8>::iterator i = factions.begin(); i != factions.end(); ++i)
     {
         if (bot->getLevel() >= i->second)
             allowedFactions.push_back(i->first);

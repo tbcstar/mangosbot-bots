@@ -3,7 +3,7 @@
  */
 
 #include "GrindTargetValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 Unit* GrindTargetValue::Calculate()
 {

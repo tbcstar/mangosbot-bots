@@ -3,7 +3,7 @@
  */
 
 #include "IsFacingValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 bool IsFacingValue::Calculate()
 {

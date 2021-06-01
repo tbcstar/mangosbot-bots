@@ -1,5 +1,5 @@
 #include "botpch.h"
-#include "../../playerbot.h"
+#include "Playerbot.h"
 #include "RogueTriggers.h"
 #include "RogueActions.h"
 

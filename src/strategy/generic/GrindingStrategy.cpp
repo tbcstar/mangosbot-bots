@@ -3,7 +3,7 @@
  */
 
 #include "GrindingStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 NextAction** GrindingStrategy::getDefaultActions()
 {

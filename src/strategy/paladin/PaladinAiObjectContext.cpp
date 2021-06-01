@@ -10,8 +10,8 @@
 #include "GenericPaladinNonCombatStrategy.h"
 #include "HealPaladinStrategy.h"
 #include "TankPaladinStrategy.h"
-#include "../NamedObjectContext.h"
-#include "../../Playerbot.h"
+#include "NamedObjectContext.h"
+#include "Playerbot.h"
 
 
 class PaladinStrategyFactoryInternal : public NamedObjectContext<Strategy>

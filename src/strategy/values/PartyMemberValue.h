@@ -3,7 +3,7 @@
  */
 
 #include "Player.h"
-#include "../Value.h"
+#include "Value.h"
 
 class PlayerbotAI;
 

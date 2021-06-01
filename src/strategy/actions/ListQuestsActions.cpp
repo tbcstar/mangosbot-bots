@@ -3,8 +3,8 @@
  */
 
 #include "ListQuestsActions.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool ListQuestsAction::Execute(Event event)
 {

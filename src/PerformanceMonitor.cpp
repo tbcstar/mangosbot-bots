@@ -5,7 +5,7 @@
 #include "PerformanceMonitor.h"
 #include "Playerbot.h"
 
-PerformanceMonitorOperation* PerformanceMonitor::start(PerformanceMetric metric, string name)
+PerformanceMonitorOperation* PerformanceMonitor::start(PerformanceMetric metric, std::string const& name)
 {
     if (!sPlayerbotAIConfig->perfMonEnabled)
         return nullptr;
@@ -109,14 +109,3 @@ void PerformanceMonitorOperation::finish()
     delete this;
 }
 
-bool ChatHandler::HandlePerfMonCommand(char* args)
-{
-    if (!strcmp(args, "reset"))
-    {
-        sPerformanceMonitor->Reset();
-        return true;
-    }
-
-    sPerformanceMonitor->PrintStats();
-    return true;
-}

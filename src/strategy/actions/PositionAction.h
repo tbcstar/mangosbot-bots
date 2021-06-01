@@ -38,7 +38,7 @@ class GuardAction : public MoveToPositionAction
 class SetReturnPositionAction : public Action
 {
     public:
-        SetReturnPositionAction(PlayerbotAI* botAI) : Action(botAI, "set return position") { }
+        SetReturnPositionAction(PlayerbotAI* botAI) : Action(botAI, "std::set return position") { }
 
         bool Execute(Event event) override;
         bool isUseful() const override;

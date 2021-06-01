@@ -3,8 +3,8 @@
  */
 
 #include "WarlockActions.h"
-#include "../Event.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool CastDrainSoulAction::isUseful() const
 {

@@ -5,14 +5,14 @@
 #include "MovementActions.h"
 #include "MovementGenerator.h"
 #include "TargetedMovementGenerator.h"
-#include "../Event.h"
-#include "../values/LastMovementValue.h"
-#include "../values/PositionValue.h"
-#include "../values/Stances.h"
-#include "../../FleeManager.h"
-#include "../../LootObjectStack.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "LastMovementValue.h"
+#include "PositionValue.h"
+#include "Stances.h"
+#include "FleeManager.h"
+#include "LootObjectStack.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 MovementAction::MovementAction(PlayerbotAI* botAI, std::string const& name) : Action(botAI, name)
 {

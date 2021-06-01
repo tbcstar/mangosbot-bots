@@ -3,9 +3,9 @@
  */
 
 #include "NearestNpcsValue.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
-void NearestNpcsValue::FindUnits(list<Unit*> &targets)
+void NearestNpcsValue::FindUnits(std::list<Unit*> &targets)
 {
     acore::AnyUnitInObjectRangeCheck u_check(bot, range);
     acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);

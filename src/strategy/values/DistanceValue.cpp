@@ -6,9 +6,9 @@
 #include "Formations.h
 #include "PositionValue.h"
 #include "Stances.h
-#include "../../LootObjectStack.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "LootObjectStack.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 float DistanceValue::Calculate()
 {

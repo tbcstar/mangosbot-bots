@@ -3,9 +3,9 @@
  */
 
 #include "TalkToQuestGiverAction.h"
-#include "../Event.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 void TalkToQuestGiverAction::ProcessQuest(Quest const* quest, WorldObject* questGiver)
 {

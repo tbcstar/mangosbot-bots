@@ -3,9 +3,9 @@
  */
 
 #include "AreaTriggerAction.h"
-#include "../Event.h"
-#include "../values/LastMovementValue.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "LastMovementValue.h"
+#include "Playerbot.h"
 
 bool ReachAreaTriggerAction::Execute(Event event)
 {

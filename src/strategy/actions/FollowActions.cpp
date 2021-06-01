@@ -3,10 +3,10 @@
  */
 
 #include "FollowActions.h"
-#include "../Event.h"
-#include "../values/Formations.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "Formations.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 bool FollowAction::Execute(Event event)
 {

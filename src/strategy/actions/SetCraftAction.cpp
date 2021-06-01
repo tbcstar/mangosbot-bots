@@ -3,10 +3,10 @@
  */
 
 #include "SetCraftAction.h"
-#include "../Event.h"
-#include "../values/CraftValue.h"
-#include "../../ChatHelper.h"
-#include "../../Playerbot.h"
+#include "Event.h"
+#include "CraftValue.h"
+#include "ChatHelper.h"
+#include "Playerbot.h"
 
 std::map<uint32, SkillLineAbilityEntry const*> SetCraftAction::skillSpells;
 

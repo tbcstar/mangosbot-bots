@@ -3,14 +3,14 @@
  */
 
 #include "WorldPacketHandlerStrategy.h"
-#include "../../Playerbot.h"
+#include "Playerbot.h"
 
 void WorldPacketHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     PassTroughStrategy::InitTriggers(triggers);
 
     triggers.push_back(new TriggerNode("group invite", NextAction::array(0, new NextAction("accept invitation", relevance), nullptr)));
-    triggers.push_back(new TriggerNode("group set leader", NextAction::array(0, new NextAction("leader", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("group std::set leader", NextAction::array(0, new NextAction("leader", relevance), nullptr)));
     triggers.push_back(new TriggerNode("not enough money", NextAction::array(0, new NextAction("tell not enough money", relevance), nullptr)));
     triggers.push_back(new TriggerNode("not enough reputation", NextAction::array(0, new NextAction("tell not enough reputation", relevance), nullptr)));
     triggers.push_back(new TriggerNode("cannot equip", NextAction::array(0, new NextAction("tell cannot equip", relevance), nullptr)));

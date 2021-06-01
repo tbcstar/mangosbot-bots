@@ -3,10 +3,10 @@
  */
 
 #include "AttackAction.h"
-#include "../Event.h"
-#include "../../LootObjectStack.h"
-#include "../../Playerbot.h"
-#include "../../ServerFacade.h"
+#include "Event.h"
+#include "LootObjectStack.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
 bool AttackAction::Execute(Event event)
 {
