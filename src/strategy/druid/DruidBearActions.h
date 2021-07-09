@@ -24,7 +24,7 @@ class CastMaulAction : public CastMeleeSpellAction
 	public:
 		CastMaulAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "maul") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastBashAction : public CastMeleeSpellAction

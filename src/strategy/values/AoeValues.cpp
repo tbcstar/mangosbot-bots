@@ -49,6 +49,7 @@ WorldLocation AoePositionValue::Calculate()
     if (group.empty())
         return WorldLocation();
 
+    // Note: don't know where these values come from or even used.
     float x1 = 0.f;
     float y1 = 0.f;
     float x2 = 0.f;

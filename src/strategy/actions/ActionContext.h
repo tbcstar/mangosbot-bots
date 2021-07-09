@@ -4,24 +4,35 @@
 
 #include "AddLootAction.h"
 #include "AttackAction.h"
+#include "AutoLearnSpellAction.h"
+#include "BattleGroundTactics.h"
+#include "BattleGroundJoinAction.h"
+#include "CastCustomSpellAction.h"
 #include "ChangeStrategyAction.h"
+#include "ChangeTalentsAction.h"
 #include "CheckMailAction.h"
 #include "CheckValuesAction.h"
 #include "ChooseTargetActions.h"
 #include "ChooseRpgTargetAction.h"
+#include "CombatActions.h"
 #include "DelayAction.h"
 #include "EmoteAction.h"
 #include "GenericActions.h"
 #include "GiveItemAction.h"
 #include "GreetAction.h"
+#include "ImbueAction.h"
+#include "InviteToGroupAction.h"
+#include "LeaveGroupAction.h"
 #include "FollowActions.h"
 #include "LootAction.h"
 #include "MovementActions.h"
 #include "MoveToRpgTargetAction.h"
+#include "MoveToTravelTargetAction.h"
 #include "NonCombatActions.h"
 #include "OutfitAction.h"
 #include "PositionAction.h"
 #include "RandomBotUpdateAction.h"
+#include "ReleaseSpiritAction.h"
 #include "RemoveAuraAction.h"
 #include "RevealGatheringItemAction.h"
 #include "RpgAction.h"
@@ -29,6 +40,9 @@
 #include "SayAction.h"
 #include "StayActions.h"
 #include "SuggestWhatToDoAction.h"
+#include "TravelAction.h"
+#include "XpGainAction.h"
+#include "WorldBuffAction.h"
 
 class PlayerbotAI;
 
@@ -38,13 +52,20 @@ class ActionContext : public NamedObjectContext<Action>
         ActionContext()
         {
             creators["mark rti"] = &ActionContext::mark_rti;
-            creators["std::set return position"] = &ActionContext::set_return_position;
+            creators["set return position"] = &ActionContext::set_return_position;
             creators["rpg"] = &ActionContext::rpg;
             creators["choose rpg target"] = &ActionContext::choose_rpg_target;
             creators["move to rpg target"] = &ActionContext::move_to_rpg_target;
+            creators["travel"] = &ActionContext::travel;
+            creators["choose travel target"] = &ActionContext::choose_travel_target;
+            creators["move to travel target"] = &ActionContext::move_to_travel_target;
             creators["move out of collision"] = &ActionContext::move_out_of_collision;
+            creators["move out of collision"] = &ActionContext::move_out_of_collision;
+            creators["move random"] = &ActionContext::move_random;
             creators["attack"] = &ActionContext::melee;
             creators["melee"] = &ActionContext::melee;
+            creators["switch to melee"] = &ActionContext::switch_to_melee;
+            creators["switch to ranged"] = &ActionContext::switch_to_ranged;
             creators["reach spell"] = &ActionContext::ReachSpell;
             creators["reach melee"] = &ActionContext::ReachMelee;
             creators["reach party member to heal"] = &ActionContext::reach_party_member_to_heal;
@@ -71,13 +92,13 @@ class ActionContext : public NamedObjectContext<Action>
             creators["release loot"] = &ActionContext::release_loot;
             creators["shoot"] = &ActionContext::shoot;
             creators["follow"] = &ActionContext::follow;
-            creators["follow"] = &ActionContext::follow;
+            creators["flee to master"] = &ActionContext::flee_to_master;
             creators["runaway"] = &ActionContext::runaway;
             creators["stay"] = &ActionContext::stay;
             creators["sit"] = &ActionContext::sit;
             creators["attack anything"] = &ActionContext::attack_anything;
             creators["attack least hp target"] = &ActionContext::attack_least_hp_target;
-            creators["attack enemy player"] = &ActionContext::enemy_player_target;
+            creators["attack enemy player"] = &ActionContext::attack_enemy_player;
             creators["emote"] = &ActionContext::emote;
             creators["talk"] = &ActionContext::talk;
             creators["suggest what to do"] = &ActionContext::suggest_what_to_do;
@@ -87,8 +108,8 @@ class ActionContext : public NamedObjectContext<Action>
             creators["open loot"] = &ActionContext::open_loot;
             creators["guard"] = &ActionContext::guard;
             creators["move out of enemy contact"] = &ActionContext::move_out_of_enemy_contact;
-            creators["std::set facing"] = &ActionContext::set_facing;
-            creators["std::set behind"] = &ActionContext::set_behind;
+            creators["set facing"] = &ActionContext::set_facing;
+            creators["set behind"] = &ActionContext::set_behind;
             creators["attack duel opponent"] = &ActionContext::attack_duel_opponent;
             creators["drop target"] = &ActionContext::drop_target;
             creators["check mail"] = &ActionContext::check_mail;
@@ -102,6 +123,38 @@ class ActionContext : public NamedObjectContext<Action>
             creators["ra"] = &ActionContext::ra;
             creators["give food"] = &ActionContext::give_food;
             creators["give water"] = &ActionContext::give_water;
+            creators["apply poison"] = &ActionContext::apply_poison;
+            creators["apply stone"] = &ActionContext::apply_stone;
+            creators["apply oil"] = &ActionContext::apply_oil;
+            creators["try emergency"] = &ActionContext::try_emergency;
+            creators["mount"] = &ActionContext::mount;
+            creators["war stomp"] = &ActionContext::war_stomp;
+            creators["auto talents"] = &ActionContext::auto_talents;
+            creators["auto learn spell"] = &ActionContext::auto_learn_spell;
+            creators["xp gain"] = &ActionContext::xp_gain;
+            creators["invite nearby"] = &ActionContext::invite_nearby;
+            creators["leave far away"] = &ActionContext::leave_far_away;
+            creators["move to dark portal"] = &ActionContext::move_to_dark_portal;
+            creators["move from dark portal"] = &ActionContext::move_from_dark_portal;
+            creators["use dark portal azeroth"] = &ActionContext::use_dark_portal_azeroth;
+            creators["world buff"] = &ActionContext::world_buff;
+            creators["hearthstone"] = &ActionContext::hearthstone;
+            creators["cast random spell"] = &ActionContext::cast_random_spell;
+            creators["free bg join"] = &ActionContext::free_bg_join;
+            creators["use random recipe"] = &ActionContext::use_random_recipe;
+            creators["craft random item"] = &ActionContext::craft_random_item;
+
+            // BG Tactics
+            creators["bg tactics"] = &ActionContext::bg_tactics;
+            creators["bg move to start"] = &ActionContext::bg_move_to_start;
+            creators["bg move to objective"] = &ActionContext::bg_move_to_objective;
+            creators["bg select objective"] = &ActionContext::bg_select_objective;
+            creators["bg check objective"] = &ActionContext::bg_check_objective;
+            creators["bg attack fc"] = &ActionContext::bg_attack_fc;
+            creators["bg protect fc"] = &ActionContext::bg_protect_fc;
+            creators["bg use buff"] = &ActionContext::bg_use_buff;
+            creators["attack enemy flag carrier"] = &ActionContext::attack_enemy_fc;
+            creators["bg check flag"] = &ActionContext::bg_check_flag;
         }
 
     private:
@@ -113,7 +166,11 @@ class ActionContext : public NamedObjectContext<Action>
         static Action* rpg() { return new RpgAction(); }
         static Action* choose_rpg_target() { return new ChooseRpgTargetAction(); }
         static Action* move_to_rpg_target() { return new MoveToRpgTargetAction(); }
+        static Action* travel(PlayerbotAI* botAI) { return new TravelAction(botAI); }
+        static Action* choose_travel_target(PlayerbotAI* botAI) { return new ChooseTravelTargetAction(botAI); }
+        static Action* move_to_travel_target(PlayerbotAI* botAI) { return new MoveToTravelTargetAction(botAI); }
         static Action* move_out_of_collision() { return new MoveOutOfCollisionAction(); }
+        static Action* move_random(PlayerbotAI* botAI) { return new MoveRandomAction(botAI); }
         static Action* check_values() { return new CheckValuesAction(); }
         static Action* greet() { return new GreetAction(); }
         static Action* check_mail() { return new CheckMailAction(); }
@@ -125,6 +182,8 @@ class ActionContext : public NamedObjectContext<Action>
         static Action* _return() { return new ReturnAction(); }
         static Action* shoot() { return new CastShootAction(); }
         static Action* melee() { return new MeleeAction(); }
+        static Action* switch_to_melee(PlayerbotAI* ai) { return new SwitchToMeleeAction(ai); }
+        static Action* switch_to_ranged(PlayerbotAI* ai) { return new SwitchToRangedAction(ai); }
         static Action* ReachSpell() { return new ReachSpellAction(); }
         static Action* ReachMelee() { return new ReachMeleeAction(); }
         static Action* reach_party_member_to_heal() { return new ReachPartyMemberToHealAction(); }
@@ -133,6 +192,7 @@ class ActionContext : public NamedObjectContext<Action>
         static Action* gift_of_the_naaru() { return new CastGiftOfTheNaaruAction(); }
         static Action* lifeblood() { return new CastLifeBloodAction(); }
         static Action* arcane_torrent() { return new CastArcaneTorrentAction(); }
+        static Action* mana_tap(PlayerbotAI* botAI) { return new CastManaTapAction(botAI); }
         static Action* end_pull() { return new ChangeCombatStrategyAction("-pull"); }
 
         static Action* emote() { return new EmoteAction(); }
@@ -141,11 +201,12 @@ class ActionContext : public NamedObjectContext<Action>
         static Action* suggest_trade() { return new SuggestTradeAction(); }
         static Action* attack_anything() { return new AttackAnythingAction(); }
         static Action* attack_least_hp_target() { return new AttackLeastHpTargetAction(); }
-        static Action* enemy_player_target() { return new AttackEnemyPlayerAction(); }
+        static Action* attack_enemy_player() { return new AttackEnemyPlayerAction(); }
         static Action* stay() { return new StayAction(); }
         static Action* sit() { return new SitAction(); }
         static Action* runaway() { return new RunAwayAction(); }
         static Action* follow() { return new FollowAction(); }
+        static Action* flee_to_master(PlayerbotAI* botAI) { return new FleeToMasterAction(botAI); }
         static Action* add_gathering_loot() { return new AddGatheringLootAction(); }
         static Action* add_loot() { return new AddLootAction(); }
         static Action* add_all_loot() { return new AddAllLootAction(); }
@@ -168,4 +229,38 @@ class ActionContext : public NamedObjectContext<Action>
         static Action* outfit() { return new OutfitAction(); }
         static Action* random_bot_update() { return new RandomBotUpdateAction(); }
         static Action* delay() { return new DelayAction(); }
+
+        static Action* apply_poison(PlayerbotAI* botAI) { return new ImbueWithPoisonAction(botAI); }
+        static Action* apply_oil(PlayerbotAI* botAI) { return new ImbueWithOilAction(botAI); }
+        static Action* apply_stone(PlayerbotAI* botAI) { return new ImbueWithStoneAction(botAI); }
+        static Action* try_emergency(PlayerbotAI* botAI) { return new TryEmergencyAction(botAI); }
+        static Action* mount(PlayerbotAI* botAI) { return new CastSpellAction(botAI, "mount"); }
+        static Action* war_stomp(PlayerbotAI* botAI) { return new CastWarStompAction(botAI); }
+        static Action* auto_talents(PlayerbotAI* botAI) { return new AutoSetTalentsAction(botAI); }
+        static Action* auto_learn_spell(PlayerbotAI* botAI) { return new AutoLearnSpellAction(botAI); }
+        static Action* xp_gain(PlayerbotAI* botAI) { return new XpGainAction(botAI); }
+        static Action* invite_nearby(PlayerbotAI* botAI) { return new InviteNearbyToGroupAction(botAI); }
+        static Action* leave_far_away(PlayerbotAI* botAI) { return new LeaveFarAwayAction(botAI); }
+        static Action* move_to_dark_portal(PlayerbotAI* botAI) { return new MoveToDarkPortalAction(botAI); }
+        static Action* use_dark_portal_azeroth(PlayerbotAI* botAI) { return new DarkPortalAzerothAction(botAI); }
+        static Action* move_from_dark_portal(PlayerbotAI* botAI) { return new MoveFromDarkPortalAction(botAI); }
+        static Action* world_buff(PlayerbotAI* ai) { return new WorldBuffAction(ai); }
+        static Action* hearthstone(PlayerbotAI* ai) { return new UseHearthStone(ai); }
+        static Action* cast_random_spell(PlayerbotAI* ai) { return new CastRandomSpellAction(ai); }
+        static Action* free_bg_join(PlayerbotAI* ai) { return new FreeBGJoinAction(ai); }
+
+        static Action* use_random_recipe(PlayerbotAI* ai) { return new UseRandomRecipe(ai); }
+        static Action* craft_random_item(PlayerbotAI* ai) { return new CraftRandomItemAction(ai); }
+
+        // BG Tactics
+        static Action* bg_tactics(PlayerbotAI* ai) { return new BGTactics(ai); }
+        static Action* bg_move_to_start(PlayerbotAI* ai) { return new BGTactics(ai, "move to start"); }
+        static Action* bg_move_to_objective(PlayerbotAI* ai) { return new BGTactics(ai, "move to objective"); }
+        static Action* bg_select_objective(PlayerbotAI* ai) { return new BGTactics(ai, "select objective"); }
+        static Action* bg_check_objective(PlayerbotAI* ai) { return new BGTactics(ai, "check objective"); }
+        static Action* bg_attack_fc(PlayerbotAI* ai) { return new BGTactics(ai, "attack fc"); }
+        static Action* bg_protect_fc(PlayerbotAI* ai) { return new BGTactics(ai, "protect fc"); }
+        static Action* attack_enemy_fc(PlayerbotAI* ai) { return new AttackEnemyFlagCarrierAction(ai); }
+        static Action* bg_use_buff(PlayerbotAI* ai) { return new BGTactics(ai, "use buff"); }
+        static Action* bg_check_flag(PlayerbotAI* ai) { return new BGTactics(ai, "check flag"); }
 };

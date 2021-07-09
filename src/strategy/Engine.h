@@ -28,6 +28,8 @@ enum ActionResult
 class ActionExecutionListener
 {
     public:
+        virtual ~ActionExecutionListener() { };
+
         virtual bool Before(Action* action, Event event) = 0;
         virtual bool AllowExecution(Action* action, Event event) = 0;
         virtual void After(Action* action, bool executed, Event event) = 0;
@@ -76,8 +78,8 @@ class Engine : public PlayerbotAIAware
 		void ChangeStrategy(std::string const& names);
         std::string GetLastAction() { return lastAction; }
 
-	    virtual bool DoNextAction(Unit*, uint32 depth = 0);
-	    ActionResult ExecuteAction(std::string const& name);
+	    virtual bool DoNextAction(Unit*, uint32 depth = 0, bool minimal = false);
+	    ActionResult ExecuteAction(std::string const& name, Event event = Event(), std::string const& qualifier = "");
 
         void AddActionExecutionListener(ActionExecutionListener* listener)
         {
@@ -99,7 +101,7 @@ class Engine : public PlayerbotAIAware
         void ProcessTriggers();
         void PushDefaultActions();
         void PushAgain(ActionNode* actionNode, float relevance, Event event);
-        ActionNode* CreateActionNode(string name);
+        ActionNode* CreateActionNode(std::string const& name);
         Action* InitializeAction(ActionNode* actionNode);
         bool ListenAndExecute(Action* action, Event event);
 

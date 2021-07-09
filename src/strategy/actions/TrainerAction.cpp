@@ -8,13 +8,16 @@
 
 void TrainerAction::Learn(uint32 cost, TrainerSpell const* tSpell, std::ostringstream& msg)
 {
-    if (bot->GetMoney() < cost)
+    if (sPlayerbotAIConfig->autoTrainSpells != "free")
     {
-        msg << " - too expensive";
-        return;
-    }
+        if (bot->GetMoney() < cost)
+        {
+            msg << " - too expensive";
+            return;
+        }
 
-    bot->ModifyMoney(-int32(cost));
+        bot->ModifyMoney(-int32(cost));
+    }
 
     SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(tSpell->spell);
     if (!spellInfo)
@@ -83,11 +86,15 @@ bool TrainerAction::Execute(Event event)
     std::string const& text = event.getParam();
 
     Player* master = GetMaster();
-    if (!master)
-        return false;
 
-    Creature* creature = botAI->GetCreature(master->GetTarget());
-    if (!creature)
+    Creature* creature = botAI->GetCreature(bot->GetTarget());
+    if (AI_VALUE(ObjectGuid, "rpg target") != bot->GetTarget())
+        if (master)
+            creature = botAI->GetCreature(master->GetTarget());
+        else
+            return false;
+
+    if (!creature || !creature->IsTrainer())
         return false;
 
     if (!creature->IsValidTrainerForPlayer(bot))
@@ -96,7 +103,7 @@ bool TrainerAction::Execute(Event event)
         return false;
     }
 
-    // check present spell in trainer spell std::list
+    // check present spell in trainer spell list
     TrainerSpellData const* cSpells = creature->GetTrainerSpells();
     if (!cSpells)
     {
@@ -109,7 +116,8 @@ bool TrainerAction::Execute(Event event)
     if (spell)
         spells.insert(spell);
 
-    if (text.find("learn") != std::string::npos)
+    if (text.find("learn") != string::npos || sRandomPlayerbotMgr.IsRandomBot(bot) || (sPlayerbotAIConfig.autoTrainSpells != "no" &&
+        (creature->GetCreatureInfo()->TrainerType != TRAINER_TYPE_TRADESKILLS || ai->IsRealPlayer()))) //Todo rewrite to only exclude start primary profession skills and make config dependent.
         Iterate(creature, &TrainerAction::Learn, spells);
     else
         Iterate(creature, nullptr, spells);

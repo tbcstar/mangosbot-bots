@@ -29,7 +29,7 @@ class NextAction
         static uint32 size(NextAction** actions);
         static NextAction** clone(NextAction** actions);
         static NextAction** merge(NextAction** what, NextAction** with);
-        static NextAction** array(uint8 nil,...);
+        static NextAction** array(uint32 nil,...);
         static void destroy(NextAction** actions);
 
     private:
@@ -45,7 +45,7 @@ class Action : public AiNamedObject
 
         virtual bool Execute(Event event) { return true; }
         virtual bool isPossible() const { return true; }
-        virtual bool isUseful() const { return true; }
+        virtual bool isUseful() { return true; }
         virtual NextAction** getPrerequisites() { return nullptr; }
         virtual NextAction** getAlternatives() { return nullptr; }
         virtual NextAction** getContinuers() { return nullptr; }
@@ -56,9 +56,12 @@ class Action : public AiNamedObject
         virtual Value<Unit*>* GetTargetValue();
         virtual std::string const& GetTargetName() { return "self target"; }
         void MakeVerbose() { verbose = true; }
+        void setRelevance(uint32 relevance1) { relevance = relevance1; };
+        virtual float getRelevance() { return relevance; }
 
     protected:
         bool verbose;
+        float relevance = 0;
 };
 
 class ActionNode

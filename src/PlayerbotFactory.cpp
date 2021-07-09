@@ -4,8 +4,12 @@
 
 #include "PlayerbotFactory.h"
 #include "AccountMgr.h"
+#include "AiFactory.h"
+#include "ArenaTeam.h"
 #include "GuildMgr.h"
+#include "MapManager.h"
 #include "Playerbot.h"
+#include "PlayerbotDbStore.h"
 #include "RandomItemMgr.h"
 #include "RandomPlayerbotFactory.h"
 #include "ItemVisitors.h"
@@ -40,18 +44,21 @@ PlayerbotFactory::PlayerbotFactory(Player* bot, uint32 level, uint32 itemQuality
 
 void PlayerbotFactory::Init()
 {
-    ObjectMgr::QuestMap const& questTemplates = sObjectMgr->GetQuestTemplates();
-    for (ObjectMgr::QuestMap::const_iterator i = questTemplates.begin(); i != questTemplates.end(); ++i)
+    if (sPlayerbotAIConfig->randomBotPreQuests)
     {
-        uint32 questId = i->first;
-        Quest const *quest = i->second;
+        ObjectMgr::QuestMap const& questTemplates = sObjectMgr->GetQuestTemplates();
+        for (ObjectMgr::QuestMap::const_iterator i = questTemplates.begin(); i != questTemplates.end(); ++i)
+        {
+            uint32 questId = i->first;
+            Quest const* quest = i->second;
 
-        if (!quest->GetRequiredClasses() || quest->IsRepeatable() || quest->GetMinLevel() < 10)
-            continue;
+            if (!quest->GetRequiredClasses() || quest->IsRepeatable() || quest->GetMinLevel() < 10)
+                continue;
 
-        AddPrevQuests(questId, classQuestIds);
-        classQuestIds.remove(questId);
-        classQuestIds.push_back(questId);
+            AddPrevQuests(questId, classQuestIds);
+            classQuestIds.remove(questId);
+            classQuestIds.push_back(questId);
+        }
     }
 
     for (std::vector<uint32>::iterator i = sPlayerbotAIConfig->randomBotQuestIds.begin(); i != sPlayerbotAIConfig->randomBotQuestIds.end(); ++i)
@@ -67,27 +74,52 @@ void PlayerbotFactory::Prepare()
 {
     if (!itemQuality)
     {
-        if (level <= 20)
+        if (level < 20)
             itemQuality = urand(ITEM_QUALITY_NORMAL, ITEM_QUALITY_UNCOMMON);
-        else if (level <= 40)
+        else if (level < 40)
             itemQuality = urand(ITEM_QUALITY_UNCOMMON, ITEM_QUALITY_RARE);
         else if (level < 60)
             itemQuality = urand(ITEM_QUALITY_UNCOMMON, ITEM_QUALITY_EPIC);
-        else
+        else if (level < 70)
             itemQuality = urand(ITEM_QUALITY_RARE, ITEM_QUALITY_EPIC);
+        else if (level < 80)
+            itemQuality = urand(ITEM_QUALITY_RARE, ITEM_QUALITY_EPIC);
+        else
+            itemQuality = ITEM_QUALITY_EPIC;
     }
 
     if (bot->isDead())
         bot->ResurrectPlayer(1.0f, false);
 
     bot->CombatStop(true);
-    bot->SetLevel(level);
-    bot->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_HIDE_HELM);
-    bot->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_HIDE_CLOAK);
+
+    if (!sPlayerbotAIConfig->disableRandomLevels)
+    {
+        bot->SetLevel(level);
+    }
+    else if (bot->getLevel() < sPlayerbotAIConfig->randombotStartingLevel)
+    {
+        bot->SetLevel(sPlayerbotAIConfig->randombotStartingLevel);
+    }
+
+    if (!sPlayerbotAIConfig.randomBotShowHelmet || !urand(0, 4))
+    {
+        bot->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_HIDE_HELM);
+    }
+
+    if (!sPlayerbotAIConfig.randomBotShowCloak || !urand(0, 4))
+    {
+        bot->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_HIDE_CLOAK);
+    }
 }
 
 void PlayerbotFactory::Randomize(bool incremental)
 {
+    if (sPlayerbotAIConfig->disableRandomLevels)
+    {
+        return;
+    }
+
     sLog->outDetail("Preparing to %s randomize...", (incremental ? "incremental" : "full"));
     Prepare();
 
@@ -97,29 +129,44 @@ void PlayerbotFactory::Randomize(bool incremental)
     ClearSkills();
     ClearSpells();
     ClearInventory();
+    CancelAuras();
     bot->SaveToDB();
     if (pmo)
         pmo->finish();
 
+    /*
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Immersive");
     sLog->outDetail("Initializing immersive...");
     InitImmersive();
     InitStats();
     if (pmo)
         pmo->finish();
+    */
 
-    sLog->outDetail("Initializing quests...");
-    pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Quests");
-    InitQuests(classQuestIds);
-    InitQuests(specialQuestIds);
-    // quest rewards boost bot level, so reduce back
-    bot->SetLevel(level);
-    ClearInventory();
-    bot->SetUInt32Value(PLAYER_XP, 0);
-    CancelAuras();
-    bot->SaveToDB();
-    if (pmo)
-        pmo->finish();
+    if (sPlayerbotAIConfig->randomBotPreQuests)
+    {
+        sLog->outDetail("Initializing quests...");
+        pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Quests");
+        InitQuests(classQuestIds);
+        InitQuests(specialQuestIds);
+
+        // quest rewards boost bot level, so reduce back
+        if (!sPlayerbotAIConfig->disableRandomLevels)
+        {
+            bot->SetLevel(level);
+        }
+        else if (bot->getLevel() < sPlayerbotAIConfig->randombotStartingLevel)
+        {
+            bot->SetLevel(sPlayerbotAIConfig->randombotStartingLevel);
+        }
+
+        ClearInventory();
+        bot->SetUInt32Value(PLAYER_XP, 0);
+        CancelAuras();
+        bot->SaveToDB();
+        if (pmo)
+            pmo->finish();
+    }
 
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Spells1");
     sLog->outDetail("Initializing spells (step 1)...");
@@ -136,8 +183,13 @@ void PlayerbotFactory::Randomize(bool incremental)
 
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Talents");
     sLog->outDetail("Initializing talents...");
-    InitTalents();
-    if (pmo) pmo->finish();
+    //InitTalentsTree(incremental);
+    sRandomPlayerbotMgr->SetValue(bot->GetGUID().GetCounter(), "specNo", 0);
+    botAI->DoSpecificAction("auto talents");
+    sPlayerbotDbStore->Reset(botAI);
+    botAI->ResetStrategies(false); // fix wrong stored strategy
+    if (pmo)
+        pmo->finish();
 
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Spells2");
     sLog->outDetail("Initializing spells (step 2)...");
@@ -165,9 +217,19 @@ void PlayerbotFactory::Randomize(bool incremental)
     if (pmo)
         pmo->finish();
 
+    if (bot->getLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel)
+    {
+        pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Enchant");
+        sLog->outDetail("Initializing enchant templates...");
+        LoadEnchantContainer();
+        if (pmo)
+            pmo->finish();
+    }
+
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Bags");
     sLog->outDetail("Initializing bags...");
     InitBags();
+    bot->SaveToDB();
     if (pmo)
         pmo->finish();
 
@@ -189,11 +251,26 @@ void PlayerbotFactory::Randomize(bool incremental)
     if (pmo)
         pmo->finish();
 
+    pmo = sPerformanceMonitor.start(PERF_MON_RNDBOT, "PlayerbotFactory_Reagents");
+    sLog->outDetail("Initializing reagents...");
+    InitReagents();
+    if (pmo)
+        pmo->finish();
+
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_EqSets");
-    sLog->outDetail("Initializing second equipment std::set...");
+    sLog->outDetail("Initializing second equipment set...");
     InitSecondEquipmentSet();
     if (pmo)
         pmo->finish();
+
+    if (bot->getLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel)
+    {
+        pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_EnchantTemplate");
+        sLog->outDetail("Initializing enchant templates...");
+        ApplyEnchantTemplate();
+        if (pmo)
+            pmo->finish();
+    }
 
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Inventory");
     sLog->outDetail("Initializing inventory...");
@@ -201,21 +278,48 @@ void PlayerbotFactory::Randomize(bool incremental)
     if (pmo)
         pmo->finish();
 
+    pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Consumable");
+    sLog->outDetail("Initializing consumables...");
+    AddConsumables();
+    if (pmo)
+        pmo->finish();
+
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Guilds");
     sLog->outDetail("Initializing guilds...");
+    bot->SaveToDB(); //thesawolf - save save save (hopefully avoids dupes)
     InitGuild();
     if (pmo)
         pmo->finish();
 
-    pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Pet");
-    sLog->outDetail("Initializing pet...");
-    InitPet();
-    if (pmo)
-        pmo->finish();
+    if (bot->getLevel() >= 70)
+    {
+        pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Arenas");
+        sLog->outDetail("Initializing arena teams...");
+        InitArenaTeam();
+        if (pmo)
+            pmo->finish();
+    }
+
+    if (bot->getLevel() >= 10)
+    {
+        pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Pet");
+        sLog->outDetail("Initializing pet...");
+        InitPet();
+        if (pmo)
+            pmo->finish();
+    }
 
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Save");
     sLog->outDetail("Saving to DB...");
-    bot->SetMoney(1000 * sqrt(urand(1, level * 5)));
+    if (incremental)
+    {
+        uint32 money = bot->GetMoney();
+        bot->SetMoney(money + 1000 * sqrt(urand(1, level * 5)));
+    }
+    else
+    {
+        bot->SetMoney(10000 * sqrt(urand(1, level * 5)));
+    }
     bot->SaveToDB();
     sLog->outDetail("Done.");
     if (pmo)
@@ -228,8 +332,154 @@ void PlayerbotFactory::Refresh()
     InitAmmo();
     InitFood();
     InitPotions();
+    InitReagents();
     InitStats();
-    bot->SaveToDB();
+    //bot->SaveToDB();
+}
+
+void PlayerbotFactory::AddConsumables()
+{
+    switch (bot->getClass())
+    {
+        case CLASS_PRIEST:
+        case CLASS_MAGE:
+        case CLASS_WARLOCK:
+        {
+            if (level >= 5 && level < 20)
+            {
+                StoreItem(CONSUM_ID_MINOR_WIZARD_OIL, 5);
+            }
+
+            if (level >= 20 && level < 40)
+            {
+                StoreItem(CONSUM_ID_MINOR_MANA_OIL, 5);
+                StoreItem(CONSUM_ID_MINOR_WIZARD_OIL, 5);
+            }
+
+            if (level >= 40 && level < 45)
+            {
+                StoreItem(CONSUM_ID_MINOR_MANA_OIL, 5);
+                StoreItem(CONSUM_ID_WIZARD_OIL, 5);
+            }
+
+            if (level >= 45 && level < 52)
+            {
+                StoreItem(CONSUM_ID_BRILLIANT_MANA_OIL, 5);
+                StoreItem(CONSUM_ID_BRILLIANT_WIZARD_OIL, 5);
+            }
+            if (level >= 52 && level < 58) {
+                StoreItem(CONSUM_ID_SUPERIOR_MANA_OIL, 5);
+                StoreItem(CONSUM_ID_BRILLIANT_WIZARD_OIL, 5);
+            }
+
+            if (level >= 58)
+            {
+                StoreItem(CONSUM_ID_SUPERIOR_MANA_OIL, 5);
+                StoreItem(CONSUM_ID_SUPERIOR_WIZARD_OIL, 5);
+            }
+            break;
+        }
+        case CLASS_PALADIN:
+        case CLASS_WARRIOR:
+        case CLASS_HUNTER:
+        {
+            if (level >= 1 && level < 5)
+            {
+                StoreItem(CONSUM_ID_ROUGH_SHARPENING_STONE, 5);
+                StoreItem(CONSUM_ID_ROUGH_WEIGHTSTONE, 5);
+            }
+
+            if (level >= 5 && level < 15)
+            {
+                StoreItem(CONSUM_ID_COARSE_WEIGHTSTONE, 5);
+                StoreItem(CONSUM_ID_COARSE_SHARPENING_STONE, 5);
+            }
+
+            if (level >= 15 && level < 25)
+            {
+                StoreItem(CONSUM_ID_HEAVY_WEIGHTSTONE, 5);
+                StoreItem(CONSUM_ID_HEAVY_SHARPENING_STONE, 5);
+            }
+
+            if (level >= 25 && level < 35)
+            {
+                StoreItem(CONSUM_ID_SOL_SHARPENING_STONE, 5);
+                StoreItem(CONSUM_ID_SOLID_WEIGHTSTONE, 5);
+            }
+
+            if (level >= 35 && level < 50)
+            {
+                StoreItem(CONSUM_ID_DENSE_WEIGHTSTONE, 5);
+                StoreItem(CONSUM_ID_DENSE_SHARPENING_STONE, 5);
+            }
+
+            if (level >= 50 && level < 60)
+            {
+                StoreItem(CONSUM_ID_FEL_SHARPENING_STONE, 5);
+                StoreItem(CONSUM_ID_FEL_WEIGHTSTONE, 5);
+            }
+
+            if (level >= 60)
+            {
+                StoreItem(CONSUM_ID_ADAMANTITE_WEIGHTSTONE, 5);
+                StoreItem(CONSUM_ID_ADAMANTITE_SHARPENING_STONE, 5);
+            }
+            break;
+        }
+        case CLASS_ROGUE:
+        {
+            if (level >= 20 && level < 28)
+            {
+                StoreItem(CONSUM_ID_INSTANT_POISON, 5);
+            }
+
+            if (level >= 28 && level < 30)
+            {
+                StoreItem(CONSUM_ID_INSTANT_POISON_II, 5);
+            }
+
+            if (level >= 30 && level < 36)
+            {
+                StoreItem(CONSUM_ID_DEADLY_POISON, 5);
+                StoreItem(CONSUM_ID_INSTANT_POISON_II, 5);
+            }
+
+            if (level >= 36 && level < 44)
+            {
+                StoreItem(CONSUM_ID_DEADLY_POISON_II, 5);
+                StoreItem(CONSUM_ID_INSTANT_POISON_III, 5);
+            }
+
+            if (level >= 44 && level < 52)
+            {
+                StoreItem(CONSUM_ID_DEADLY_POISON_III, 5);
+                StoreItem(CONSUM_ID_INSTANT_POISON_IV, 5);
+            }
+            if (level >= 52 && level < 60) {
+                StoreItem(CONSUM_ID_DEADLY_POISON_IV, 5);
+                StoreItem(CONSUM_ID_INSTANT_POISON_V, 5);
+            }
+
+            if (level >= 60 && level < 62)
+            {
+                StoreItem(CONSUM_ID_DEADLY_POISON_V, 5);
+                StoreItem(CONSUM_ID_INSTANT_POISON_VI, 5);
+            }
+
+            if (level >= 62 && level < 68)
+            {
+                StoreItem(CONSUM_ID_DEADLY_POISON_VI, 5);
+                StoreItem(CONSUM_ID_INSTANT_POISON_VI, 5);
+            }
+
+            if (level >= 68)
+            {
+                StoreItem(CONSUM_ID_DEADLY_POISON_VII, 5);
+                StoreItem(CONSUM_ID_INSTANT_POISON_VII, 5);
+            }
+            break;
+        }
+    }
 }
 
 void PlayerbotFactory::InitPet()
@@ -353,23 +603,7 @@ void PlayerbotFactory::ClearSkills()
 
 void PlayerbotFactory::ClearSpells()
 {
-    std::vector<uint32> spells;
-    for(PlayerSpellMap::iterator itr = bot->GetSpellMap().begin(); itr != bot->GetSpellMap().end(); ++itr)
-    {
-        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(itr->first);
-        if (!spellInfo)
-            continue;
-
-		if (itr->second->State == PLAYERSPELL_REMOVED || !itr->second->Active || spellInfo->IsPassive())
-			continue;
-
-        spells.push_back(itr->first);
-    }
-
-    for (std::vector<uint32>::iterator i = spells.begin(); i != spells.end(); ++i)
-    {
-        bot->removeSpell(*i, false, false);
-    }
+    bot->resetSpells();
 }
 
 void PlayerbotFactory::InitSpells()
@@ -377,11 +611,13 @@ void PlayerbotFactory::InitSpells()
     InitAvailableSpells();
 }
 
-void PlayerbotFactory::InitTalents()
+void PlayerbotFactory::InitTalentsTree(bool incremental)
 {
-    uint32 specNo = sRandomPlayerbotMgr->GetValue(bot, "specNo");
-    if (specNo)
-        specNo--;
+    uint32 specNo = sRandomPlayerbotMgr->GetValue(bot->GetGUID().GetCounter(), "specNo");
+    if (incremental && specNo)
+    {
+        specNo -= 1;
+    }
     else
     {
         uint32 point = urand(0, 100);
@@ -389,16 +625,17 @@ void PlayerbotFactory::InitTalents()
         uint32 p1 = sPlayerbotAIConfig->specProbability[cls][0];
         uint32 p2 = p1 + sPlayerbotAIConfig->specProbability[cls][1];
 
-        uint32 specNo = (point < p1 ? 0 : (point < p2 ? 1 : 2));
+        specNo = (point < p1 ? 0 : (point < p2 ? 1 : 2));
         sRandomPlayerbotMgr->SetValue(bot, "specNo", specNo + 1);
     }
 
     InitTalents(specNo);
 
     if (bot->GetFreeTalentPoints())
+    {
         InitTalents(2 - specNo);
+    }
 }
-
 
 class DestroyItemsVisitor : public IterateItemsVisitor
 {
@@ -458,6 +695,18 @@ bool PlayerbotFactory::CanEquipArmor(ItemTemplate const* proto)
     if (proto->Quality <= ITEM_QUALITY_NORMAL)
         return true;
 
+    for (uint8 slot = 0; slot < EQUIPMENT_SLOT_END; ++slot)
+    {
+        if (slot == EQUIPMENT_SLOT_TABARD || slot == EQUIPMENT_SLOT_BODY)
+            continue;
+
+        if (slot == EQUIPMENT_SLOT_OFFHAND && bot->getClass() == CLASS_ROGUE && proto->Class != ITEM_CLASS_WEAPON)
+            continue;
+
+        if (slot == EQUIPMENT_SLOT_OFFHAND && bot->getClass() == CLASS_PALADIN && proto->SubClass != ITEM_SUBCLASS_ARMOR_SHIELD)
+            continue;
+    }
+
     uint8 sp = 0;
     uint8 ap = 0;
     uint8 tank = 0;
@@ -493,6 +742,10 @@ bool PlayerbotFactory::CheckItemStats(uint8 sp, uint8 ap, uint8 tank)
             if (!ap || sp > ap || sp > tank)
                 return false;
             break;
+        case CLASS_DEATH_KNIGHT:
+            if ((!ap && !tank) || sp > ap || sp > tank)
+                return false;
+            break;
     }
 
     return sp || ap || tank;
@@ -507,7 +760,7 @@ void PlayerbotFactory::AddItemStats(uint32 mod, uint8 &sp, uint8 &ap, uint8 &tan
         case ITEM_MOD_MANA:
         case ITEM_MOD_INTELLECT:
         case ITEM_MOD_SPIRIT:
-            sp++;
+            ++sp;
             break;
     }
 
@@ -517,7 +770,7 @@ void PlayerbotFactory::AddItemStats(uint32 mod, uint8 &sp, uint8 &ap, uint8 &tan
         case ITEM_MOD_STRENGTH:
         case ITEM_MOD_HEALTH:
         case ITEM_MOD_STAMINA:
-            tank++;
+            ++tank;
             break;
     }
 
@@ -527,13 +780,15 @@ void PlayerbotFactory::AddItemStats(uint32 mod, uint8 &sp, uint8 &ap, uint8 &tan
         case ITEM_MOD_STAMINA:
         case ITEM_MOD_AGILITY:
         case ITEM_MOD_STRENGTH:
-            ap++;
+            ++ap;
             break;
     }
 }
 
 bool PlayerbotFactory::CanEquipWeapon(ItemTemplate const* proto)
 {
+    uint8 tab = AiFactory::GetPlayerSpecTab(bot);
+
     switch (bot->getClass())
     {
         case CLASS_PRIEST:
@@ -541,15 +796,36 @@ bool PlayerbotFactory::CanEquipWeapon(ItemTemplate const* proto)
                 return false;
             break;
         case CLASS_MAGE:
+            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF && proto->SubClass != ITEM_SUBCLASS_WEAPON_WAND)
+                return false;
+            break;
         case CLASS_WARLOCK:
-            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF && proto->SubClass != ITEM_SUBCLASS_WEAPON_WAND && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD)
+            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF && proto->SubClass != ITEM_SUBCLASS_WEAPON_DAGGER && proto->SubClass != ITEM_SUBCLASS_WEAPON_WAND &&
+                proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD)
                 return false;
             break;
         case CLASS_WARRIOR:
-            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE &&
-                proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD && proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW &&
-                proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
-                return false;
+            if (tab == 1) //fury
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD && proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_FIST && proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
+                    return false;
+            }
+            if ((tab == 0) && (bot->getLevel() > 10)) // arms
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 &&  proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE2 &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_POLEARM && proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
+                    return false;
+            }
+            else // prot + lowlvl
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD && proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
+                    return false;
+            }
             break;
         case CLASS_PALADIN:
             if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE &&
@@ -557,23 +833,54 @@ bool PlayerbotFactory::CanEquipWeapon(ItemTemplate const* proto)
                 return false;
             break;
         case CLASS_SHAMAN:
-            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE && proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF)
-                return false;
+            if (tab == 1) //enh
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE && proto->SubClass != ITEM_SUBCLASS_WEAPON_FIST && proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2)
+                    return false;
+            }
+            else //ele,resto
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_DAGGER && proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE && proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF)
+                    return false;
+            }
             break;
         case CLASS_DRUID:
-            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE && proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_DAGGER &&
-                proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF)
-                return false;
+            if (tab == 1) // feral
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF)
+                    return false;
+            }
+            else // balance, resto
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE && proto->SubClass != ITEM_SUBCLASS_WEAPON_DAGGER && proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF)
+                    return false;
+            }
             break;
         case CLASS_HUNTER:
-            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN &&
-                proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW)
+            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_POLEARM &&
+                proto->SubClass != ITEM_SUBCLASS_WEAPON_STAFF && proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW &&
+                proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW)
                 return false;
             break;
         case CLASS_ROGUE:
-            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_DAGGER && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD && proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE &&
-                proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW &&
-                proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
+            if (tab == 0) // assa
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_DAGGER && proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
+                    return false;
+            }
+            else
+            {
+                if (proto->SubClass != ITEM_SUBCLASS_WEAPON_DAGGER && proto->SubClass != ITEM_SUBCLASS_WEAPON_FIST && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE && proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW &&
+                    proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
+                    return false;
+            }
+            break;
+        case CLASS_DEATH_KNIGHT:
+            if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_POLEARM && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD2 &&
+                proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE2)
                 return false;
             break;
     }
@@ -635,14 +942,16 @@ void PlayerbotFactory::InitEquipment(bool incremental)
 
     for (uint8 slot = 0; slot < EQUIPMENT_SLOT_END; ++slot)
     {
-        if (slot == EQUIPMENT_SLOT_TABARD || slot == EQUIPMENT_SLOT_BODY)
+        if (slot == EQUIPMENT_SLOT_TABARD && !bot->GetGuildId())
             continue;
 
         bool found = false;
         uint32 quality = itemQuality;
-        if (urand(0, 100) < 100 * sPlayerbotAIConfig->randomGearLoweringChance && quality > ITEM_QUALITY_NORMAL) {
+        if (urand(0, 100) < 100 * sPlayerbotAIConfig->randomGearLoweringChance && quality > ITEM_QUALITY_NORMAL)
+        {
             quality--;
         }
+
         do
         {
             std::vector<uint32> ids = sRandomItemMgr->Query(level, bot->getClass(), slot, quality);
@@ -777,7 +1086,7 @@ void PlayerbotFactory::InitSecondEquipmentSet()
         std::vector<uint32>& ids = i->second;
         if (ids.empty())
         {
-            sLog->outDebug(  "%s: no items to make second equipment std::set for slot %d", bot->GetName(), i->first);
+            sLog->outDebug(  "%s: no items to make second equipment set for slot %d", bot->GetName(), i->first);
             continue;
         }
 
@@ -871,7 +1180,7 @@ void PlayerbotFactory::EnchantItem(Item* item)
         if (spellLevel && (spellLevel > level || spellLevel < level - 10))
             continue;
 
-        for (uint8 j = 0; j < 3; ++j)
+        for (uint8 j = 0; j < TOTAL_SPELL_EFFECTS; ++j)
         {
             if (spellInfo->Effects[j].Effect != SPELL_EFFECT_ENCHANT_ITEM)
                 continue;
@@ -891,7 +1200,7 @@ void PlayerbotFactory::EnchantItem(Item* item)
             uint8 sp = 0;
             uint8 ap = 0;
             uint8 tank = 0;
-            for (uint8 i = 0; i < 3; ++i)
+            for (uint8 i = ITEM_MOD_MANA; i < MAX_ITEM_MOD; ++i)
             {
                 if (enchant->type[i] != ITEM_ENCHANTMENT_TYPE_STAT)
                     continue;
@@ -900,6 +1209,9 @@ void PlayerbotFactory::EnchantItem(Item* item)
             }
 
             if (!CheckItemStats(sp, ap, tank))
+                continue;
+
+            if (enchant->EnchantmentCondition && !bot->EnchantmentFitsRequirements(enchant->EnchantmentCondition, -1))
                 continue;
 
             if (!item->IsFitToSpellRequirements(spellInfo))
@@ -923,7 +1235,7 @@ void PlayerbotFactory::EnchantItem(Item* item)
         return;
 
     bot->ApplyEnchantment(item, PERM_ENCHANTMENT_SLOT, false);
-    item->SetEnchantment(PERM_ENCHANTMENT_SLOT, id, 0, 0);
+    item->SetEnchantment(PERM_ENCHANTMENT_SLOT, id, 0, 0, bot->GetGUID());
     bot->ApplyEnchantment(item, PERM_ENCHANTMENT_SLOT, true);
 }
 
@@ -955,6 +1267,7 @@ void PlayerbotFactory::InitTradeSkills()
         {
             case CLASS_WARRIOR:
             case CLASS_PALADIN:
+            case CLASS_DEATH_KNIGHT:
                 firstSkills.push_back(SKILL_MINING);
                 secondSkills.push_back(SKILL_BLACKSMITHING);
                 secondSkills.push_back(SKILL_ENGINEERING);
@@ -1020,21 +1333,6 @@ void PlayerbotFactory::InitSkills()
 {
     uint32 maxValue = level * 5;
     SetRandomSkill(SKILL_DEFENSE);
-    SetRandomSkill(SKILL_SWORDS);
-    SetRandomSkill(SKILL_AXES);
-    SetRandomSkill(SKILL_BOWS);
-    SetRandomSkill(SKILL_GUNS);
-    SetRandomSkill(SKILL_MACES);
-    SetRandomSkill(SKILL_2H_SWORDS);
-    SetRandomSkill(SKILL_STAVES);
-    SetRandomSkill(SKILL_2H_MACES);
-    SetRandomSkill(SKILL_2H_AXES);
-    SetRandomSkill(SKILL_DAGGERS);
-    SetRandomSkill(SKILL_THROWN);
-    SetRandomSkill(SKILL_CROSSBOWS);
-    SetRandomSkill(SKILL_WANDS);
-    SetRandomSkill(SKILL_POLEARMS);
-    SetRandomSkill(SKILL_FIST_WEAPONS);
 
     if (bot->getLevel() >= 70)
         bot->SetSkill(SKILL_RIDING, 300, 300);
@@ -1048,6 +1346,109 @@ void PlayerbotFactory::InitSkills()
         bot->SetSkill(SKILL_RIDING, 0, 0);
 
     uint32 skillLevel = bot->getLevel() < 40 ? 0 : 1;
+
+    switch (bot->getClass())
+    {
+        case CLASS_DRUID:
+            SetRandomSkill(SKILL_MACES);
+            SetRandomSkill(SKILL_STAVES);
+            SetRandomSkill(SKILL_2H_MACES);
+            SetRandomSkill(SKILL_DAGGERS);
+            SetRandomSkill(SKILL_POLEARMS);
+            SetRandomSkill(SKILL_FIST_WEAPONS);
+            break;
+        case CLASS_WARRIOR:
+            SetRandomSkill(SKILL_SWORDS);
+            SetRandomSkill(SKILL_AXES);
+            SetRandomSkill(SKILL_BOWS);
+            SetRandomSkill(SKILL_GUNS);
+            SetRandomSkill(SKILL_MACES);
+            SetRandomSkill(SKILL_2H_SWORDS);
+            SetRandomSkill(SKILL_STAVES);
+            SetRandomSkill(SKILL_2H_MACES);
+            SetRandomSkill(SKILL_2H_AXES);
+            SetRandomSkill(SKILL_DAGGERS);
+            SetRandomSkill(SKILL_CROSSBOWS);
+            SetRandomSkill(SKILL_POLEARMS);
+            SetRandomSkill(SKILL_FIST_WEAPONS);
+            SetRandomSkill(SKILL_THROWN);
+            break;
+        case CLASS_PALADIN:
+            bot->SetSkill(SKILL_PLATE_MAIL, 0, skillLevel, skillLevel);
+            SetRandomSkill(SKILL_SWORDS);
+            SetRandomSkill(SKILL_AXES);
+            SetRandomSkill(SKILL_MACES);
+            SetRandomSkill(SKILL_2H_SWORDS);
+            SetRandomSkill(SKILL_2H_MACES);
+            SetRandomSkill(SKILL_2H_AXES);
+            SetRandomSkill(SKILL_POLEARMS);
+            break;
+        case CLASS_PRIEST:
+            SetRandomSkill(SKILL_MACES);
+            SetRandomSkill(SKILL_STAVES);
+            SetRandomSkill(SKILL_DAGGERS);
+            SetRandomSkill(SKILL_WANDS);
+            break;
+        case CLASS_SHAMAN:
+            SetRandomSkill(SKILL_AXES);
+            SetRandomSkill(SKILL_MACES);
+            SetRandomSkill(SKILL_STAVES);
+            SetRandomSkill(SKILL_2H_MACES);
+            SetRandomSkill(SKILL_2H_AXES);
+            SetRandomSkill(SKILL_DAGGERS);
+            SetRandomSkill(SKILL_FIST_WEAPONS);
+            break;
+        case CLASS_MAGE:
+            SetRandomSkill(SKILL_SWORDS);
+            SetRandomSkill(SKILL_STAVES);
+            SetRandomSkill(SKILL_DAGGERS);
+            SetRandomSkill(SKILL_WANDS);
+            break;
+        case CLASS_WARLOCK:
+            SetRandomSkill(SKILL_SWORDS);
+            SetRandomSkill(SKILL_STAVES);
+            SetRandomSkill(SKILL_DAGGERS);
+            SetRandomSkill(SKILL_WANDS);
+            break;
+        case CLASS_HUNTER:
+            SetRandomSkill(SKILL_SWORDS);
+            SetRandomSkill(SKILL_AXES);
+            SetRandomSkill(SKILL_BOWS);
+            SetRandomSkill(SKILL_GUNS);
+            SetRandomSkill(SKILL_2H_SWORDS);
+            SetRandomSkill(SKILL_STAVES);
+            SetRandomSkill(SKILL_2H_AXES);
+            SetRandomSkill(SKILL_DAGGERS);
+            SetRandomSkill(SKILL_CROSSBOWS);
+            SetRandomSkill(SKILL_POLEARMS);
+            SetRandomSkill(SKILL_FIST_WEAPONS);
+            SetRandomSkill(SKILL_THROWN);
+            bot->SetSkill(SKILL_MAIL, 0, skillLevel, skillLevel);
+            break;
+        case CLASS_ROGUE:
+            SetRandomSkill(SKILL_SWORDS);
+            SetRandomSkill(SKILL_AXES);
+            SetRandomSkill(SKILL_BOWS);
+            SetRandomSkill(SKILL_GUNS);
+            SetRandomSkill(SKILL_MACES);
+            SetRandomSkill(SKILL_DAGGERS);
+            SetRandomSkill(SKILL_CROSSBOWS);
+            SetRandomSkill(SKILL_FIST_WEAPONS);
+            SetRandomSkill(SKILL_THROWN);
+            break;
+        case CLASS_DEATH_KNIGHT:
+            SetRandomSkill(SKILL_SWORDS);
+            SetRandomSkill(SKILL_AXES);
+            SetRandomSkill(SKILL_MACES);
+            SetRandomSkill(SKILL_2H_SWORDS);
+            SetRandomSkill(SKILL_2H_MACES);
+            SetRandomSkill(SKILL_2H_AXES);
+            SetRandomSkill(SKILL_POLEARMS);
+            break;
+        default:
+            break;
+    }
+
     switch (bot->getClass())
     {
         case CLASS_WARRIOR:
@@ -1057,12 +1458,22 @@ void PlayerbotFactory::InitSkills()
         case CLASS_SHAMAN:
         case CLASS_HUNTER:
             bot->SetSkill(SKILL_MAIL, skillLevel, skillLevel);
+            break;
+        default:
+            break;
     }
 }
 
 void PlayerbotFactory::SetRandomSkill(uint16 id)
 {
     uint32 maxValue = level * 5;
+
+    // do not let skill go beyond limit even if maxlevel > blizzlike
+    if (level > 60)
+    {
+        maxValue = (level + 10) * 5;
+    }
+
     uint32 value = urand(maxValue - level, maxValue);
     uint32 curValue = bot->GetSkillValue(id);
 
@@ -1098,8 +1509,7 @@ void PlayerbotFactory::InitAvailableSpells()
 			if (!tSpell)
 				continue;
 
-			uint32 reqLevel = tSpell->reqLevel;
-			TrainerSpellState state = bot->GetTrainerSpellState(tSpell, reqLevel);
+			TrainerSpellState state = bot->GetTrainerSpellState(tSpell);
 			if (state != TRAINER_SPELL_GREEN)
 				continue;
 
@@ -1107,13 +1517,34 @@ void PlayerbotFactory::InitAvailableSpells()
 		    if (!spellInfo)
 		        continue;
 
+            if (co->trainer_type == TRAINER_TYPE_TRADESKILLS)
+            {
+                std::string const& SpellName = spellInfo->SpellName[0];
+                if (spellInfo->Effects[EFFECT_1].Effect == SPELL_EFFECT_SKILL_STEP)
+                {
+                    uint32 skill = spellInfo->Effects[EFFECT_1].MiscValue;
+                    if (skill && !bot->HasSkill(skill))
+                    {
+                        SkillLineEntry const* pSkill = sSkillLineStore.LookupEntry(skill);
+                        if (pSkill)
+                        {
+                            if (SpellName.find("Apprentice") != std::string::npos && pSkill->categoryId == SKILL_CATEGORY_PROFESSION || pSkill->categoryId == SKILL_CATEGORY_SECONDARY)
+                                continue;
+                        }
+                    }
+                }
+            }
+
             bool learned = false;
             for (uint8 j = 0; j < 3; ++j)
             {
+                if (!tSpell->learnedSpell[j] && !bot->IsSpellFitByClassAndRace(tSpell->learnedSpell[j]))
+                    continue;
+
                 if (spellInfo->Effects[j].Effect == SPELL_EFFECT_LEARN_SPELL)
                 {
                     uint32 learnedSpell = spellInfo->Effects[j].TriggerSpell;
-                    bot->learnSpell(learnedSpell, false);
+                    bot->learnSpell(learnedSpell);
                     learned = true;
                 }
             }
@@ -1256,6 +1687,12 @@ void PlayerbotFactory::ClearInventory()
     IterateItems(&visitor);
 }
 
+void PlayerbotFactory::ClearAllItems()
+{
+    DestroyItemsVisitor visitor(bot);
+    IterateItems(&visitor, ITERATE_ALL_ITEMS);
+}
+
 void PlayerbotFactory::InitAmmo()
 {
     if (bot->getClass() != CLASS_HUNTER && bot->getClass() != CLASS_ROGUE && bot->getClass() != CLASS_WARRIOR)
@@ -1303,35 +1740,94 @@ void PlayerbotFactory::InitAmmo()
 
 void PlayerbotFactory::InitMounts()
 {
-    std::map<uint32, std::vector<uint32>> spells;
+    uint32 firstmount = 20;
+    uint32 secondmount = 40;
+    uint32 thirdmount = 60;
+    uint32 fourthmount = 70;
 
-    for (uint32 spellId = 0; spellId < sSpellMgr->GetSpellInfoStoreSize(); ++spellId)
+    if (bot->getLevel() < firstmount)
+        return;
+
+    std::map<uint8, std::map<int32, std::vector<uint32>>> mounts;
+    std::initializer_list<uint32> slow, fast, fslow, ffast;
+    switch (bot->getRace())
     {
-        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
-        if (!spellInfo || spellInfo->Effects[0].ApplyAuraName != SPELL_AURA_MOUNTED)
-            continue;
-
-        if (spellInfo->CalcCastTime() < 500 || spellInfo->GetDuration() != -1)
-            continue;
-
-        int32 effect = max(spellInfo->Effects[1].BasePoints, spellInfo->Effects[2].BasePoints);
-        if (effect < 50)
-            continue;
-
-        spells[effect].push_back(spellId);
+        case RACE_HUMAN:
+            slow = { 470, 6648, 458, 472 };
+            fast = { 23228, 23227, 23229 };
+            break;
+        case RACE_ORC:
+            slow = { 6654, 6653, 580 };
+            fast = { 23250, 23252, 23251 };
+            break;
+        case RACE_DWARF:
+            slow = { 6899, 6777, 6898 };
+            fast = { 23238, 23239, 23240 };
+            break;
+        case RACE_NIGHTELF:
+            slow = { 10789, 8394, 10793 };
+            fast = { 18766, 18767, 18902 };
+            break;
+        case RACE_UNDEAD_PLAYER:
+            slow = { 17463, 17464, 17462 };
+            fast = { 17465, 23246 };
+            break;
+        case RACE_TAUREN:
+            slow = { 18990, 18989 };
+            fast = { 23249, 23248, 23247 };
+            break;
+        case RACE_GNOME:
+            slow = { 10969, 17453, 10873, 17454 };
+            fast = { 23225, 23223, 23222 };
+            break;
+        case RACE_TROLL:
+            slow = { 8588, 10796, 8592, 472 };
+            fast = { 23241, 23242, 23243 };
+            break;
+        case RACE_DRAENEI:
+            slow = { 34406, 35711, 35710 };
+            fast = { 35713, 35712, 35714 };
+            break;
+        case RACE_BLOODELF:
+            slow = { 33660, 35020, 35022, 35018 };
+            fast = { 35025, 35025, 35027 };
+            break;
     }
 
-    for (uint32 type = 0; type < 2; ++type)
+    switch (bot->GetTeamId())
     {
-        for (std::map<uint32, std::vector<uint32> >::iterator i = spells.begin(); i != spells.end(); ++i)
-        {
-            uint32 effect = i->first;
-            std::vector<uint32>& ids = i->second;
-            uint32 index = urand(0, ids.size() - 1);
-            if (index >= ids.size())
-                continue;
+        case TEAM_ALLIANCE:
+            fslow = { 32235, 32239, 32240 };
+            ffast = { 32242, 32289, 32290, 32292 };
+            break;
+        case TEAM_HORDE:
+            fslow = { 32244, 32245, 32243 };
+            ffast = { 32295, 32297, 32246, 32296 };
+            break;
+    }
 
-            bot->learnSpell(ids[index], false);
+    mounts[bot->getRace()][0].insert(mounts[bot->getRace()][0].end(), slow);
+    mounts[bot->getRace()][1].insert(mounts[bot->getRace()][1].end(), fast);
+    mounts[bot->getRace()][2].insert(mounts[bot->getRace()][0].end(), fslow);
+    mounts[bot->getRace()][3].insert(mounts[bot->getRace()][1].end(), ffast);
+
+    for (uint32 type = 0; type < 4; type++)
+    {
+        if (bot->getLevel() < secondmount && type == 1)
+            continue;
+
+        if (bot->getLevel() < thirdmount && type == 2)
+            continue;
+
+        if (bot->getLevel() < fourthmount && type == 3)
+            continue;
+
+        uint32 index = urand(0, mounts[bot->getRace()][type].size() - 1);
+        uint32 spell = mounts[bot->getRace()][type][index];
+        if (spell && spell != 0)
+        {
+            bot->learnSpell(spell);
+            sLog->outBasic("Bot %s (%d) learned %s mount %d", bot->GetGUID().ToString().c_str(), bot->getLevel(), type == 0 ? "slow" : (type == 1 ? "fast" : "flying"), spell);
         }
     }
 }
@@ -1376,7 +1872,7 @@ void PlayerbotFactory::InitFood()
         if (!visitor.GetResult().empty())
             continue;
 
-        uint32 itemId = sRandomItemMgr->GetRandomFood(level, category);
+        uint32 itemId = sRandomItemMgr->GetFood(level, category);
         if (!itemId)
         {
             sLog->outDetail("No food (category %d) available for bot %s (%d level)", category, bot->GetName(), bot->getLevel());
@@ -1391,6 +1887,158 @@ void PlayerbotFactory::InitFood()
         if (Item* newItem = bot->StoreNewItemInInventorySlot(itemId, urand(maxCount / 2, maxCount)))
             newItem->AddToUpdateQueueOf(bot);
    }
+}
+
+void PlayerbotFactory::InitReagents()
+{
+    std::vector<uint32> items;
+    uint32 regCount = 1;
+    switch (bot->getClass())
+    {
+        case CLASS_MAGE:
+            regCount = 2;
+            if (bot->getLevel() > 11)
+                items = { 17056 };
+            if (bot->getLevel() > 19)
+                items = { 17056, 17031 };
+            if (bot->getLevel() > 35)
+                items = { 17056, 17031, 17032 };
+            if (bot->getLevel() > 55)
+                items = { 17056, 17031, 17032, 17020 };
+            break;
+        case CLASS_DRUID:
+            regCount = 2;
+            if (bot->getLevel() > 19)
+                items = { 17034 };
+            if (bot->getLevel() > 29)
+                items = { 17035 };
+            if (bot->getLevel() > 39)
+                items = { 17036 };
+            if (bot->getLevel() > 49)
+                items = { 17037, 17021 };
+            if (bot->getLevel() > 59)
+                items = { 17038, 17026 };
+            if (bot->getLevel() > 69)
+                items = { 22147, 22148 };
+            break;
+        case CLASS_PALADIN:
+            regCount = 3;
+            if (bot->getLevel() > 50)
+                items = { 21177 };
+            break;
+        case CLASS_SHAMAN:
+            regCount = 1;
+            if (bot->getLevel() > 22)
+                items = { 17057 };
+            if (bot->getLevel() > 28)
+                items = { 17057, 17058 };
+            if (bot->getLevel() > 29)
+                items = { 17057, 17058, 17030 };
+            break;
+        case CLASS_WARLOCK:
+            regCount = 10;
+            if (bot->getLevel() > 9)
+                items = { 6265 };
+            break;
+        case CLASS_PRIEST:
+            regCount = 3;
+            if (bot->getLevel() > 48)
+                items = { 17028 };
+            if (bot->getLevel() > 55)
+                items = { 17028, 17029 };
+            break;
+        case CLASS_ROGUE:
+            regCount = 1;
+            if (bot->getLevel() > 21)
+                items = { 5140 };
+            if (bot->getLevel() > 33)
+                items = { 5140, 5530 };
+            break;
+    }
+
+    /*for (uint32 itemID : items)
+    {
+        ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemID);
+        if (!proto)
+        {
+            sLog->outError("No reagent (ItemId %d) found for bot %d (Class:%d)", i, bot->GetGUIDLow(), bot->getClass());
+            continue;
+        }
+
+        uint32 maxCount = proto->GetMaxStackSize();
+
+        QueryItemCountVisitor visitor(itemID);
+        IterateItems(&visitor);
+        if (visitor.GetCount() > maxCount) continue;
+
+        uint32 randCount = urand(maxCount / 2, maxCount * regCount);
+
+        Item* newItem = bot->StoreNewItemInInventorySlot(*i, randCount);
+        if (newItem)
+            newItem->AddToUpdateQueueOf(bot);
+
+        sLog->outDetail("Bot %d got reagent %s x%d", bot->GetGUIDLow(), proto->Name1, randCount);
+    }*/
+
+    for (PlayerSpellMap::iterator itr = bot->GetSpellMap().begin(); itr != bot->GetSpellMap().end(); ++itr)
+    {
+        uint32 spellId = itr->first;
+        SpellInfo const* pSpellInfo = sSpellMgr->GetSpellInfo(spellId);
+        if (!pSpellInfo)
+            continue;
+
+        if (itr->second->State == PLAYERSPELL_REMOVED || itr->second->Active || pSpellInfo->IsPassive())
+            continue;
+
+        if (pSpellInfo->Effects[0].Effect == SPELL_EFFECT_LEARN_SPELL)
+            continue;
+
+        for (const auto& reagent : pSpellInfo->Reagent)
+        {
+            if (reagent)
+            {
+                ItemTemplate const* proto = sObjectMgr->GetItemTemplate(reagent);
+                if (!proto)
+                {
+                    sLog.outError("No reagent (ItemId %d) found for bot %d (Class:%d)", reagent, bot->GetGUIDLow(), bot->getClass());
+                    continue;
+                }
+
+                uint32 maxCount = proto->GetMaxStackSize();
+
+                QueryItemCountVisitor visitor(reagent);
+                IterateItems(&visitor);
+                if (visitor.GetCount() > maxCount) continue;
+
+                uint32 randCount = urand(maxCount / 2, maxCount * regCount);
+
+                Item* newItem = bot->StoreNewItemInInventorySlot(reagent, randCount);
+                if (newItem)
+                    newItem->AddToUpdateQueueOf(bot);
+
+                sLog.outDetail("Bot %d got reagent %s x%d", bot->GetGUIDLow(), proto->Name1, randCount);
+            }
+        }
+
+        for (const auto& totem : pSpellInfo->Totem)
+        {
+            if (totem && !bot->HasItemCount(totem, 1))
+            {
+                ItemPrototype const* proto = sObjectMgr.GetItemPrototype(totem);
+                if (!proto)
+                {
+                    sLog.outError("No totem (ItemId %d) found for bot %d (Class:%d)", totem, bot->GetGUIDLow(), bot->getClass());
+                    continue;
+                }
+
+                Item* newItem = bot->StoreNewItemInInventorySlot(totem, 1);
+                if (newItem)
+                    newItem->AddToUpdateQueueOf(bot);
+
+                sLog.outDetail("Bot %d got totem %s x%d", bot->GetGUIDLow(), proto->Name1, 1);
+            }
+        }
+    }
 }
 
 void PlayerbotFactory::CancelAuras()
@@ -1491,7 +2139,7 @@ void PlayerbotFactory::InitInventoryEquip()
         if (!proto)
             continue;
 
-        if (proto->Class != ITEM_CLASS_ARMOR && proto->Class != ITEM_CLASS_WEAPON || (proto->Bonding == BIND_WHEN_PICKED_UP || proto->Bonding == BIND_WHEN_USE))
+        if ((proto->Class != ITEM_CLASS_ARMOR && proto->Class != ITEM_CLASS_WEAPON) || (proto->Bonding == BIND_WHEN_PICKED_UP || proto->Bonding == BIND_WHEN_USE))
             continue;
 
         if (proto->Class == ITEM_CLASS_ARMOR && !CanEquipArmor(proto))
@@ -1522,6 +2170,12 @@ void PlayerbotFactory::InitInventoryEquip()
 
 void PlayerbotFactory::InitGuild()
 {
+    bot->SaveToDB();
+
+    // add guild tabard
+    if (bot->GetGuildId() && !bot->HasItemCount(5976, 1))
+        StoreItem(5976, 1);
+
     if (bot->GetGuildId())
         return;
 
@@ -1547,8 +2201,14 @@ void PlayerbotFactory::InitGuild()
         return;
     }
 
-    if (guild->GetMemberSize() < 10)
+    if (guild->GetMemberSize() < urand(10, 15))
         guild->AddMember(bot->GetGUID(), urand(GR_OFFICER, GR_INITIATE));
+
+    // add guild tabard
+    if (bot->GetGuildId() && bot->getLevel() > 9 && urand(0, 4) && !bot->HasItemCount(5976, 1))
+        StoreItem(5976, 1);
+
+    bot->SaveToDB();
 }
 
 void PlayerbotFactory::InitImmersive()
@@ -1646,4 +2306,147 @@ void PlayerbotFactory::InitStats()
 {
     bot->InitStatsForLevel(true);
     bot->UpdateAllStats();
+}
+
+void PlayerbotFactory::InitArenaTeam()
+{
+    if (!sPlayerbotAIConfig.IsInRandomAccountList(bot->GetSession()->GetAccountId()))
+        return;
+
+    if (sPlayerbotAIConfig.randomBotArenaTeams.empty())
+        RandomPlayerbotFactory::CreateRandomArenaTeams();
+
+    std::vector<uint32> arenateams;
+    for (std::vector<uint32>::iterator i = sPlayerbotAIConfig.randomBotArenaTeams.begin(); i != sPlayerbotAIConfig.randomBotArenaTeams.end(); ++i)
+        arenateams.push_back(*i);
+
+    if (arenateams.empty())
+    {
+        sLog->outError("No random arena team available");
+        return;
+    }
+
+    int index = urand(0, arenateams.size() - 1);
+    uint32 arenateamID = arenateams[index];
+    ArenaTeam* arenateam = sObjectMgr.GetArenaTeamById(arenateamID);
+    if (!arenateam)
+    {
+        sLog.outError("Invalid arena team %u", arenateamID);
+        return;
+    }
+
+    if (arenateam->GetMembersSize() < ((uint32)arenateam->GetType() * 2) && bot->getLevel() >= 70)
+    {
+        ObjectGuid capt = arenateam->GetCaptain();
+        Player* botcaptain = sObjectMgr.GetPlayer(capt);
+
+        if (botcaptain && botcaptain->GetTeamId() == bot->GetTeamId()) //need?
+        {
+            arenateam->AddMember(bot->GetGUID());
+
+            uint32 backgroundColor = urand(0xFF000000, 0xFFFFFFFF);
+            uint32 emblemStyle = urand(0, 5);
+            uint32 emblemColor = urand(0xFF000000, 0xFFFFFFFF);
+            uint32 borderStyle = urand(0, 5);
+            uint32 borderColor = urand(0xFF000000, 0xFFFFFFFF);
+
+            arenateam->SetEmblem(backgroundColor, emblemStyle, emblemColor, borderStyle, borderColor);
+        }
+    }
+
+    bot->SaveToDB();
+}
+
+void PlayerbotFactory::ApplyEnchantTemplate()
+{
+    uint8 tab = AiFactory::GetPlayerSpecTab(bot);
+
+    switch (bot->getClass())
+    {
+        case CLASS_WARRIOR:
+            if (tab == 2)
+                ApplyEnchantTemplate(12);
+            else if (tab == 1)
+                ApplyEnchantTemplate(11);
+            else
+                ApplyEnchantTemplate(10);
+            break;
+       case CLASS_DRUID:
+            if (tab == 2)
+                ApplyEnchantTemplate(112);
+            else if (tab == 0)
+                ApplyEnchantTemplate(110);
+            else
+                ApplyEnchantTemplate(111);
+            break;
+       case CLASS_SHAMAN:
+            if (tab == 0)
+                ApplyEnchantTemplate(70);
+            else if (tab == 2)
+                ApplyEnchantTemplate(71);
+            else
+                ApplyEnchantTemplate(72);
+            break;
+       case CLASS_PALADIN:
+            if (tab == 0)
+                ApplyEnchantTemplate(20);
+            else if (tab == 2)
+                ApplyEnchantTemplate(22);
+            else if (tab == 1)
+                ApplyEnchantTemplate(21);
+            break;
+       case CLASS_HUNTER:
+            ApplyEnchantTemplate(30);
+            break;
+       case CLASS_ROGUE:
+            ApplyEnchantTemplate(40);
+            break;
+       case CLASS_MAGE:
+            ApplyEnchantTemplate(80);
+            break;
+       case CLASS_WARLOCK:
+            ApplyEnchantTemplate(90);
+            break;
+       case CLASS_PRIEST:
+             ApplyEnchantTemplate(50);
+            break;
+    }
+}
+
+void PlayerbotFactory::ApplyEnchantTemplate(uint8 spec)
+{
+   for (EnchantContainer::const_iterator itr = GetEnchantContainerBegin(); itr != GetEnchantContainerEnd(); ++itr)
+      if ((*itr)->ClassId == bot->getClass() && (*itr)->SpecId == spec)
+         botAI->EnchantItemT((*itr)->SpellId, (*itr)->SlotId);
+}
+
+void PlayerbotFactory::LoadEnchantContainer()
+{
+   for (EnchantContainer::const_iterator itr = m_EnchantContainer.begin(); itr != m_EnchantContainer.end(); ++itr)
+      delete *itr;
+
+   m_EnchantContainer.clear();
+
+   uint32 count = 0;
+
+   QueryResult* result = PlayerbotDatabase.PQuery("SELECT class, spec, spellid, slotid FROM ai_playerbot_enchants");
+   if (result)
+   {
+      do
+      {
+         Field* fields = result->Fetch();
+
+         EnchantTemplate* pEnchant = new EnchantTemplate;
+
+         pEnchant->ClassId = fields[0].GetUInt8();
+         pEnchant->SpecId = fields[1].GetUInt8();
+         pEnchant->SpellId = fields[2].GetUInt32();
+         pEnchant->SlotId = fields[3].GetUInt8();
+
+         m_EnchantContainer.push_back(pEnchant);
+         ++count;
+      } while (result->NextRow());
+
+      delete result;
+   }
 }

@@ -43,7 +43,7 @@ bool SpellCastUsefulValue::Calculate()
                 return false;
     }
 
-    std::set<uint32>& skipSpells = AI_VALUE(std::set<uint32>&, "skip spells std::list");
+    std::set<uint32>& skipSpells = AI_VALUE(std::set<uint32>&, "skip spells list");
     if (skipSpells.find(spellid) != skipSpells.end())
         return false;
 

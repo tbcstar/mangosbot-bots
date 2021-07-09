@@ -21,5 +21,7 @@ class TalkToQuestGiverAction : public QuestAction
         void TurnInQuest(Quest const* quest, WorldObject* questGiver, std::ostringstream& out);
         void RewardNoItem(Quest const* quest, WorldObject* questGiver, std::ostringstream& out);
         void RewardSingleItem(Quest const* quest, WorldObject* questGiver, std::ostringstream& out);
-        void AskToSelectReward(Quest const* quest, std::ostringstream& out);
+        std::set<uint32> BestRewards(Quest const* quest);
+        void RewardMultipleItem(Quest const* quest, WorldObject* questGiver, std::ostringstream& out);
+        void AskToSelectReward(Quest const* quest, std::ostringstream& out, bool forEquip);
 };

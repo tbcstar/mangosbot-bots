@@ -101,10 +101,10 @@ class CombatTypeChatFilter : public ChatFilter
                 case CLASS_WARRIOR:
                 case CLASS_PALADIN:
                 case CLASS_ROGUE:
-                /*case CLASS_DEATH_KNIGHT:
+                case CLASS_DEATH_KNIGHT:
                     if (ranged)
                         return "";
-                    break;*/
+                    break;
                 case CLASS_HUNTER:
                 case CLASS_PRIEST:
                 case CLASS_MAGE:
@@ -153,6 +153,7 @@ class RtiChatFilter : public ChatFilter
                 return message;
 
             bool found = false;
+            bool isRti = false;
             for (std::vector<std::string>::iterator i = rtis.begin(); i != rtis.end(); i++)
             {
                 std::string rti = *i;
@@ -172,7 +173,8 @@ class RtiChatFilter : public ChatFilter
                 if (target->GetGUID() != rtiTarget)
                     return "";
 
-                if (found |= isRti)
+                found |= isRti;
+                if (found)
                     break;
             }
 
@@ -208,13 +210,15 @@ class ClassChatFilter : public ChatFilter
             Player* bot = botAI->GetBot();
 
             bool found = false;
+            bool isClass = false;
             for (std::map<std::string, uint8>::iterator i = classNames.begin(); i != classNames.end(); i++)
             {
                 bool isClass = message.find(i->first) == 0;
                 if (isClass && bot->getClass() != i->second)
                     return "";
 
-                if (found |= isClass)
+                found |= isClass;
+                if (found)
                     break;
             }
 

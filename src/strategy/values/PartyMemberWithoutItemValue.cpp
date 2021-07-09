@@ -19,11 +19,14 @@ class PlayerWithoutItemPredicate : public FindPlayerPredicate, public PlayerbotA
             if (!member)
                 return false;
 
-            PlayerbotAI* botAi = member->GetPlayerbotAI();
-            if (!botAi)
+            if (!(member->IsInSameGroupWith(botAI->GetBot()) || member->IsInSameRaidWith(botAI->GetBot())))
                 return false;
 
-            return !botAi->GetAiObjectContext()->GetValue<uint8>("item count", item)->Get();
+            PlayerbotAI* memberBotAI = member->GetPlayerbotAI();
+            if (!memberBotAI)
+                return false;
+
+            return !memberBotAI->GetAiObjectContext()->GetValue<uint8>("item count", item)->Get();
         }
 
     private:

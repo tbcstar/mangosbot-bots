@@ -6,6 +6,7 @@
 #include "NamedObjectContext.h"
 
 class Event;
+class Player;
 class PlayerbotAI;
 class Unit;
 
@@ -16,6 +17,7 @@ class EmoteActionBase : public Action
 
     protected:
         bool Emote(Unit* target, uint32 type);
+        bool ReceiveEmote(Player* source, uint32 emote);
         Unit* GetTarget();
         void InitEmotes();
         static std::map<std::string, uint32> emotes;
@@ -28,7 +30,7 @@ class EmoteAction : public EmoteActionBase, public Qualified
         EmoteAction(PlayerbotAI* botAI);
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class TalkAction : public EmoteActionBase

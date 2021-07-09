@@ -3,12 +3,13 @@
  */
 
 #include "NearestFriendlyPlayersValue.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 
 void NearestFriendlyPlayersValue::FindUnits(std::list<Unit*> &targets)
 {
-    acore::AnyFriendlyUnitInObjectRangeCheck u_check(bot, range);
-    acore::UnitListSearcher<acore::AnyFriendlyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::AnyFriendlyUnitInObjectRangeCheck u_check(bot, range);
+    Acore::UnitListSearcher<Acore::AnyFriendlyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisitNearbyObject(range, searcher);
 }
 

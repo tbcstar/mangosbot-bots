@@ -7,7 +7,7 @@
 
 bool NoRpgTargetTrigger::IsActive()
 {
-    return !context->GetValue<ObjectGuid>("rpg target")->Get() && !AI_VALUE(GuidVector, "possible rpg targets").empty();
+    return !context->GetValue<ObjectGuid>("rpg target")->Get();
 }
 
 bool FarFromRpgTargetTrigger::IsActive()
@@ -17,5 +17,14 @@ bool FarFromRpgTargetTrigger::IsActive()
         return false;
 
     float distance = AI_VALUE2(float, "distance", "rpg target");
+
+    if (sPlayerbotAIConfig->RandombotsWalkingRPGInDoors)
+    {
+        if (!bot->IsOutdoors())
+        {
+            bot->m_movementInfo.AddMovementFlag(MOVEMENTFLAG_WALKING);
+        }
+    }
+
     return distance > sPlayerbotAIConfig->followDistance;
 }

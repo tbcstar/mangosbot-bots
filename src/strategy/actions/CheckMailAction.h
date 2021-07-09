@@ -15,6 +15,7 @@ class CheckMailAction : public Action
         CheckMailAction(PlayerbotAI* botAI) : Action(botAI, "check mail") { }
 
         bool Execute(Event event) override;
+        bool isUseful() override;
 
     private:
         void ProcessMail(Mail* mail, Player* owner);

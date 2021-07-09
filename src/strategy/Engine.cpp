@@ -85,7 +85,7 @@ void Engine::Reset()
         delete action;
     } while (true);
 
-    for (std::list<TriggerNode*>::iterator i = triggers.begin(); i != triggers.end(); i++)
+    for (std::vector<TriggerNode*>::iterator i = triggers.begin(); i != triggers.end(); i++)
     {
         TriggerNode* trigger = *i;
         delete trigger;
@@ -124,7 +124,7 @@ void Engine::Init()
 	}
 }
 
-bool Engine::DoNextAction(Unit* unit, uint32 depth)
+bool Engine::DoNextAction(Unit* unit, uint32 depth, bool minimal)
 {
     LogAction("--- AI Tick ---");
 
@@ -139,7 +139,7 @@ bool Engine::DoNextAction(Unit* unit, uint32 depth)
     ProcessTriggers();
 
     uint32 iterations = 0;
-    uint32 iterationsPerTick = queue.Size() * sPlayerbotAIConfig->iterationsPerTick;
+    uint32 iterationsPerTick = queue.Size() * (minimal ? 1 : sPlayerbotAIConfig.iterationsPerTick);
     do
     {
         basket = queue.Peek();
@@ -149,10 +149,16 @@ bool Engine::DoNextAction(Unit* unit, uint32 depth)
             float relevance = basket->getRelevance(); // just for reference
             bool skipPrerequisites = basket->isSkipPrerequisites();
 
+            if (minimal && (relevance < 100))
+                continue;
+
             Event event = basket->getEvent();
             // NOTE: queue.Pop() deletes basket
             ActionNode* actionNode = queue.Pop();
             Action* action = InitializeAction(actionNode);
+
+            if (action)
+                action->setRelevance(relevance);
 
             if (!action)
             {
@@ -160,10 +166,11 @@ bool Engine::DoNextAction(Unit* unit, uint32 depth)
             }
             else if (action->isUseful())
             {
-                for (std::list<Multiplier*>::iterator i = multipliers.begin(); i!= multipliers.end(); i++)
+                for (std::vector<Multiplier*>::iterator i = multipliers.begin(); i!= multipliers.end(); i++)
                 {
                     Multiplier* multiplier = *i;
                     relevance *= multiplier->GetValue(action);
+                    action->setRelevance(relevance);
 
                     if (!relevance)
                     {
@@ -227,8 +234,22 @@ bool Engine::DoNextAction(Unit* unit, uint32 depth)
         PushDefaultActions();
 
         if (queue.Peek() && depth < 2)
-            return DoNextAction(unit, depth + 1);
+            return DoNextAction(unit, depth + 1, minimal);
     }
+
+    // MEMORY FIX TEST
+    /*
+    do
+    {
+        basket = queue.Peek();
+        if (basket)
+        {
+            // NOTE: queue.Pop() deletes basket
+            delete queue.Pop();
+        }
+    }
+    while (basket);
+    */
 
     if (time(0) - currentTime > 1)
     {
@@ -292,13 +313,13 @@ bool Engine::MultiplyAndPush(NextAction** actions, float forceRelevance, bool sk
                 break;
         }
 
-        delete actions;
+        delete[] actions;
     }
 
     return pushed;
 }
 
-ActionResult Engine::ExecuteAction(std::string const& name)
+ActionResult Engine::ExecuteAction(std::string const& name, Event event, std::string const& qualifier)
 {
 	bool result = false;
 
@@ -311,6 +332,12 @@ ActionResult Engine::ExecuteAction(std::string const& name)
     {
         delete actionNode;
         return ACTION_RESULT_UNKNOWN;
+    }
+
+    if (!qualifier.empty())
+    {
+        if (Qualified* q = dynamic_cast<Qualified*>(action))
+            q->Qualify(qualifier);
     }
 
     if (!action->isPossible())
@@ -327,9 +354,8 @@ ActionResult Engine::ExecuteAction(std::string const& name)
 
     action->MakeVerbose();
 
-    Event emptyEvent;
-    result = ListenAndExecute(action, emptyEvent);
-    MultiplyAndPush(action->getContinuers(), 0.0f, false, emptyEvent, "default");
+    result = ListenAndExecute(action, event);
+    MultiplyAndPush(action->getContinuers(), 0.0f, false, event, "default");
 
     delete actionNode;
 
@@ -531,6 +557,22 @@ bool Engine::ListenAndExecute(Action* action, Event event)
         actionExecuted = actionExecutionListeners.AllowExecution(action, event) ? action->Execute(event) : true;
     }
 
+    if (botAI->HasStrategy("debug", BOT_STATE_NON_COMBAT))
+    {
+        std::ostringstream out;
+        out << "do: ";
+        out << action->getName();
+
+        if (actionExecuted)
+            out << " 1 (";
+        else
+            out << " 0 (";
+
+        out << action->getRelevance() << ")";
+
+        botAI->TellMasterNoFacing(out);
+    }
+
     actionExecuted = actionExecutionListeners.OverrideResult(action, actionExecuted, event);
     actionExecutionListeners.After(action, actionExecuted, event);
     return actionExecuted;
@@ -551,13 +593,13 @@ void Engine::LogAction(char const* format, ...)
     {
         lastAction = lastAction.substr(512);
         size_t pos = lastAction.find("|");
-        lastAction = (pos == string::npos ? "" : lastAction.substr(pos));
+        lastAction = (pos == std::string::npos ? "" : lastAction.substr(pos));
     }
 
     if (testMode)
     {
         FILE* file = fopen("test.log", "a");
-        fprintf(file, buf);
+        fprintf(file, "%s", buf);
         fprintf(file, "\n");
         fclose(file);
     }

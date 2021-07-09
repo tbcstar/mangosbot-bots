@@ -16,11 +16,18 @@ class EquipAction : public InventoryAction
         EquipAction(PlayerbotAI* botAI, std::string const& name = "equip") : InventoryAction(botAI, name) { }
 
         bool Execute(Event event) override;
-
-    protected:
         void EquipItems(ItemIds ids);
 
     private:
         void EquipItem(FindItemVisitor* visitor);
+        uint8 GetSmallestBagSlot();
         void EquipItem(Item* item);
+};
+
+class EquipUpgradesAction : public EquipAction
+{
+    public:
+        EquipUpgradesAction(PlayerbotAI* botAI, std::string const& name = "equip upgrades") : EquipAction(botAI, name) { }
+
+        bool Execute(Event event) override;
 };

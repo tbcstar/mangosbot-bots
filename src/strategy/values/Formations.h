@@ -65,7 +65,7 @@ class FormationValue : public ManualSetValue<Formation*>
 class SetFormationAction : public Action
 {
     public:
-        SetFormationAction(PlayerbotAI* botAI) : Action(botAI, "std::set formation") { }
+        SetFormationAction(PlayerbotAI* botAI) : Action(botAI, "set formation") { }
 
         bool Execute(Event event) override;
 };

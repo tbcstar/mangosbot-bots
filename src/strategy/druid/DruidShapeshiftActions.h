@@ -13,7 +13,7 @@ class CastBearFormAction : public CastBuffSpellAction
 		CastBearFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "bear form") { }
 
         bool isPossible() const override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastDireBearFormAction : public CastBuffSpellAction
@@ -42,12 +42,26 @@ class CastMoonkinFormAction : public CastBuffSpellAction
         CastMoonkinFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "moonkin form") { }
 };
 
+class CastAquaticFormAction : public CastBuffSpellAction
+{
+    public:
+        CastAquaticFormAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "aquatic form") {}
+};
+
+class CastTravelFormAction : public CastBuffSpellAction
+{
+    public:
+        CastTravelFormAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "travel form") {}
+
+        bool isUseful() override;
+};
+
 class CastCasterFormAction : public CastBuffSpellAction
 {
 	public:
 		CastCasterFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "caster form") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
         bool isPossible() const override { return true; }
 		bool Execute(Event event) override;
 };

@@ -13,7 +13,7 @@ class GiveItemAction : public InventoryAction
         GiveItemAction(PlayerbotAI* botAI, std::string const& name, std::string const& item) : InventoryAction(botAI, name), item(item) { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
         Unit* GetTarget() override;
 
     protected:

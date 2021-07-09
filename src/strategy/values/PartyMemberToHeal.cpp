@@ -28,27 +28,39 @@ inline bool compareByHealth(Unit const* u1, Unit const* u2)
 
 Unit* PartyMemberToHeal::Calculate()
 {
-    Group* group = bot->GetGroup();
-    if (!group)
-        return nullptr;
-
     IsTargetOfHealingSpell predicate;
     std::vector<Unit*> needHeals;
-    for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
+
+    if (bot->GetTarget())
     {
-        Player* player = gref->GetSource();
-        if (!Check(player) || !player->IsAlive())
-            continue;
+        Unit* target = botAI->GetUnit(bot->GetTarget());
+        if (target && target->IsFriendlyTo(bot) && target->HealthBelowPct(100))
+            needHeals.push_back(target);
+    }
 
-        uint8 health = player->GetHealthPct();
-        if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(player, predicate))
-            needHeals.push_back(player);
+    Group* group = bot->GetGroup();
+    if (!group && needHeals.empty())
+        return NULL;
 
-        if (Pet* pet = player->GetPet())
+    if (group)
+    {
+        for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
         {
-            health = pet->GetHealthPct();
-            if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(pet, predicate))
-                needHeals.push_back(pet);
+            Player* player = gref->GetSource();
+            if (!Check(player) || !player->IsAlive())
+                continue;
+
+            uint8 health = player->GetHealthPct();
+            if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(player, predicate))
+                needHeals.push_back(player);
+
+            Pet* pet = player->GetPet();
+            if (pet && CanHealPet(pet))
+            {
+                health = pet->GetHealthPct();
+                if (health < sPlayerbotAIConfig.almostFullHealth || !IsTargetOfSpellCast(pet, predicate))
+                    needHeals.push_back(pet);
+            }
         }
     }
 
@@ -58,22 +70,23 @@ Unit* PartyMemberToHeal::Calculate()
     std::sort(needHeals.begin(), needHeals.end(), compareByHealth);
 
     uint32 healerIndex = 0;
-    for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
+    if (group)
     {
-        Player* player = gref->GetSource();
-        if (!player)
-            continue;
-
-        if (player == bot)
-            break;
-
-        if (botAI->IsHeal(player))
+        for (GroupReference* gref = group->GetFirstMember(); gref; gref = gref->next())
         {
-            float percent = (float)player->GetPower(POWER_MANA) / (float)player->GetMaxPower(POWER_MANA) * 100.0;
-            if (percent > sPlayerbotAIConfig->lowMana)
-                healerIndex++;
+            Player* player = gref->GetSource();
+            if (!player) continue;
+            if (player == bot) break;
+            if (botAI->IsHeal(player))
+            {
+                float percent = (float)player->GetPower(POWER_MANA) / (float)player->GetMaxPower(POWER_MANA) * 100.0;
+                if (percent > sPlayerbotAIConfig.lowMana)
+                    healerIndex++;
+            }
         }
     }
+    else
+        healerIndex = 1;
 
     healerIndex = healerIndex % needHeals.size();
     return needHeals[healerIndex];
@@ -81,5 +94,5 @@ Unit* PartyMemberToHeal::Calculate()
 
 bool PartyMemberToHeal::Check(Unit* player)
 {
-    return player && player != bot && player->GetMapId() == bot->GetMapId() && bot->GetDistance(player) < sPlayerbotAIConfig->spellDistance;
+    return player && player != bot && player->GetMapId() == bot->GetMapId() && sServerFacade.GetDistance2d(bot, player) < sPlayerbotAIConfig->spellDistance;
 }

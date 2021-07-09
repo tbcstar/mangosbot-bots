@@ -4,6 +4,7 @@
 
 #include "GrindTargetValue.h"
 #include "Playerbot.h"
+#include "TravelMgr.h"
 
 Unit* GrindTargetValue::Calculate()
 {
@@ -53,14 +54,21 @@ Unit* GrindTargetValue::FindTargetForGrinding(uint32 assistCount)
         if (abs(bot->GetPositionZ() - unit->GetPositionZ()) > sPlayerbotAIConfig->spellDistance)
             continue;
 
-        if (GetTargetingPlayerCount(unit) > assistCount)
+        if (!bot->InBattleground() && GetTargetingPlayerCount(unit) > assistCount)
             continue;
 
-		if (master && master->GetDistance(unit) >= sPlayerbotAIConfig->grindDistance && !sRandomPlayerbotMgr->IsRandomBot(bot))
-            continue;
+		//if (!bot->InBattleground() && master && master->GetDistance(unit) >= sPlayerbotAIConfig->grindDistance && !sRandomPlayerbotMgr->IsRandomBot(bot))
+            //continue;
 
-		if ((int)unit->getLevel() - (int)bot->getLevel() > 4 && !unit->GetGUID().IsPlayer())
+		if (!bot->InBattleground() && (int)unit->getLevel() - (int)bot->getLevel() > 4 && !unit->GetGUID().IsPlayer())
 		    continue;
+
+        if (!needForQuest(unit) && (urand(0, 100) < 75 || (context->GetValue<TravelTarget*>("travel target")->Get()->isWorking() &&
+            context->GetValue<TravelTarget*>("travel target")->Get()->getDestination()->getName() != "GrindTravelDestination")))
+            continue;
+
+        //if (bot->InBattleground() && bot->GetDistance(unit) > 40.0f)
+            //continue;
 
 		if (Creature* creature = unit->ToCreature())
             if (CreatureTemplate const* creatureInfo = creature->GetCreatureTemplate())
@@ -86,16 +94,92 @@ Unit* GrindTargetValue::FindTargetForGrinding(uint32 assistCount)
         }
         else
         {
-            float d = bot->GetDistance(unit);
-            if (!result || d < distance)
+            float newdistance = bot->GetDistance(unit);
+            if (!result || (newdistance < distance && urand(0, abs(distance - newdistance)) > sPlayerbotAIConfig->sightDistance * 0.1))
             {
-                distance = d;
+                distance = newdistance;
                 result = unit;
             }
         }
     }
 
     return result;
+}
+
+bool GrindTargetValue::needForQuest(Unit* target)
+{
+    bool justCheck = (bot->GetGUID() == target->GetGUID());
+
+    QuestStatusMap& questMap = bot->getQuestStatusMap();
+    for (auto& quest : questMap)
+    {
+        Quest const* questTemplate = sObjectMgr->GetQuestTemplate(quest.first);
+        if (!questTemplate)
+            continue;
+
+        uint32 questId = questTemplate->GetQuestId();
+        if (!questId)
+            continue;
+
+        QuestStatus status = bot->GetQuestStatus(questId);
+
+        if ((status == QUEST_STATUS_COMPLETE && !bot->GetQuestRewardStatus(questId)))
+        {
+            if (!justCheck && !target->hasInvolvedQuest(questId))
+                continue;
+
+            return true;
+        }
+        else if (status == QUEST_STATUS_INCOMPLETE)
+        {
+            QuestStatusData* questStatus = sTravelMgr->getQuestStatus(bot, questId);
+
+            if (questTemplate->GetQuestLevel() > bot->getLevel())
+                continue;
+
+            for (int j = 0; j < QUEST_OBJECTIVES_COUNT; j++)
+            {
+                int32 entry = questTemplate->RequiredNpcOrGo[j];
+
+                if (entry && entry > 0)
+                {
+                    int required = questTemplate->RequiredNpcOrGoCount[j];
+                    int available = questStatus->CreatureOrGOCount[j];
+
+                    if (required && available < required && (target->GetEntry() == entry || justCheck))
+                        return true;
+                }
+
+                if (justCheck)
+                {
+                    int32 itemId = questTemplate->RequiredItemId[j];
+
+                    if (itemId && itemId > 0)
+                    {
+                        uint32 required = questTemplate->RequiredItemCount[j];
+                        uint32 available = questStatus->ItemCount[j];
+
+                        if (required && available < required)
+                            return true;
+                    }
+                }
+            }
+
+            if (!justCheck)
+            {
+                if (CreatureTemplate const* data = sObjectMgr->GetCreatureTemplate(target->GetEntry()))
+                {
+                    if (uint32 lootId = data->lootid)
+                    {
+                        if (LootTemplates_Creature.HaveQuestLootForPlayer(lootId, bot))
+                            return true;
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 uint32 GrindTargetValue::GetTargetingPlayerCount(Unit* unit)
@@ -115,7 +199,7 @@ uint32 GrindTargetValue::GetTargetingPlayerCount(Unit* unit)
         PlayerbotAI* botAI = member->GetPlayerbotAI();
         if ((botAI && *botAI->GetAiObjectContext()->GetValue<Unit*>("current target") == unit) ||
             (!botAI && member->GetTarget() == unit->GetGUID()))
-            count++;
+            ++count;
     }
 
     return count;

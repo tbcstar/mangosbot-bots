@@ -1,0 +1,81 @@
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
+#include "PetitionSignAction.h"
+#include "ArenaTeam.h"
+#include "Event.h"
+#include "Playerbot.h"
+
+bool PetitionSignAction::Execute(Event event)
+{
+    WorldPacket p(event.getPacket());
+    p.rpos(0);
+    ObjectGuid petitionGuid;
+    ObjectGuid inviter;
+    uint8 unk = 0;
+    bool isArena = false;
+    p >> petitionGuid >> inviter;
+
+    QueryResult result = CharacterDatabase.PQuery("SELECT `type` FROM `petition` WHERE `petitionguid` = '%u'", petitionGuid.GetCounter());
+    if (!result)
+    {
+        return false;
+    }
+
+    Field* fields = result->Fetch();
+    uint32 type = fields[0].GetUInt32();
+
+    bool accept = true;
+
+    if (type != 9)
+    {
+        isArena = true;
+        uint8 slot = ArenaTeam::GetSlotByType(ArenaType(type));
+        if (bot->GetArenaTeamId(slot))
+        {
+            // player is already in an arena team
+            botAI->TellError("Sorry, I am already in such team");
+            accept = false;
+        }
+    }
+    else
+    {
+        if (bot->GetGuildId())
+        {
+            botAI->TellError("Sorry, I am in a guild already");
+            accept = false;
+        }
+
+        if (bot->GetGuildIdInvited())
+        {
+            botAI->TellError("Sorry, I am invited to a guild already");
+            accept = false;
+        }
+    }
+
+    Player* _inviter = sObjectMgr.GetPlayer(inviter);
+    if (!inviter)
+        return false;
+
+    if (!accept || !ai->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, _inviter, true))
+    {
+        WorldPacket data(MSG_PETITION_DECLINE);
+        p << petitionGuid;
+        bot->GetSession()->HandlePetitionDeclineOpcode(data);
+        sLog.outBasic("Bot %s <%s> declines %s invite", bot->GetGUID().ToString().c_str(), bot->GetName(), isArena ? "Arena" : "Guild");
+        return false;
+    }
+
+    if (accept)
+    {
+        WorldPacket data(CMSG_PETITION_SIGN, 20);
+        data << petitionGuid << unk;
+        bot->GetSession()->HandlePetitionSignOpcode(data);
+        bot->Say("Thanks for the invite!", LANG_UNIVERSAL);
+        sLog.outBasic("Bot %s <%s> accepts %s invite", bot->GetGUID().ToString().c_str(), bot->GetName(), isArena ? "Arena" : "Guild");
+        return true;
+    }
+
+    return false;
+}

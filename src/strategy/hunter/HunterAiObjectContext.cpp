@@ -75,6 +75,11 @@ class HunterTriggerFactoryInternal : public NamedObjectContext<Trigger>
             creators["pet not happy"] = &HunterTriggerFactoryInternal::pet_not_happy;
             creators["concussive shot on snare target"] = &HunterTriggerFactoryInternal::concussive_shot_on_snare_target;
             creators["scare beast"] = &HunterTriggerFactoryInternal::scare_beast;
+            creators["low ammo"] = &HunterTriggerFactoryInternal::low_ammo;
+            creators["no ammo"] = &HunterTriggerFactoryInternal::no_ammo;
+            creators["has ammo"] = &HunterTriggerFactoryInternal::has_ammo;
+            creators["switch to melee"] = &HunterTriggerFactoryInternal::switch_to_melee;
+            creators["switch to ranged"] = &HunterTriggerFactoryInternal::switch_to_ranged;
         }
 
     private:
@@ -94,6 +99,11 @@ class HunterTriggerFactoryInternal : public NamedObjectContext<Trigger>
         static Trigger* rapid_fire(PlayerbotAI* botAI) { return new RapidFireTrigger(botAI); }
         static Trigger* aspect_of_the_hawk(PlayerbotAI* botAI) { return new HunterAspectOfTheHawkTrigger(botAI); }
         static Trigger* aspect_of_the_wild(PlayerbotAI* botAI) { return new HunterAspectOfTheWildTrigger(botAI); }
+        static Trigger* low_ammo(PlayerbotAI* ai) { return new HunterLowAmmoTrigger(ai); }
+        static Trigger* no_ammo(PlayerbotAI* ai) { return new HunterNoAmmoTrigger(ai); }
+        static Trigger* has_ammo(PlayerbotAI* ai) { return new HunterHasAmmoTrigger(ai); }
+        static Trigger* switch_to_melee(PlayerbotAI* ai) { return new SwitchToMeleeTrigger(ai); }
+        static Trigger* switch_to_ranged(PlayerbotAI* ai) { return new SwitchToRangedTrigger(ai); }
 };
 
 class HunterAiObjectContextInternal : public NamedObjectContext<Action>
@@ -132,6 +142,7 @@ class HunterAiObjectContextInternal : public NamedObjectContext<Action>
             creators["trueshot aura"] = &HunterAiObjectContextInternal::trueshot_aura;
             creators["feign death"] = &HunterAiObjectContextInternal::feign_death;
             creators["wing clip"] = &HunterAiObjectContextInternal::wing_clip;
+            creators["raptor strike"] = &AiObjectContextInternal::raptor_strike;
             creators["feed pet"] = &HunterAiObjectContextInternal::feed_pet;
             creators["bestial wrath"] = &HunterAiObjectContextInternal::bestial_wrath;
             creators["scare beast"] = &HunterAiObjectContextInternal::scare_beast;
@@ -173,6 +184,7 @@ class HunterAiObjectContextInternal : public NamedObjectContext<Action>
         static Action* aspect_of_the_pack(PlayerbotAI* botAI) { return new CastAspectOfThePackAction(botAI); }
         static Action* aspect_of_the_cheetah(PlayerbotAI* botAI) { return new CastAspectOfTheCheetahAction(botAI); }
         static Action* wing_clip(PlayerbotAI* botAI) { return new CastWingClipAction(botAI); }
+        static Action* raptor_strike(PlayerbotAI* ai) { return new CastRaptorStrikeAction(ai); }
 };
 
 HunterAiObjectContext::HunterAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

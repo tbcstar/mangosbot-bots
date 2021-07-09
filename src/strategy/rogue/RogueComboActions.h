@@ -11,7 +11,7 @@ class CastComboAction : public CastMeleeSpellAction
 	public:
 	    CastComboAction(PlayerbotAI* botAI, std::string const& name) : CastMeleeSpellAction(botAI, name) { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastSinisterStrikeAction : public CastComboAction

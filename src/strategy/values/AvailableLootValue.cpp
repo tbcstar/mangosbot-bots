@@ -23,5 +23,6 @@ LootTargetValue::LootTargetValue(PlayerbotAI* botAI) : ManualSetValue<LootObject
 bool CanLootValue::Calculate()
 {
     LootObject loot = AI_VALUE(LootObject, "loot target");
-    return !loot.IsEmpty() && loot.GetWorldObject(bot) && sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "loot target"), INTERACTION_DISTANCE);
+    return !loot.IsEmpty() && loot.GetWorldObject(bot) && loot.IsLootPossible(bot) &&
+        sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "loot target"), INTERACTION_DISTANCE);
 }

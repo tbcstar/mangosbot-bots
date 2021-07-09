@@ -3,6 +3,7 @@
  */
 
 #include "NearestGameObjects.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 
 class AnyGameObjectInObjectRangeCheck
@@ -27,13 +28,13 @@ GuidVector NearestGameObjects::Calculate()
 {
     std::list<GameObject*> targets;
     AnyGameObjectInObjectRangeCheck u_check(bot, range);
-    acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisitNearbyObject(range, searcher);
 
     GuidVector result;
     for (GameObject* go : targets)
     {
-        if (bot->IsWithinLOSInMap(go))
+        if (ignoreLos || bot->IsWithinLOSInMap(go))
 			result.push_back(go->GetGUID());
     }
 

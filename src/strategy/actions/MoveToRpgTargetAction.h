@@ -13,5 +13,5 @@ class MoveToRpgTargetAction : public MovementAction
         MoveToRpgTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "move to rpg target") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };

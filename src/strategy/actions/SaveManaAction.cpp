@@ -53,7 +53,7 @@ bool SaveManaAction::Execute(Event event)
     botAI->GetAiObjectContext()->GetValue<double>("mana save level")->Set(value);
 
     std::ostringstream out;
-    out << "Mana save level std::set: " << format(value);
+    out << "Mana save level set: " << format(value);
     botAI->TellMaster(out);
 
     return true;

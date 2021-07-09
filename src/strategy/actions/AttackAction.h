@@ -33,5 +33,5 @@ class AttackDuelOpponentAction : public AttackAction
 
     public:
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };

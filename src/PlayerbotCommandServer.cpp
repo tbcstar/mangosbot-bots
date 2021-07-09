@@ -40,7 +40,7 @@ class PlayerbotCommandServerThread: public ACE_Task <ACE_MT_SYNCH>
 
             std::ostringstream s;
             s << "Starting Playerbot Command Server on port " << sPlayerbotAIConfig->commandServerPort;
-            sLog->outString(s.str().c_str());
+            sLog->outString("%s", s.str().c_str());
 
             ACE_INET_Addr server(sPlayerbotAIConfig->commandServerPort);
             ACE_SOCK_Acceptor client_responder(server);

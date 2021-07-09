@@ -17,7 +17,15 @@ class NoRpgTargetTrigger : public Trigger
 class FarFromRpgTargetTrigger : public Trigger
 {
     public:
-        FarFromRpgTargetTrigger(PlayerbotAI* botAI) : Trigger(botAI, "far from rpg target") { }
+        FarFromRpgTargetTrigger(PlayerbotAI* ai, std::string const& name = "far from rpg target") : Trigger(ai, name) {}
 
         bool IsActive() override;
+};
+
+class NearRpgTargetTrigger : public FarFromRpgTargetTrigger
+{
+    public:
+        NearRpgTargetTrigger(PlayerbotAI* ai) : FarFromRpgTargetTrigger(ai, "near rpg target") {}
+
+        bool IsActive() override { return !FarFromRpgTargetTrigger::IsActive(); };
 };

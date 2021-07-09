@@ -23,13 +23,16 @@ bool GiveItemAction::Execute(Event event)
     if (!receiverAi)
         return false;
 
-    if (receiverbotAI->GetAiObjectContext()->GetValue<uint8>("item count", item)->Get())
+    if (receiverAi->GetAiObjectContext()->GetValue<uint8>("item count", item)->Get())
         return true;
 
     bool moved = false;
-    std::vector<Item*> items = InventoryAction::parseItems(item, ITERATE_ITEMS_IN_BAGS);
+    std::list<Item*> items = InventoryAction::parseItems(item, ITERATE_ITEMS_IN_BAGS);
     for (Item* item : items)
     {
+        if (receiver->CanUseItem(item->GetTemplate()) != EQUIP_ERR_OK)
+            continue;
+
         ItemPosCountVec dest;
         InventoryResult msg = receiver->CanStoreItem(NULL_BAG, NULL_SLOT, dest, item, false);
         if (msg == EQUIP_ERR_OK)

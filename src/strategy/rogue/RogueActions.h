@@ -4,6 +4,7 @@
 
 #include "GenericSpellActions.h"
 
+class Event;
 class PlayerbotAI;
 
 class CastEvasionAction : public CastBuffSpellAction
@@ -16,6 +17,36 @@ class CastSprintAction : public CastBuffSpellAction
 {
 	public:
 		CastSprintAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "sprint") { }
+
+        std::string const& GetTargetName() override { return "self target"; }
+};
+
+class CastStealthAction : public CastBuffSpellAction
+{
+    public:
+        CastStealthAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "stealth") { }
+
+        std::string const& GetTargetName() override { return "self target"; }
+
+        bool isPossible() const override;
+        bool Execute(Event event) override;
+};
+
+class UnstealthAction : public Action
+{
+    public:
+        UnstealthAction(PlayerbotAI* botAI) : Action(botAI, "unstealth") {}
+
+        bool Execute(Event event) override;
+};
+
+class CheckStealthAction : public Action
+{
+    public:
+        CheckStealthAction(PlayerbotAI* botAI) : Action(botAI, "check stealth") { }
+
+        bool isPossible() const override { return true; }
+        bool Execute(Event event) override;
 };
 
 class CastKickAction : public CastSpellAction
@@ -46,6 +77,8 @@ class CastVanishAction : public CastBuffSpellAction
 {
 	public:
 		CastVanishAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "vanish") { }
+
+        bool isUseful() override;
 };
 
 class CastBlindAction : public CastDebuffSpellAction

@@ -22,7 +22,7 @@ class MoveToPositionAction : public MovementAction
             MovementAction(botAI, name), qualifier(qualifier), idle(idle) { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 
     protected:
         std::string qualifier;
@@ -38,10 +38,10 @@ class GuardAction : public MoveToPositionAction
 class SetReturnPositionAction : public Action
 {
     public:
-        SetReturnPositionAction(PlayerbotAI* botAI) : Action(botAI, "std::set return position") { }
+        SetReturnPositionAction(PlayerbotAI* botAI) : Action(botAI, "set return position") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class ReturnAction : public MoveToPositionAction
@@ -49,5 +49,5 @@ class ReturnAction : public MoveToPositionAction
     public:
         ReturnAction(PlayerbotAI* botAI) : MoveToPositionAction(botAI, "return", "return", true) { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };

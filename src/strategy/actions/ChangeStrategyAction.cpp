@@ -10,6 +10,7 @@ bool ChangeCombatStrategyAction::Execute(Event event)
 {
     std::string const& text = event.getParam();
     botAI->ChangeStrategy(text.empty() ? getName() : text, BOT_STATE_COMBAT);
+    sPlayerbotDbStore.Save(ai);
     return true;
 }
 
@@ -28,6 +29,7 @@ bool ChangeNonCombatStrategyAction::Execute(Event event)
     }
 
     botAI->ChangeStrategy(text, BOT_STATE_NON_COMBAT);
+    sPlayerbotDbStore.Save(ai);
     return true;
 }
 

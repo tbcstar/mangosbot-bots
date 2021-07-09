@@ -4,6 +4,7 @@
 
 #include "UseMeetingStoneAction.h"
 #include "Event.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 
 bool UseMeetingStoneAction::Execute(Event event)
@@ -71,7 +72,7 @@ bool SummonAction::Execute(Event event)
     if (!master)
         return false;
 
-    if (master->GetSession()->GetSecurity() >= SEC_GAMEMASTER)
+    if (master->GetSession()->GetSecurity() >= SEC_PLAYER)
         return Teleport(master, bot);
 
     if (SummonUsingGos(master, bot) || SummonUsingNpcs(master, bot))
@@ -93,7 +94,7 @@ bool SummonAction::SummonUsingGos(Player* summoner, Player* player)
 {
     std::list<GameObject*> targets;
     AnyGameObjectInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig->sightDistance);
-    acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(summoner, targets, u_check);
+    Acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(summoner, targets, u_check);
     summoner->VisitNearbyObject(sPlayerbotAIConfig->sightDistance, searcher);
 
     for (GameObject* go : targets)
@@ -112,8 +113,8 @@ bool SummonAction::SummonUsingNpcs(Player* summoner, Player* player)
         return false;
 
     std::list<Unit*> targets;
-    acore::AnyUnitInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig->sightDistance);
-    acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(summoner, targets, u_check);
+    Acore::AnyUnitInObjectRangeCheck u_check(summoner, sPlayerbotAIConfig->sightDistance);
+    Acore::UnitListSearcher<Acore::AnyUnitInObjectRangeCheck> searcher(summoner, targets, u_check);
     summoner->VisitNearbyObject(sPlayerbotAIConfig->sightDistance, searcher);
 
     for (Unit* unit : targets)

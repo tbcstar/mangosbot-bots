@@ -52,6 +52,8 @@ class PlayerbotAIConfig
         uint32 randomBotsPerInterval;
         uint32 minRandomBotsPriceChangeInterval, maxRandomBotsPriceChangeInterval;
         bool randomBotJoinLfg;
+        bool randomBotJoinBG;
+        uint32 randomBotBracketCount;
         bool randomBotLoginAtStartup;
         uint32 randomBotTeleLevel;
         bool logInGroupOnly, logValuesPerTick;
@@ -61,7 +63,9 @@ class PlayerbotAIConfig
         std::string randomBotCombatStrategies, randomBotNonCombatStrategies;
         uint32 randomBotMinLevel, randomBotMaxLevel;
         float randomChangeMultiplier;
-        uint32 specProbability[MAX_CLASSES][3];
+        uint32 specProbability[MAX_CLASSES][10];
+        std::string premadeLevelSpec[MAX_CLASSES][10][91]; //lvl 10 - 100
+        ClassSpecs classSpecs[MAX_CLASSES];
         std::string commandPrefix, commandSeparator;
         std::string randomBotAccountPrefix;
         uint32 randomBotAccountCount;
@@ -70,6 +74,13 @@ class PlayerbotAIConfig
         bool deleteRandomBotGuilds;
         std::vector<uint32> randomBotGuilds;
         std::vector<uint32> pvpProhibitedZoneIds;
+
+        bool randombotsWalkingRPG;
+        bool randombotsWalkingRPGInDoors;
+        uint32 minEnchantingBotLevel;
+        uint32 randombotStartingLevel;
+        bool gearscorecheck;
+        bool randomBotPreQuests;
 
         bool guildTaskEnabled;
         uint32 minGuildTaskChangeTime, maxGuildTaskChangeTime;
@@ -80,8 +91,58 @@ class PlayerbotAIConfig
 
         uint32 iterationsPerTick;
 
+        std::mutex m_logMtx;
+        std::vector<std::string> allowedLogFiles;
+        std::unordered_map<std::string, std::pair<FILE*, bool>> logFiles;
+
+        struct worldBuff
+        {
+            uint32 spellId;
+            uint32 factionId = 0;
+            uint32 classId = 0;
+            uint32 minLevel = 0;
+            uint32 maxLevel = 0;
+        };
+
+        std::vector<worldBuff> worldBuffs;
+
         uint32 commandServerPort;
         bool perfMonEnabled;
+
+        bool enableGreet;
+        bool randomBotShowHelmet;
+        bool randomBotShowCloak;
+        bool disableRandomLevels;
+        uint32 playerbotsXPrate;
+        uint32 botActiveAlone;
+
+        std::string autoPickReward;
+        bool autoEquipUpgradeLoot;
+        bool syncQuestWithPlayer;
+        bool syncQuestForPlayer;
+        std::string autoTrainSpells;
+        std::string autoPickTalents;
+        bool autoLearnTrainerSpells;
+        bool autoDoQuests;
+        bool syncLevelWithPlayers;
+        bool autoLearnQuestSpells;
+        bool randomBotSayWithoutMaster;
+        bool randomBotGroupNearby;
+
+        uint32 randomBotArenaTeamCount;
+        bool deleteRandomBotArenaTeams;
+        std::vector<uint32> randomBotArenaTeams;
+
+        uint32 selfBotLevel;
+
+        std::string GetTimestampStr();
+        bool hasLog(std::string const& fileName) { return std::find(allowedLogFiles.begin(), allowedLogFiles.end(), fileName) != allowedLogFiles.end(); };
+        bool openLog(std::string const& fileName, char const* mode = "a");
+        bool isLogOpen(std::string const& fileName) { auto it = logFiles.find(fileName); return it != logFiles.end() && it->second.second; }
+        void log(std::string const& fileName, const char* str, ...);
+
+        void loadWorldBuf(uint32 factionId, uint32 classId, uint32 minLevel, uint32 maxLevel);
+
 };
 
 #define sPlayerbotAIConfig PlayerbotAIConfig::instance()

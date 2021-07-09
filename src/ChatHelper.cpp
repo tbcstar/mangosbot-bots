@@ -9,6 +9,7 @@
 std::map<std::string, uint32> ChatHelper::consumableSubClasses;
 std::map<std::string, uint32> ChatHelper::tradeSubClasses;
 std::map<std::string, uint32> ChatHelper::itemQualities;
+std::map<std::string, uint32> ChatHelper::projectileSubClasses;
 std::map<std::string, uint32> ChatHelper::slots;
 std::map<std::string, uint32> ChatHelper::skills;
 std::map<std::string, ChatMsg> ChatHelper::chats;
@@ -41,6 +42,8 @@ ChatHelper::ChatHelper(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     itemQualities["blue"] = ITEM_QUALITY_RARE;
     itemQualities["epic"] = ITEM_QUALITY_EPIC;
     itemQualities["violet"] = ITEM_QUALITY_EPIC;
+    itemQualities["legendary"] = ITEM_QUALITY_LEGENDARY;
+    itemQualities["yellow"] = ITEM_QUALITY_LEGENDARY;
 
     consumableSubClasses["potion"] = ITEM_SUBCLASS_POTION;
     consumableSubClasses["elixir"] = ITEM_SUBCLASS_ELIXIR;
@@ -49,6 +52,9 @@ ChatHelper::ChatHelper(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     consumableSubClasses["food"] = ITEM_SUBCLASS_FOOD;
     consumableSubClasses["bandage"] = ITEM_SUBCLASS_BANDAGE;
     consumableSubClasses["enchant"] = ITEM_SUBCLASS_CONSUMABLE_OTHER;
+
+    projectileSubClasses["arrows"] = ITEM_SUBCLASS_ARROW;
+    projectileSubClasses["bullets"] = ITEM_SUBCLASS_BULLET;
 
     //tradeSubClasses["cloth"] = ITEM_SUBCLASS_CLOTH;
     //tradeSubClasses["leather"] = ITEM_SUBCLASS_LEATHER;
@@ -151,6 +157,11 @@ ChatHelper::ChatHelper(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     specs[CLASS_WARRIOR][1] = "fury";
     specs[CLASS_WARRIOR][2] = "protection";
 
+    classes[CLASS_DEATH_KNIGHT] = "dk";
+    specs[CLASS_DEATH_KNIGHT][0] = "blood";
+    specs[CLASS_DEATH_KNIGHT][1] = "frost";
+    specs[CLASS_DEATH_KNIGHT][2] = "unholy";
+
     races[RACE_DWARF] = "Dwarf";
     races[RACE_GNOME] = "Gnome";
     races[RACE_HUMAN] = "Human";
@@ -158,7 +169,9 @@ ChatHelper::ChatHelper(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     races[RACE_ORC] = "Orc";
     races[RACE_TAUREN] = "Tauren";
     races[RACE_TROLL] = "Troll";
-    races[RACE_UNDEAD] = "Undead";
+    races[RACE_UNDEAD_PLAYER] = "Undead";
+    races[RACE_BLOODELF] = "Blood Elf";
+    races[RACE_DRAENEI] = "Draenei";
 }
 
 std::string ChatHelper::formatMoney(uint32 copper)
@@ -277,10 +290,41 @@ std::string ChatHelper::formatGameobject(GameObject* go)
     return out.str();
 }
 
-std::ChatHelper::formatSpell(SpellInfo const* spellInfo)
+std::string ChatHelper::formatWorldobject(WorldObject* wo)
 {
     std::ostringstream out;
-    out << "|cffffffff|Hspell:" << sInfo->Id << "|h[" << sInfo->SpellName[LOCALE_enUS] << "]|h|r";
+    out << "|cFFFFFF00|Hfound:" << wo->GetGUID().GetRawValue() << ":" << wo->GetEntry() << ":" << "|h[" << wo->GetName() << "]|h|r";
+    return out.str();
+}
+
+std::string ChatHelper::formatWorldEntry(int32 entry)
+{
+    CreatureTemplate const* cInfo = NULL;
+    GameObjectTemplate const* gInfo = NULL;
+
+    if (entry > 0)
+        cInfo = sObjectMgr->GetCreatureTemplate(entry);
+    else
+        gInfo = sObjectMgr->GetGameObjectTemplate(entry * -1);
+
+    std::ostringstream out;
+    out << "|cFFFFFF00|Hentry:" << abs(entry) << ":" << "|h[";
+
+    if (entry < 0 && gInfo)
+        out << gInfo->name;
+    else if (entry > 0 && cInfo)
+        out << cInfo->Name;
+    else
+        out << "unknown";
+
+    out << "]|h|r";
+    return out.str();
+}
+
+std::string ChatHelper::formatSpell(SpellInfo const* spellInfo)
+{
+    std::ostringstream out;
+    out << "|cffffffff|Hspell:" << spellInfo->Id << "|h[" << spellInfo->SpellName[LOCALE_enUS] << "]|h|r";
     return out.str();
 }
 
@@ -417,6 +461,13 @@ bool ChatHelper::parseItemClass(std::string const& text, uint32* itemClass, uint
         return true;
     }
 
+    if (projectileSubClasses.find(text) != projectileSubClasses.end())
+    {
+        *itemClass = ITEM_CLASS_PROJECTILE;
+        *itemSubClass = projectileSubClasses[text];
+        return true;
+    }
+
     return false;
 }
 
@@ -430,12 +481,12 @@ uint32 ChatHelper::parseSlot(std::string const& text)
 
 bool ChatHelper::parseable(std::string const& text)
 {
-    return text.find("|H") != string::npos || text == "questitem" || substrContainsInMap<uint32>(text, consumableSubClasses) ||
+    return text.find("|H") != std::string::npos || text == "questitem" || text == "ammo" || substrContainsInMap<uint32>(text, consumableSubClasses) ||
         substrContainsInMap<uint32>(text, tradeSubClasses) || substrContainsInMap<uint32>(text, itemQualities) || substrContainsInMap<uint32>(text, slots) ||
         substrContainsInMap<ChatMsg>(text, chats) || substrContainsInMap<uint32>(text, skills) || parseMoney(text) > 0;
 }
 
-std::string ChatHelper::formatClass(Player* player, uint8 spec)
+std::string ChatHelper::formatClass(Player* player, int8 spec)
 {
     uint8 cls = player->getClass();
 
@@ -487,4 +538,16 @@ std::string ChatHelper::formatSkill(uint32 skill)
 std::string ChatHelper::formatBoolean(bool flag)
 {
     return flag ? "|cff00ff00ON|r" : "|cffffff00OFF|r";
+}
+
+void ChatHelper::eraseAllSubStr(std::string& mainStr, std::string const& toErase)
+{
+    size_t pos = std::string::npos;
+
+    // Search for the substring in string in a loop untill nothing is found
+    while ((pos = mainStr.find(toErase)) != std::string::npos)
+    {
+        // If found then erase it from string
+        mainStr.erase(pos, toErase.length());
+    }
 }

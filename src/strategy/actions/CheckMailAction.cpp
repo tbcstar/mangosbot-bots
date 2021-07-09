@@ -12,9 +12,6 @@ bool CheckMailAction::Execute(Event event)
     WorldPacket p;
     bot->GetSession()->HandleQueryNextMailTime(p);
 
-    if (botAI->GetMaster() || !bot->GetMailSize())
-        return false;
-
     std::vector<uint32> ids;
     for (PlayerMails::iterator i = bot->GetMailBegin(); i != bot->GetMailEnd(); ++i)
     {
@@ -46,6 +43,13 @@ bool CheckMailAction::Execute(Event event)
     return true;
 }
 
+bool CheckMailAction::isUseful()
+{
+    if (botAI->GetMaster() || !bot->GetMailSize() || bot->InBattleground())
+        return false;
+
+    return true;
+}
 
 void CheckMailAction::ProcessMail(Mail* mail, Player* owner)
 {

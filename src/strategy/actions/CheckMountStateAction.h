@@ -13,8 +13,7 @@ class CheckMountStateAction : public UseItemAction
         CheckMountStateAction(PlayerbotAI* botAI) : UseItemAction(botAI, "check mount state") { }
 
         bool Execute(Event event) override;
-        bool isPossible() override { return true; }
-
-    private:
+        bool isUseful() override;
+        bool isPossible() const override { return true; }
         bool Mount();
 };

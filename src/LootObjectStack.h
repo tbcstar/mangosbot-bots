@@ -15,6 +15,7 @@ class LootStrategy
 {
     public:
         LootStrategy() { }
+        virtual ~LootStrategy() { };
         virtual bool CanLoot(ItemTemplate const* proto, AiObjectContext* context) = 0;
         virtual std::string const& GetName() = 0;
 };

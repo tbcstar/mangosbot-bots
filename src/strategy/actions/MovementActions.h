@@ -6,6 +6,7 @@
 #include "PlayerbotAIConfig.h"
 
 class Event;
+class Player;
 class PlayerbotAI;
 class Unit;
 class WorldObject;
@@ -17,12 +18,15 @@ class MovementAction : public Action
 
     protected:
         bool MoveNear(uint32 mapId, float x, float y, float z, float distance = sPlayerbotAIConfig->contactDistance);
-        bool MoveTo(uint32 mapId, float x, float y, float z, bool idle = false);
+        bool MoveToLOS(WorldObject* target, bool ranged = false);
+        bool MoveTo(uint32 mapId, float x, float y, float z, bool idle = false, bool react = false);
         bool MoveTo(Unit* target, float distance = 0.0f);
         bool MoveNear(WorldObject* target, float distance = sPlayerbotAIConfig->contactDistance);
         float GetFollowAngle();
         bool Follow(Unit* target, float distance = sPlayerbotAIConfig->followDistance);
         bool Follow(Unit* target, float distance, float angle);
+        bool ChaseTo(WorldObject* obj);
+        float MoveDelay(float distance);
         void WaitForReach(float distance);
         bool IsMovingAllowed(Unit* target);
         bool IsMovingAllowed(uint32 mapId, float x, float y, float z);
@@ -30,6 +34,8 @@ class MovementAction : public Action
         bool Flee(Unit *target);
         void ClearIdleState();
         void UpdateMovementState();
+
+        void CreateWp(Player* wpOwner, float x, float y, float z, float o, uint32 entry, bool important = false);
 };
 
 class FleeAction : public MovementAction
@@ -73,25 +79,27 @@ class MoveOutOfEnemyContactAction : public MovementAction
         MoveOutOfEnemyContactAction(PlayerbotAI* botAI) : MovementAction(botAI, "move out of enemy contact") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class SetFacingTargetAction : public MovementAction
 {
     public:
-        SetFacingTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "std::set facing") { }
+        SetFacingTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set facing") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
+        bool isPossible() override;
 };
 
 class SetBehindTargetAction : public MovementAction
 {
     public:
-        SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "std::set behind") { }
+        SetBehindTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "set behind") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
+        bool isPossible() const override;
 };
 
 class MoveOutOfCollisionAction : public MovementAction
@@ -100,5 +108,14 @@ class MoveOutOfCollisionAction : public MovementAction
         MoveOutOfCollisionAction(PlayerbotAI* botAI) : MovementAction(botAI, "move out of collision") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
+};
+
+class MoveRandomAction : public MovementAction
+{
+    public:
+        MoveRandomAction(PlayerbotAI* botAI) : MovementAction(botAI, "move random") { }
+
+        bool Execute(Event event) override;
+        bool isUseful() override;
 };

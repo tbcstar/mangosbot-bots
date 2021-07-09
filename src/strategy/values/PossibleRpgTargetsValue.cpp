@@ -3,8 +3,10 @@
  */
 
 #include "PossibleRpgTargetsValue.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 #include "ServerFacade.h"
+#include "TravelMgr.h"
 
 std::vector<uint32> PossibleRpgTargetsValue::allowedNpcFlags;
 
@@ -28,6 +30,7 @@ PossibleRpgTargetsValue::PossibleRpgTargetsValue(PlayerbotAI* botAI, float range
         allowedNpcFlags.push_back(UNIT_NPC_FLAG_STABLEMASTER);
         allowedNpcFlags.push_back(UNIT_NPC_FLAG_PETITIONER);
         allowedNpcFlags.push_back(UNIT_NPC_FLAG_TABARDDESIGNER);
+        allowedNpcFlags.push_back(UNIT_NPC_FLAG_BATTLEMASTER);
 
         allowedNpcFlags.push_back(UNIT_NPC_FLAG_TRAINER);
         allowedNpcFlags.push_back(UNIT_NPC_FLAG_VENDOR);
@@ -37,8 +40,8 @@ PossibleRpgTargetsValue::PossibleRpgTargetsValue(PlayerbotAI* botAI, float range
 
 void PossibleRpgTargetsValue::FindUnits(std::list<Unit*> &targets)
 {
-    acore::AnyUnitInObjectRangeCheck u_check(bot, range);
-    acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::AnyUnitInObjectRangeCheck u_check(bot, range);
+    Acore::UnitListSearcher<Acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisitNearbyObject(range, searcher);
 }
 
@@ -50,11 +53,24 @@ bool PossibleRpgTargetsValue::AcceptUnit(Unit* unit)
     if (sServerFacade->GetDistance2d(bot, unit) <= sPlayerbotAIConfig->tooCloseDistance)
         return false;
 
+    if (unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITHEALER))
+        return false;
+
     for (uint32 npcFlag : allowedNpcFlags)
     {
         if (unit->HasFlag(UNIT_NPC_FLAGS, npcFlag))
             return true;
     }
+
+    TravelTarget* travelTarget = context->GetValue<TravelTarget*>("travel target")->Get();
+    if (travelTarget->getDestination() && travelTarget->getDestination()->getEntry() == unit->GetEntry())
+        return true;
+
+    if (urand(1, 100) < 25 && unit->IsFriendlyTo(bot))
+        return true;
+
+    if (urand(1, 100) < 5)
+        return true;
 
     return false;
 }

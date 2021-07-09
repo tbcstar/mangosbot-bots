@@ -3,6 +3,7 @@
  */
 
 #include "CollisionValue.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 #include "ServerFacade.h"
 
@@ -14,8 +15,8 @@ bool CollisionValue::Calculate()
 
     std::list<Unit*> targets;
     float range = sPlayerbotAIConfig->contactDistance;
-    acore::AnyUnitInObjectRangeCheck u_check(bot, range);
-    acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::AnyUnitInObjectRangeCheck u_check(bot, range);
+    Acore::UnitListSearcher<Acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisitNearbyObject(range, searcher);
 
     for (Unit* target : targets)

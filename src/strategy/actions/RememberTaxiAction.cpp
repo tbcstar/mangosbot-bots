@@ -27,7 +27,7 @@ bool RememberTaxiAction::Execute(Event event)
         {
             ObjectGuid guid;
             uint32 node_count, totalcost;
-            p >> guid >> totalcost >> node_count;
+            p >> guid >> node_count;
 
             LastMovement& movement = context->GetValue<LastMovement&>("last taxi")->Get();
             movement.taxiNodes.clear();

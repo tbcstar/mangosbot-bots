@@ -10,6 +10,7 @@
 class GameObject;
 class Quest;
 class PlayerbotAI;
+class WorldObject;
 
 struct ItemTemplate;
 
@@ -29,13 +30,15 @@ class ChatHelper : public PlayerbotAIAware
         static std::string formatItem(ItemTemplate const* proto, uint32 count = 0, uint32 total = 0);
         static std::string formatSpell(SpellInfo const* spellInfo);
         static std::string formatGameobject(GameObject* go);
+        static std::string formatWorldobject(WorldObject* wo);
+        static std::string formatWorldEntry(int32 entry);
         static std::string formatQuestObjective(std::string const& name, uint32 available, uint32 required);
         static GuidVector parseGameobjects(std::string const& text);
 
         static ChatMsg parseChat(std::string const& text);
         static std::string formatChat(ChatMsg chat);
 
-        static std::string formatClass(Player* player, uint8 spec);
+        static std::string formatClass(Player* player, int8 spec);
         static std::string formatClass(uint8 cls);
         static std::string formatRace(uint8 race);
         static std::string formatSkill(uint32 skill);
@@ -48,10 +51,13 @@ class ChatHelper : public PlayerbotAIAware
 
         static bool parseable(std::string const& text);
 
+        void eraseAllSubStr(std::string& mainStr, std::string const& toErase);
+
     private:
         static std::map<std::string, uint32> consumableSubClasses;
         static std::map<std::string, uint32> tradeSubClasses;
         static std::map<std::string, uint32> itemQualities;
+        static std::map<std::string, uint32> projectileSubClasses;
         static std::map<std::string, uint32> slots;
         static std::map<std::string, uint32> skills;
         static std::map<std::string, ChatMsg> chats;

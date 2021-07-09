@@ -13,7 +13,7 @@ class DrinkAction : public UseItemAction
         DrinkAction(PlayerbotAI* botAI) : UseItemAction(botAI, "drink") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class EatAction : public UseItemAction
@@ -22,5 +22,5 @@ class EatAction : public UseItemAction
         EatAction(PlayerbotAI* botAI) : UseItemAction(botAI, "food") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };

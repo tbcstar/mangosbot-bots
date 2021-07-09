@@ -26,6 +26,8 @@ enum RandomItemType
 class RandomItemPredicate
 {
     public:
+        virtual ~RandomItemPredicate() { };
+
         virtual bool Apply(ItemTemplate const* proto) = 0;
 };
 
@@ -77,6 +79,7 @@ class RandomItemMgr
         uint32 GetAmmo(uint32 level, uint32 subClass);
         uint32 GetRandomPotion(uint32 level, uint32 effect);
         uint32 GetRandomFood(uint32 level, uint32 category);
+        uint32 GetFood(uint32 level, uint32 category);
         uint32 GetRandomTrade(uint32 level);
         bool CanEquipArmor(uint8 clazz, uint32 level, ItemTemplate const* proto);
         bool CanEquipWeapon(uint8 clazz, ItemTemplate const* proto);

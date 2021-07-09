@@ -3,6 +3,7 @@
  */
 
 #include "LootObjectStack.h"
+#include "LootMgr.h"
 #include "Playerbot.h"
 
 #define MAX_LOOT_OBJECT_COUNT 10
@@ -67,7 +68,7 @@ void LootObject::Refresh(Player* bot, ObjectGuid lootGUID)
         {
             skillId = creature->GetCreatureTemplate()->GetRequiredLootSkill();
             uint32 targetLevel = creature->getLevel();
-            reqSkillValue = targetLevel < 10 ? 2 : targetLevel < 20 ? (targetLevel - 10) * 10 : targetLevel * 5;
+            reqSkillValue = targetLevel < 10 ? 1 : targetLevel < 20 ? (targetLevel - 10) * 10 : targetLevel * 5;
             if (botAI->HasSkill((SkillType)skillId) && bot->GetSkillValue(skillId) >= reqSkillValue)
                 guid = lootGUID;
         }
@@ -98,7 +99,7 @@ void LootObject::Refresh(Player* bot, ObjectGuid lootGUID)
                     if (SkillByLockType(LockType(lockInfo->Index[i])) > 0)
                     {
                         skillId = SkillByLockType(LockType(lockInfo->Index[i]));
-                        reqSkillValue = max((uint32)2, lockInfo->Skill[i]);
+                        reqSkillValue = std::max((uint32)1, lockInfo->Skill[i]);
                         guid = lootGUID;
                     }
                     break;
@@ -147,6 +148,13 @@ bool LootObject::IsLootPossible(Player* bot)
 
     if (abs(GetWorldObject(bot)->GetPositionZ() - bot->GetPositionZ()) > INTERACTION_DISTANCE)
         return false;
+
+    Creature* creature = botAI->GetCreature(guid);
+    if (creature && creature->getDeathState() == CORPSE)
+    {
+        if (creature->loot && !creature->loot->CanLoot(bot))
+            return false;
+    }
 
     if (skillId == SKILL_NONE)
         return true;

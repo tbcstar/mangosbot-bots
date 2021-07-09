@@ -5,9 +5,11 @@
 #include "GoAction.h"
 #include "Event.h"
 #include "Formations.h"
+#include "PathGenerator.h"
 #include "PositionValue.h"
 #include "Playerbot.h"
 #include "ServerFacade.h"
+#include "TravelMgr.h"
 
 std::vector<std::string> split(std::string const& s, char delim);
 char* strstri(char const* haystack, char const* needle);
@@ -29,6 +31,57 @@ bool GoAction::Execute(Event event)
         out << "I am at " << x << "," << y;
         botAI->TellMaster(out.str());
         return true;
+    }
+
+    if (param.find("travel") != std::string::npos && param.size() > 7)
+    {
+        WorldPosition* botPos = &WorldPosition(bot);
+
+        std::vector<TravelDestination*> dests;
+
+        for (auto& d : sTravelMgr.getExploreTravelDestinations(bot, true, true))
+        {
+            if (strstri(d->getTitle().c_str(), param.substr(7).c_str()))
+                dests.push_back(d);
+        }
+
+        for (auto& d : sTravelMgr.getRpgTravelDestinations(bot, true, true))
+        {
+            if (strstri(d->getTitle().c_str(), param.substr(7).c_str()))
+                dests.push_back(d);
+        }
+
+        for (auto& d : sTravelMgr.getGrindTravelDestinations(bot, true, true))
+        {
+            if (strstri(d->getTitle().c_str(), param.substr(7).c_str()))
+                dests.push_back(d);
+        }
+
+        TravelTarget* target = context->GetValue<TravelTarget*>("travel target")->Get();
+        if (!dests.empty())
+        {
+            TravelDestination* dest = *std::min_element(dests.begin(), dests.end(), [botPos](TravelDestination* i, TravelDestination* j) {return i->distanceTo(botPos) < j->distanceTo(botPos); });
+
+            std::vector<WorldPosition*> points = dest->nextPoint(botPos, true);
+            if (points.empty())
+                return false;
+
+            target->setTarget(dest, points.front());
+            target->setForced(true);
+
+            std::ostringstream out;
+            out << "Traveling to " << dest->getTitle();
+            ai->TellMasterNoFacing(out.str());
+
+            return true;
+        }
+        else
+        {
+            ai->TellMasterNoFacing("Clearing travel target");
+            target->setTarget(sTravelMgr.nullTravelDestination, sTravelMgr.nullWorldPosition);
+            target->setForced(false);
+            return true;
+        }
     }
 
     GuidVector gos = ChatHelper::parseGameobjects(param);
@@ -71,7 +124,63 @@ bool GoAction::Execute(Event event)
             }
     }
 
-    if (param.find(",") != string::npos)
+    if (param.find(";") != std::string::npos)
+    {
+        std::vector<std::string> coords = split(param, ';');
+        float x = atof(coords[0].c_str());
+        float y = atof(coords[1].c_str());
+        float z;
+        if (coords.size() > 2)
+            z = atof(coords[2].c_str());
+        else
+            z = bot->GetPositionZ();
+
+        if (ai->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
+        {
+            PathGenerator path(bot);
+
+            path.CalculatePath(x, y, z, false);
+
+            Movement::Vector3 end = path.GetEndPosition();
+            Movement::Vector3 aend = path.GetActualEndPosition();
+
+            Movement::PointsArray const& points = path.GetPath();
+            PathType type = path.GetPathType();
+
+            std::ostringstream out;
+
+            out << x << ";" << y << ";" << z << " =";
+
+            out << "path is: ";
+
+            out << type;
+
+            out << " of length ";
+
+            out << points.size();
+
+            out << " with offset ";
+
+            out << (end - aend).length();
+
+
+            for (auto i : points)
+            {
+                CreateWp(bot, i.x, i.y, i.z, 0.f, 11144);
+            }
+
+            ai->TellMaster(out);
+        }
+
+        if (bot->IsWithinLOS(x, y, z))
+            return MoveNear(bot->GetMapId(), x, y, z, 0);
+        else
+            return MoveTo(bot->GetMapId(), x, y, z, false, false);
+
+        return true;
+    }
+
+    if (param.find(",") != std::string::npos)
     {
         std::vector<std::string> coords = split(param, ',');
         float x = atof(coords[0].c_str());

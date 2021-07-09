@@ -53,6 +53,7 @@ void GenericMageNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& trigg
     triggers.push_back(new TriggerNode("arcane intellect", NextAction::array(0, new NextAction("arcane intellect", 21.0f), nullptr)));
 	triggers.push_back(new TriggerNode("no drink", NextAction::array(0, new NextAction("conjure water", 16.0f), nullptr)));
 	triggers.push_back(new TriggerNode("no food", NextAction::array(0, new NextAction("conjure food", 15.0f), nullptr)));
+    triggers.push_back(new TriggerNode("often", NextAction::array(0, new NextAction("apply oil", 1.0f), nullptr)));
 }
 
 void MageBuffManaStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

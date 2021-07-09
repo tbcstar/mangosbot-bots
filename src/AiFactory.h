@@ -9,6 +9,8 @@ class Engine;
 class Player;
 class PlayerbotAI;
 
+enum BotRoles : uint8;
+
 class AiFactory
 {
     public:
@@ -23,4 +25,5 @@ class AiFactory
     public:
         static uint8 GetPlayerSpecTab(Player* player);
         static std::map<uint8, uint32> GetPlayerSpecTabs(Player* player);
+        static BotRoles GetPlayerRoles(Player* player);
 };

@@ -8,12 +8,14 @@
 
 bool DelayAction::Execute(Event event)
 {
-    if (!sRandomPlayerbotMgr->IsRandomBot(bot) || bot->GetGroup() || botAI->GetMaster())
-        return false;
+    uint32 delay = sPlayerbotAIConfig.passiveDelay + sPlayerbotAIConfig.globalCoolDown;
 
-    if (bot->IsInCombat())
-        return true;
+    botAI->SetNextCheckDelay(delay);
 
-    botAI->SetNextCheckDelay(sPlayerbotAIConfig->passiveDelay + sPlayerbotAIConfig->globalCoolDown);
     return true;
+}
+
+bool DelayAction::isUseful()
+{
+    return !botAI->AllowActive(ALL_ACTIVITY);
 }

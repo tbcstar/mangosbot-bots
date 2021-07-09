@@ -34,7 +34,7 @@ bool RtiAction::Execute(Event event)
     context->GetValue<std::string>(type)->Set(text);
 
     std::ostringstream out;
-    out << type << " std::set to: ";
+    out << type << " set to: ";
     AppendRti(out, type);
     botAI->TellMaster(out);
     return true;

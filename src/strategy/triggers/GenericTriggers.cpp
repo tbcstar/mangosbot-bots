@@ -3,6 +3,7 @@
  */
 
 #include "GenericTriggers.h"
+#include "BattlegroundWS.h"
 #include "Playerbot.h"
 
 bool LowManaTrigger::IsActive()
@@ -49,6 +50,40 @@ bool PanicTrigger::IsActive()
 {
     return AI_VALUE2(uint8, "health", "self target") < sPlayerbotAIConfig->criticalHealth &&
 		(!AI_VALUE2(bool, "has mana", "self target") || AI_VALUE2(uint8, "mana", "self target") < sPlayerbotAIConfig->lowMana);
+}
+
+bool OutNumberedTrigger::IsActive()
+{
+    int32 botLevel = bot->getLevel();
+    uint32 friendPower = 200;
+    uint32 foePower = 0;
+    for (auto& attacker : botAI->GetAiObjectContext()->GetValue<GuidVector>("attackers")->Get())
+    {
+        Creature* creature = ai->GetCreature(attacker);
+        if (!creature)
+            continue;
+
+        int32 dLevel = creature->getLevel() - botLevel;
+        if (dLevel > -10)
+            foePower = std::max(100 + 10 * dLevel, dLevel * 200);
+    }
+
+    if (!foePower)
+        return false;
+
+    for (auto& helper : ai->GetAiObjectContext()->GetValue<GuidVector>("nearest friendly players")->Get())
+    {
+        Unit* player = ai->GetUnit(helper);
+        if (!player || player == bot)
+            continue;
+
+        int32 dLevel = player->getLevel() - botLevel;
+
+        if (dLevel > -10 && bot->GetDistance(player) < 10.0f)
+            friendPower += std::max(200 + 20 * dLevel, dLevel * 200);
+    }
+
+    return friendPower < foePower;
 }
 
 bool BuffTrigger::IsActive()
@@ -184,6 +219,11 @@ bool TimerTrigger::IsActive()
     return false;
 }
 
+bool HasNoAuraTrigger::IsActive()
+{
+    return !botAI->HasAura(getName(), GetTarget());
+}
+
 bool TankAoeTrigger::IsActive()
 {
     if (!AI_VALUE(uint8, "attacker count"))
@@ -233,15 +273,21 @@ bool NoPossibleTargetsTrigger::IsActive()
     return !targets.size();
 }
 
-bool PossibleAdsTrigger::IsActive()
+bool PossibleAddsTrigger::IsActive()
 {
-    return AI_VALUE(bool, "possible ads") && !AI_VALUE(ObjectGuid, "pull target");
+    return AI_VALUE(bool, "possible adds") && !AI_VALUE(ObjectGuid, "pull target");
 }
 
 bool NotDpsTargetActiveTrigger::IsActive()
 {
     Unit* dps = AI_VALUE(Unit*, "dps target");
     Unit* target = AI_VALUE(Unit*, "current target");
+    Unit* enemy = AI_VALUE(Unit*, "enemy player target");
+
+    // do not switch if enemy target
+    if (target && target == enemy && target->IsAlive())
+        return false;
+
     return dps && target != dps;
 }
 
@@ -249,14 +295,13 @@ bool NotDpsAoeTargetActiveTrigger::IsActive()
 {
     Unit* dps = AI_VALUE(Unit*, "dps aoe target");
     Unit* target = AI_VALUE(Unit*, "current target");
-    return dps && target != dps;
-}
+    Unit* enemy = AI_VALUE(Unit*, "enemy player target");
 
-bool EnemyPlayerIsAttacking::IsActive()
-{
-    Unit* enemyPlayer = AI_VALUE(Unit*, "enemy player target");
-    Unit* target = AI_VALUE(Unit*, "current target");
-    return enemyPlayer && !target;
+    // do not switch if enemy target
+    if (target && target == enemy && target->IsAlive())
+        return false;
+
+    return dps && target != dps;
 }
 
 bool IsSwimmingTrigger::IsActive()
@@ -296,7 +341,12 @@ bool RandomBotUpdateTrigger::IsActive()
 
 bool NoNonBotPlayersAroundTrigger::IsActive()
 {
-    return AI_VALUE(GuidVector, "nearest non bot players").empty();
+    return !botAI->HasPlayerNearby();
+    /*if (!bot->InBattleGround())
+        return AI_VALUE(GuidVector, "nearest non bot players").empty();
+
+    return false;
+    */
 }
 
 bool NewPlayerNearbyTrigger::IsActive()
@@ -334,4 +384,24 @@ bool StayTimeTrigger::IsActive()
     time_t stayTime = AI_VALUE(time_t, "stay time");
     time_t now = time(0);
     return delay && stayTime && now > stayTime + 2 * delay / 1000;
+}
+
+bool IsMountedTrigger::IsActive()
+{
+    return AI_VALUE2(bool, "mounted", "self target");
+}
+
+bool CorpseNearTrigger::IsActive()
+{
+    return bot->GetCorpse() && bot->GetCorpse()->IsWithinDistInMap(bot, CORPSE_RECLAIM_RADIUS, true);
+}
+
+bool IsFallingTrigger::IsActive()
+{
+    return bot->HasMovementFlag(MOVEMENTFLAG_FALLING);
+}
+
+bool IsFallingFarTrigger::IsActive()
+{
+    return bot->HasMovementFlag(MOVEMENTFLAG_FALLING_FAR);
 }

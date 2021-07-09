@@ -8,27 +8,29 @@
 
 bool SetHomeAction::Execute(Event event)
 {
-    Player* master = botAI->GetMaster();
-    if (!master)
-        return false;
+    Player* master = GetMaster();
 
-    if (ObjectGuid selection = master->GetTarget())
-    {
-        if (Unit* unit = ObjectAccessor::GetUnit(*master, selection))
-            if (unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER))
-            {
-                float angle = GetFollowAngle();
-                float x = unit->GetPositionX() + sPlayerbotAIConfig->followDistance * cos(angle);
-                float y = unit->GetPositionY() + sPlayerbotAIConfig->followDistance * sin(angle);
-                float z = unit->GetPositionZ();
+    ObjectGuid selection = bot->GetSelectionGuid();
+    if (AI_VALUE(ObjectGuid, "rpg target") != bot->GetSelectionGuid())
+        if (master)
+            selection = master->GetSelectionGuid();
+        else
+            return false;
 
-                WorldLocation loc(unit->GetMapId(), x, y, z);
-                bot->SetHomebind(loc, unit->GetAreaId());
+    if (Unit* unit = ai->GetUnit(selection))
+        if (unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER))
+        {
+            float angle = GetFollowAngle();
+            float x = unit->GetPositionX() + sPlayerbotAIConfig->followDistance * cos(angle);
+            float y = unit->GetPositionY() + sPlayerbotAIConfig->followDistance * sin(angle);
+            float z = unit->GetPositionZ();
 
-                botAI->TellMaster("This inn is my new home");
-                return true;
-            }
-    }
+            WorldLocation loc(unit->GetMapId(), x, y, z);
+            bot->SetHomebind(loc, unit->GetAreaId());
+
+            botAI->TellMaster("This inn is my new home");
+            return true;
+        }
 
     GuidVector npcs = AI_VALUE(GuidVector, "nearest npcs");
     for (ObjectGuid const guid : npcs)

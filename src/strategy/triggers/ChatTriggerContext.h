@@ -33,7 +33,11 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
             creators["u"] = &ChatTriggerContext::use;
             creators["use"] = &ChatTriggerContext::use;
             creators["c"] = &ChatTriggerContext::item_count;
+            creators["items"] = &ChatTriggerContext::item_count;
+            creators["inventory"] = &ChatTriggerContext::item_count;
+            creators["inv"] = &ChatTriggerContext::item_count;
             creators["e"] = &ChatTriggerContext::equip;
+            creators["equip"] = &ChatTriggerContext::equip;
             creators["ue"] = &ChatTriggerContext::uneqip;
             creators["s"] = &ChatTriggerContext::sell;
             creators["b"] = &ChatTriggerContext::buy;
@@ -44,7 +48,7 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
             creators["spells"] = &ChatTriggerContext::spells;
             creators["co"] = &ChatTriggerContext::co;
             creators["nc"] = &ChatTriggerContext::nc;
-            creators["dead"] = &ChatTriggerContext::dead;
+            creators["de"] = &ChatTriggerContext::dead;
             creators["trainer"] = &ChatTriggerContext::trainer;
             creators["attack"] = &ChatTriggerContext::attack;
             creators["chat"] = &ChatTriggerContext::chat;
@@ -64,6 +68,7 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
             creators["tank attack"] = &ChatTriggerContext::tank_attack;
             creators["talk"] = &ChatTriggerContext::talk;
             creators["cast"] = &ChatTriggerContext::cast;
+            creators["castnc"] = &ChatTriggerContext::castnc;
             creators["invite"] = &ChatTriggerContext::invite;
             creators["spell"] = &ChatTriggerContext::spell;
             creators["rti"] = &ChatTriggerContext::rti;
@@ -84,6 +89,7 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
             creators["go"] = &ChatTriggerContext::go;
             creators["ready"] = &ChatTriggerContext::ready_check;
             creators["debug"] = &ChatTriggerContext::debug;
+            creators["cdebug"] = &ChatTriggerContext::cdebug;
             creators["cs"] = &ChatTriggerContext::cs;
             creators["wts"] = &ChatTriggerContext::wts;
             creators["hire"] = &ChatTriggerContext::hire;
@@ -102,6 +108,7 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* wts(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "wts"); }
         static Trigger* cs(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "cs"); }
         static Trigger* debug(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "debug"); }
+        static Trigger* cdebug(PlayerbotAI* ai) { return new ChatCommandTrigger(ai, "cdebug"); }
         static Trigger* go(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "go"); }
         static Trigger* outfit(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "outfit"); }
         static Trigger* mail(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "mail"); }
@@ -120,6 +127,7 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* rti(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "rti"); }
         static Trigger* invite(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "invite"); }
         static Trigger* cast(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "cast"); }
+        static Trigger* castnc(PlayerbotAI* ai) { return new ChatCommandTrigger(ai, "castnc"); }
         static Trigger* talk(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "talk"); }
         static Trigger* flee(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "flee"); }
         static Trigger* grind(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "grind"); }
@@ -139,7 +147,7 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* trainer(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "trainer"); }
         static Trigger* co(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "co"); }
         static Trigger* nc(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "nc"); }
-        static Trigger* dead(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "dead"); }
+        static Trigger* dead(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "de"); }
         static Trigger* spells(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "spells"); }
         static Trigger* talents(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "talents"); }
         static Trigger* equip(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "e"); }

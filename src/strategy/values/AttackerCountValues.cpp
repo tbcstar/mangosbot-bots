@@ -63,7 +63,7 @@ uint8 AttackerCountValue::Calculate()
 
         float distance = bot->GetDistance(unit);
         if (distance <= range)
-            count++;
+            ++count;
     }
 
     return count;

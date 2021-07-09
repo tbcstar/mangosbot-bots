@@ -146,7 +146,8 @@ void SuggestWhatToDoAction::grindMaterials()
     if (bot->getLevel() <= 5)
         return;
 
-    QueryResult result = CharacterDatabase.PQuery("SELECT DISTINCT category, multiplier FROM ahbot_category WHERE category NOT IN ('other', 'quest', 'trade', 'reagent') "
+    // Ultranix
+    QueryResult result = PlayerbotDatabase.PQuery("SELECT DISTINCT category, multiplier FROM ahbot_category WHERE category NOT IN ('other', 'quest', 'trade', 'reagent') "
         "AND multiplier > 3 ORDER BY multiplier DESC LIMIT 10");
     if (!result)
         return;
@@ -171,7 +172,7 @@ void SuggestWhatToDoAction::grindMaterials()
                 if (name == category->GetName())
                 {
                     std::string item = category->GetLabel();
-                    transform(item.begin(), item.end(), item.begin(), tolower);
+                    transform(item.begin(), item.end(), item.begin(), ::tolower);
 
                     std::ostringstream itemout;
                     itemout << "|c0000b000" << item << "|r";
@@ -344,9 +345,11 @@ bool SuggestTradeAction::Execute(Event event)
         return false;
 
     uint32 quality = urand(0, 100);
-    if (quality > 90)
+    if (quality > 95)
+        quality = ITEM_QUALITY_LEGENDARY;
+    else if (quality > 90)
         quality = ITEM_QUALITY_EPIC;
-    else if (quality >75)
+    else if (quality > 75)
         quality = ITEM_QUALITY_RARE;
     else if (quality > 50)
         quality = ITEM_QUALITY_UNCOMMON;

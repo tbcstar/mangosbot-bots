@@ -8,6 +8,8 @@
 class PlayerbotAI;
 class Unit;
 
+struct CreatureData;
+
 class UntypedValue : public AiNamedObject
 {
     public:
@@ -26,6 +28,46 @@ class Value
         virtual T Get() = 0;
         virtual void Set(T value) = 0;
         operator T() { return Get(); }
+};
+
+template <class T>
+class SingleCalculatedValue : public UntypedValue, public Value<T>
+{
+    public:
+        SingleCalculatedValue(PlayerbotAI* ai, string name = "value") : UntypedValue(ai, name)
+        {
+            Reset();
+        }
+
+        virtual ~SingleCalculatedValue() {}
+
+        T Get() override
+        {
+            if (!calculated)
+            {
+                value = Calculate();
+                calculated = true;
+            }
+
+            return value;
+        }
+
+        void Set(T val) override
+        {
+            value = val;
+        }
+
+        void Update() override { }
+
+        void Reset() override
+        {
+            calculated = false;
+        }
+
+    protected:
+        virtual T Calculate() = 0;
+        T value;
+        bool calculated;
 };
 
 template<class T>
@@ -107,17 +149,51 @@ class BoolCalculatedValue : public CalculatedValue<bool>
 class UnitCalculatedValue : public CalculatedValue<Unit*>
 {
     public:
-        UnitCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int checkInterval = 1) :
-            CalculatedValue<Unit*>(botAI, name, checkInterval) { }
+        UnitCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1);
 
         std::string const& Format() override;
+};
+
+class CDPairCalculatedValue : public CalculatedValue<CreatureData const*>
+{
+public:
+    CDPairCalculatedValue(PlayerbotAI* ai, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<CreatureData const*>(ai, name, checkInterval)
+    {
+        lastCheckTime = time(0) - checkInterval / 2;
+    }
+
+    std::string const& Format() override;
+};
+
+class CDPairListCalculatedValue : public CalculatedValue<std::vector<CreatureData const*>>
+{
+public:
+    CDPairListCalculatedValue(PlayerbotAI* ai, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<std::vector<CreatureData const*>>(ai, name, checkInterval)
+    {
+        lastCheckTime = time(0) - checkInterval / 2;
+    }
+
+    std::string const& Format() override;
+};
+
+class ObjectGuidCalculatedValue : public CalculatedValue<ObjectGuid>
+{
+public:
+    ObjectGuidCalculatedValue(PlayerbotAI* ai, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<ObjectGuid>(ai, name, checkInterval)
+    {
+        lastCheckTime = time(0) - checkInterval / 2;
+    }
+
+    std::string const& Format() override;
 };
 
 class ObjectGuidListCalculatedValue : public CalculatedValue<GuidVector>
 {
     public:
-        ObjectGuidListCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int checkInterval = 1) :
-            CalculatedValue<GuidVector>(botAI, name, checkInterval) { }
+        ObjectGuidListCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<GuidVector>(botAI, name, checkInterval)
+        {
+            lastCheckTime = time(0) - checkInterval / 2;
+        }
 
         std::string const& Format() override
         {

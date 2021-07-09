@@ -22,8 +22,8 @@ bool Formation::IsNullLocation(WorldLocation const& loc)
 
 WorldLocation MoveAheadFormation::GetLocation()
 {
-    Player* master = GetMaster();
-    if (!master)
+    Player* master = botAI->GetGroupMaster();
+    if (!master || master == bot)
         return WorldLocation();
 
     WorldLocation loc = GetLocationInternal();
@@ -107,7 +107,7 @@ class ChaosFormation : public MoveAheadFormation
 
         WorldLocation GetLocationInternal() override
         {
-            Player* master = GetMaster();
+            Player* master = botAI->GetGroupMaster();
             if (!master)
                 return WorldLocation();
 
@@ -154,8 +154,8 @@ class CircleFormation : public MoveFormation
             float range = 2.0f;
 
             Unit* target = AI_VALUE(Unit*, "current target");
-            Player* master = GetMaster();
-            if (!target)
+            Player* master = botAI->GetGroupMaster();
+            if (!target && target != bot)
                 target = master;
 
             if (!target)
@@ -207,7 +207,7 @@ class LineFormation : public MoveAheadFormation
 
             float range = 2.0f;
 
-            Player* master = GetMaster();
+            Player* master = botAI->GetGroupMaster();
             if (!master)
                 return Formation::NullLocation;
 
@@ -369,14 +369,14 @@ float Formation::GetFollowAngle()
 
     uint32 index = 1;
     uint32 total = 1;
-    if (!group && master)
+    if (!group && master && !master->GetPlayerbotAI())
     {
         for (PlayerBotMap::const_iterator i = master->GetPlayerbotMgr()->GetPlayerBotsBegin(); i != master->GetPlayerbotMgr()->GetPlayerBotsEnd(); ++i)
         {
             if (i->second == bot)
                 index = total;
 
-            total++;
+            ++total;
         }
     }
     else if (group)
@@ -426,7 +426,7 @@ float Formation::GetFollowAngle()
             if (playerRoster == bot)
                 break;
 
-            index++;
+            ++index;
         }
 
         total = roster.size() + 1;
@@ -552,12 +552,12 @@ bool SetFormationAction::Execute(Event event)
         std::ostringstream str;
         str << "Invalid formation: |cffff0000" << formation;
         botAI->TellMaster(str);
-        botAI->TellMaster("Please std::set to any of:|cffffffff near (default), queue, chaos, circle, line, shield, arrow, melee, far");
+        botAI->TellMaster("Please set to any of:|cffffffff near (default), queue, chaos, circle, line, shield, arrow, melee, far");
         return false;
     }
 
     std::ostringstream str;
-    str << "Formation std::set to: " << formation;
+    str << "Formation set to: " << formation;
     botAI->TellMaster(str);
     return true;
 }
@@ -618,7 +618,7 @@ WorldLocation MoveFormation::MoveSingleLine(std::vector<Player*> line, float dif
             return WorldLocation(bot->GetMapId(), lx, ly, lz);
         }
 
-        index++;
+        ++index;
     }
 
     return Formation::NullLocation;

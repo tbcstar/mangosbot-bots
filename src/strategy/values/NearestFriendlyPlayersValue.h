@@ -10,7 +10,8 @@ class PlayerbotAI;
 class NearestFriendlyPlayersValue : public NearestUnitsValue
 {
 	public:
-        NearestFriendlyPlayersValue(PlayerbotAI* botAI) : NearestUnitsValue(botAI, "nearest friendly players", sPlayerbotAIConfig->sightDistance) { }
+        NearestFriendlyPlayersValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig.sightDistance) :
+            NearestUnitsValue(botAI, "nearest friendly players", range) { }
 
     protected:
         void FindUnits(std::list<Unit*> &targets) override;

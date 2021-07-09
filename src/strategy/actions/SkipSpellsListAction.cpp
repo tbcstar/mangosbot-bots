@@ -11,7 +11,7 @@
 bool SkipSpellsListAction::Execute(Event event)
 {
     std::string cmd = event.getParam();
-    std::set<uint32>& skipSpells = AI_VALUE(std::set<uint32>&, "skip spells std::list");
+    std::set<uint32>& skipSpells = AI_VALUE(std::set<uint32>&, "skip spells list");
 
     SpellIds spellIds = parseIds(cmd);
     if (!spellIds.empty())
@@ -28,7 +28,7 @@ bool SkipSpellsListAction::Execute(Event event)
     if (cmd == "reset")
     {
         skipSpells.clear();
-        botAI->TellMaster("Ignored spell std::list is empty");
+        botAI->TellMaster("Ignored spell list is empty");
         return true;
     }
 
@@ -37,11 +37,11 @@ bool SkipSpellsListAction::Execute(Event event)
         std::ostringstream out;
         if (skipSpells.empty())
         {
-            botAI->TellMaster("Ignored spell std::list is empty");
+            botAI->TellMaster("Ignored spell list is empty");
             return true;
         }
 
-        out << "Ignored spell std::list: ";
+        out << "Ignored spell list: ";
 
         bool first = true;
         for (uint32 spellId : skipSpells)

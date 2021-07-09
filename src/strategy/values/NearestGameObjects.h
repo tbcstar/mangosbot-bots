@@ -10,11 +10,13 @@ class PlayerbotAI;
 class NearestGameObjects : public ObjectGuidListCalculatedValue
 {
 	public:
-        NearestGameObjects(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) : ObjectGuidListCalculatedValue(botAI), range(range) { }
+        NearestGameObjects(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :
+            ObjectGuidListCalculatedValue(botAI), range(range), ignoreLos(ignoreLos) { }
 
     protected:
         GuidVector Calculate() override;
 
     private:
         float range;
+        bool ignoreLos;
 };

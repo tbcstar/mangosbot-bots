@@ -80,6 +80,36 @@ class NearStance : public MoveStance
         {
             Unit* target = GetTarget();
 
+            if (target->GetVictim() && target->GetVictim()->GetGUID() == bot->GetGUID())
+                return target->GetOrientation();
+
+            if (botAI->HasStrategy("behind", BOT_STATE_COMBAT))
+            {
+                Unit* target = GetTarget();
+                Group* group = bot->GetGroup();
+                uint32 index = 0;
+                uint32 count = 0;
+                if (group)
+                {
+                    for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
+                    {
+                        Player* member = ref->GetSource();
+                        if (member == bot)
+                            index = count;
+
+                        if (member && !botAI->IsRanged(member) && !botAI->IsTank(member))
+                            count++;
+                    }
+                }
+
+                float angle = target->GetOrientation() + M_PI;
+                if (!count)
+                    return angle;
+
+                float increment = M_PI / 4 / count;
+                return round((angle + index * increment - M_PI / 4) * 10.0f) / 10.0f;
+            }
+
             float angle = GetFollowAngle() + target->GetOrientation();
             if (Player* master = GetMaster())
                 angle -= master->GetOrientation();
@@ -119,7 +149,7 @@ class TurnBackStance : public MoveStance
                         if (member != bot && botAI->IsRanged(member))
                         {
                             angle += target->GetAngle(member);
-                            count++;
+                            ++count;
                         }
                 }
             }
@@ -152,7 +182,7 @@ class BehindStance : public MoveStance
                             index = count;
 
                         if (!botAI->IsRanged(member) && !botAI->IsTank(member))
-                            count++;
+                            ++count;
                     }
                 }
             }
@@ -234,12 +264,12 @@ bool SetStanceAction::Execute(Event event)
         std::ostringstream str;
         str << "Invalid stance: |cffff0000" << stance;
         botAI->TellMaster(str);
-        botAI->TellMaster("Please std::set to any of:|cffffffff near (default), tank, turnback, behind");
+        botAI->TellMaster("Please set to any of:|cffffffff near (default), tank, turnback, behind");
         return false;
     }
 
     std::ostringstream str;
-    str << "Stance std::set to: " << stance;
+    str << "Stance set to: " << stance;
     botAI->TellMaster(str);
     return true;
 }

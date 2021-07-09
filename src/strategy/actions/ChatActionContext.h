@@ -79,6 +79,7 @@ class ChatActionContext : public NamedObjectContext<Action>
             creators["log"] = &ChatActionContext::log;
             creators["los"] = &ChatActionContext::los;
             creators["drop"] = &ChatActionContext::drop;
+            creators["clean quest log"] = &ChatActionContext::clean_quest_log;
             creators["share"] = &ChatActionContext::share;
             creators["query quest"] = &ChatActionContext::query_quest;
             creators["query item usage"] = &ChatActionContext::query_item_usage;
@@ -86,12 +87,14 @@ class ChatActionContext : public NamedObjectContext<Action>
             creators["ss"] = &ChatActionContext::ss;
             creators["add all loot"] = &ChatActionContext::add_all_loot;
             creators["release"] = &ChatActionContext::release;
+            creators["repop"] = &ChatActionContext::repop;
             creators["teleport"] = &ChatActionContext::teleport;
             creators["taxi"] = &ChatActionContext::taxi;
             creators["repair"] = &ChatActionContext::repair;
             creators["use"] = &ChatActionContext::use;
             creators["item count"] = &ChatActionContext::item_count;
             creators["equip"] = &ChatActionContext::equip;
+            creators["equip upgrades"] = &ChatActionContext::equip_upgrades;
             creators["unequip"] = &ChatActionContext::unequip;
             creators["sell"] = &ChatActionContext::sell;
             creators["buy"] = &ChatActionContext::buy;
@@ -101,7 +104,7 @@ class ChatActionContext : public NamedObjectContext<Action>
             creators["spells"] = &ChatActionContext::spells;
             creators["co"] = &ChatActionContext::co;
             creators["nc"] = &ChatActionContext::nc;
-            creators["dead"] = &ChatActionContext::dead;
+            creators["de"] = &ChatActionContext::dead;
             creators["trainer"] = &ChatActionContext::trainer;
             creators["attack my target"] = &ChatActionContext::attack_my_target;
             creators["chat"] = &ChatActionContext::chat;
@@ -120,6 +123,7 @@ class ChatActionContext : public NamedObjectContext<Action>
             creators["tank attack chat shortcut"] = &ChatActionContext::tank_attack_chat_shortcut;
             creators["gossip hello"] = &ChatActionContext::gossip_hello;
             creators["cast custom spell"] = &ChatActionContext::cast_custom_spell;
+            creators["cast custom nc spell"] = &ChatActionContext::cast_custom_nc_spell;
             creators["invite"] = &ChatActionContext::invite;
             creators["spell"] = &ChatActionContext::spell;
             creators["rti"] = &ChatActionContext::rti;
@@ -137,6 +141,7 @@ class ChatActionContext : public NamedObjectContext<Action>
             creators["mail"] = &ChatActionContext::mail;
             creators["go"] = &ChatActionContext::go;
             creators["debug"] = &ChatActionContext::debug;
+            creators["cdebug"] = &ChatActionContext::debug;
             creators["cs"] = &ChatActionContext::cs;
             creators["wts"] = &ChatActionContext::wts;
             creators["hire"] = &ChatActionContext::hire;
@@ -169,6 +174,7 @@ class ChatActionContext : public NamedObjectContext<Action>
         static Action* invite() { return new InviteToGroupAction(); }
         static Action* spell() { return new TellSpellAction(); }
         static Action* cast_custom_spell() { return new CastCustomSpellAction(); }
+        static Action* cast_custom_nc_spell(PlayerbotAI* ai) { return new CastCustomNcSpellAction(ai); }
         static Action* tank_attack_chat_shortcut() { return new TankAttackChatShortcutAction(); }
         static Action* grind_chat_shortcut() { return new GrindChatShortcutAction(); }
         static Action* flee_chat_shortcut() { return new FleeChatShortcutAction(); }
@@ -191,6 +197,7 @@ class ChatActionContext : public NamedObjectContext<Action>
         static Action* talents() { return new ChangeTalentsAction(); }
 
         static Action* equip() { return new EquipAction(); }
+        static Action* equip_upgrades(PlayerbotAI* botAI) { return new EquipUpgradesAction(botAI); }
         static Action* unequip() { return new UnequipAction(); }
         static Action* sell() { return new SellAction(); }
         static Action* buy() { return new BuyAction(); }
@@ -203,9 +210,11 @@ class ChatActionContext : public NamedObjectContext<Action>
         static Action* taxi() { return new TaxiAction(); }
         static Action* teleport() { return new TeleportAction(); }
         static Action* release() { return new ReleaseSpiritAction(); }
+        static Action* repop(PlayerbotAI* ai) { return new RepopAction(ai); }
         static Action* query_item_usage() { return new QueryItemUsageAction(); }
         static Action* query_quest() { return new QueryQuestAction(); }
         static Action* drop() { return new DropQuestAction(); }
+        static Action* clean_quest_log(PlayerbotAI* botAI) { return new CleanQuestLogAction(botAI); }
         static Action* share() { return new ShareQuestAction(); }
         static Action* stats() { return new StatsAction(); }
         static Action* quests() { return new ListQuestsAction(); }

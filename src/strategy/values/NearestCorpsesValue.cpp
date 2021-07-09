@@ -3,6 +3,7 @@
  */
 
 #include "NearestCorpsesValue.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 
 class AnyDeadUnitInObjectRangeCheck
@@ -23,7 +24,7 @@ class AnyDeadUnitInObjectRangeCheck
 void NearestCorpsesValue::FindUnits(std::list<Unit*> &targets)
 {
     AnyDeadUnitInObjectRangeCheck u_check(bot, range);
-    acore::UnitListSearcher<AnyDeadUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::UnitListSearcher<AnyDeadUnitInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisitNearbyObject(range, searcher);
 }
 

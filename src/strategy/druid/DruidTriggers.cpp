@@ -15,6 +15,16 @@ bool MarkOfTheWildTrigger::IsActive()
     return BuffTrigger::IsActive() && !botAI->HasAura("gift of the wild", GetTarget());
 }
 
+bool ThornsOnPartyTrigger::IsActive()
+{
+    return BuffOnPartyTrigger::IsActive() && !botAI->HasAura("thorns", GetTarget());
+}
+
+bool ThornsTrigger::IsActive()
+{
+    return BuffTrigger::IsActive() && !botAI->HasAura("thorns", GetTarget());
+}
+
 bool BearFormTrigger::IsActive()
 {
     return !botAI->HasAnyAuraOf(bot, "bear form", "dire bear form", nullptr);

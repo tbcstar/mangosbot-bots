@@ -25,6 +25,7 @@ void GenericPaladinStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 	triggers.push_back(new TriggerNode("critical health", NextAction::array(0, new NextAction("lay on hands", ACTION_EMERGENCY), nullptr)));
 	triggers.push_back(new TriggerNode("party member critical health", NextAction::array(0, new NextAction("lay on hands on party", ACTION_EMERGENCY), nullptr)));
 	triggers.push_back(new TriggerNode("target critical health", NextAction::array(0, new NextAction("hammer of wrath", ACTION_HIGH + 1), nullptr)));
+    triggers.push_back(new TriggerNode("often", NextAction::array(0, new NextAction("apply stone", 1.0f), nullptr)));
 }
 
 void PaladinCureStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

@@ -29,7 +29,7 @@ uint8 AoeHealValue::Calculate()
 
 	    float percent = (static_cast<float> (player->GetHealth()) / player->GetMaxHealth()) * 100;
 	    if (percent <= range)
-	    	count++;
+            ++count;
 	}
 
 	return count;

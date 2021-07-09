@@ -4,12 +4,13 @@
 
 #include "PossibleTargetsValue.h"
 #include "AttackersValue.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 
 void PossibleTargetsValue::FindUnits(std::list<Unit*>& targets)
 {
-    acore::AnyUnfriendlyUnitInObjectRangeCheck u_check(bot, bot, range);
-    acore::UnitListSearcher<acore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::AnyUnfriendlyUnitInObjectRangeCheck u_check(bot, bot, range);
+    Acore::UnitListSearcher<Acore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisitNearbyObject(range, searcher);
 }
 

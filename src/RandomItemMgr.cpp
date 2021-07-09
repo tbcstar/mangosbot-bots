@@ -120,12 +120,12 @@ void RandomItemMgr::Init()
     BuildPotionCache();
     BuildFoodCache();
     BuildTradeCache();
-    BuildRarityCache();
 }
 
 void RandomItemMgr::InitAfterAhBot()
 {
     BuildRandomItemCache();
+    BuildRarityCache();
 }
 
 RandomItemMgr::~RandomItemMgr()
@@ -149,7 +149,7 @@ bool RandomItemMgr::HandleConsoleCommand(ChatHandler* handler, char const* args)
 
 RandomItemList RandomItemMgr::Query(uint32 level, RandomItemType type, RandomItemPredicate* predicate)
 {
-    RandomItemList& std::list = randomItemCache[(level - 1) / 10][type];
+    RandomItemList& list = randomItemCache[(level - 1) / 10][type];
 
     RandomItemList result;
     for (RandomItemList::iterator i = list.begin; i != list.end(); ++i)
@@ -170,7 +170,7 @@ RandomItemList RandomItemMgr::Query(uint32 level, RandomItemType type, RandomIte
 
 void RandomItemMgr::BuildRandomItemCache()
 {
-    QueryResult results = CharacterDatabase.PQuery("SELECT lvl, type, item FROM ai_playerbot_rnditem_cache");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT lvl, type, item FROM ai_playerbot_rnditem_cache");
     if (results)
     {
         sLog->outString("Loading random item cache");
@@ -184,7 +184,7 @@ void RandomItemMgr::BuildRandomItemCache()
 
             RandomItemType rit = (RandomItemType)type;
             randomItemCache[level][rit].push_back(itemId);
-            count++;
+            ++count;
 
         } while (results->NextRow());
 
@@ -204,10 +204,13 @@ void RandomItemMgr::BuildRandomItemCache()
             if (proto->Duration & 0x80000000)
                 continue;
 
+            if (sAhBotConfig.ignoreItemIds.find(proto->ItemId) != sAhBotConfig.ignoreItemIds.end())
+                continue;
+
             if (strstri(proto->Name1.c_str(), "qa") || strstri(proto->Name1.c_str(), "test") || strstri(proto->Name1.c_str(), "deprecated"))
                 continue;
 
-            if (!proto->ItemLevel || (proto->RequiredLevel && proto->RequiredLevel > sAhBotsConfigMgr->maxRequiredLevel) || proto->ItemLevel > sAhBotsConfigMgr->maxItemLevel)
+            if (!proto->ItemLevel)
                 continue;
 
             if (!auctionbot.GetSellPrice(proto))
@@ -222,7 +225,7 @@ void RandomItemMgr::BuildRandomItemCache()
 
                 randomItemCache[level / 10][rit].push_back(itr.first);
 
-                CharacterDatabase.PExecute("INSERT INTO ai_playerbot_rnditem_cache (lvl, type, item) VALUES (%u, %u, %u)", level / 10, type, itr.first);
+                PlayerbotDatabase.PExecute("INSERT INTO ai_playerbot_rnditem_cache (lvl, type, item) VALUES (%u, %u, %u)", level / 10, type, itr.first);
             }
         }
 
@@ -234,8 +237,8 @@ void RandomItemMgr::BuildRandomItemCache()
         {
             for (uint32 type = RANDOM_ITEM_GUILD_TASK; type <= RANDOM_ITEM_GUILD_TASK_REWARD_TRADE_RARE; type++)
             {
-                RandomItemList std::list = randomItemCache[level][(RandomItemType)type];
-                sLog->outString("    Level %d..%d Type %d - %u random items cached", level * 10, level * 10 + 9, type, std::list.size());
+                RandomItemList list = randomItemCache[level][(RandomItemType)type];
+                sLog->outString("    Level %d..%d Type %d - %zu random items cached", level * 10, level * 10 + 9, type, list.size());
 
                 for (RandomItemList::iterator i = list.begin; i != list.end(); ++i)
                 {
@@ -253,12 +256,12 @@ void RandomItemMgr::BuildRandomItemCache()
 
 uint32 RandomItemMgr::GetRandomItem(uint32 level, RandomItemType type, RandomItemPredicate* predicate)
 {
-    RandomItemList const& std::list = Query(level, type, predicate);
-    if (std::list.empty())
+    RandomItemList const& list = Query(level, type, predicate);
+    if (list.empty())
         return 0;
 
-    uint32 index = urand(0, std::list.size() - 1);
-    uint32 itemId = std::list[index];
+    uint32 index = urand(0, list.size() - 1);
+    uint32 itemId = list[index];
 
     return itemId;
 }
@@ -324,7 +327,7 @@ void RandomItemMgr::AddItemStats(uint32 mod, uint8& sp, uint8& ap, uint8& tank)
         case ITEM_MOD_MANA:
         case ITEM_MOD_INTELLECT:
         case ITEM_MOD_SPIRIT:
-            sp++;
+            ++sp;
             break;
     }
 
@@ -334,7 +337,7 @@ void RandomItemMgr::AddItemStats(uint32 mod, uint8& sp, uint8& ap, uint8& tank)
         case ITEM_MOD_STRENGTH:
         case ITEM_MOD_HEALTH:
         case ITEM_MOD_STAMINA:
-            tank++;
+            ++tank;
             break;
     }
 
@@ -344,7 +347,7 @@ void RandomItemMgr::AddItemStats(uint32 mod, uint8& sp, uint8& ap, uint8& tank)
         case ITEM_MOD_STAMINA:
         case ITEM_MOD_AGILITY:
         case ITEM_MOD_STRENGTH:
-            ap++;
+            ++ap;
             break;
     }
 }
@@ -381,19 +384,19 @@ bool RandomItemMgr::CanEquipArmor(uint8 clazz, uint32 level, ItemTemplate const*
 
     if ((clazz == CLASS_WARRIOR || clazz == CLASS_PALADIN) && level >= 40)
     {
-        if (proto->SubClass != ITEM_SUBCLASS_ARMOR_PLATE)
+        if (proto->SubClass != ITEM_SUBCLASS_ARMOR_PLATE && proto->InventoryType != INVTYPE_CLOAK)
             return false;
     }
 
-    if (((clazz == CLASS_WARRIOR || clazz == CLASS_PALADIN) && level < 40) || (clazz == CLASS_HUNTER || clazz == CLASS_SHAMAN) && level >= 40)
+    if (((clazz == CLASS_WARRIOR || clazz == CLASS_PALADIN) && level < 40) || ((clazz == CLASS_HUNTER || clazz == CLASS_SHAMAN) && level >= 40))
     {
-        if (proto->SubClass != ITEM_SUBCLASS_ARMOR_MAIL)
+        if (proto->SubClass != ITEM_SUBCLASS_ARMOR_MAIL && proto->InventoryType != INVTYPE_CLOAK)
             return false;
     }
 
     if (((clazz == CLASS_HUNTER || clazz == CLASS_SHAMAN) && level < 40) || (clazz == CLASS_DRUID || clazz == CLASS_ROGUE))
     {
-        if (proto->SubClass != ITEM_SUBCLASS_ARMOR_LEATHER)
+        if (proto->SubClass != ITEM_SUBCLASS_ARMOR_LEATHER && proto->InventoryType != INVTYPE_CLOAK)
             return false;
     }
 
@@ -429,7 +432,8 @@ bool RandomItemMgr::CanEquipWeapon(uint8 clazz, ItemTemplate const* proto)
         case CLASS_WARRIOR:
             if (proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD2 && proto->SubClass != ITEM_SUBCLASS_WEAPON_MACE &&
                 proto->SubClass != ITEM_SUBCLASS_WEAPON_SWORD && proto->SubClass != ITEM_SUBCLASS_WEAPON_GUN && proto->SubClass != ITEM_SUBCLASS_WEAPON_CROSSBOW &&
-                proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
+                proto->SubClass != ITEM_SUBCLASS_WEAPON_BOW && proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE && proto->SubClass != ITEM_SUBCLASS_WEAPON_AXE2 &&
+                proto->SubClass != ITEM_SUBCLASS_WEAPON_THROWN)
                 return false;
             break;
         case CLASS_PALADIN:
@@ -471,10 +475,10 @@ void RandomItemMgr::BuildEquipCache()
 
     ItemTemplateContainer const* itemTemplates = sObjectMgr->GetItemTemplateStore();
 
-    QueryResult results = CharacterDatabase.PQuery("SELECT clazz, lvl, slot, quality, item FROM ai_playerbot_equip_cache");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT clazz, lvl, slot, quality, item FROM ai_playerbot_equip_cache");
     if (results)
     {
-        sLog->outString("Loading equipment cache for %d classes, %d levels, %d slots, %d quality from %d items",
+        sLog->outString("Loading equipment cache for %d classes, %d levels, %d slots, %d quality from %zu items",
                 MAX_CLASSES, maxLevel, EQUIPMENT_SLOT_END, ITEM_QUALITY_ARTIFACT, itemTemplates->size());
 
         uint32 count = 0;
@@ -489,7 +493,7 @@ void RandomItemMgr::BuildEquipCache()
 
             BotEquipKey key(level, clazz, slot, quality);
             equipCache[key].push_back(itemId);
-            count++;
+            ++count;
 
         } while (results->NextRow());
 
@@ -498,7 +502,7 @@ void RandomItemMgr::BuildEquipCache()
     else
     {
         uint64 total = MAX_CLASSES * maxLevel * EQUIPMENT_SLOT_END * ITEM_QUALITY_ARTIFACT;
-        sLog->outString("Building equipment cache for %d classes, %d levels, %d slots, %d quality from %d items (%d total)",
+        sLog->outString("Building equipment cache for %d classes, %d levels, %d slots, %d quality from %d items (%zu total)",
                 MAX_CLASSES, maxLevel, EQUIPMENT_SLOT_END, ITEM_QUALITY_ARTIFACT, itemTemplates->size(), total);
 
         for (uint8 class_ = CLASS_WARRIOR; class_ < MAX_CLASSES; ++class_)
@@ -541,7 +545,7 @@ void RandomItemMgr::BuildEquipCache()
 
                             items.push_back(itr.first);
 
-                            CharacterDatabase.PExecute("INSERT INTO ai_playerbot_equip_cache (clazz, lvl, slot, quality, item) VALUES (%u, %u, %u, %u, %u)",
+                            PlayerbotDatabase.PExecute("INSERT INTO ai_playerbot_equip_cache (clazz, lvl, slot, quality, item) VALUES (%u, %u, %u, %u, %u)",
                                     class_, level, slot, quality, itr.first);
                         }
 
@@ -572,7 +576,8 @@ void RandomItemMgr::BuildAmmoCache()
 
     sLog->outString("Building ammo cache for %d levels", maxLevel);
 
-    for (uint32 level = 1; level <= maxLevel; level+=10)
+    uint32 counter = 0;
+    for (uint32 level = 1; level <= maxLevel + 1; level += 10)
     {
         for (uint32 subClass = ITEM_SUBCLASS_ARROW; subClass <= ITEM_SUBCLASS_BULLET; subClass++)
         {
@@ -584,8 +589,11 @@ void RandomItemMgr::BuildAmmoCache()
             Field* fields = results->Fetch();
             uint32 entry = fields[0].GetUInt32();
             ammoCache[level / 10][subClass] = entry;
+            ++counter;
         }
     }
+
+    sLog->outString("Cached %d types of ammo", counter); // TEST
 }
 
 uint32 RandomItemMgr::GetAmmo(uint32 level, uint32 subClass)
@@ -603,7 +611,8 @@ void RandomItemMgr::BuildPotionCache()
 
     ItemTemplateContainer const* itemTemplates = sObjectMgr->GetItemTemplateStore();
 
-    for (uint32 level = 1; level <= maxLevel; level+=10)
+    uint32 counter = 0;
+    for (uint32 level = 1; level <= maxLevel + 1; level += 10)
     {
         uint32 effects[] = { SPELL_EFFECT_HEAL, SPELL_EFFECT_ENERGIZE };
         for (uint8 i = 0; i < 2; ++i)
@@ -650,16 +659,20 @@ void RandomItemMgr::BuildPotionCache()
         }
     }
 
-    for (uint32 level = 1; level <= maxLevel; level+=10)
+    for (uint32 level = 1; level <= maxLevel + 1; level += 10)
     {
         uint32 effects[] = { SPELL_EFFECT_HEAL, SPELL_EFFECT_ENERGIZE };
         for (uint8 i = 0; i < 2; ++i)
         {
             uint32 effect = effects[i];
             uint32 size = potionCache[level / 10][effect].size();
+            ++counter;
+
             sLog->outDetail("Potion cache for level=%d, effect=%d: %d items", level, effect, size);
         }
     }
+
+    sLog->outString("Cached %d types of potions", counter); // TEST
 }
 
 void RandomItemMgr::BuildFoodCache()
@@ -672,7 +685,8 @@ void RandomItemMgr::BuildFoodCache()
 
     ItemTemplateContainer const* itemTemplates = sObjectMgr->GetItemTemplateStore();
 
-    for (uint32 level = 1; level <= maxLevel; level+=10)
+    uint32 counter = 0;
+    for (uint32 level = 1; level <= maxLevel + 1; level += 10)
     {
         uint32 categories[] = { 11, 59 };
         for (int i = 0; i < 2; ++i)
@@ -706,16 +720,19 @@ void RandomItemMgr::BuildFoodCache()
         }
     }
 
-    for (uint32 level = 1; level <= maxLevel; level+=10)
+    for (uint32 level = 1; level <= maxLevel + 1; level += 10)
     {
         uint32 categories[] = { 11, 59 };
         for (uint8 i = 0; i < 2; ++i)
         {
             uint32 category = categories[i];
             uint32 size = foodCache[level / 10][category].size();
+            ++counter;
             sLog->outDetail("Food cache for level=%d, category=%d: %d items", level, category, size);
         }
     }
+
+    sLog->outString("Cached %d types of food", counter);
 }
 
 uint32 RandomItemMgr::GetRandomPotion(uint32 level, uint32 effect)
@@ -725,6 +742,55 @@ uint32 RandomItemMgr::GetRandomPotion(uint32 level, uint32 effect)
         return 0;
 
     return potions[urand(0, potions.size() - 1)];
+}
+
+uint32 RandomItemMgr::GetFood(uint32 level, uint32 category)
+{
+    std::initializer_list<uint32> items;
+    std::vector<uint32> food;
+    if (category == 11)
+    {
+        if (level < 5)
+            items = { 787, 117, 4540, 2680 };
+        else if (level < 15)
+            items = { 2287, 4592, 4541, 21072 };
+        else if (level < 25)
+            items = { 3770, 16170, 4542, 20074 };
+        else if (level < 35)
+            items = { 4594, 3771, 1707, 4457 };
+        else if (level < 45)
+            items = { 4599, 4601, 21552, 17222 /*21030, 16168 */ };
+        else if (level < 55)
+            items = { 8950, 8952, 8957, 21023 /*21033, 21031 */ };
+        else if (level < 65)
+            items = { 29292, 27859, 30458, 27662 };
+        else
+            items = { 29450, 29451, 29452 };
+    }
+
+    if (category == 59)
+    {
+        if (level < 5)
+            items = { 159, 117 };
+        else if (level < 15)
+            items = { 1179, 21072 };
+        else if (level < 25)
+            items = { 1205 };
+        else if (level < 35)
+            items = { 1708 };
+        else if (level < 45)
+            items = { 1645 };
+        else if (level < 55)
+            items = { 8766 };
+        else if (level < 65)
+            items = { 28399 };
+        else
+            items = { 27860 };
+    }
+
+    food.insert(food.end(), items);
+    if (food.empty()) return 0;
+    return food[urand(0, food.size() - 1)];
 }
 
 uint32 RandomItemMgr::GetRandomFood(uint32 level, uint32 category)
@@ -746,7 +812,8 @@ void RandomItemMgr::BuildTradeCache()
 
     ItemTemplateContainer const* itemTemplates = sObjectMgr->GetItemTemplateStore();
 
-    for (uint32 level = 1; level <= maxLevel; level+=10)
+    uint32 counter = 0;
+    for (uint32 level = 1; level <= maxLevel + 1; level += 10)
     {
         for (auto const& itr : *itemTemplates)
         {
@@ -770,11 +837,14 @@ void RandomItemMgr::BuildTradeCache()
         }
     }
 
-    for (uint32 level = 1; level <= maxLevel; level+=10)
+    for (uint32 level = 1; level <= maxLevel + 1; level += 10)
     {
         uint32 size = tradeCache[level / 10].size();
         sLog->outDetail("Trade cache for level=%d: %d items", level, size);
+        ++counter;
     }
+
+    sLog->outString("Cached %d trade items", counter); // TEST
 }
 
 uint32 RandomItemMgr::GetRandomTrade(uint32 level)
@@ -788,7 +858,7 @@ uint32 RandomItemMgr::GetRandomTrade(uint32 level)
 
 void RandomItemMgr::BuildRarityCache()
 {
-    QueryResult results = CharacterDatabase.PQuery("SELECT item, rarity FROM ai_playerbot_rarity_cache");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT item, rarity FROM ai_playerbot_rarity_cache");
     if (results)
     {
         sLog->outString("Loading item rarity cache");
@@ -801,7 +871,7 @@ void RandomItemMgr::BuildRarityCache()
             float rarity = fields[1].GetFloat();
 
             rarityCache[itemId] = rarity;
-            count++;
+            ++count;
 
         } while (results->NextRow());
 
@@ -827,7 +897,7 @@ void RandomItemMgr::BuildRarityCache()
             if (strstri(proto->Name1.c_str(), "qa") || strstri(proto->Name1.c_str(), "test") || strstri(proto->Name1.c_str(), "deprecated"))
                 continue;
 
-            if (!proto->ItemLevel || (proto->RequiredLevel && proto->RequiredLevel > sAhBotsConfigMgr->maxRequiredLevel) || proto->ItemLevel > sAhBotsConfigMgr->maxItemLevel)
+            if (!proto->ItemLevel)
                 continue;
 
             QueryResult results = WorldDatabase.PQuery(
@@ -917,7 +987,7 @@ void RandomItemMgr::BuildRarityCache()
                 {
                     rarityCache[itr.first] = rarity;
 
-                    CharacterDatabase.PExecute("INSERT INTO ai_playerbot_rarity_cache (item, rarity) VALUES (%u, %f)", itr.first, rarity);
+                    PlayerbotDatabase.PExecute("INSERT INTO ai_playerbot_rarity_cache (item, rarity) VALUES (%u, %f)", itr.first, rarity);
                 }
             }
         }

@@ -3,6 +3,7 @@
  */
 
 #include "Value.h"
+#include "TravelMgr.h"
 
 class ObjectGuid;
 class PlayerbotAI;
@@ -11,21 +12,30 @@ class Unit;
 class LastMovement
 {
     public:
-        LastMovement() : lastMoveToX(0.f), lastMoveToY(0.f), lastMoveToZ(0.f), lastMoveToOri(0.f), lastFollow(nullptr) { }
-        LastMovement(LastMovement& other) : taxiNodes(other.taxiNodes), taxiMaster(other.taxiMaster), lastFollow(other.lastFollow), lastAreaTrigger(other.lastAreaTrigger),
-            lastMoveToX(other.lastMoveToX), lastMoveToY(other.lastMoveToY), lastMoveToZ(other.lastMoveToZ), lastMoveToOri(other.lastMoveToOri) { }
+        LastMovement();
+        LastMovement(LastMovement& other);
+
+        void clear();
 
         void Set(Unit* follow);
-        void Set(float x, float y, float z, float ori);
+        void Set(uint32 mapId, float x, float y, float z, float ori);
+
+        void setShort(WorldPosition point);
+        void setPath(TravelPath path);
 
         std::vector<uint32> taxiNodes;
         ObjectGuid taxiMaster;
         Unit* lastFollow;
         uint32 lastAreaTrigger;
+        time_t lastFlee;
+        uint32 lastMoveToMapId;
         float lastMoveToX;
         float lastMoveToY;
         float lastMoveToZ;
         float lastMoveToOri;
+        WorldPosition lastMoveShort;
+        TravelPath lastPath;
+        time_t nextTeleport;
 };
 
 class LastMovementValue : public ManualSetValue<LastMovement&>

@@ -12,6 +12,6 @@ class SecurityCheckAction : public Action
     public:
         SecurityCheckAction(PlayerbotAI* botAI) : Action(botAI, "security check") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
         bool Execute(Event event) override;
 };

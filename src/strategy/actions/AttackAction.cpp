@@ -75,7 +75,8 @@ bool AttackAction::Attack(Unit* target)
         if (verbose)
             botAI->TellError(msg.str());
 
-        return false;
+        //if (!ChaseTo(target))
+            //return false;
     }
 
     if (target->isDead())
@@ -87,7 +88,7 @@ bool AttackAction::Attack(Unit* target)
         return false;
     }
 
-    if (bot->IsMounted())
+    if (bot->IsMounted() && bot->IsWithinLOSInMap(target) && sServerFacade->GetDistance2d(bot, target) < 40.0f)
     {
         WorldPacket emptyPacket;
         bot->GetSession()->HandleCancelMountAuraOpcode(emptyPacket);
@@ -124,9 +125,15 @@ bool AttackAction::Attack(Unit* target)
     if (!bot->IsInFront(target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
         bot->SetFacingTo(target);
 
-    bot->Attack(target, !botAI->IsRanged(bot) || sServerFacade->GetDistance2d(bot, target) <= sPlayerbotAIConfig->tooCloseDistance);
-    botAI->ChangeEngine(BOT_STATE_COMBAT);
-    return true;
+    if (bot->Attack(target, !ai->IsRanged(bot) || sServerFacade.GetDistance2d(bot, target) <= sPlayerbotAIConfig.tooCloseDistance))
+    {
+        ai->ChangeEngine(BOT_STATE_COMBAT);
+        return ChaseTo(target);
+    }
+    else
+        context->GetValue<Unit*>("current target")->Set(NULL);
+
+    return false;
 }
 
 bool AttackDuelOpponentAction::isUseful()

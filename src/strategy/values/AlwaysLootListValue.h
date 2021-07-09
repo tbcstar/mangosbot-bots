@@ -9,11 +9,11 @@ class PlayerbotAI;
 class AlwaysLootListValue : public ManualSetValue<std::set<uint32>&>
 {
 	public:
-        AlwaysLootListValue(PlayerbotAI* botAI) : ManualSetValue<std::set<uint32>&>(botAI, std::list) { }
+        AlwaysLootListValue(PlayerbotAI* botAI) : ManualSetValue<std::set<uint32>&>(botAI, list) { }
 
         std::string const& Save() override;
         bool Load(std::string const& value) override;
 
     private:
-        std::set<uint32> std::list;
+        std::set<uint32> list;
 };

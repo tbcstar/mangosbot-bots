@@ -13,6 +13,8 @@ class LeaveGroupAction : public Action
         LeaveGroupAction(PlayerbotAI* botAI, std::string const& name = "leave") : Action(botAI, name) { }
 
         bool Execute(Event event) override;
+
+        virtual bool Leave();
 };
 
 class PartyCommandAction : public LeaveGroupAction
@@ -26,7 +28,15 @@ class PartyCommandAction : public LeaveGroupAction
 class UninviteAction : public LeaveGroupAction
 {
     public:
-        UninviteAction(PlayerbotAI* botAI) : LeaveGroupAction(botAI, "party command") { }
+        UninviteAction(PlayerbotAI* botAI) : LeaveGroupAction(botAI, "uninvite") { }
 
         bool Execute(Event event) override;
+};
+
+class LeaveFarAwayAction : public LeaveGroupAction
+{
+    public:
+        LeaveFarAwayAction(PlayerbotAI* botAI) : LeaveGroupAction(botAI, "leave far away") { }
+
+        bool isUseful() override;
 };

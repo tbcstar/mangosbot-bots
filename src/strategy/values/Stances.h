@@ -49,7 +49,7 @@ class StanceValue : public ManualSetValue<Stance*>
 class SetStanceAction : public Action
 {
     public:
-        SetStanceAction(PlayerbotAI* botAI) : Action(botAI, "std::set Stance") { }
+        SetStanceAction(PlayerbotAI* botAI) : Action(botAI, "set Stance") { }
 
         bool Execute(Event event) override;
 };

@@ -13,7 +13,7 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
         {
             creators["gossip hello"] = &WorldPacketTriggerContext::gossip_hello;
             creators["group invite"] = &WorldPacketTriggerContext::group_invite;
-            creators["group std::set leader"] = &WorldPacketTriggerContext::group_set_leader;
+            creators["group set leader"] = &WorldPacketTriggerContext::group_set_leader;
             creators["not enough money"] = &WorldPacketTriggerContext::no_money;
             creators["not enough reputation"] = &WorldPacketTriggerContext::no_reputation;
             creators["cannot equip"] = &WorldPacketTriggerContext::cannot_equip;
@@ -39,13 +39,24 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
             creators["ready check"] = &WorldPacketTriggerContext::ready_check;
             creators["ready check finished"] = &WorldPacketTriggerContext::ready_check_finished;
             creators["uninvite"] = &WorldPacketTriggerContext::uninvite;
+            creators["uninvite guid"] = &WorldPacketTriggerContext::uninvite_guid;
             creators["lfg join"] = &WorldPacketTriggerContext::lfg_update;
             creators["lfg proposal"] = &WorldPacketTriggerContext::lfg_proposal;
             creators["lfg role check"] = &WorldPacketTriggerContext::lfg_role_check;
             creators["lfg leave"] = &WorldPacketTriggerContext::lfg_leave;
             creators["guild invite"] = &WorldPacketTriggerContext::guild_invite;
+            creators["petition offer"] = &WorldPacketTriggerContext::petition_offer;
             creators["lfg teleport"] = &WorldPacketTriggerContext::lfg_teleport;
             creators["inventory change failure"] = &WorldPacketTriggerContext::inventory_change_failure;
+            creators["bg status"] = &WorldPacketTriggerContext::bg_status;
+            creators["levelup"] = &WorldPacketTriggerContext::levelup;
+            creators["xpgain"] = &WorldPacketTriggerContext::xpgain;
+            creators["see spell"] = &WorldPacketTriggerContext::seespell;
+            creators["release spirit"] = &WorldPacketTriggerContext::release_spirit;
+            creators["revive from corpse"] = &WorldPacketTriggerContext::revive_from_corpse;
+            creators["receive emote"] = &WorldPacketTriggerContext::receive_emote;
+            creators["receive text emote"] = &WorldPacketTriggerContext::receive_text_emote;
+            creators["arena team invite"] = &WorldPacketTriggerContext::arena_team_invite;
         }
 
     private:
@@ -57,6 +68,7 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* lfg_role_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg role check"); }
         static Trigger* lfg_update(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg join"); }
         static Trigger* uninvite(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "uninvite"); }
+        static Trigger* uninvite_guid(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "uninvite guid"); }
         static Trigger* ready_check_finished(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "ready check finished"); }
         static Trigger* ready_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "ready check"); }
         static Trigger* duel_requested(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "duel requested"); }
@@ -75,7 +87,7 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* resurrect_request(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "resurrect request"); }
         static Trigger* gossip_hello(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "gossip hello"); }
         static Trigger* group_invite(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "group invite"); }
-        static Trigger* group_set_leader(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "group std::set leader"); }
+        static Trigger* group_set_leader(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "group set leader"); }
         static Trigger* no_money(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "not enough money"); }
         static Trigger* no_reputation(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "not enough reputation"); }
         static Trigger* use_game_object(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "use game object"); }
@@ -84,4 +96,14 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* quest_share(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "quest share"); }
         static Trigger* loot_roll(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "loot roll"); }
         static Trigger* taxi(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "activate taxi"); }
+        static Trigger* bg_status(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "bg status"); }
+        static Trigger* levelup(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "levelup"); }
+        static Trigger* xpgain(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "xpgain"); }
+        static Trigger* petition_offer(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "petition offer"); }
+        static Trigger* seespell(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "see spell"); }
+        static Trigger* release_spirit(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "release spirit"); }
+        static Trigger* revive_from_corpse(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "revive from corpse"); }
+        static Trigger* receive_emote(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "receive emote"); }
+        static Trigger* receive_text_emote(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "receive text emote"); }
+        static Trigger* arena_team_invite(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "arena team invite"); }
 };

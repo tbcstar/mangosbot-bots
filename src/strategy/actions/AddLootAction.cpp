@@ -4,6 +4,7 @@
 
 #include "AddLootAction.h"
 #include "Event.h"
+#include "GridNotifiers.h"
 #include "LootObjectStack.h"
 #include "Playerbot.h"
 #include "ServerFacade.h"
@@ -34,12 +35,12 @@ bool AddAllLootAction::Execute(Event event)
 
 bool AddLootAction::isUseful()
 {
-    return AI_VALUE(uint8, "bag space") < 80;
+    return true; // AI_VALUE(uint8, "bag space") < 80 || GrindTravelDestination::moneyNeeded(bot) > bot->GetMoney();
 }
 
 bool AddAllLootAction::isUseful()
 {
-    return AI_VALUE(uint8, "bag space") < 80;
+    return true; // AI_VALUE(uint8, "bag space") < 80 || GrindTravelDestination::moneyNeeded(bot) > bot->GetMoney();
 }
 
 bool AddAllLootAction::AddLoot(ObjectGuid guid)
@@ -67,8 +68,8 @@ bool AddGatheringLootAction::AddLoot(ObjectGuid guid)
     if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, wo), INTERACTION_DISTANCE))
     {
         std::list<Unit*> targets;
-        acore::AnyUnfriendlyUnitInObjectRangeCheck u_check(bot, bot, sPlayerbotAIConfig->lootDistance);
-        acore::UnitListSearcher<acore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+        Acore::AnyUnfriendlyUnitInObjectRangeCheck u_check(bot, bot, sPlayerbotAIConfig->lootDistance);
+        Acore::UnitListSearcher<Acore::AnyUnfriendlyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
         wo->VisitNearbyObject(sPlayerbotAIConfig->spellDistance, searcher);
         if (!targets.empty())
         {

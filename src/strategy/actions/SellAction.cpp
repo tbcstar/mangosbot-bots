@@ -5,6 +5,7 @@
 #include "SellAction.h"
 #include "Event.h"
 #include "ItemVisitors.h"
+#include "ItemUsageValue.h"
 #include "Playerbot.h"
 
 class SellItemsVisitor : public IterateItemsVisitor
@@ -36,16 +37,39 @@ class SellGrayItemsVisitor : public SellItemsVisitor
         }
 };
 
+class SellVendorItemsVisitor : public SellItemsVisitor
+{
+    public:
+        SellVendorItemsVisitor(SellAction* action, AiObjectContext* con) : SellItemsVisitor(action)
+        {
+            context = con;
+        }
+
+        AiObjectContext* context;
+
+        bool Visit(Item* item) override
+        {
+            ItemUsage usage = context->GetValue<ItemUsage>("item usage", item->GetEntry())->Get();
+            if (usage != ITEM_USAGE_VENDOR && usage != ITEM_USAGE_AH)
+                return true;
+
+            return SellItemsVisitor::Visit(item);
+        }
+};
+
 bool SellAction::Execute(Event event)
 {
-    Player* master = GetMaster();
-    if (!master)
-        return false;
-
     std::string const& text = event.getParam();
     if (text == "gray" || text == "*")
     {
         SellGrayItemsVisitor visitor(this);
+        IterateItems(&visitor);
+        return true;
+    }
+
+    if (text == "vendor")
+    {
+        SellVendorItemsVisitor visitor(this, context);
         IterateItems(&visitor);
         return true;
     }
@@ -71,7 +95,8 @@ void SellAction::Sell(FindItemVisitor* visitor)
 
 void SellAction::Sell(Item* item)
 {
-    Player* master = GetMaster();
+    std::ostringstream out;
+
     GuidVector vendors = botAI->GetAiObjectContext()->GetValue<GuidVector>("nearest npcs")->Get();
 
     bool bought = false;
@@ -88,7 +113,6 @@ void SellAction::Sell(Item* item)
         p << vendorguid << itemguid << count;
         bot->GetSession()->HandleSellItemOpcode(p);
 
-        std::ostringstream out;
         out << "Selling " << chat->formatItem(item->GetTemplate());
         botAI->TellMaster(out);
     }

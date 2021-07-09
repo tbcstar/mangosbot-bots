@@ -6,9 +6,13 @@
 #include "Event.h"
 #include "LastMovementValue.h"
 #include "Playerbot.h"
+#include "Transport.h"
 
 bool ReachAreaTriggerAction::Execute(Event event)
 {
+    if (ai->IsRealPlayer()) //Do not trigger own area trigger.
+        return false;
+
     uint32 triggerId;
     WorldPacket p(event.getPacket());
     p.rpos(0);

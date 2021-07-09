@@ -10,9 +10,9 @@ class PositionInfo
 {
     public:
         PositionInfo() : valueSet(false), x(0), y(0), z(0), mapId(0) { }
-        PositionInfo(PositionInfo const& other) : valueSet(other.valueSet), x(other.x), y(other.y), z(other.z), mapId(other.mapId) { }
+        PositionInfo(PositionInfo const& other) : valueSet(other.valueSet), x(other.x), y(other.y), z(other.z), mapId(other.GetMapId()) { }
 
-        void Set(double newX, double newY, double newZ, uint32 newMapId)
+        void Set(float newX, float newY, float newZ, uint32 newMapId)
         {
             x = newX;
             y = newY;
@@ -31,14 +31,15 @@ class PositionInfo
             return valueSet;
         }
 
-        double x;
-        double y;
-        double z;
+        float x;
+        float y;
+        float z;
         bool valueSet;
         uint32 mapId;
 };
 
 typedef std::map<std::string, PositionInfo> PositionMap;
+
 class PositionValue : public ManualSetValue<PositionMap&>
 {
 	public:

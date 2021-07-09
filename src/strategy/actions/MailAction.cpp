@@ -136,7 +136,7 @@ class TakeMailProcessor : public MailProcessor
             uint32 totalused = 0, total = 16;
             for (uint8 slot = INVENTORY_SLOT_ITEM_START; slot < INVENTORY_SLOT_ITEM_END; slot++)
                 if (bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
-                    totalused++;
+                    ++totalused;
 
             uint32 totalfree = 16 - totalused;
             for (uint8 bag = INVENTORY_SLOT_BAG_START; bag < INVENTORY_SLOT_BAG_END; ++bag)

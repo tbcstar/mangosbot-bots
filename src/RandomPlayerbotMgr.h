@@ -53,6 +53,8 @@ class RandomPlayerbotMgr : public PlayerbotHolder
         void OnPlayerLogin(Player* player);
         void OnPlayerLoginError(uint32 bot);
         Player* GetRandomPlayer();
+        std::vector<Player*> GetPlayers() { return players; };
+        PlayerBotMap GetAllBots() { return playerBots; };
         void PrintStats();
         double GetBuyMultiplier(Player* bot);
         double GetSellMultiplier(Player* bot);
@@ -71,6 +73,22 @@ class RandomPlayerbotMgr : public PlayerbotHolder
         void SetValue(uint32 bot, std::string const& type, uint32 value);
         void SetValue(Player* bot, std::string const& type, uint32 value);
         void Remove(Player* bot);
+        uint32 GetBattleMasterEntry(Player* bot, BattlegroundTypeId bgTypeId, bool fake = false);
+        CreatureData const* GetCreatureDataByEntry(uint32 entry);
+        uint32 GetCreatureGuidByEntry(uint32 entry);
+        void LoadBattleMastersCache();
+        std::map<uint32, std::map<uint32, std::map<uint32, bool>>> NeedBots;
+        std::map<uint32, std::map<uint32, std::map<uint32, uint32>>> BgBots;
+        std::map<uint32, std::map<uint32, std::map<uint32, uint32>>> VisualBots;
+        std::map<uint32, std::map<uint32, std::map<uint32, uint32>>> BgPlayers;
+        std::map<uint32, std::map<uint32, std::map<uint32, std::map<uint32, uint32>>>> ArenaBots;
+        std::map<uint32, std::map<uint32, std::map<uint32, uint32>>> Rating;
+        std::map<uint32, std::map<uint32, std::map<uint32, uint32>>> Supporters;
+        void CheckBgQueue();
+        void CheckLfgQueue();
+        void CheckPlayers();
+
+        std::map<Team, std::map<BattlegroundTypeId, std::vector<uint32>>> getBattleMastersCache() { return BattleMastersCache; }
 
 	protected:
 	    void OnBotLoginInternal(Player* const bot) override;
@@ -79,11 +97,16 @@ class RandomPlayerbotMgr : public PlayerbotHolder
         uint32 GetEventValue(uint32 bot, std::string const& event);
         uint32 SetEventValue(uint32 bot, std::string const& event, uint32 value, uint32 validIn);
         std::vector<uint32> GetBots();
+        std::vector<uint32> GetBgBots(uint32 bracket);
+        void AddBgBot(BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId, bool isRated = false, bool visual = false);
+        time_t BgCheckTimer;
+        time_t LfgCheckTimer;
+        time_t PlayersCheckTimer;
         uint32 AddRandomBots();
         bool ProcessBot(uint32 bot);
         void ScheduleRandomize(uint32 bot, uint32 time);
         void RandomTeleport(Player* bot);
-        void RandomTeleport(Player* bot, std::vector<WorldLocation>& locs);
+        void RandomTeleport(Player* bot, std::vector<WorldLocation>& locs, bool hearth = false);
         uint32 GetZoneLevel(uint16 mapId, float teleX, float teleY, float teleZ);
         void PrepareTeleportCache();
         typedef void(RandomPlayerbotMgr::*ConsoleCommandHandler)(Player*);
@@ -92,8 +115,12 @@ class RandomPlayerbotMgr : public PlayerbotHolder
         uint32 processTicks;
         std::map<uint8, std::vector<WorldLocation> > locsPerLevelCache;
         std::map<uint32, std::vector<WorldLocation> > rpgLocsCache;
+        std::map<uint32, std::map<uint32, std::vector<WorldLocation>>> rpgLocsCacheLevel;
+        std::map<TeamId, std::map<BattlegroundTypeId, std::vector<uint32> > > BattleMastersCache;
         std::map<uint32, std::map<std::string, CachedEvent> > eventCache;
         std::vector<uint32> currentBots;
+        uint32 bgBotsCount;
+        uint32 playersLevel;
 };
 
 #define sRandomPlayerbotMgr RandomPlayerbotMgr::instance()

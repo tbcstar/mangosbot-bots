@@ -10,9 +10,25 @@ class Qualified
 {
     public:
         Qualified() { };
+        Qualified(std::string const& qualifier) : qualifier(qualifier) { }
+        Qualified(uint32 qualifier1)
+        {
+            Qualify(qualifier1);
+        }
 
-        virtual void Qualify(std::string const& qual) { qualifier = qual; }
-        std::string const& GetQualifier() { return qualifier; }
+        virtual void Qualify(uint32 qual)
+        {
+            std::ostringstream out;
+            out << qual;
+            qualifier = out.str();
+        }
+
+        virtual void Qualify(std::string const& qual)
+        {
+            qualifier = qual;
+        }
+
+        std::string const& getQualifier() { return qualifier; }
 
     protected:
         std::string qualifier;
@@ -43,8 +59,9 @@ class NamedObjectFactory
             if (!creator)
                 return nullptr;
 
-            T* object = (*creator);
-            if (Qualified* q = dynamic_cast<Qualified*>(object))
+            T* object = (*creator)(ai);
+            Qualified* q = dynamic_cast<Qualified*>(object);
+            if (q && found != std::string::npos)
                 q->Qualify(qualifier);
 
             return object;
@@ -53,7 +70,7 @@ class NamedObjectFactory
         std::set<std::string> supports()
         {
             std::set<std::string> keys;
-            for (typename map<std::string, ActionCreator>::iterator it = creators.begin(); it != creators.end(); it++)
+            for (typename std::map<std::string, ActionCreator>::iterator it = creators.begin(); it != creators.end(); it++)
                 keys.insert(it->first);
 
             return std::move(keys);

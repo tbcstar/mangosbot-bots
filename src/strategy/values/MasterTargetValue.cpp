@@ -7,5 +7,5 @@
 
 Unit* MasterTargetValue::Calculate()
 {
-    return botAI->GetMaster();
+    return botAI->IsRealPlayer() ? botAI->GetGroupMaster() : botAI->GetMaster();
 }

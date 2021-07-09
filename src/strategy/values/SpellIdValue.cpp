@@ -102,7 +102,7 @@ uint32 SpellIdValue::Calculate()
             return *i;
 
         lowest = *i;
-        rank++;
+        ++rank;
     }
 
     return saveMana > 1 ? lowest : highest;

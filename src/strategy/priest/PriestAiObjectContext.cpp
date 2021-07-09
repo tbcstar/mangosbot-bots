@@ -84,7 +84,8 @@ class PriestTriggerFactoryInternal : public NamedObjectContext<Trigger>
             creators["shadow protection"] = &PriestTriggerFactoryInternal::shadow_protection;
             creators["shadow protection on party"] = &PriestTriggerFactoryInternal::shadow_protection_on_party;
             creators["shackle undead"] = &PriestTriggerFactoryInternal::shackle_undead;
-
+            creators["prayer of fortitude on party"] = &PriestTriggerFactoryInternal::prayer_of_fortitude_on_party;
+            creators["prayer of spirit on party"] = &PriestTriggerFactoryInternal::prayer_of_spirit_on_party;
         }
 
     private:
@@ -108,6 +109,8 @@ class PriestTriggerFactoryInternal : public NamedObjectContext<Trigger>
         static Trigger* shadow_protection_on_party(PlayerbotAI* botAI) { return new ShadowProtectionOnPartyTrigger(botAI); }
         static Trigger* shadow_protection(PlayerbotAI* botAI) { return new ShadowProtectionTrigger(botAI); }
         static Trigger* shackle_undead(PlayerbotAI* botAI) { return new ShackleUndeadTrigger(botAI); }
+        static Trigger* prayer_of_fortitude_on_party(PlayerbotAI* botAI) { return new PrayerOfFortitudeTrigger(botAI); }
+        static Trigger* prayer_of_spirit_on_party(PlayerbotAI* botAI) { return new PrayerOfSpiritTrigger(botAI); }
 };
 
 class PriestAiObjectContextInternal : public NamedObjectContext<Action>
@@ -161,6 +164,8 @@ class PriestAiObjectContextInternal : public NamedObjectContext<Action>
             creators["shadow protection"] = &PriestAiObjectContextInternal::shadow_protection;
             creators["shadow protection on party"] = &PriestAiObjectContextInternal::shadow_protection_on_party;
             creators["shackle undead"] = &PriestAiObjectContextInternal::shackle_undead;
+            creators["prayer of fortitude on party"] = &PriestAiObjectContextInternal::prayer_of_fortitude_on_party;
+            creators["prayer of spirit on party"] = &PriestAiObjectContextInternal::prayer_of_spirit_on_party;
         }
 
     private:
@@ -210,6 +215,8 @@ class PriestAiObjectContextInternal : public NamedObjectContext<Action>
         static Action* fade(PlayerbotAI* botAI) { return new CastFadeAction(botAI); }
         static Action* inner_fire(PlayerbotAI* botAI) { return new CastInnerFireAction(botAI); }
         static Action* shackle_undead(PlayerbotAI* botAI) { return new CastShackleUndeadAction(botAI); }
+        static Action* prayer_of_spirit_on_party(PlayerbotAI* botAI) { return new CastPrayerOfSpiritOnPartyAction(botAI); }
+        static Action* prayer_of_fortitude_on_party(PlayerbotAI* botAI) { return new CastPrayerOfFortitudeOnPartyAction(botAI); }
 };
 
 PriestAiObjectContext::PriestAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

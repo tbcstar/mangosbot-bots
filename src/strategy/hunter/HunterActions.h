@@ -16,7 +16,7 @@ class CastAutoShotAction : public CastSpellAction
     public:
         CastAutoShotAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "auto shot") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 BEGIN_RANGED_SPELL_ACTION(CastArcaneShotAction, "arcane shot")
@@ -47,14 +47,14 @@ BEGIN_RANGED_SPELL_ACTION(CastVolleyAction, "volley")
 END_SPELL_ACTION()
 
 BEGIN_RANGED_SPELL_ACTION(CastSerpentStingAction, "serpent sting")
-bool isUseful() const override;
+bool isUseful() override;
 END_SPELL_ACTION()
 
 BEGIN_RANGED_SPELL_ACTION(CastWyvernStingAction, "wyvern sting")
 END_SPELL_ACTION()
 
 BEGIN_RANGED_SPELL_ACTION(CastViperStingAction, "viper sting")
-bool isUseful() const override;
+bool isUseful() override;
 END_SPELL_ACTION()
 
 BEGIN_RANGED_SPELL_ACTION(CastScorpidStingAction, "scorpid sting")
@@ -77,7 +77,7 @@ class CastAspectOfTheCheetahAction : public CastBuffSpellAction
 	public:
 		CastAspectOfTheCheetahAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "aspect of the cheetah") { }
 
-		bool isUseful() const override;
+		bool isUseful() override;
 };
 
 class CastAspectOfThePackAction : public CastBuffSpellAction
@@ -155,8 +155,16 @@ class CastWingClipAction : public CastMeleeSpellAction
     public:
         CastWingClipAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "wing clip") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
         NextAction** getPrerequisites() override;
+};
+
+class CastRaptorStrikeAction : public CastMeleeSpellAction
+{
+    public:
+        CastRaptorStrikeAction(PlayerbotAI* ai) : CastMeleeSpellAction(ai, "raptor strike") { }
+
+        bool isUseful() override;
 };
 
 class CastSerpentStingOnAttackerAction : public CastDebuffSpellOnAttackerAction

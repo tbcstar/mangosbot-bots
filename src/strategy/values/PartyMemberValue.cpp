@@ -20,11 +20,14 @@ Unit* PartyMemberValue::FindPartyMember(std::vector<Player*>* party, FindPlayerP
     return nullptr;
 }
 
-Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate& predicate)
+Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate& predicate, bool ignoreOutOfGroup)
 {
     Player* master = GetMaster();
-    GuidVector nearestPlayers = AI_VALUE(GuidVector, "nearest friendly players");
+    GuidVector nearestPlayers;
+    if (botAI->AllowActive(OUT_OF_PARTY_ACTIVITY))
+        nearestPlayers = AI_VALUE(GuidVector, "nearest friendly players");
 
+    GuidList nearestGroupPlayers;
     if (Group* group = bot->GetGroup())
     {
         for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
@@ -33,15 +36,20 @@ Unit* PartyMemberValue::FindPartyMember(FindPlayerPredicate& predicate)
             {
                 if (ref->getSubGroup() != bot->GetSubGroup())
                 {
-                    nearestPlayers.push_back(ref->GetSource()->GetGUID());
+                    nearestGroupPlayers.push_back(ref->GetSource()->GetGUID());
                 }
                 else
                 {
-                    nearestPlayers.push_front(ref->GetSource()->GetGUID());
+                    nearestGroupPlayers.push_front(ref->GetSource()->GetGUID());
                 }
             }
         }
     }
+
+    if (!ignoreOutOfGroup && !nearestPlayers.empty())
+        nearestGroupPlayers.insert(nearestGroupPlayers.end(), nearestPlayers.begin(), nearestPlayers.end());
+
+    nearestPlayers = nearestGroupPlayers;
 
     std::vector<Player*> healers;
     std::vector<Player*> tanks;

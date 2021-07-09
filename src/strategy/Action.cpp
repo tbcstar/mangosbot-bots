@@ -12,7 +12,7 @@ uint32 NextAction::size(NextAction** actions)
 
     uint32 size = 0;
     for (size=0; actions[size];)
-        size++;
+        ++size;
 
     return size;
 }
@@ -54,7 +54,7 @@ NextAction** NextAction::merge(NextAction** left, NextAction** right)
     return res;
 }
 
-NextAction** NextAction::array(uint8 nil, ...)
+NextAction** NextAction::array(uint32 nil, ...)
 {
     va_list vl;
     va_start(vl, nil);
@@ -64,7 +64,7 @@ NextAction** NextAction::array(uint8 nil, ...)
     do
     {
         cur = va_arg(vl, NextAction*);
-        size++;
+        ++size;
     }
     while (cur);
 
@@ -87,7 +87,7 @@ void NextAction::destroy(NextAction** actions)
     for (uint32 i=0; actions[i]; i++)
         delete actions[i];
 
-    delete actions;
+    delete[] actions;
 }
 
 Value<Unit*>* Action::GetTargetValue()

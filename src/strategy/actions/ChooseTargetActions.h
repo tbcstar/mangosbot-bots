@@ -21,6 +21,7 @@ class DpsAssistAction : public AttackAction
         DpsAssistAction(PlayerbotAI* botAI) : AttackAction(botAI, "dps assist") { }
 
         std::string const& GetTargetName() override { return "dps target"; }
+        bool isUseful() override;
 };
 
 class TankAssistAction : public AttackAction
@@ -38,8 +39,12 @@ class AttackAnythingAction : public AttackAction
 
         std::string const& GetTargetName() override { return "grind target"; }
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
         bool isPossible() const override;
+
+    private:
+        //Todo: add specific conditions when bots should always be active (ie. in a guild with a player, some day grouped with a player, ect.)
+        bool GrindAlone(Player* bot);
 };
 
 class AttackLeastHpTargetAction : public AttackAction
@@ -56,6 +61,7 @@ class AttackEnemyPlayerAction : public AttackAction
         AttackEnemyPlayerAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack enemy player") { }
 
         std::string const& GetTargetName() override { return "enemy player target"; }
+        bool isUseful() override;
 };
 
 class AttackRtiTargetAction : public AttackAction
@@ -64,6 +70,15 @@ class AttackRtiTargetAction : public AttackAction
         AttackRtiTargetAction(PlayerbotAI* botAI) : AttackAction(botAI, "attack rti target") { }
 
         std::string const& GetTargetName() override { return "rti target"; }
+};
+
+class AttackEnemyFlagCarrierAction : public AttackAction
+{
+    public:
+        AttackEnemyFlagCarrierAction(PlayerbotAI* ai) : AttackAction(ai, "attack enemy flag carrier") {}
+
+        std::string const& GetTargetName() override { return "enemy flag carrier"; }
+        bool isUseful() override;
 };
 
 class DropTargetAction : public Action

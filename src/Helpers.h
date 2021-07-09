@@ -11,7 +11,7 @@ std::map<uint32, T> filterList(std::vector<T> src, std::string const& filter)
     if (filter.empty() || filter == "*")
     {
         uint32 idx = 0;
-        for (std::vector<T>::iterator i = src.begin(); i != src.end(); ++i)
+        for (typename std::vector<T>::iterator i = src.begin(); i != src.end(); ++i)
             result[idx++] = *i;
 
         return result;

@@ -124,7 +124,7 @@ class CastSunderArmorAction : public CastDebuffSpellAction
     public:
         CastSunderArmorAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "sunder armor"), range(ATTACK_DISTANCE) { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastDemoralizingShoutAction : public CastDebuffSpellAction
@@ -152,7 +152,7 @@ class CastBattleShoutAction : public CastBuffSpellAction
 	public:
 		CastBattleShoutAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "battle shout"), range(ATTACK_DISTANCE) { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastDefensiveStanceAction : public CastBuffSpellAction
@@ -167,8 +167,11 @@ class CastBattleStanceAction : public CastBuffSpellAction
 		CastBattleStanceAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "battle stance") { }
 };
 
-BEGIN_RANGED_SPELL_ACTION(CastChargeAction, "charge")
-END_SPELL_ACTION()
+class CastChargeAction : public CastReachTargetSpellAction
+{
+    public:
+        CastChargeAction(PlayerbotAI* ai) : CastReachTargetSpellAction(ai, "charge", 1.5f) {}
+};
 
 class CastDeathWishAction : public CastBuffSpellAction
 {
@@ -216,5 +219,5 @@ class CastBattleShoutTauntAction : public CastMeleeSpellAction
     public:
 	    CastBattleShoutTauntAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "battle shout") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };

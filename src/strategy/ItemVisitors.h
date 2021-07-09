@@ -29,7 +29,7 @@ class IterateItemsVisitor
 class FindItemVisitor : public IterateItemsVisitor
 {
     public:
-        FindItemVisitor() : IterateItemsVisitor(), result(nullptr) { }
+        FindItemVisitor() : IterateItemsVisitor(), result() { }
 
         bool Visit(Item* item) override
         {
@@ -253,7 +253,7 @@ class ItemCountByQuality : public IterateItemsVisitor
 
         bool Visit(Item* item) override
         {
-            count[item->GetTemplate()->Quality]++;
+            ++count[item->GetTemplate()->Quality];
             return true;
         }
 
@@ -306,4 +306,81 @@ class FindPetVisitor : public FindUsableItemVisitor
         FindPetVisitor(Player* bot) : FindUsableItemVisitor(bot) { }
 
         bool Accept(ItemTemplate const* proto) override;
+};
+
+class FindAmmoVisitor : public FindUsableItemVisitor
+{
+    public:
+        FindAmmoVisitor(Player* bot, uint32 weaponType) : FindUsableItemVisitor(bot), weaponType(weaponType) { }
+
+        bool Accept(ItemTemplate const* proto)override
+        {
+            if (proto->Class == ITEM_CLASS_PROJECTILE)
+            {
+                uint32 subClass = 0;
+                switch (weaponType)
+                {
+                    case ITEM_SUBCLASS_WEAPON_GUN:
+                        subClass = ITEM_SUBCLASS_BULLET;
+                        break;
+                    case ITEM_SUBCLASS_WEAPON_BOW:
+                    case ITEM_SUBCLASS_WEAPON_CROSSBOW:
+                        subClass = ITEM_SUBCLASS_ARROW;
+                        break;
+                }
+
+                if (!subClass)
+                    return false;
+
+                if (proto->SubClass == subClass)
+                    return true;
+            }
+
+            return false;
+        }
+
+    private:
+        uint32 weaponType;
+};
+
+class FindRecipeVisitor : public FindUsableItemVisitor
+{
+    public:
+        FindRecipeVisitor(Player* bot, SkillType skill = SKILL_NONE) : FindUsableItemVisitor(bot), skill(skill) {};
+
+        bool Accept(ItemTemplate const* proto) override
+        {
+            if (proto->Class == ITEM_CLASS_RECIPE)
+            {
+                if (skill == SKILL_NONE)
+                    return true;
+
+                switch (proto->SubClass)
+                {
+                    case ITEM_SUBCLASS_LEATHERWORKING_PATTERN:
+                        return skill == SKILL_LEATHERWORKING;
+                    case ITEM_SUBCLASS_TAILORING_PATTERN:
+                        return skill == SKILL_TAILORING;
+                    case ITEM_SUBCLASS_ENGINEERING_SCHEMATIC:
+                        return skill == SKILL_ENGINEERING;
+                    case ITEM_SUBCLASS_BLACKSMITHING:
+                        return skill == SKILL_BLACKSMITHING;
+                    case ITEM_SUBCLASS_COOKING_RECIPE:
+                        return skill == SKILL_COOKING;
+                    case ITEM_SUBCLASS_ALCHEMY_RECIPE:
+                        return skill == SKILL_ALCHEMY;
+                    case ITEM_SUBCLASS_FIRST_AID_MANUAL:
+                        return skill == SKILL_FIRST_AID;
+                    case ITEM_SUBCLASS_ENCHANTING_FORMULA:
+                        return skill == SKILL_ENCHANTING;
+                    case ITEM_SUBCLASS_FISHING_MANUAL:
+                        return skill == SKILL_FISHING;
+                }
+            }
+
+            return false;
+        }
+
+    private:
+        SkillType skill;
 };

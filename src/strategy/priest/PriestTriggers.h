@@ -38,6 +38,22 @@ class DivineSpiritTrigger : public BuffTrigger
         bool IsActive() override;
 };
 
+class PrayerOfFortitudeTrigger : public BuffOnPartyTrigger
+{
+    public:
+        PrayerOfFortitudeTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "prayer of fortitude", 2) { }
+
+        bool IsActive() override;
+};
+
+class PrayerOfSpiritTrigger : public BuffOnPartyTrigger
+{
+    public:
+        PrayerOfSpiritTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "prayer of spirit", 2) { }
+
+        bool IsActive() override;
+};
+
 class InnerFireTrigger : public BuffTrigger
 {
     public:

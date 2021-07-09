@@ -58,7 +58,7 @@ void MeleeShamanStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("shaman weapon", NextAction::array(0, new NextAction("windfury weapon", 22.0f), nullptr)));
     triggers.push_back(new TriggerNode("searing totem", NextAction::array(0, new NextAction("reach melee", 22.0f), new NextAction("searing totem", 22.0f), nullptr)));
     triggers.push_back(new TriggerNode("shock", NextAction::array(0, new NextAction("earth shock", 20.0f), nullptr)));
-    triggers.push_back(new TriggerNode("not facing target", NextAction::array(0, new NextAction("std::set facing", ACTION_NORMAL + 7), nullptr)));
+    triggers.push_back(new TriggerNode("not facing target", NextAction::array(0, new NextAction("set facing", ACTION_NORMAL + 7), nullptr)));
     triggers.push_back(new TriggerNode("enemy too close for melee", NextAction::array(0, new NextAction("move out of enemy contact", ACTION_NORMAL + 8), nullptr)));
     triggers.push_back(new TriggerNode("medium aoe", NextAction::array(0, new NextAction("strength of earth totem", ACTION_LIGHT_HEAL), nullptr)));
 }

@@ -61,7 +61,7 @@ class CastFrostNovaAction : public CastSpellAction
     public:
         CastFrostNovaAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "frost nova") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastFrostboltAction : public CastSpellAction

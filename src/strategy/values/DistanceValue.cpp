@@ -3,12 +3,13 @@
  */
 
 #include "DistanceValue.h"
-#include "Formations.h
+#include "Formations.h"
 #include "PositionValue.h"
-#include "Stances.h
+#include "Stances.h"
 #include "LootObjectStack.h"
 #include "Playerbot.h"
 #include "ServerFacade.h"
+#include "TravelMgr.h"
 
 float DistanceValue::Calculate()
 {
@@ -43,6 +44,26 @@ float DistanceValue::Calculate()
     {
         ObjectGuid rpgTarget = AI_VALUE(ObjectGuid, qualifier);
         target = botAI->GetUnit(rpgTarget);
+        if (!target)
+        {
+            if (GameObject* go = botAI->GetGameObject(rpgTarget))
+                return sServerFacade->GetDistance2d(botAI->GetBot(), go);
+        }
+    }
+    else if (qualifier == "travel target")
+    {
+        TravelTarget* travelTarget = AI_VALUE(TravelTarget*, qualifier);
+        return travelTarget->distance(botAI->GetBot());
+    }
+    else if (qualifier == "last long move")
+    {
+        WorldPosition target = AI_VALUE(WorldPosition, qualifier);
+        return target.distance(ai->GetBot());
+    }
+    else if (qualifier == "home bind")
+    {
+        WorldPosition target = AI_VALUE(WorldPosition, qualifier);
+        return target.distance(ai->GetBot());
     }
     else if (qualifier == "current target")
     {
@@ -53,7 +74,7 @@ float DistanceValue::Calculate()
     else
     {
         target = AI_VALUE(Unit*, qualifier);
-        if (target && target == GetMaster())
+        if (target && target == GetMaster() && target != bot)
         {
             Formation* formation = AI_VALUE(Formation*, "formation");
             WorldLocation loc = formation->GetLocation();
@@ -77,5 +98,5 @@ bool InsideTargetValue::Calculate()
         return false;
 
     float dist = sServerFacade->GetDistance2d(botAI->GetBot(), target->GetPositionX(), target->GetPositionY());
-    return sServerFacade->IsDistanceLessThan(dist, target->GetObjectBoundingRadius());
+    return sServerFacade->IsDistanceLessThan(dist, target->GetCombatReach());
 }

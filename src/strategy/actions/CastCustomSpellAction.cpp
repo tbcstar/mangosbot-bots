@@ -3,6 +3,7 @@
  */
 
 #include "CastCustomSpellAction.h"
+#include "ChatHelper.h"
 #include "Event.h"
 #include "Playerbot.h"
 
@@ -20,18 +21,36 @@ uint32 FindLastSeparator(std::string const& text, std::string const& sep)
     return pos;
 }
 
+static inline void ltrim(std::string& s)
+{
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+}
+
 bool CastCustomSpellAction::Execute(Event event)
 {
     Unit* target = nullptr;
+    std::string text = event.getParam();
 
-    Player* master = GetMaster();
-    if (master && master->GetTarget())
-        target = botAI->GetUnit(master->GetTarget());
+    GuidVector gos = chat->parseGameobjects(text);
+    if (!gos.empty())
+    {
+        for (auto go : gos)
+        {
+            if (!target)
+                target = botAI->GetUnit(go);
+
+            chat->eraseAllSubStr(text, chat->formatWorldobject(botAI->GetUnit(go)));
+        }
+
+        ltrim(text);
+    }
+
+    if (!target)
+        if (master && master->GetTarget())
+            target = botAI->GetUnit(master->GetTarget());
 
     if (!target)
         target = bot;
-
-    std::string text = event.getParam();
 
     Item* itemTarget = nullptr;
 
@@ -106,7 +125,7 @@ bool CastCustomSpellAction::Execute(Event event)
         if (castCount > 1)
         {
             std::ostringstream cmd;
-            cmd << "cast " << text << " " << (castCount - 1);
+            cmd << castString(target) << " " << text << " " << (castCount - 1);
             botAI->HandleCommand(CHAT_MSG_WHISPER, cmd.str(), *master);
             msg << "|cffffff00(x" << (castCount-1) << " left)|r";
         }
@@ -120,4 +139,124 @@ bool CastCustomSpellAction::Execute(Event event)
     }
 
     return result;
+}
+
+bool CastCustomNcSpellAction::isUseful()
+{
+    return !bot->IsInCombat();
+}
+
+std::string const& CastCustomNcSpellAction::castString(WorldObject* target)
+{
+    return "castnc " + chat->formatWorldobject(target);
+}
+
+bool CastRandomSpellAction::Execute(Event event)
+{
+    PlayerSpellMap const& spellMap = bot->GetSpellMap();
+    Player* master = GetMaster();
+
+    Unit* target = nullptr;
+    GameObject* got = nullptr;
+
+    std::string name = event.getParam();
+    if (name.empty())
+        name = getName();
+
+    std::vector<ObjectGuid> wos = chat->parseGameobjects(name);
+
+    for (auto wo : wos)
+    {
+        target = ai->GetUnit(wo);
+        got = ai->GetGameObject(wo);
+
+        if (got || target)
+            break;
+    }
+
+    if (!got && !target && bot->GetSelectionGuid())
+    {
+        target = ai->GetUnit(bot->GetSelectionGuid());
+        got = ai->GetGameObject(bot->GetSelectionGuid());
+    }
+
+    if (!got && !target)
+        if (master && master->GetSelectionGuid())
+            target = ai->GetUnit(master->GetSelectionGuid());
+
+    if (!got && !target)
+        target = bot;
+
+    std::vector<std::pair<uint32, std::pair<Unit*, GameObject*>>> spellList;
+
+    for (auto& spell : spellMap)
+    {
+        uint32 spellId = spell.first;
+
+        if (spell.second.state == PLAYERSPELL_REMOVED || spell.second.disabled || IsPassiveSpell(spellId))
+            continue;
+
+        const SpellEntry* pSpellInfo = sServerFacade.LookupSpellInfo(spellId);
+        if (!pSpellInfo)
+            continue;
+
+        if (!AcceptSpell(pSpellInfo))
+            continue;
+
+        if (pSpellInfo->Effect[0] == SPELL_EFFECT_LEARN_SPELL || pSpellInfo->Effect[0] == SPELL_EFFECT_TRADE_SKILL)
+            continue;
+
+        if (bot->HasSpell(spellId))
+        {
+            if (target && ai->CanCastSpell(spellId, target, true))
+                spellList.push_back(make_pair(spellId, make_pair(target, nullptr)));
+            if (got && ai->CanCastSpell(spellId, got->GetPositionX(), got->GetPositionY(), got->GetPositionZ(), true))
+                spellList.push_back(make_pair(spell.first, make_pair(nullptr, got)));
+            if (ai->CanCastSpell(spellId, bot, true))
+                spellList.push_back(make_pair(spellId, make_pair(bot, nullptr)));
+        }
+    }
+
+    if (spellList.empty())
+        return false;
+
+    bool isCast = false;
+
+    for (uint32 i = 0; i < 5; i++)
+    {
+        uint32 rnd = urand(0, spellList.size() - 1);
+
+        uint32 spellId = spellList[rnd].first;
+
+        Unit* unit = spellList[rnd].second.first;
+        GameObject* go = spellList[rnd].second.second;
+
+        if (unit)
+            isCast = ai->CastSpell(spellId, unit);
+        else
+            isCast = ai->CastSpell(spellId, go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
+
+        if (isCast)
+        {
+            if (MultiCast && ((unit && sServerFacade.IsInFront(bot, unit, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT)) ||
+                (go && sServerFacade.IsInFront(bot, unit, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT))))
+            {
+                std::ostringstream cmd;
+                if (unit)
+                    cmd << "castnc " << chat->formatWorldobject(unit) + " " << spellId << " " << 19;
+                else
+                    cmd << "castnc " << chat->formatWorldobject(go) + " " << spellId << " " << 19;
+
+                ai->HandleCommand(CHAT_MSG_WHISPER, cmd.str(), *bot);
+            }
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool CraftRandomItemAction::AcceptSpell(SpellInfo const* pSpellInfo)
+{
+    return pSpellInfo->Effects[0].Effect == SPELL_EFFECT_CREATE_ITEM;
 }

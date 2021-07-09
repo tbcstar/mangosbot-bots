@@ -10,8 +10,25 @@ class PlayerbotAI;
 class ReleaseSpiritAction : public Action
 {
 	public:
-		ReleaseSpiritAction(PlayerbotAI* botAI) : Action(botAI, "release") { }
+		ReleaseSpiritAction(PlayerbotAI* botAI, std::string const& name = "release") : Action(botAI, name) { }
 
         bool Execute(Event event) override;
 };
 
+class AutoReleaseSpiritAction : public ReleaseSpiritAction
+{
+    public:
+        AutoReleaseSpiritAction(PlayerbotAI* ai, std::string const& name = "auto release") : ReleaseSpiritAction(ai, name) {}
+
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};
+
+class RepopAction : public Action
+{
+    public:
+        RepopAction(PlayerbotAI* ai, std::string const& name = "repop") : Action(ai, name) {}
+
+        bool Execute(Event event) override;
+        bool isUseful() override;
+};

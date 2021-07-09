@@ -13,7 +13,7 @@ class AddLootAction : public Action
     public:
         AddLootAction(PlayerbotAI* botAI) : Action(botAI, "add loot") { }
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class AddAllLootAction : public Action
@@ -21,7 +21,7 @@ class AddAllLootAction : public Action
     public:
         AddAllLootAction(PlayerbotAI* botAI, std::string const& name = "add all loot") : Action(botAI, name) { }
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 
     protected:
         virtual bool AddLoot(ObjectGuid guid);

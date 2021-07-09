@@ -1,7 +1,94 @@
-#include "botpch.h"
-#include "Playerbot.h"
+/*
+ * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
+ */
+
 #include "RogueTriggers.h"
-#include "RogueActions.h"
+#include "Playerbot.h"
+#include "ServerFacade.h"
 
-using namespace botAI;
+bool AdrenalineRushTrigger::IsPossible() const
+{
+    return !botAI->HasAura("stealth", bot);
+}
 
+bool UnstealthTrigger::IsActive()
+{
+    if (!botAI->HasAura("stealth", bot))
+        return false;
+
+    return botAI->HasAura("stealth", bot) && !AI_VALUE(uint8, "attacker count") && (AI_VALUE2(bool, "moving", "self target") && ((botAI->GetMaster() &&
+        sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "master target"), 10.0f) && AI_VALUE2(bool, "moving", "master target")) ||
+        !AI_VALUE(uint8, "attacker count")));
+}
+
+bool StealthTrigger::IsActive()
+{
+    if (botAI->HasAura("stealth", bot) || bot->IsInCombat() || bot->HasSpellCooldown(1784))
+        return false;
+
+    float distance = 30.f;
+
+    Unit* target = AI_VALUE(Unit*, "enemy player target");
+    if (!target)
+        target = AI_VALUE(Unit*, "grind target");
+
+    if (!target)
+        target = AI_VALUE(Unit*, "dps target");
+
+    if (!target)
+        return false;
+
+    if (target && target->GetVictim())
+        distance -= 10;
+
+    if (target->isMoving() && target->GetVictim())
+        distance -= 10;
+
+    if (bot->InBattleground())
+        distance += 15;
+
+    if (bot->InArena())
+        distance += 15;
+
+    return target && sServerFacade->GetDistance2d(bot, target) < distance;
+}
+
+bool SapTrigger::IsPossible() const
+{
+    return bot->getLevel() > 10 && bot->HasSpell(6770) && !bot->IsInCombat();
+}
+
+bool BuffTrigger::IsPossible() const
+{
+    return bot->HasSpell(2983);
+}
+
+bool BuffTrigger::IsActive()
+{
+    if (bot->HasSpellCooldown(2983))
+        return false;
+
+    float distance = botAI->GetMaster() ? 45.0f : 35.0f;
+    if (botAI->HasAura("stealth", bot))
+        distance -= 10;
+
+    bool targeted = false;
+
+    Unit* dps = AI_VALUE(Unit*, "dps target");
+    Unit* enemyPlayer = AI_VALUE(Unit*, "enemy player target");
+    if (dps)
+        targeted = (dps == AI_VALUE(Unit*, "current target"));
+
+    if (enemyPlayer && !targeted)
+        targeted = (enemyPlayer == AI_VALUE(Unit*, "current target"));
+
+    if (!targeted)
+        return false;
+
+    if ((dps && dps->IsInCombat()) || enemyPlayer)
+        distance -= 10;
+
+    return  AI_VALUE2(bool, "moving", "self target") && (AI_VALUE2(bool, "moving", "dps target") || AI_VALUE2(bool, "moving", "enemy player target")) &&
+        targeted && (sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "dps target"), distance) ||
+            sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "enemy player target"), distance));
+}

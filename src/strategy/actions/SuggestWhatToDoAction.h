@@ -13,7 +13,7 @@ class SuggestWhatToDoAction : public InventoryAction
         SuggestWhatToDoAction(PlayerbotAI* botAI, std::string const& name = "suggest what to do");
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 
     protected:
         typedef void (SuggestWhatToDoAction::*Suggestion)();

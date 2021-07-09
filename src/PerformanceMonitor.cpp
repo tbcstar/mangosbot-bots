@@ -105,7 +105,7 @@ void PerformanceMonitorOperation::finish()
         data->totalTime += elapsed;
     }
 
-    data->count++;
+    ++data->count;
     delete this;
 }
 

@@ -2,22 +2,28 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
+#include "AcceptBattleGroundInvitationAction.h"
 #include "AcceptDuelAction.h"
 #include "AcceptInvitationAction.h"
 #include "AcceptQuestAction.h"
 #include "AcceptResurrectAction.h"
 #include "AreaTriggerAction.h"
+#include "ArenaTeamActions.h"
+#include "BattleGroundTactics.h"
 #include "CheckMountStateAction.h"
 #include "GuildAcceptAction.h"
 #include "InventoryChangeFailureAction.h"
 #include "LeaveGroupAction.h"
+#include "LfgActions.h"
 #include "LootAction.h"
 #include "LootRollAction.h"
 #include "QuestAction.h"
 #include "PassLeadershipToMasterAction.h"
+#include "PetitionSignAction.h"
 #include "ReadyCheckAction.h"
 #include "RememberTaxiAction.h"
 #include "ReviveFromCorpseAction.h"
+#include "SeeSpellAction.h"
 #include "SecurityCheckAction.h"
 #include "TalkToQuestGiverAction.h"
 #include "TellCastFailedAction.h"
@@ -44,6 +50,8 @@ class WorldPacketActionContext : public NamedObjectContext<Action>
             creators["accept quest share"] = &WorldPacketActionContext::accept_quest_share;
             creators["loot roll"] = &WorldPacketActionContext::loot_roll;
             creators["revive from corpse"] = &WorldPacketActionContext::revive_from_corpse;
+            creators["find corpse"] = &WorldPacketActionContext::find_corpse;
+            creators["auto release"] = &WorldPacketActionContext::auto_release;
             creators["accept resurrect"] = &WorldPacketActionContext::accept_resurrect;
             creators["use meeting stone"] = &WorldPacketActionContext::use_meeting_stone;
             creators["area trigger"] = &WorldPacketActionContext::area_trigger;
@@ -52,7 +60,6 @@ class WorldPacketActionContext : public NamedObjectContext<Action>
             creators["remember taxi"] = &WorldPacketActionContext::remember_taxi;
             creators["accept trade"] = &WorldPacketActionContext::accept_trade;
             creators["store loot"] = &WorldPacketActionContext::store_loot;
-            creators["tell out of react range"] = &WorldPacketActionContext::tell_out_of_react_range;
             creators["quest objective completed"] = &WorldPacketActionContext::quest_objective_completed;
             creators["party command"] = &WorldPacketActionContext::party_command;
             creators["tell cast failed"] = &WorldPacketActionContext::tell_cast_failed;
@@ -63,6 +70,19 @@ class WorldPacketActionContext : public NamedObjectContext<Action>
             creators["security check"] = &WorldPacketActionContext::security_check;
             creators["guild accept"] = &WorldPacketActionContext::guild_accept;
             creators["inventory change failure"] = &WorldPacketActionContext::inventory_change_failure;
+            creators["bg status check"] = &WorldPacketActionContext::bg_status_check;
+            creators["bg status"] = &WorldPacketActionContext::bg_status;
+            creators["bg join"] = &WorldPacketActionContext::bg_join;
+            creators["bg leave"] = &WorldPacketActionContext::bg_leave;
+            creators["arena tactics"] = &WorldPacketActionContext::arena_tactics;
+            creators["petition sign"] = &WorldPacketActionContext::petition_sign;
+            creators["lfg join"] = &WorldPacketActionContext::lfg_join;
+            creators["lfg accept"] = &WorldPacketActionContext::lfg_accept;
+            creators["lfg role check"] = &WorldPacketActionContext::lfg_role_check;
+            creators["lfg leave"] = &WorldPacketActionContext::lfg_leave;
+            creators["lfg teleport"] = &WorldPacketActionContext::lfg_teleport;
+            creators["see spell"] = &WorldPacketActionContext::see_spell;
+            creators["arena team accept"] = &WorldPacketActionContext::arena_team_accept;
         }
 
     private:
@@ -77,7 +97,6 @@ class WorldPacketActionContext : public NamedObjectContext<Action>
         static Action* party_command(PlayerbotAI* botAI) { return new PartyCommandAction(botAI); }
         static Action* quest_objective_completed(PlayerbotAI* botAI) { return new QuestObjectiveCompletedAction(botAI); }
         static Action* store_loot(PlayerbotAI* botAI) { return new StoreLootAction(botAI); }
-        static Action* tell_out_of_react_range(PlayerbotAI* botAI) { return new OutOfReactRangeAction(botAI); }
         static Action* accept_trade(PlayerbotAI* botAI) { return new TradeStatusAction(botAI); }
         static Action* remember_taxi(PlayerbotAI* botAI) { return new RememberTaxiAction(botAI); }
         static Action* check_mount_state(PlayerbotAI* botAI) { return new CheckMountStateAction(botAI); }
@@ -85,6 +104,8 @@ class WorldPacketActionContext : public NamedObjectContext<Action>
         static Action* reach_area_trigger(PlayerbotAI* botAI) { return new ReachAreaTriggerAction(botAI); }
         static Action* use_meeting_stone(PlayerbotAI* botAI) { return new UseMeetingStoneAction(botAI); }
         static Action* accept_resurrect(PlayerbotAI* botAI) { return new AcceptResurrectAction(botAI); }
+        static Action* find_corpse(PlayerbotAI* ai) { return new FindCorpseAction(ai); }
+        static Action* auto_release(PlayerbotAI* ai) { return new AutoReleaseSpiritAction(ai); }
         static Action* revive_from_corpse(PlayerbotAI* botAI) { return new ReviveFromCorpseAction(botAI); }
         static Action* accept_invitation(PlayerbotAI* botAI) { return new AcceptInvitationAction(botAI); }
         static Action* pass_leadership_to_master(PlayerbotAI* botAI) { return new PassLeadershipToMasterAction(botAI); }
@@ -96,4 +117,17 @@ class WorldPacketActionContext : public NamedObjectContext<Action>
         static Action* accept_all_quests(PlayerbotAI* botAI) { return new AcceptAllQuestsAction(botAI); }
         static Action* accept_quest_share(PlayerbotAI* botAI) { return new AcceptQuestShareAction(botAI); }
         static Action* loot_roll(PlayerbotAI* botAI) { return (QueryItemUsageAction*)new LootRollAction(botAI); }
+        static Action* bg_join(PlayerbotAI* botAI) { return new BGJoinAction(botAI); }
+        static Action* bg_leave(PlayerbotAI* botAI) { return new BGLeaveAction(botAI); }
+        static Action* bg_status(PlayerbotAI* botAI) { return new BGStatusAction(botAI); }
+        static Action* bg_status_check(PlayerbotAI* botAI) { return new BGStatusCheckAction(botAI); }
+        static Action* arena_tactics(PlayerbotAI* botAI) { return new ArenaTactics(botAI); }
+        static Action* petition_sign(PlayerbotAI* botAI) { return new PetitionSignAction(botAI); }
+        static Action* lfg_teleport(PlayerbotAI* botAI) { return new LfgTeleportAction(botAI); }
+        static Action* lfg_leave(PlayerbotAI* botAI) { return new LfgLeaveAction(botAI); }
+        static Action* lfg_accept(PlayerbotAI* botAI) { return new LfgAcceptAction(botAI); }
+        static Action* lfg_role_check(PlayerbotAI* botAI) { return new LfgRoleCheckAction(botAI); }
+        static Action* lfg_join(PlayerbotAI* botAI) { return new LfgJoinAction(botAI); }
+        static Action* see_spell(PlayerbotAI* botAI) { return new SeeSpellAction(botAI); }
+        static Action* arena_team_accept(PlayerbotAI* ai) { return new ArenaTeamAcceptAction(ai); }
 };

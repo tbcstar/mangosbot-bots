@@ -72,7 +72,7 @@ bool CastBlessingOfWisdomOnPartyAction::Execute(Event event)
     return botAI->CastSpell(GetActualBlessingOfWisdom(target), target);
 }
 
-bool CastSealSpellAction::isUseful() const
+bool CastSealSpellAction::isUseful()
 {
     return AI_VALUE2(bool, "combat", "self target");
 }

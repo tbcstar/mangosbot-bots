@@ -22,7 +22,7 @@ class StayAction : public StayActionBase
         StayAction(PlayerbotAI* botAI) : StayActionBase(botAI, "stay") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class SitAction : public StayActionBase
@@ -31,5 +31,5 @@ class SitAction : public StayActionBase
         SitAction(PlayerbotAI* botAI) : StayActionBase(botAI, "sit") { }
 
         bool Execute(Event event) override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };

@@ -4,6 +4,7 @@
 
 #include "RangeTriggers.h"
 #include "Playerbot.h"
+#include "ServerFacade.h"
 
 bool EnemyTooCloseForSpellTrigger::IsActive()
 {
@@ -23,7 +24,7 @@ bool EnemyTooCloseForMeleeTrigger::IsActive()
     return target && AI_VALUE2(bool, "inside target", "current target");
 }
 
-virtual bool EnemyIsCloseTrigger::IsActive()
+bool EnemyIsCloseTrigger::IsActive()
 {
     Unit* target = AI_VALUE(Unit*, "current target");
     return target && sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), sPlayerbotAIConfig->tooCloseDistance);
@@ -40,3 +41,20 @@ bool FarFromMasterTrigger::IsActive()
     return sServerFacade->IsDistanceGreaterThan(AI_VALUE2(float, "distance", "master target"), distance);
 }
 
+bool HearthIsFasterTrigger::IsActive()
+{
+    if (!bot->HasItemCount(6948, 1, false))
+        return false;
+
+    if (!sServerFacade.IsSpellReady(bot, 8690))
+        return false;
+
+    WorldPosition longMove = AI_VALUE(WorldPosition, "last long move");
+
+    if (!longMove)
+        return false;
+
+    WorldPosition hearthBind = AI_VALUE(WorldPosition, "home bind");
+
+    return AI_VALUE2(float, "distance", "last long move") > hearthBind.distance(longMove) + 200;
+}

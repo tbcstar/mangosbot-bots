@@ -13,4 +13,5 @@ class PassLeadershipToMasterAction : public Action
         PassLeadershipToMasterAction(PlayerbotAI* botAI) : Action(botAI, "leader") { }
 
         bool Execute(Event event) override;
+        bool isUseful() override;
 };

@@ -3,15 +3,32 @@
  */
 
 #include "Action.h"
+#include "Talentspec.h"
 
 class Event;
 class PlayerbotAI;
 
 class ChangeTalentsAction : public Action
 {
-	public:
-		ChangeTalentsAction(PlayerbotAI* botAI) : Action(botAI, "talents") { }
+    public:
+        ChangeTalentsAction(PlayerbotAI* botAI, std::string const& name = "talents") : Action(botAI, name) { }
+
+        bool Execute(Event event);
+        bool AutoSelectTalents(std::ostringstream* out);
+
+    private:
+        std::vector<TalentPath*> getPremadePaths(std::string const& findName);
+        std::vector<TalentPath*> getPremadePaths(TalentSpec* oldSpec);
+        TalentPath* ChangeTalentsAction::getPremadePath(uint32 id);
+        void listPremadePaths(std::vector<TalentPath*> paths, std::ostringstream* out);
+        TalentPath* PickPremadePath(std::vector<TalentPath*> paths, bool useProbability);
+        TalentSpec* GetBestPremadeSpec(uint32 spec);
+};
+
+class AutoSetTalentsAction : public ChangeTalentsAction
+{
+    public:
+        AutoSetTalentsAction(PlayerbotAI* botAI) : ChangeTalentsAction(botAI, "auto talents") { }
 
         bool Execute(Event event) override;
 };
-

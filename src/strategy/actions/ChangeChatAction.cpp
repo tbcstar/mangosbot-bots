@@ -21,7 +21,7 @@ bool ChangeChatAction::Execute(Event event)
         context->GetValue<ChatMsg>("chat")->Set(parsed);
 
         std::ostringstream out;
-        out << "Chat std::set to " << chat->formatChat(parsed);
+        out << "Chat set to " << chat->formatChat(parsed);
         botAI->TellMaster(out);
     }
 

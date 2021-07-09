@@ -2,6 +2,7 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
+#include "PlayerbotAIConfig.h"
 #include "Trigger.h"
 
 class PlayerbotAI;
@@ -85,5 +86,13 @@ class FarFromMasterTrigger : public Trigger
 class OutOfReactRangeTrigger : public FarFromMasterTrigger
 {
     public:
-        OutOfReactRangeTrigger(PlayerbotAI* botAI) : FarFromMasterTrigger(botAI, "out of react range", sPlayerbotAIConfig->reactDistance / 2, 10) { }
+        OutOfReactRangeTrigger(PlayerbotAI* botAI) : FarFromMasterTrigger(botAI, "out of react range", 40.0f, 5) { }
+};
+
+class HearthIsFasterTrigger : public Trigger
+{
+    public:
+        HearthIsFasterTrigger(PlayerbotAI* ai) : Trigger(ai, "hearth is faster", 5) {}
+
+        bool IsActive() override;
 };

@@ -34,8 +34,16 @@ int strcmpi(char const* s1, char const* s2);
 #define AI_VALUE(type, name) context->GetValue<type>(name)->Get()
 #define AI_VALUE2(type, name, param) context->GetValue<type>(name, param)->Get()
 
-// Ultranix: missing death knighta
+// Ultranix: missing death knight
 // Ultranix: sLog->outdebug
 // Ultranix: RACE_DRAENEI and RACE_BLOOD_ELF
+// Ultranix: eots
 // Ultranix: "... botAI"
 // Ultranix: strategy for dk
+// Ultranix: new sockets and threading
+// Ultranix: check bigints in database
+// Ultranix .c_str for strings in logs
+// Ultranix: NULL
+// Ultranix: check bg packets
+// Ultranix: update config with default values from playerbotconfig.cpp
+// Ultranix: IKE_PATHFINDER

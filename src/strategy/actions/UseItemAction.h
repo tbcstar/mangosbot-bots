@@ -15,7 +15,7 @@ class UseItemAction : public Action
 		UseItemAction(PlayerbotAI* botAI, std::string const& name = "use", bool selfOnly = false) : Action(botAI, name), selfOnly(selfOnly) { }
 
         bool Execute(Event event) override;
-        bool isPossible() const override;
+        bool isPossible() override;
 
     protected:
         bool UseItemAuto(Item* item);
@@ -24,6 +24,7 @@ class UseItemAction : public Action
         bool UseItem(Item* item, ObjectGuid go, Item* itemTarget);
         bool UseGameObject(ObjectGuid guid);
         void TellConsumableUse(Item* item, std::string const& action, float percent);
+        bool SocketItem(Item* item, Item* gem, bool replace = false);
 
     private:
         bool selfOnly;
@@ -34,7 +35,7 @@ class UseSpellItemAction : public UseItemAction
     public:
         UseSpellItemAction(PlayerbotAI* botAI, std::string const& name, bool selfOnly = false) : UseItemAction(botAI, name, selfOnly) { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class UseHealingPotion : public UseItemAction
@@ -42,7 +43,7 @@ class UseHealingPotion : public UseItemAction
     public:
         UseHealingPotion(PlayerbotAI* botAI) : UseItemAction(botAI, "healing potion") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class UseManaPotion : public UseItemAction
@@ -50,5 +51,24 @@ class UseManaPotion : public UseItemAction
     public:
         UseManaPotion(PlayerbotAI* botAI) : UseItemAction(botAI, "mana potion") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
+};
+
+class UseHearthStone : public UseItemAction
+{
+    public:
+        UseHearthStone(PlayerbotAI* ai) : UseItemAction(ai, "hearthstone") {}
+
+        bool isUseful() override;
+        bool Execute(Event event) override;
+};
+
+class UseRandomRecipe : public UseItemAction
+{
+    public:
+        UseRandomRecipe(PlayerbotAI* ai) : UseItemAction(ai, "random recipe") {}
+
+        bool isUseful() override;
+        bool isPossible() override { return true; }
+        bool Execute(Event event) override;
 };

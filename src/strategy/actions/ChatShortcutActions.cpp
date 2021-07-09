@@ -4,6 +4,7 @@
 
 #include "ChatShortcutActions.h"
 #include "Event.h"
+#include "Formations.h"
 #include "PositionValue.h"
 #include "Playerbot.h"
 
@@ -33,11 +34,47 @@ bool FollowChatShortcutAction::Execute(Event event)
     botAI->ChangeStrategy("+follow,-passive", BOT_STATE_NON_COMBAT);
     botAI->ChangeStrategy("-follow,-passive", BOT_STATE_COMBAT);
 
-    ResetReturnPosition();
+    PositionMap& posMap = context->GetValue<PositionMap&>("position")->Get();
+    PositionInfo pos = posMap["return"];
+    pos.Reset();
+    posMap["return"] = pos;
 
-    if (bot->GetMapId() != master->GetMapId() || bot->GetDistance(master) > sPlayerbotAIConfig->sightDistance)
+    if (bot->IsInCombat())
     {
-        botAI->TellError("I will not follow you - too far away");
+        Formation* formation = AI_VALUE(Formation*, "formation");
+        std::string const& target = formation->GetTargetName();
+        bool moved = false;
+        if (!target.empty())
+        {
+            moved = Follow(AI_VALUE(Unit*, target));
+        }
+        else
+        {
+            WorldLocation loc = formation->GetLocation();
+            if (Formation::IsNullLocation(loc) || loc.GetMapId() == -1)
+                return false;
+
+            moved = MoveTo(loc.GetMapId(), loc.GetPositionX(), loc.GetPositionY(), loc.GetPositionZ());
+        }
+
+        if (moved)
+        {
+            botAI->TellMaster("Following");
+            return true;
+        }
+    }
+
+    if (bot->GetMapId() != master->GetMapId() || (master && bot->GetDistance(master) > sPlayerbotAIConfig.sightDistance))
+    {
+        if (bot->isDead())
+        {
+            bot->ResurrectPlayer(1.0f, false);
+            botAI->TellMasterNoFacing("Back from the grave!");
+        }
+        else
+            botAI->TellMaster("You are too far away from me! I will there soon.");
+
+        bot->TeleportTo(master->GetMapId(), master->GetPositionX(), master->GetPositionY(), master->GetPositionZ(), master->GetOrientation());
         return true;
     }
 
@@ -139,9 +176,13 @@ bool MaxDpsChatShortcutAction::Execute(Event event)
     if (!master)
         return false;
 
-    botAI->Reset();
-    botAI->ChangeStrategy("-threat,-conserve mana,-cast time,+dps debuff", BOT_STATE_COMBAT);
+    if (!ai->ContainsStrategy(STRATEGY_TYPE_DPS))
+        return false;
 
-    botAI->TellMaster("Max DPS");
+    botAI->Reset();
+
+    ai->ChangeStrategy("-threat,-conserve mana,-cast time,+dps debuff,+boost", BOT_STATE_COMBAT);
+    ai->TellMaster("Max DPS!");
+
     return true;
 }

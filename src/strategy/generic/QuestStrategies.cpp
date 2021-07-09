@@ -39,6 +39,6 @@ void AcceptAllQuestsStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("complete quest", NextAction::array(0, new NextAction("talk to quest giver", relevance), new NextAction("accept all quests", relevance), nullptr)));
 }
 
-AcceptAllQuestsStrategy::AcceptAllQuestsStrategy(PlayerbotAI* botAI) : QuestStrategy(botAI)
+AcceptAllQuestsStrategy::AcceptAllQuestsStrategy(PlayerbotAI* ai) : QuestStrategy(ai)
 {
 }

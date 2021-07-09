@@ -3,7 +3,9 @@
  */
 
 #include "LootAction.h"
+#include "ChatHelper.h"
 #include "Event.h"
+#include "ItemUsageValue.h"
 #include "LootStrategyValue.h"
 #include "LootObjectStack.h"
 #include "GuildTaskMgr.h"
@@ -211,6 +213,101 @@ bool OpenLootAction::CanOpenLock(uint32 skillId, uint32 reqSkillValue)
     return skillValue >= reqSkillValue || !reqSkillValue;
 }
 
+/*
+uint32 StoreLootAction::RoundPrice(double price)
+{
+    if (price < 100)
+    {
+        return (uint32)price;
+    }
+
+    if (price < 10000)
+    {
+        return (uint32)(price / 100.0) * 100;
+    }
+
+    if (price < 100000)
+    {
+        return (uint32)(price / 1000.0) * 1000;
+    }
+
+    return (uint32)(price / 10000.0) * 10000;
+}
+
+bool StoreLootAction::AuctionItem(uint32 itemId)
+{
+    ItemPrototype const* proto = sItemStorage.LookupEntry<ItemPrototype>(itemId);
+    if (!proto)
+        return false;
+
+    if (!proto || proto->Bonding == BIND_WHEN_PICKED_UP || proto->Bonding == BIND_QUEST_ITEM)
+        return false;
+
+    Item* oldItem = bot->GetItemByEntry(itemId);
+    if (!oldItem)
+        return false;
+
+    AuctionHouseEntry const* ahEntry = AuctionHouseMgr::GetAuctionHouseEntry(unit->getFaction());
+    if (!ahEntry)
+        return false;
+
+    AuctionHouseObject* auctionHouse = sAuctionMgr->GetAuctionsMap(ahEntry);
+
+    uint32 price = oldItem->GetCount() * proto->BuyPrice * sRandomPlayerbotMgr.GetBuyMultiplier(bot);
+
+uint32 stackCount = urand(1, proto->GetMaxStackSize());
+    if (!price || !stackCount)
+        return false;
+
+    if (!stackCount)
+        stackCount = 1;
+
+    if (urand(0, 100) <= sAhBotConfig.underPriceProbability * 100)
+        price = price * 100 / urand(100, 200);
+
+    uint32 bidPrice = RoundPrice(stackCount * price);
+    uint32 buyoutPrice = RoundPrice(stackCount * urand(price, 4 * price / 3));
+
+    Item* item = Item::CreateItem(proto->ItemId, stackCount);
+    if (!item)
+        return false;
+
+    uint32 auction_time = uint32(urand(8, 24) * HOUR * sWorld.getConfig(CONFIG_FLOAT_RATE_AUCTION_TIME));
+
+    AuctionEntry* auctionEntry = new AuctionEntry;
+    auctionEntry->Id = sObjectMgr.GenerateAuctionID();
+    auctionEntry->itemGuidLow = item->GetObjectGuid().GetCounter();
+    auctionEntry->itemTemplate = item->GetEntry();
+    auctionEntry->itemCount = item->GetCount();
+    auctionEntry->itemRandomPropertyId = item->GetItemRandomPropertyId();
+    auctionEntry->owner = bot->GetGUIDLow();
+    auctionEntry->startbid = bidPrice;
+    auctionEntry->bidder = 0;
+    auctionEntry->bid = 0;
+    auctionEntry->buyout = buyoutPrice;
+    auctionEntry->expireTime = time(nullptr) + auction_time;
+    //auctionEntry->moneyDeliveryTime = 0;
+    auctionEntry->deposit = 0;
+    auctionEntry->auctionHouseEntry = ahEntry;
+
+    auctionHouse->AddAuction(auctionEntry);
+
+    sAuctionMgr.AddAItem(item);
+
+    item->SaveToDB();
+    auctionEntry->SaveToDB();
+
+    sLog.outErrorDb("AhBot %s added %d of %s to auction %d for %d..%d", bot->GetName(), stackCount, proto->Name1,1, bidPrice, buyoutPrice);
+
+    if (oldItem->GetCount() > stackCount)
+        oldItem->SetCount(oldItem->GetCount() - stackCount);
+    else
+        bot->RemoveItem(item->GetBagSlot(), item->GetSlot(), true);
+
+    return true;
+}
+*/
+
 bool StoreLootAction::Execute(Event event)
 {
     WorldPacket p(event.getPacket()); // (8+1+4+1+1+4+4+4+4+4+1)
@@ -228,6 +325,8 @@ bool StoreLootAction::Execute(Event event)
         p >> gold;      // 4 money on corpse
         p >> items;     // 1 number of items on corpse
     }
+
+    bot->SetLootGUID(guid);
 
     if (gold > 0)
     {
@@ -261,6 +360,29 @@ bool StoreLootAction::Execute(Event event)
         if (!proto)
             continue;
 
+        if (AI_VALUE(uint8, "bag space") > 80)
+        {
+            uint32 maxStack = proto->GetMaxStackSize();
+            if (maxStack == 1)
+                continue;
+
+            std::vector<Item*> found = parseItems(chat->formatItem(proto));
+
+            bool hasFreeStack = false;
+
+            for (auto stack : found)
+            {
+                if (stack->GetCount() + itemcount < maxStack)
+                {
+                    hasFreeStack = true;
+                    break;
+                }
+            }
+
+            if (!hasFreeStack)
+                continue;
+        }
+
         Player* master = botAI->GetMaster();
         if (sRandomPlayerbotMgr->IsRandomBot(bot) && master)
         {
@@ -287,6 +409,9 @@ bool StoreLootAction::Execute(Event event)
         std::ostringstream out;
         out << "Looting " << chat->formatItem(proto);
         botAI->TellMasterNoFacing(out.str());
+
+        //ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", proto->ItemId);
+        //sLog.outErrorDb("Bot %s is looting %d %s for usage %d.", bot->GetName(), itemcount, proto->Name1, usage);
     }
 
     AI_VALUE(LootObjectStack*, "available loot")->Remove(guid);
@@ -303,7 +428,7 @@ bool StoreLootAction::IsLootAllowed(uint32 itemid, PlayerbotAI* botAI)
     AiObjectContext* context = botAI->GetAiObjectContext();
     LootStrategy* lootStrategy = AI_VALUE(LootStrategy*, "loot strategy");
 
-    std::set<uint32>& lootItems = AI_VALUE(std::set<uint32>&, "always loot std::list");
+    std::set<uint32>& lootItems = AI_VALUE(std::set<uint32>&, "always loot list");
     if (lootItems.find(itemid) != lootItems.end())
         return true;
 
@@ -316,20 +441,37 @@ bool StoreLootAction::IsLootAllowed(uint32 itemid, PlayerbotAI* botAI)
         return false;
 
     if (proto->StartQuest)
-        return true;
-
-    if (proto->Bonding == BIND_QUEST_ITEM || proto->Bonding == BIND_QUEST_ITEM1 || proto->Class == ITEM_CLASS_QUEST)
     {
-        for (uint8 slot = 0; slot < MAX_QUEST_LOG_SIZE; ++slot)
-        {
-            uint32 entry = botAI->GetBot()->GetQuestSlotQuestId(slot);
-            Quest const* quest = sObjectMgr->GetQuestTemplate(entry);
-            if (!quest)
-                continue;
+        if (sPlayerbotAIConfig->syncQuestWithPlayer)
+            return false; //Quest is autocomplete for the bot so no item needed.
+        else
+            return true;
+    }
 
-            for (uint8 i = 0; i < 4; i++)
+    //if (proto->Bonding == BIND_QUEST_ITEM ||  //Still testing if it works ok without these lines.
+    //    proto->Bonding == BIND_QUEST_ITEM1 || //Eventually this has to be removed.
+    //    proto->Class == ITEM_CLASS_QUEST)
+    //{
+    for (uint8 slot = 0; slot < MAX_QUEST_LOG_SIZE; ++slot)
+    {
+        uint32 entry = botAI->GetBot()->GetQuestSlotQuestId(slot);
+        Quest const* quest = sObjectMgr->GetQuestTemplate(entry);
+        if (!quest)
+            continue;
+
+        for (uint8 i = 0; i < 4; i++)
+        {
+            if (quest->RequiredItemId[i] == itemid)
+            {
                 if (quest->RequiredItemId[i] == itemid && AI_VALUE2(uint8, "item count", proto->Name1) < quest->RequiredItemCount[i])
+                {
+                    if (botAI->GetMaster() && sPlayerbotAIConfig->syncQuestWithPlayer)
+                        return false; //Quest is autocomplete for the bot so no item needed.
+                }
+
+                if (AI_VALUE2(uint8, "item count", proto->Name1) < quest->RequiredItemCount[i])
                     return true;
+            }
         }
     }
 

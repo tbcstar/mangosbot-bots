@@ -18,6 +18,8 @@ class CatDpsDruidStrategyActionNodeFactory : public NamedObjectFactory<ActionNod
             creators["rake"] = &rake;
             creators["ferocious bite"] = &ferocious_bite;
             creators["rip"] = &rip;
+            creators["pounce"] = &pounce;
+            creators["ravage"] = &ravage;
         }
 
     private:
@@ -92,6 +94,22 @@ class CatDpsDruidStrategyActionNodeFactory : public NamedObjectFactory<ActionNod
                 /*A*/ nullptr,
                 /*C*/ nullptr);
         }
+
+        static ActionNode* pounce(PlayerbotAI* botAI)
+        {
+            return new ActionNode("pounce",
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("ravage"), nullptr),
+                /*C*/ nullptr);
+        }
+
+        static ActionNode* ravage(PlayerbotAI* botAI)
+        {
+            return new ActionNode("ravage",
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("shred"), nullptr),
+                /*C*/ nullptr);
+        }
 };
 
 CatDpsDruidStrategy::CatDpsDruidStrategy() : FeralDruidStrategy(botAI)
@@ -112,8 +130,13 @@ void CatDpsDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("rake", NextAction::array(0, new NextAction("rake", ACTION_NORMAL + 5), nullptr)));
     triggers.push_back(new TriggerNode("combo points available", NextAction::array(0, new NextAction("ferocious bite", ACTION_NORMAL + 9), nullptr)));
     triggers.push_back(new TriggerNode("medium threat", NextAction::array(0, new NextAction("cower", ACTION_EMERGENCY + 1), nullptr)));
-    triggers.push_back(new TriggerNode("faerie fire (feral)", NextAction::array(0, new NextAction("faerie fire (feral)", ACTION_HIGH + 1), nullptr)));
+    triggers.push_back(new TriggerNode("faerie fire (feral)", NextAction::array(0, new NextAction("faerie fire (feral)", ACTION_HIGH), nullptr)));
 	triggers.push_back(new TriggerNode("tiger's fury", NextAction::array(0, new NextAction("tiger's fury", ACTION_EMERGENCY + 1), nullptr)));
+    triggers.push_back(new TriggerNode("behind target", NextAction::array(0, new NextAction("pounce", ACTION_HIGH + 1), nullptr)));
+    //triggers.push_back(new TriggerNode("player has no flag", NextAction::array(0, new NextAction("prowl", ACTION_HIGH), nullptr)));
+    //triggers.push_back(new TriggerNode("enemy out of melee", NextAction::array(0, new NextAction("prowl", ACTION_INTERRUPT + 1), nullptr)));
+    triggers.push_back(new TriggerNode("player has flag", NextAction::array(0, new NextAction("dash", ACTION_EMERGENCY), nullptr)));
+    triggers.push_back(new TriggerNode("enemy flagcarrier near", NextAction::array(0, new NextAction("dash", ACTION_EMERGENCY), nullptr)));
 }
 
 void CatAoeDruidStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

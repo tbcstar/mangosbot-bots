@@ -7,10 +7,10 @@
 
 class PlayerbotAI;
 
-class NearestAdsValue : public PossibleTargetsValue
+class NearestAddsValue : public PossibleTargetsValue
 {
 	public:
-        NearestAdsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->tooCloseDistance) : PossibleTargetsValue(botAI, "nearest ads", range) { }
+        NearestAddsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->tooCloseDistance) : PossibleTargetsValue(botAI, "nearest adds", range) { }
 
     protected:
         bool AcceptUnit(Unit* unit) override;

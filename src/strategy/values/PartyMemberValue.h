@@ -27,7 +27,7 @@ class PartyMemberValue : public UnitCalculatedValue
         bool IsTargetOfSpellCast(Player* target, SpellEntryPredicate& predicate);
 
     protected:
-        Unit* FindPartyMember(FindPlayerPredicate& predicate);
+        Unit* FindPartyMember(FindPlayerPredicate& predicate, bool ignoreOutOfGroup = false);
         Unit* FindPartyMember(std::vector<Player*>* party, FindPlayerPredicate& predicate);
         virtual bool Check(Unit* player);
 };

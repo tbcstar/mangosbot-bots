@@ -13,4 +13,5 @@ class DelayAction : public Action
         DelayAction(PlayerbotAI* botAI) : Action(botAI, "delay") { }
 
         bool Execute(Event event) override;
+        bool isUseful() override;
 };

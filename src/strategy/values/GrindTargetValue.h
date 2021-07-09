@@ -5,6 +5,7 @@
 #include "TargetValue.h"
 
 class PlayerbotAI;
+class Unit;
 
 class GrindTargetValue : public TargetValue
 {
@@ -16,4 +17,5 @@ class GrindTargetValue : public TargetValue
     private:
         uint32 GetTargetingPlayerCount(Unit* unit);
         Unit* FindTargetForGrinding(uint32 assistCount);
+        bool needForQuest(Unit* target);
 };

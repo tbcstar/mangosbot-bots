@@ -5,6 +5,7 @@
 #include "RevealGatheringItemAction.h"
 #include "Event.h"
 #include "ChatHelper.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 #include "ServerFacade.h"
 
@@ -33,7 +34,7 @@ bool RevealGatheringItemAction::Execute(Event event)
 
     std::list<GameObject*> targets;
     AnyGameObjectInObjectRangeCheck u_check(bot, sPlayerbotAIConfig->grindDistance);
-    acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::GameObjectListSearcher<AnyGameObjectInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisitNearbyObject(sPlayerbotAIConfig->reactDistance, searcher);
 
     std::vector<GameObject*> result;

@@ -3,17 +3,19 @@
  */
 
 #include "NearestNonBotPlayersValue.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 
 void NearestNonBotPlayersValue::FindUnits(std::list<Unit*> &targets)
 {
-    acore::AnyUnitInObjectRangeCheck u_check(bot, range);
-    acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::AnyUnitInObjectRangeCheck u_check(bot, range);
+    Acore::UnitListSearcher<Acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisiNearbyObject(range, searcher);
 }
 
 bool NearestNonBotPlayersValue::AcceptUnit(Unit* unit)
 {
     ObjectGuid guid = unit->GetGUID();
-    return guid.IsPlayer() && !((Player*)unit)->GetPlayerbotAI();
+    return guid.IsPlayer() && !((Player*)unit)->GetPlayerbotAI() && (!((Player*)unit)->IsGameMaster() || ((Player*)unit)->isGMVisible());
 }
+

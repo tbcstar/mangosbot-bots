@@ -113,6 +113,22 @@ class BagSpaceValue : public Uint8CalculatedValue
         uint8 Calculate() override;
 };
 
+class DurabilityValue : public Uint8CalculatedValue
+{
+    public:
+        DurabilityValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }
+
+        uint8 Calculate() override;
+};
+
+class RepairCostValue : public Uint32CalculatedValue
+{
+    public:
+        RepairCostValue(PlayerbotAI* botAI) : Uint32CalculatedValue(botAI) { }
+
+        uint32 Calculate() override;
+};
+
 class SpeedValue : public Uint8CalculatedValue, public Qualified
 {
     public:
@@ -128,4 +144,10 @@ class IsInGroupValue : public BoolCalculatedValue
         IsInGroupValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         bool Calculate() override;
+};
+
+class DeathCountValue : public ManualSetValue<uint32>
+{
+    public:
+        DeathCountValue(PlayerbotAI* ai) : ManualSetValue<uint32>(ai, 0, "death_count") {}
 };

@@ -6,19 +6,25 @@
 #include "Event.h"
 #include "ItemVisitors.h"
 #include "ItemCountValue.h"
+#include "ItemUsageValue.h"
 #include "Playerbot.h"
 
 bool BuyAction::Execute(Event event)
 {
+    bool buyUseful = false;
+    ItemIds itemIds;
     std::string const& link = event.getParam();
 
-    ItemIds itemIds = chat->parseItems(link);
-    if (itemIds.empty())
-        return false;
+    if (link == "vendor")
+        buyUseful = true;
+    else
+    {
+        itemIds = chat->parseItems(link);
 
-    Player* master = GetMaster();
-    if (!master)
-        return false;
+        Player* master = GetMaster();
+        if (!master)
+            return false;
+    }
 
     GuidVector vendors = botAI->GetAiObjectContext()->GetValue<GuidVector>("nearest npcs")->Get();
 
@@ -30,6 +36,61 @@ bool BuyAction::Execute(Event event)
         Creature* pCreature = bot->GetNPCIfCanInteractWith(vendorguid, UNIT_NPC_FLAG_VENDOR);
         if (!pCreature)
             continue;
+
+        if (buyUseful)
+        {
+            VendorItemData const* tItems = pCreature->GetVendorItems();
+
+            if (!tItems)
+                continue;
+
+            for (auto& tItem : tItems->m_items)
+            {
+                ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", tItem->item);
+                if (usage == ITEM_USAGE_REPLACE || usage == ITEM_USAGE_EQUIP || usage == ITEM_USAGE_AMMO)
+                {
+                    itemIds.insert(tItem->item);
+                }
+                else if (usage == ITEM_USAGE_SKILL)
+                {
+                    ItemPrototype const* proto = sObjectMgr.GetItemPrototype(tItem->item);
+
+                    if (!bot->HasItemCount(tItem->item, proto->Stackable))
+                        itemIds.insert(tItem->item);
+                }
+                else
+                {
+                    ItemPrototype const* proto = sObjectMgr.GetItemPrototype(tItem->item);
+                    if (!proto)
+                        continue;
+
+                    //temp needs to move to itemusage value
+                    for (uint8 slot = 0; slot < MAX_QUEST_LOG_SIZE; ++slot)
+                    {
+                        uint32 entry = botAI->GetBot()->GetQuestSlotQuestId(slot);
+                        Quest const* quest = sObjectMgr.GetQuestTemplate(entry);
+                        if (!quest)
+                            continue;
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            if (quest->RequiredItemId[i] == tItem->item)
+                            {
+                                if (!botAI->GetMaster() || !sPlayerbotAIConfig->syncQuestWithPlayer)
+                                    if (AI_VALUE2(uint8, "item count", proto->Name1) < quest->RewardChoiceItemCount[i])
+                                        itemIds.insert(tItem->item);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (itemIds.empty())
+                return true;
+        }
+
+        if (itemIds.empty())
+            return false;
 
         vendored = true;
 
@@ -71,11 +132,16 @@ bool BuyAction::BuyItem(VendorItemData const* tItems, ObjectGuid vendorguid, Ite
     {
         if (tItems->GetItem(slot)->item == itemId)
         {
-            bot->BuyItemFromVendor(vendorguid, itemId, 1, NULL_BAG, NULL_SLOT);
+            bool couldBuy = false;
+            couldBuy = bot->BuyItemFromVendor(vendorguid, itemId, 1, NULL_BAG, NULL_SLOT);
 
-            std::ostringstream out;
-            out << "Buying " << ChatHelper::formatItem(proto);
-            botAI->TellMaster(out.str());
+            if (couldBuy)
+            {
+                std::ostringstream out;
+                out << "Buying " << ChatHelper::formatItem(proto);
+                botAI->TellMaster(out.str());
+            }
+
             return true;
         }
     }

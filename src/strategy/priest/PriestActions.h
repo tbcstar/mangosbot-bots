@@ -95,7 +95,7 @@ class CastRemoveShadowformAction : public Action
     public:
         CastRemoveShadowformAction(PlayerbotAI* botAI) : Action(botAI, "remove shadowform") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
         virtual bool isPossible();
         bool Execute(Event event) override;
 };
@@ -169,6 +169,18 @@ class CastDivineSpiritOnPartyAction : public BuffOnPartyAction
 {
 	public:
 		CastDivineSpiritOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, "divine spirit") { }
+};
+
+class CastPrayerOfFortitudeOnPartyAction : public BuffOnPartyAction
+{
+    public:
+        CastPrayerOfFortitudeOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, "prayer of fortitude") { }
+};
+
+class CastPrayerOfSpiritOnPartyAction : public BuffOnPartyAction
+{
+    public:
+        CastPrayerOfSpiritOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, "prayer of spirit") { }
 };
 
 class CastPowerWordPainAction : public CastDebuffSpellAction

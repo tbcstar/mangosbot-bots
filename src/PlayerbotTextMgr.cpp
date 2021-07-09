@@ -11,7 +11,7 @@ void PlayerbotTextMgr::LoadTemplates()
 {
     sLog->outBasic("Loading playerbot texts...");
 
-    QueryResult results = CharacterDatabase.PQuery("SELECT `key`,`text` FROM `ai_playerbot_text`");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT `key`,`text` FROM `ai_playerbot_text`");
     uint32 count = 0;
     if (results)
     {
@@ -21,7 +21,7 @@ void PlayerbotTextMgr::LoadTemplates()
             std::string key = fields[0].GetString();
             std::string text = fields[1].GetString();
             templates[key].push_back(text);
-            count++;
+            ++count;
         } while (results->NextRow());
     }
 
@@ -33,15 +33,15 @@ std::string PlayerbotTextMgr::Format(std::string const& key, std::map<std::strin
     if (templates.empty())
         LoadTemplates();
 
-    std::vector<std::string>& std::list = templates[key];
-    if (std::list.empty())
+    std::vector<std::string>& list = templates[key];
+    if (list.empty())
     {
         std::ostringstream out;
         out << "Unknown text: " << key;
         return out.str();
     }
 
-    std::string str = std::list[urand(0, std::list.size() - 1)];
+    std::string str = list[urand(0, list.size() - 1)];
     for (std::map<std::string, std::string>::iterator i = placeholders.begin(); i != placeholders.end(); ++i)
         replaceAll(str, i->first, i->second);
 

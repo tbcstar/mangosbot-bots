@@ -4,6 +4,7 @@
 
 #include "CureTriggers.h"
 #include "Playerbot.h"
+#include "WorldBuffAction.h""
 
 bool NeedCureTrigger::IsActive()
 {
@@ -14,4 +15,9 @@ bool NeedCureTrigger::IsActive()
 Value<Unit*>* PartyMemberNeedCureTrigger::GetTargetValue()
 {
 	return context->GetValue<Unit*>("party member to dispel", dispelType);
+}
+
+bool NeedWorldBuffTrigger::IsActive()
+{
+    return !WorldBuffAction::NeedWorldBuffs(bot).empty();
 }

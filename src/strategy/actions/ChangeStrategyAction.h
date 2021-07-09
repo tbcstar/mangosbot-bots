@@ -26,7 +26,7 @@ class ChangeNonCombatStrategyAction : public Action
 class ChangeDeadStrategyAction : public Action
 {
     public:
-        ChangeDeadStrategyAction(PlayerbotAI* botAI) : Action(botAI, "dead") { }
+        ChangeDeadStrategyAction(PlayerbotAI* botAI) : Action(botAI, "de") { }
 
         bool Execute(Event event) override;
 };

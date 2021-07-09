@@ -6,17 +6,17 @@
 #include "Event.h"
 #include "Playerbot.h"
 
-bool CastSerpentStingAction::isUseful() const
+bool CastSerpentStingAction::isUseful()
 {
     return AI_VALUE2(uint8, "health", "current target") > 50;
 }
 
-bool CastViperStingAction::isUseful() const
+bool CastViperStingAction::isUseful()
 {
     return AI_VALUE2(uint8, "mana", "self target") < 50 && AI_VALUE2(uint8, "mana", "current target") >= 30;
 }
 
-bool CastAspectOfTheCheetahAction::isUseful() const
+bool CastAspectOfTheCheetahAction::isUseful()
 {
     return !botAI->HasAnyAuraOf(GetTarget(), "aspect of the cheetah", "aspect of the pack", nullptr);
 }
@@ -35,9 +35,9 @@ bool FeedPetAction::Execute(Event event)
     return true;
 }
 
-bool CastAutoShotAction::isUseful() const
+bool CastAutoShotAction::isUseful()
 {
-    return AI_VALUE(uint32, "active spell") != AI_VALUE2(uint32, "spell id", getName());
+    return botAI->HasStrategy("ranged", BOT_STATE_COMBAT) && AI_VALUE(uint32, "active spell") != AI_VALUE2(uint32, "spell id", getName());
 }
 
 Value<Unit*>* CastScareBeastCcAction::GetTargetValue()
@@ -50,7 +50,7 @@ bool CastScareBeastCcAction::Execute(Event event)
     return botAI->CastSpell("scare beast", GetTarget());
 }
 
-bool CastWingClipAction::isUseful() const
+bool CastWingClipAction::isUseful()
 {
     return CastMeleeSpellAction::isUseful() && !botAI->HasAura(spell, GetTarget());
 }
@@ -58,4 +58,9 @@ bool CastWingClipAction::isUseful() const
 NextAction** CastWingClipAction::getPrerequisites()
 {
     return nullptr;
+}
+
+bool CastRaptorStrikeAction::isUseful()
+{
+    return CastMeleeSpellAction::isUseful() && botAI->HasStrategy("close", BOT_STATE_COMBAT);
 }

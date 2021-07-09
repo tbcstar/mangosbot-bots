@@ -24,4 +24,5 @@ class OutOfReactRangeAction : public MovementAction
         OutOfReactRangeAction(PlayerbotAI* botAI) : MovementAction(botAI, "tell out of react range") { }
 
         bool Execute(Event event) override;
+        bool isUseful() override;
 };

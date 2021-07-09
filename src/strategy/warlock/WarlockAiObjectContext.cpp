@@ -100,7 +100,6 @@ class WarlockAiObjectContextInternal : public NamedObjectContext<Action>
     public:
         WarlockAiObjectContextInternal()
         {
-            creators["summon imp"] = &WarlockAiObjectContextInternal::summon_imp;
             creators["fel armor"] = &WarlockAiObjectContextInternal::fel_armor;
             creators["demon armor"] = &WarlockAiObjectContextInternal::demon_armor;
             creators["demon skin"] = &WarlockAiObjectContextInternal::demon_skin;
@@ -110,6 +109,8 @@ class WarlockAiObjectContextInternal : public NamedObjectContext<Action>
             creators["spellstone"] = &WarlockAiObjectContextInternal::spellstone;
             creators["summon voidwalker"] = &WarlockAiObjectContextInternal::summon_voidwalker;
             creators["summon felguard"] = &WarlockAiObjectContextInternal::summon_felguard;
+            creators["summon succubus"] = &WarlockAiObjectContextInternal::summon_succubus;
+            creators["summon imp"] = &WarlockAiObjectContextInternal::summon_imp;
             creators["immolate"] = &WarlockAiObjectContextInternal::immolate;
             creators["corruption"] = &WarlockAiObjectContextInternal::corruption;
             creators["corruption on attacker"] = &WarlockAiObjectContextInternal::corruption_on_attacker;
@@ -142,6 +143,7 @@ class WarlockAiObjectContextInternal : public NamedObjectContext<Action>
         static Action* fear(PlayerbotAI* botAI) { return new CastFearAction(botAI); }
         static Action* immolate(PlayerbotAI* botAI) { return new CastImmolateAction(botAI); }
         static Action* summon_imp(PlayerbotAI* botAI) { return new CastSummonImpAction(botAI); }
+        static Action* summon_succubus(PlayerbotAI* botAI) { return new CastSummonSuccubusAction(botAI); }
         static Action* fel_armor(PlayerbotAI* botAI) { return new CastFelArmorAction(botAI); }
         static Action* demon_armor(PlayerbotAI* botAI) { return new CastDemonArmorAction(botAI); }
         static Action* demon_skin(PlayerbotAI* botAI) { return new CastDemonSkinAction(botAI); }

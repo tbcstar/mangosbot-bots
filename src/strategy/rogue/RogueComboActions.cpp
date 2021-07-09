@@ -5,7 +5,7 @@
 #include "RogueComboActions.h"
 #include "Playerbot.h"
 
-bool CastComboAction::isUseful() const
+bool CastComboAction::isUseful()
 {
 	return CastMeleeSpellAction::isUseful() && AI_VALUE2(uint8, "combo", "self target") < 5;
 }

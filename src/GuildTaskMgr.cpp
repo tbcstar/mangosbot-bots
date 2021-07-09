@@ -45,11 +45,11 @@ void GuildTaskMgr::Update(Player* player, Player* guildMaster)
     PlayerbotSecurityLevel secLevel = guildMaster->GetPlayerbotAI()->GetSecurity()->LevelFor(player, &reason);
     if (secLevel == PLAYERBOT_SECURITY_DENY_ALL || (secLevel == PLAYERBOT_SECURITY_TALK && reason != PLAYERBOT_DENY_FAR))
     {
-        sLog->outDebug("%s / %s: skipping guild task update - not enough security level, reason = %u", guild->GetName(), player->GetName(), reason);
+        sLog->outDebug("%s / %s: skipping guild task update - not enough security level, reason = %u", guild->GetName().c_str(), player->GetName().c_str(), reason);
         return;
     }
 
-    sLog->outDebug("%s: guild task update for player %s", guild->GetName(), player->GetName());
+    sLog->outDebug("%s: guild task update for player %s", guild->GetName().c_str(), player->GetName().c_str());
 
     ObjectGuid::LowType owner = player->GetGUID().GetCounter();
 
@@ -69,14 +69,14 @@ void GuildTaskMgr::Update(Player* player, Player* guildMaster)
 
         if (task == GUILD_TASK_TYPE_NONE)
         {
-            sLog->outError( "%s / %s: error creating guild task", guild->GetName(), player->GetName());
+            sLog->outError( "%s / %s: error creating guild task", guild->GetName().c_str(), player->GetName().c_str());
         }
 
         uint32 time = urand(sPlayerbotAIConfig->minGuildTaskChangeTime, sPlayerbotAIConfig->maxGuildTaskChangeTime);
         SetTaskValue(owner, guildId, "activeTask", task, time);
         SetTaskValue(owner, guildId, "advertisement", 1, urand(sPlayerbotAIConfig->minGuildTaskAdvertisementTime, sPlayerbotAIConfig->maxGuildTaskAdvertisementTime));
 
-        sLog->outDebug("%s / %s: guild task %u is std::set for %u secs", guild->GetName(), player->GetName(), task, time);
+        sLog->outDebug("%s / %s: guild task %u is set for %u secs", guild->GetName().c_str(), player->GetName().c_str(), task, time);
         return;
     }
 
@@ -85,7 +85,7 @@ void GuildTaskMgr::Update(Player* player, Player* guildMaster)
     uint32 advertisement = GetTaskValue(owner, guildId, "advertisement");
     if (!advertisement)
     {
-        sLog->outDebug("%s / %s: sending advertisement", guild->GetName(), player->GetName());
+        sLog->outDebug("%s / %s: sending advertisement", guild->GetName().c_str(), player->GetName().c_str());
 
         if (SendAdvertisement(trans, owner, guildId))
         {
@@ -93,14 +93,14 @@ void GuildTaskMgr::Update(Player* player, Player* guildMaster)
         }
         else
         {
-            sLog->outError( "%s / %s: error sending advertisement", guild->GetName(), player->GetName());
+            sLog->outError( "%s / %s: error sending advertisement", guild->GetName().c_str(), player->GetName().c_str());
         }
     }
 
     uint32 thanks = GetTaskValue(owner, guildId, "thanks");
     if (!thanks)
     {
-        sLog->outDebug("%s / %s: sending thanks", guild->GetName(), player->GetName());
+        sLog->outDebug("%s / %s: sending thanks", guild->GetName().c_str(), player->GetName().c_str());
 
         if (SendThanks(trans, owner, guildId, GetTaskValue(owner, guildId, "payment")))
         {
@@ -109,14 +109,14 @@ void GuildTaskMgr::Update(Player* player, Player* guildMaster)
         }
         else
         {
-            sLog->outError( "%s / %s: error sending thanks", guild->GetName(), player->GetName());
+            sLog->outError( "%s / %s: error sending thanks", guild->GetName().c_str(), player->GetName().c_str());
         }
     }
 
     uint32 reward = GetTaskValue(owner, guildId, "reward");
     if (!reward)
     {
-        sLog->outDebug("%s / %s: sending reward", guild->GetName(), player->GetName());
+        sLog->outDebug("%s / %s: sending reward", guild->GetName().c_str(), player->GetName().c_str());
 
         if (Reward(trans, owner, guildId))
         {
@@ -125,7 +125,7 @@ void GuildTaskMgr::Update(Player* player, Player* guildMaster)
         }
         else
         {
-            sLog->outError( "%s / %s: error sending reward", guild->GetName(), player->GetName());
+            sLog->outError( "%s / %s: error sending reward", guild->GetName().c_str(), player->GetName().c_str());
         }
     }
 
@@ -175,13 +175,13 @@ bool GuildTaskMgr::CreateItemTask(uint32 owner, uint32 guildId)
     uint32 itemId = sRandomItemMgr->GetRandomItem(player->getLevel() - 5, RANDOM_ITEM_GUILD_TASK, &predicate);
     if (!itemId)
     {
-        sLog->outError( "%s / %s: no items avaible for item task", sGuildMgr->GetGuildById(guildId)->GetName().c_str(), player->GetName());
+        sLog->outError( "%s / %s: no items avaible for item task", sGuildMgr->GetGuildById(guildId)->GetName().c_str(), player->GetName().c_str());
         return false;
     }
 
     uint32 count = GetMaxItemTaskCount(itemId);
 
-    sLog->outDebug("%s / %s: item task %u (x%d)", sGuildMgr->GetGuildById(guildId)->GetName().c_str(), player->GetName(), itemId, count);
+    sLog->outDebug("%s / %s: item task %u (x%d)", sGuildMgr->GetGuildById(guildId)->GetName().c_str(), player->GetName().c_str(), itemId, count);
 
     SetTaskValue(owner, guildId, "itemCount", count, sPlayerbotAIConfig->maxGuildTaskChangeTime);
     SetTaskValue(owner, guildId, "itemTask", itemId, sPlayerbotAIConfig->maxGuildTaskChangeTime);
@@ -227,14 +227,14 @@ bool GuildTaskMgr::CreateKillTask(uint32 owner, uint32 guildId)
 
     if (ids.empty())
     {
-        sLog->outError( "%s / %s: no rare creatures available for kill task", sGuildMgr->GetGuildById(guildId)->GetName().c_str(), player->GetName());
+        sLog->outError( "%s / %s: no rare creatures available for kill task", sGuildMgr->GetGuildById(guildId)->GetName().c_str(), player->GetName().c_str());
         return false;
     }
 
     uint32 index = urand(0, ids.size() - 1);
     uint32 creatureId = ids[index];
 
-    sLog->outDebug("%s / %s: kill task %u", sGuildMgr->GetGuildById(guildId)->GetName().c_str(), player->GetName(),creatureId);
+    sLog->outDebug("%s / %s: kill task %u", sGuildMgr->GetGuildById(guildId)->GetName().c_str(), player->GetName().c_str(), creatureId);
 
     SetTaskValue(owner, guildId, "killTask", creatureId, sPlayerbotAIConfig->maxGuildTaskChangeTime);
 
@@ -495,7 +495,7 @@ bool GuildTaskMgr::IsGuildTaskItem(uint32 itemId, uint32 guildId)
 {
     uint32 value = 0;
 
-    QueryResult results = CharacterDatabase.PQuery("SELECT `value`, `time`, validIn FROM ai_playerbot_guild_tasks WHERE `value` = '%u' AND guildid = '%u' AND `type` = 'itemTask'",
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT `value`, `time`, validIn FROM ai_playerbot_guild_tasks WHERE `value` = '%u' AND guildid = '%u' AND `type` = 'itemTask'",
         itemId, guildId);
 
     if (results)
@@ -515,7 +515,7 @@ std::map<uint32, uint32> GuildTaskMgr::GetTaskValues(uint32 owner, std::string t
 {
     std::map<uint32, uint32> result;
 
-    QueryResult results = CharacterDatabase.PQuery("SELECT `value`, `time`, validIn, guildid FROM ai_playerbot_guild_tasks WHERE owner = '%u' AND `type` = '%s'",
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT `value`, `time`, validIn, guildid FROM ai_playerbot_guild_tasks WHERE owner = '%u' AND `type` = '%s'",
         owner, type.c_str());
 
     if (results)
@@ -542,7 +542,7 @@ uint32 GuildTaskMgr::GetTaskValue(uint32 owner, uint32 guildId, std::string type
 {
     uint32 value = 0;
 
-    QueryResult results = CharacterDatabase.PQuery("SELECT `value`, `time`, validIn FROM ai_playerbot_guild_tasks WHERE owner = '%u' AND guildid = '%u' AND `type` = '%s'",
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT `value`, `time`, validIn FROM ai_playerbot_guild_tasks WHERE owner = '%u' AND guildid = '%u' AND `type` = '%s'",
         owner, guildId, type.c_str());
 
     if (results)
@@ -563,10 +563,10 @@ uint32 GuildTaskMgr::GetTaskValue(uint32 owner, uint32 guildId, std::string type
 
 uint32 GuildTaskMgr::SetTaskValue(uint32 owner, uint32 guildId, std::string type, uint32 value, uint32 validIn)
 {
-    CharacterDatabase.DirectPExecute("DELETE FROM ai_playerbot_guild_tasks WHERE owner = '%u' AND guildid = '%u' AND `type` = '%s'", owner, guildId, type.c_str());
+    PlayerbotDatabase.DirectPExecute("DELETE FROM ai_playerbot_guild_tasks WHERE owner = '%u' AND guildid = '%u' AND `type` = '%s'", owner, guildId, type.c_str());
     if (value)
     {
-        CharacterDatabase.DirectPExecute("INSERT INTO ai_playerbot_guild_tasks (owner, guildid, `time`, validIn, `type`, `value`) VALUES ('%u', '%u', '%u', '%u', '%s', '%u')",
+        PlayerbotDatabase.DirectPExecute("INSERT INTO ai_playerbot_guild_tasks (owner, guildid, `time`, validIn, `type`, `value`) VALUES ('%u', '%u', '%u', '%u', '%s', '%u')",
             owner, guildId, (uint32)time(0), validIn, type.c_str(), value);
     }
 
@@ -591,7 +591,7 @@ bool GuildTaskMgr::HandleConsoleCommand(ChatHandler* handler, char const* args)
 
     if (cmd == "reset")
     {
-        CharacterDatabase.PExecute("DELETE FROM ai_playerbot_guild_tasks");
+        PlayerbotDatabase.PExecute("DELETE FROM ai_playerbot_guild_tasks");
         sLog->outString("Guild tasks were reset for all players");
         return true;
     }
@@ -614,7 +614,7 @@ bool GuildTaskMgr::HandleConsoleCommand(ChatHandler* handler, char const* args)
 
         uint32 owner = guid.GetCounter();
 
-        QueryResult result = CharacterDatabase.PQuery("SELECT `value`, `time`, validIn, guildid FROM ai_playerbot_guild_tasks WHERE owner = '%u' AND type='activeTask' ORDER BY guildid",
+        QueryResult result = PlayerbotDatabase.PQuery("SELECT `value`, `time`, validIn, guildid FROM ai_playerbot_guild_tasks WHERE owner = '%u' AND type='activeTask' ORDER BY guildid",
             owner);
 
         if (result)
@@ -658,6 +658,9 @@ bool GuildTaskMgr::HandleConsoleCommand(ChatHandler* handler, char const* args)
                                 break;
                             case ITEM_QUALITY_EPIC:
                                 name << "epic";
+                                break;
+                            case ITEM_QUALITY_LEGENDARY:
+                                name << "yellow";
                                 break;
                         }
 
@@ -756,7 +759,7 @@ bool GuildTaskMgr::HandleConsoleCommand(ChatHandler* handler, char const* args)
         }
 
         uint32 owner = guid.GetCounter();
-        QueryResult result = CharacterDatabase.PQuery("SELECT DISTINCT guildid FROM ai_playerbot_guild_tasks WHERE owner = '%u'", owner);
+        QueryResult result = PlayerbotDatabase.PQuery("SELECT DISTINCT guildid FROM ai_playerbot_guild_tasks WHERE owner = '%u'", owner);
 
         if (result)
         {
@@ -801,12 +804,12 @@ bool GuildTaskMgr::CheckItemTask(uint32 itemId, uint32 obtained, Player* ownerPl
 	if (!sRandomPlayerbotMgr->IsRandomBot(bot))
 	    return false;
 
-    sLog->outDebug("%s / %s: checking guild task", guild->GetName().c_str(), ownerPlayer->GetName());
+    sLog->outDebug("%s / %s: checking guild task", guild->GetName().c_str(), ownerPlayer->GetName().c_str());
 
     uint32 itemTask = GetTaskValue(owner, guildId, "itemTask");
     if (itemTask != itemId)
     {
-        sLog->outDebug("%s / %s: item %u is not guild task item (%u)", guild->GetName().c_str(), ownerPlayer->GetName(), itemId, itemTask);
+        sLog->outDebug("%s / %s: item %u is not guild task item (%u)", guild->GetName().c_str(), ownerPlayer->GetName().c_str(), itemId, itemTask);
 
         if (byMail)
             SendCompletionMessage(ownerPlayer, "made a mistake with");
@@ -833,7 +836,7 @@ bool GuildTaskMgr::CheckItemTask(uint32 itemId, uint32 obtained, Player* ownerPl
 
     if (obtained >= count)
     {
-        sLog->outDebug("%s / %s: guild task complete", guild->GetName().c_str(), ownerPlayer->GetName());
+        sLog->outDebug("%s / %s: guild task complete", guild->GetName().c_str(), ownerPlayer->GetName().c_str());
         SetTaskValue(owner, guildId, "reward", 1, rewardTime - 15);
         SetTaskValue(owner, guildId, "itemCount", 0, 0);
         SetTaskValue(owner, guildId, "thanks", 0, 0);
@@ -841,7 +844,7 @@ bool GuildTaskMgr::CheckItemTask(uint32 itemId, uint32 obtained, Player* ownerPl
     }
     else
     {
-        sLog->outDebug("%s / %s: guild task progress %u/%u", guild->GetName().c_str(), ownerPlayer->GetName(), obtained, count);
+        sLog->outDebug("%s / %s: guild task progress %u/%u", guild->GetName().c_str(), ownerPlayer->GetName().c_str(), obtained, count);
         SetTaskValue(owner, guildId, "itemCount", count - obtained, sPlayerbotAIConfig->maxGuildTaskChangeTime);
         SetTaskValue(owner, guildId, "thanks", 1, rewardTime - 30);
         SendCompletionMessage(ownerPlayer, "made a progress with");
@@ -1007,7 +1010,7 @@ void GuildTaskMgr::CheckKillTaskInternal(Player* player, Unit* victim)
         if (value != creature->GetEntry())
             continue;
 
-        sLog->outDebug("%s / %s: guild task complete", guild->GetName().c_str(), player->GetName());
+        sLog->outDebug("%s / %s: guild task complete", guild->GetName().c_str(), player->GetName().c_str());
         SetTaskValue(owner, guildId, "reward", 1, urand(sPlayerbotAIConfig->minGuildTaskRewardTime, sPlayerbotAIConfig->maxGuildTaskRewardTime));
 
         SendCompletionMessage(player, "completed");
@@ -1030,7 +1033,7 @@ void GuildTaskMgr::CleanupAdverts()
         if (Player* player = ObjectAccessor::FindPlayer(ObjectGuid::Create<HighGuid::Player>(fields[1].GetUInt32())))
             player->RemoveMail(id);
 
-        count++;
+        ++count;
     } while (result->NextRow());
 
     if (count > 0)
@@ -1059,7 +1062,7 @@ void GuildTaskMgr::RemoveDuplicatedAdverts()
         if (Player* player = ObjectAccessor::FindPlayer(ObjectGuid::Create<HighGuid::Player>(fields[1].GetUInt32())))
             player->RemoveMail(id);
 
-        count++;
+        ++count;
         ids.push_back(id);
     } while (result->NextRow());
 
@@ -1125,7 +1128,7 @@ bool GuildTaskMgr::CheckTaskTransfer(std::string text, Player* ownerPlayer, Play
 
     strToLower(text);
 
-    sLog->outDebug("%s / %s: checking guild task transfer", guild->GetName().c_str(), ownerPlayer->GetName());
+    sLog->outDebug("%s / %s: checking guild task transfer", guild->GetName().c_str(), ownerPlayer->GetName().c_str());
 
     uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(owner);
 

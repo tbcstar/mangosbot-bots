@@ -11,6 +11,8 @@ class ChatFilter : public PlayerbotAIAware
 {
     public:
         ChatFilter(PlayerbotAI* botAI) : PlayerbotAIAware(botAI) { }
+        virtual ~ChatFilter() { }
+
         virtual std::string Filter(std::string message);
 };
 
@@ -18,6 +20,7 @@ class CompositeChatFilter : public ChatFilter
 {
     public:
         CompositeChatFilter(PlayerbotAI* botAI);
+
         virtual ~CompositeChatFilter();
         std::string Filter(std::string message) override;
 

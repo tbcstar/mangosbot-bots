@@ -4,6 +4,7 @@
 
 #include "Value.h"
 #include "PerformanceMonitor.h"
+#include "Playerbot.h"
 
 template<class T>
 T CalculatedValue<T>::Get()
@@ -22,6 +23,11 @@ T CalculatedValue<T>::Get()
     return value;
 }
 
+UnitCalculatedValue::UnitCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<Unit*>(botAI, name, checkInterval)
+{
+    lastCheckTime = time(0) - checkInterval / 2;
+}
+
 std::string const& UnitCalculatedValue::Format()
 {
     Unit* unit = Calculate();
@@ -34,3 +40,28 @@ std::string const& UnitManualSetValue::Format()
     return unit ? unit->GetName() : "<none>";
 }
 
+std::string const& CDPairCalculatedValue::Format()
+{
+    CreatureData const* creatureDataPair = Calculate();
+    CreatureInfo const* bmTemplate = ObjectMgr::GetCreatureTemplate(creatureDataPair->second.id);
+    return creatureDataPair ? bmTemplate->Name : "<none>";
+}
+
+std::string const& CDPairListCalculatedValue::Format()
+{
+    std::ostringstream out; out << "{";
+    std::vector<CreatureData const*> cdPairs = Calculate();
+    for (CreatureData const* cdPair : cdPairs)
+    {
+        out << cdPair.first << ",";
+    }
+
+    out << "}";
+    return out.str();
+}
+
+std::string const& ObjectGuidCalculatedValue::Format()
+{
+    ObjectGuid guid = Calculate();
+    return guid ? to_string(guid.GetRawValue()) : "<none>";
+}

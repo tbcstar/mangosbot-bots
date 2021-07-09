@@ -3,12 +3,13 @@
  */
 
 #include "NearestNpcsValue.h"
+#include "GridNotifiers.h"
 #include "Playerbot.h"
 
 void NearestNpcsValue::FindUnits(std::list<Unit*> &targets)
 {
-    acore::AnyUnitInObjectRangeCheck u_check(bot, range);
-    acore::UnitListSearcher<acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
+    Acore::AnyUnitInObjectRangeCheck u_check(bot, range);
+    Acore::UnitListSearcher<Acore::AnyUnitInObjectRangeCheck> searcher(bot, targets, u_check);
     bot->VisiNearbyObject(range, searcher);
 }
 

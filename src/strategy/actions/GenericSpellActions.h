@@ -56,7 +56,7 @@ class CastSpellAction : public Action
         std::string const& GetTargetName() override { return "current target"; };
         bool Execute(Event event) override;
         bool isPossible() const override;
-		bool isUseful() const override;
+		bool isUseful() override;
         ActionThreatType getThreatType() override { return ACTION_THREAT_SINGLE; }
 
         NextAction** getPrerequisites() override;
@@ -71,7 +71,7 @@ class CastAuraSpellAction : public CastSpellAction
 	public:
 		CastAuraSpellAction(PlayerbotAI* botAI, std::string const& spell) : CastSpellAction(botAI, spell) { }
 
-		bool isUseful() const override;
+		bool isUseful() override;
 };
 
 class CastMeleeSpellAction : public CastSpellAction
@@ -131,7 +131,7 @@ class CastHealingSpellAction : public CastAuraSpellAction
         }
 
         std::string const& GetTargetName() override { return "self target"; }
-        bool isUseful() const override;
+        bool isUseful() override;
         ActionThreatType getThreatType() override { return ACTION_THREAT_AOE; }
 
     protected:
@@ -144,7 +144,7 @@ class CastAoeHealSpellAction : public CastHealingSpellAction
     	CastAoeHealSpellAction(PlayerbotAI* botAI, std::string const& spell, uint8 estAmount = 15.0f) : CastHealingSpellAction(botAI, spell, estAmount) { }
 
 		std::string const& GetTargetName() override { return "party member to heal"; }
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastCureSpellAction : public CastSpellAction
@@ -237,6 +237,18 @@ class CastArcaneTorrentAction : public CastBuffSpellAction
 {
     public:
         CastArcaneTorrentAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "arcane torrent") { }
+};
+
+class CastManaTapAction : public CastBuffSpellAction
+{
+    public:
+        CastManaTapAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "mana tap") {}
+};
+
+class CastWarStompAction : public CastSpellAction
+{
+    public:
+        CastWarStompAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "war stomp") {}
 };
 
 class CastSpellOnEnemyHealerAction : public CastSpellAction

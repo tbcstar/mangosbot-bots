@@ -107,7 +107,7 @@ class CastTotemAction : public CastBuffSpellAction
     public:
         CastTotemAction(PlayerbotAI* botAI, std::string const& spell) : CastBuffSpellAction(botAI, spell) { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastStoneskinTotemAction : public CastTotemAction
@@ -133,7 +133,7 @@ class CastManaSpringTotemAction : public CastTotemAction
     public:
         CastManaSpringTotemAction(PlayerbotAI* botAI) : CastTotemAction(botAI, "mana spring totem") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastManaTideTotemAction : public CastTotemAction
@@ -161,7 +161,7 @@ class CastFlametongueTotemAction : public CastTotemAction
     public:
         CastFlametongueTotemAction(PlayerbotAI* botAI) : CastTotemAction(botAI, "flametongue totem") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastWindfuryTotemAction : public CastTotemAction
@@ -182,7 +182,7 @@ class CastSearingTotemAction : public CastTotemAction
         CastSearingTotemAction(PlayerbotAI* botAI) : CastTotemAction(botAI, "searing totem") { }
 
         std::string const& GetTargetName() override { return "self target"; }
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastMagmaTotemAction : public CastMeleeSpellAction
@@ -191,7 +191,7 @@ class CastMagmaTotemAction : public CastMeleeSpellAction
         CastMagmaTotemAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "magma totem") { }
 
         std::string const& GetTargetName() override { return "self target"; }
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastFireNovaAction : public CastSpellAction

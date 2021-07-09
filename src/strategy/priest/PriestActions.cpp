@@ -15,7 +15,7 @@ NextAction** CastAbolishDiseaseOnPartyAction::getAlternatives()
     return NextAction::merge(NextAction::array(0, new NextAction("cure disease on party"), nullptr), CastSpellAction::getAlternatives());
 }
 
-bool CastRemoveShadowformAction::isUseful() const
+bool CastRemoveShadowformAction::isUseful()
 {
     return botAI->HasAura("shadowform", AI_VALUE(Unit*, "self target"));
 }

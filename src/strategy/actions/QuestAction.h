@@ -7,6 +7,7 @@
 class Event;
 class ObjectGuid;
 class Quest;
+class Player;
 class PlayerbotAI;
 class WorldObject;
 
@@ -18,6 +19,7 @@ class QuestAction : public Action
         bool Execute(Event event) override;
 
     protected:
+        bool CompleteQuest(Player* player, uint32 entry);
         virtual void ProcessQuest(Quest const* quest, WorldObject* questGiver) = 0;
         bool AcceptQuest(Quest const* quest, ObjectGuid questGiver);
         bool ProcessQuests(ObjectGuid questGiver);

@@ -11,7 +11,7 @@ Value<Unit*>* CastPolymorphAction::GetTargetValue()
     return context->GetValue<Unit*>("cc target", getName());
 }
 
-bool CastFrostNovaAction::isUseful() const
+bool CastFrostNovaAction::isUseful()
 {
-    return sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", GetTargetName()), sPlayerbotAIConfig->tooCloseDistance);
+    return sServerFacade->IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", GetTargetName()), 10.f);
 }

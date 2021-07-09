@@ -86,7 +86,7 @@ void ArrowFormation::FillSlotsExceptMaster()
             FindSlot(member)->AddLast(new FormationUnit(index, false));
 
         gref = gref->next();
-        index++;
+        ++index;
     }
 }
 
@@ -106,7 +106,7 @@ void ArrowFormation::AddMasterToSlot()
         }
 
         gref = gref->next();
-        index++;
+        ++index;
     }
 }
 
@@ -117,7 +117,7 @@ void FormationSlot::PlaceUnits(UnitPlacer* placer)
     for (FormationUnit* unit : units)
     {
         unit->SetLocation(placer->Place(unit, index, count));
-        index++;
+        ++index;
     }
 }
 

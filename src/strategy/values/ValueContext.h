@@ -51,6 +51,7 @@
 #include "NearestNpcsValue.h"
 #include "NewPlayerNearbyValue.h"
 #include "OutfitListValue.h"
+#include "QuestValues.h"
 #include "PartyMemberWithoutAuraValue.h"
 #include "PartyMemberWithoutItemValue.h"
 #include "PartyMemberToDispel.h"
@@ -60,6 +61,7 @@
 #include "PositionValue.h"
 #include "PossibleRpgTargetsValue.h"
 #include "PossibleTargetsValue.h"
+#include "PvpValues.h"
 #include "RandomBotUpdateValue.h"
 #include "RangeValues.h"
 #include "RtiTargetValue.h"
@@ -84,12 +86,17 @@ class ValueContext : public NamedObjectContext<UntypedValue>
             creators["active spell"] = &ValueContext::active_spell;
             creators["craft"] = &ValueContext::craft;
             creators["collision"] = &ValueContext::collision;
-            creators["skip spells std::list"] = &ValueContext::skip_spells_list_value;
+            creators["skip spells list"] = &ValueContext::skip_spells_list_value;
             creators["nearest game objects"] = &ValueContext::nearest_game_objects;
+            creators["nearest game objects no los"] = &ValueContext::nearest_game_objects_no_los;
+            creators["closest game objects"] = &ValueContext::closest_game_objects;
             creators["nearest npcs"] = &ValueContext::nearest_npcs;
             creators["nearest friendly players"] = &ValueContext::nearest_friendly_players;
+            creators["closest friendly players"] = &ValueContext::closest_friendly_players;
+            creators["nearest enemy players"] = &ValueContext::nearest_enemy_players;
             creators["possible targets"] = &ValueContext::possible_targets;
-            creators["possible ads"] = &ValueContext::possible_ads;
+            creators["possible targets no los"] = &ValueContext::possible_targets_no_los;
+            creators["possible adds"] = &ValueContext::possible_adds;
             creators["all targets"] = &ValueContext::all_targets;
             creators["possible rpg targets"] = &ValueContext::possible_rpg_targets;
             creators["nearest adds"] = &ValueContext::nearest_adds;
@@ -135,7 +142,7 @@ class ValueContext : public NamedObjectContext<UntypedValue>
             creators["loot target"] = &ValueContext::loot_target;
             creators["available loot"] = &ValueContext::available_loot;
             creators["has available loot"] = &ValueContext::has_available_loot;
-            creators["always loot std::list"] = &ValueContext::always_loot_list;
+            creators["always loot list"] = &ValueContext::always_loot_list;
             creators["loot strategy"] = &ValueContext::loot_strategy;
             creators["last movement"] = &ValueContext::last_movement;
             creators["stay time"] = &ValueContext::stay_time;
@@ -172,6 +179,8 @@ class ValueContext : public NamedObjectContext<UntypedValue>
             creators["combat"] = &ValueContext::combat;
             creators["lfg proposal"] = &ValueContext::lfg_proposal;
             creators["bag space"] = &ValueContext::bag_space;
+            creators["durability"] = &ValueContext::durability;
+            creators["repair cost"] = &ValueContext::repair_cost;
             creators["enemy healer target"] = &ValueContext::enemy_healer_target;
             creators["snare target"] = &ValueContext::snare_target;
             creators["formation"] = &ValueContext::formation;
@@ -183,13 +192,15 @@ class ValueContext : public NamedObjectContext<UntypedValue>
 
             creators["aoe count"] = &ValueContext::aoe_count;
             creators["aoe position"] = &ValueContext::aoe_position;
-            creators["outfit std::list"] = &ValueContext::outfit_list_value;
+            creators["outfit list"] = &ValueContext::outfit_list_value;
 
             creators["random bot update"] = &ValueContext::random_bot_update_value;
             creators["nearest non bot players"] = &ValueContext::nearest_non_bot_players;
             creators["new player nearby"] = &ValueContext::new_player_nearby;
             creators["already seen players"] = &ValueContext::already_seen_players;
             creators["rpg target"] = &ValueContext::rpg_target;
+            creators["ignore rpg target"] = &ValueContext::ignore_rpg_target;
+            creators["travel target"] = &ValueContext::travel_target;
             creators["talk target"] = &ValueContext::talk_target;
             creators["pull target"] = &ValueContext::pull_target;
             creators["group"] = &ValueContext::group;
@@ -198,6 +209,22 @@ class ValueContext : public NamedObjectContext<UntypedValue>
             creators["party member without item"] = &ValueContext::party_member_without_item;
             creators["party member without food"] = &ValueContext::party_member_without_food;
             creators["party member without water"] = &ValueContext::party_member_without_water;
+            creators["death count"] = &ValueContext::death_count;
+
+            creators["bg type"] = &ValueContext::bg_type;
+            creators["arena type"] = &ValueContext::arena_type;
+            creators["bg role"] = &ValueContext::bg_role;
+            creators["bg master"] = &ValueContext::bg_master;
+            creators["enemy flag carrier"] = &ValueContext::enemy_fc;
+            creators["team flag carrier"] = &ValueContext::team_fc;
+
+            creators["home bind"] = &ValueContext::home_bind;
+            creators["last long move"] = &ValueContext::last_long_move;
+
+            creators["active quest givers"] = &ValueContext::active_quest_givers;
+            creators["active quest takers"] = &ValueContext::active_quest_takers;
+            creators["active quest objectives"] = &ValueContext::active_quest_objectives;
+            creators["free quest log slots"] = &ValueContext::free_quest_log_slots;
         }
 
     private:
@@ -263,15 +290,19 @@ class ValueContext : public NamedObjectContext<UntypedValue>
         static UntypedValue* pet_dead(PlayerbotAI* botAI) { return new PetIsDeadValue(botAI); }
         static UntypedValue* has_mana(PlayerbotAI* botAI) { return new HasManaValue(botAI); }
         static UntypedValue* nearest_game_objects(PlayerbotAI* botAI) { return new NearestGameObjects(botAI); }
+        static UntypedValue* nearest_game_objects_no_los(PlayerbotAI* botAI) { return new NearestGameObjects(botAI, sPlayerbotAIConfig.sightDistance, true); }
+        static UntypedValue* closest_game_objects(PlayerbotAI* ai) { return new NearestGameObjects(ai, INTERACTION_DISTANCE); }
         static UntypedValue* log_level(PlayerbotAI* botAI) { return new LogLevelValue(botAI); }
         static UntypedValue* nearest_npcs(PlayerbotAI* botAI) { return new NearestNpcsValue(botAI); }
         static UntypedValue* nearest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI); }
+        static UntypedValue* closest_friendly_players(PlayerbotAI* ai) { return new NearestFriendlyPlayersValue(ai, INTERACTION_DISTANCE); }
+        static UntypedValue* nearest_enemy_players(PlayerbotAI* ai) { return new NearestEnemyPlayersValue(ai); }
         static UntypedValue* nearest_corpses(PlayerbotAI* botAI) { return new NearestCorpsesValue(botAI); }
         static UntypedValue* possible_rpg_targets(PlayerbotAI* botAI) { return new PossibleRpgTargetsValue(botAI); }
         static UntypedValue* possible_targets(PlayerbotAI* botAI) { return new PossibleTargetsValue(botAI); }
-        static UntypedValue* possible_ads(PlayerbotAI* botAI) { return new PossibleAdsValue(botAI); }
+        static UntypedValue* possible_targets_no_los(PlayerbotAI* ai) { return new PossibleTargetsValue(ai, "possible targets", 50.0f, true); }
         static UntypedValue* all_targets(PlayerbotAI* botAI) { return new AllTargetsValue(botAI); }
-        static UntypedValue* nearest_adds(PlayerbotAI* botAI) { return new NearestAdsValue(botAI); }
+        static UntypedValue* nearest_adds(PlayerbotAI* botAI) { return new NearestAddsValue(botAI); }
         static UntypedValue* party_member_without_aura(PlayerbotAI* botAI) { return new PartyMemberWithoutAuraValue(botAI); }
         static UntypedValue* attacker_without_aura(PlayerbotAI* botAI) { return new AttackerWithoutAuraTargetValue(botAI); }
         static UntypedValue* party_member_to_heal(PlayerbotAI* botAI) { return new PartyMemberToHeal(botAI); }
@@ -299,6 +330,8 @@ class ValueContext : public NamedObjectContext<UntypedValue>
         static UntypedValue* combat(PlayerbotAI* botAI) { return new IsInCombatValue(botAI); }
         static UntypedValue* lfg_proposal(PlayerbotAI* botAI) { return new LfgProposalValue(botAI); }
         static UntypedValue* bag_space(PlayerbotAI* botAI) { return new BagSpaceValue(botAI); }
+        static UntypedValue* durability(PlayerbotAI* ai) { return new DurabilityValue(ai); }
+        static UntypedValue* repair_cost(PlayerbotAI* ai) { return new RepairCostValue(ai); }
         static UntypedValue* enemy_healer_target(PlayerbotAI* botAI) { return new EnemyHealerTargetValue(botAI); }
         static UntypedValue* snare_target(PlayerbotAI* botAI) { return new SnareTargetValue(botAI); }
         static UntypedValue* speed(PlayerbotAI* botAI) { return new SpeedValue(botAI); }
@@ -311,6 +344,25 @@ class ValueContext : public NamedObjectContext<UntypedValue>
         static UntypedValue* nearest_non_bot_players(PlayerbotAI* botAI) { return new NearestNonBotPlayersValue(botAI); }
         static UntypedValue* skip_spells_list_value(PlayerbotAI* botAI) { return new SkipSpellsListValue(botAI); }
         static UntypedValue* rpg_target(PlayerbotAI* botAI) { return new RpgTargetValue(botAI); }
+        static UntypedValue* ignore_rpg_target(PlayerbotAI* botAI) { return new IgnoreRpgTargetValue(botAI); }
+        static UntypedValue* travel_target(PlayerbotAI* botAI) { return new TravelTargetValue(botAI); }
         static UntypedValue* talk_target(PlayerbotAI* botAI) { return new TalkTargetValue(botAI); }
         static UntypedValue* pull_target(PlayerbotAI* botAI) { return new PullTargetValue(botAI); }
+
+        static UntypedValue* bg_master(PlayerbotAI* botAI) { return new BgMasterValue(botAI); }
+        static UntypedValue* bg_role(PlayerbotAI* botAI) { return new BgRoleValue(botAI); }
+        static UntypedValue* arena_type(PlayerbotAI* botAI) { return new ArenaTypeValue(botAI); }
+        static UntypedValue* bg_type(PlayerbotAI* botAI) { return new BgTypeValue(botAI); }
+        static UntypedValue* team_fc(PlayerbotAI* ai) { return new FlagCarrierValue(ai, true, true); }
+        static UntypedValue* enemy_fc(PlayerbotAI* ai) { return new FlagCarrierValue(ai, false, true); }
+
+        static UntypedValue* last_long_move(PlayerbotAI* ai) { return new LastLongMoveValue(ai); }
+        static UntypedValue* home_bind(PlayerbotAI* ai) { return new HomeBindValue(ai); }
+
+        static UntypedValue* active_quest_givers(PlayerbotAI* ai) { return new ActiveQuestGiversValue(ai); }
+        static UntypedValue* active_quest_takers(PlayerbotAI* ai) { return new ActiveQuestTakersValue(ai); }
+        static UntypedValue* active_quest_objectives(PlayerbotAI* ai) { return new ActiveQuestObjectivesValue(ai); }
+        static UntypedValue* free_quest_log_slots(PlayerbotAI* ai) { return new FreeQuestLogSlotValue(ai); }
+
+        static UntypedValue* death_count(PlayerbotAI* ai) { return new DeathCountValue(ai); }
 };

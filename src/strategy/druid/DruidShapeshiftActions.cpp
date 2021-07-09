@@ -10,7 +10,7 @@ bool CastBearFormAction::isPossible() const
     return CastBuffSpellAction::isPossible() && !botAI->HasAura("dire bear form", GetTarget());
 }
 
-bool CastBearFormAction::isUseful() const
+bool CastBearFormAction::isUseful()
 {
     return CastBuffSpellAction::isUseful() && !botAI->HasAura("dire bear form", GetTarget());
 }
@@ -20,7 +20,15 @@ NextAction** CastDireBearFormAction::getAlternatives()
     return NextAction::merge(NextAction::array(0, new NextAction("bear form"), nullptr), CastSpellAction::getAlternatives());
 }
 
-bool CastCasterFormAction::isUseful() const
+bool CastTravelFormAction::isUseful()
+{
+    bool firstmount = bot->getLevel() >= 20;
+
+    // useful if no mount or with wsg flag
+    return !bot->IsMounted() && (!firstmount || (bot->HasAura(23333) || bot->HasAura(23335))) && !ai->HasAura("dash", bot);
+}
+
+bool CastCasterFormAction::isUseful()
 {
     return botAI->HasAnyAuraOf(GetTarget(), "dire bear form", "bear form", "cat form", "travel form", "aquatic form",
         "flight form", "swift flight form", "moonkin form", "tree of life", nullptr);

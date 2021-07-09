@@ -16,6 +16,26 @@ class DpsRogueStrategy : public CombatStrategy
         NextAction** getDefaultActions() override;
 };
 
+class StealthedRogueStrategy : public Strategy
+{
+    public:
+        StealthedRogueStrategy(PlayerbotAI* botAI);
+
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "stealthed"; }
+        NextAction** getDefaultActions() override;
+};
+
+class StealthStrategy : public Strategy
+{
+    public:
+        StealthStrategy(PlayerbotAI* botAI) : Strategy(botAI) { };
+
+        //virtual int GetType() { return STRATEGY_TYPE_NONCOMBAT; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "stealth"; }
+};
+
 class RogueAoeStrategy : public Strategy
 {
     public:
@@ -32,4 +52,13 @@ class RogueBoostStrategy : public Strategy
 
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
         std::string const& getName() override { return "boost"; }
+};
+
+class RogueCcStrategy : public Strategy
+{
+    public:
+        RogueCcStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
+
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
+        std::string const& getName() override { return "cc"; }
 };

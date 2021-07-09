@@ -8,16 +8,75 @@
 
 bool CastSpellAction::Execute(Event event)
 {
-	return botAI->CastSpell(spell, GetTarget());
+    if (spell == "conjure food" || spell == "conjure water")
+    {
+        //uint32 id = AI_VALUE2(uint32, "spell id", spell);
+        //if (!id)
+        //    return false;
+
+        uint32 castId = 0;
+
+        for (PlayerSpellMap::iterator itr = bot->GetSpellMap().begin(); itr != bot->GetSpellMap().end(); ++itr)
+        {
+            uint32 spellId = itr->first;
+
+            SpellInfo const* pSpellInfo = sSpellMgr->GetSpellInfo(spellId);
+            if (!pSpellInfo)
+                continue;
+
+            std::string namepart = pSpellInfo->SpellName[0];
+            strToLower(namepart);
+
+            if (namepart.find(spell) == std::string::npos)
+                continue;
+
+            if (pSpellInfo->Effects[0].Effect != SPELL_EFFECT_CREATE_ITEM)
+                continue;
+
+            uint32 itemId = pSpellInfo->Effects[0].ItemType;
+            ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
+            if (!proto)
+                continue;
+
+            if (bot->CanUseItem(proto) != EQUIP_ERR_OK)
+                continue;
+
+            if (pSpellInfo->Id > castId)
+                castId = pSpellInfo->Id;
+        }
+
+        return botAI->CastSpell(castId, bot);
+    }
+
+    return botAI->CastSpell(spell, GetTarget());
 }
 
-bool CastSpellAction::isPossible()
+bool CastSpellAction::isPossible() const
 {
-	return botAI->CanCastSpell(spell, GetTarget());
+    if (spell == "mount" && !bot->IsMounted() && !bot->IsInCombat())
+        return true;
+
+    if (spell == "mount" && bot->IsInCombat())
+    {
+        bot->Dismount();
+        return false;
+    }
+
+    Spell* currentSpell = bot->GetCurrentSpell(CURRENT_GENERIC_SPELL);
+    return ai->CanCastSpell(spell, GetTarget(), true) && (!currentSpell || currentSpell->getState() != SPELL_STATE_CASTING);
 }
 
 bool CastSpellAction::isUseful()
 {
+    if (spell == "mount" && !bot->IsMounted() && !bot->IsInCombat())
+        return true;
+
+    if (spell == "mount" && bot->IsInCombat())
+    {
+        bot->Dismount();
+        return false;
+    }
+
     return GetTarget() && AI_VALUE2(bool, "spell cast useful", spell) && AI_VALUE2(float, "distance", GetTargetName()) <= range;
 }
 
@@ -26,7 +85,7 @@ bool CastAuraSpellAction::isUseful()
 	return CastSpellAction::isUseful() && !botAI->HasAura(spell, GetTarget(), true);
 }
 
-bool CastEnchantItemAction::isPossible()
+bool CastEnchantItemAction::isPossible() const
 {
     if (!CastSpellAction::isPossible())
         return false;
@@ -58,6 +117,9 @@ Value<Unit*>* BuffOnPartyAction::GetTargetValue()
 
 NextAction** CastSpellAction::getPrerequisites()
 {
+    if (spell == "mount")
+        return nullptr;
+
     if (range > botAI->GetRange("spell"))
         return nullptr;
     else if (range > ATTACK_DISTANCE)

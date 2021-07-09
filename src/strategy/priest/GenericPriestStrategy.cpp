@@ -23,6 +23,7 @@ void GenericPriestStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("low health", NextAction::array(0, new NextAction("power word: shield", 60.0f), new NextAction("greater heal", 60.0f), nullptr)));
     triggers.push_back(new TriggerNode("party member low health", NextAction::array(0, new NextAction("power word: shield on party", 50.0f), new NextAction("greater heal on party", 50.0f), nullptr)));
     triggers.push_back(new TriggerNode("medium threat", NextAction::array(0, new NextAction("psychic scream", 50.0f), nullptr)));
+    triggers.push_back(new TriggerNode("often", NextAction::array(0, new NextAction("apply oil", 1.0f), nullptr)));
 }
 
 void PriestCureStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

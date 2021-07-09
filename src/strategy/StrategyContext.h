@@ -5,10 +5,12 @@
 #include "CustomStrategy.h"
 #include "NamedObjectContext.h"
 #include "AttackEnemyPlayersStrategy.h"
+#include "BattlegroundStrategy.h"
 #include "CastTimeStrategy.h"
 #include "ChatCommandHandlerStrategy.h"
 #include "ConserveManaStrategy.h"
 #include "DeadStrategy.h"
+#include "DebugStrategy.h"
 #include "DpsAssistStrategy.h"
 #include "DuelStrategy.h"
 #include "EmoteStrategy.h"
@@ -17,6 +19,7 @@
 #include "GrindingStrategy.h"
 #include "GuardStrategy.h"
 #include "KiteStrategy.h"
+#include "LfgStrategy.h"
 #include "LootNonCombatStrategy.h"
 #include "MarkRtiStrategy.h"
 #include "MeleeCombatStrategy.h"
@@ -28,11 +31,13 @@
 #include "RangedCombatStrategy.h"
 #include "ReturnStrategy.h"
 #include "RpgStrategy.h"
+#include "RTSCStrategy.h"
 #include "RunawayStrategy.h"
 #include "StayStrategy.h"
 #include "TankAoeStrategy.h"
 #include "TellTargetStrategy.h"
 #include "ThreatStrategy.h"
+#include "TravelStrategy.h"
 #include "UseFoodStrategy.h"
 #include "UsePotionsStrategy.h"
 #include "WorldPacketHandlerStrategy.h"
@@ -67,12 +72,29 @@ class StrategyContext : public NamedObjectContext<Strategy>
             creators["reveal"] = &StrategyContext::reveal;
             creators["collision"] = &StrategyContext::collision;
             creators["rpg"] = &StrategyContext::rpg;
+            creators["travel"] = &StrategyContext::travel;
+            creators["explore"] = &StrategyContext::explore;
+            creators["map"] = &StrategyContext::map;
+            creators["map full"] = &StrategyContext::map_full;
             creators["sit"] = &StrategyContext::sit;
             creators["mark rti"] = &StrategyContext::mark_rti;
-            creators["ads"] = &StrategyContext::possible_ads;
+            creators["ads"] = &StrategyContext::possible_adds;
             creators["close"] = &StrategyContext::close;
             creators["ranged"] = &StrategyContext::ranged;
             creators["behind"] = &StrategyContext::behind;
+            creators["bg"] = &StrategyContext::bg;
+            creators["battleground"] = &StrategyContext::battleground;
+            creators["warsong"] = &StrategyContext::warsong;
+            creators["alterac"] = &StrategyContext::alterac;
+            creators["arathi"] = &StrategyContext::arathi;
+            creators["arena"] = &StrategyContext::arena;
+            creators["mount"] = &StrategyContext::mount;
+            creators["rtsc"] = &StrategyContext::rtsc;
+            creators["attack tagged"] = &StrategyContext::attack_tagged;
+            creators["debug"] = &StrategyContext::debug;
+            creators["debug move"] = &StrategyContext::debug_move;
+            creators["debug rpg"] = &StrategyContext::debug_rpg;
+            creators["debug spell"] = &StrategyContext::debug_spell;
         }
 
     private:
@@ -105,8 +127,25 @@ class StrategyContext : public NamedObjectContext<Strategy>
         static Strategy* reveal() { return new RevealStrategy(); }
         static Strategy* collision() { return new CollisionStrategy(); }
         static Strategy* rpg() { return new RpgStrategy(); }
+        static Strategy* travel(PlayerbotAI* botAI) { return new TravelStrategy(botAI); }
+        static Strategy* explore(PlayerbotAI* ai) { return new ExploreStrategy(ai); }
+        static Strategy* map(PlayerbotAI* ai) { return new MapStrategy(ai); }
+        static Strategy* map_full(PlayerbotAI* ai) { return new MapFullStrategy(ai); }
         static Strategy* sit() { return new SitStrategy(); }
-        static Strategy* possible_ads() { return new PossibleAdsStrategy(); }
+        static Strategy* possible_adds() { return new PossibleAddsStrategy(); }
+        static Strategy* mount(PlayerbotAI* botAI) { return new MountStrategy(botAI); }
+        static Strategy* bg(PlayerbotAI* botAI) { return new BGStrategy(botAI); }
+        static Strategy* battleground(PlayerbotAI* ai) { return new BattlegroundStrategy(ai); }
+        static Strategy* warsong(PlayerbotAI* ai) { return new WarsongStrategy(ai); }
+        static Strategy* alterac(PlayerbotAI* ai) { return new AlteracStrategy(ai); }
+        static Strategy* arathi(PlayerbotAI* ai) { return new ArathiStrategy(ai); }
+        static Strategy* arena(PlayerbotAI* botAI) { return new ArenaStrategy(botAI); }
+        static Strategy* rtsc(PlayerbotAI* botAI) { return new RTSCStrategy(botAI); }
+        static Strategy* attack_tagged(PlayerbotAI* botAI) { return new AttackTaggedStrategy(botAI); }
+        static Strategy* debug(PlayerbotAI* botAI) { return new DebugStrategy(botAI); }
+        static Strategy* debug_move(PlayerbotAI* ai) { return new DebugMoveStrategy(ai); }
+        static Strategy* debug_rpg(PlayerbotAI* ai) { return new DebugRpgStrategy(ai); }
+        static Strategy* debug_spell(PlayerbotAI* ai) { return new DebugSpellStrategy(ai); }
 };
 
 class MovementStrategyContext : public NamedObjectContext<Strategy>

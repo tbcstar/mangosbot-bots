@@ -30,7 +30,7 @@ bool SayAction::Execute(Event event)
 {
 	if (stringTable.empty())
 	{
-		QueryResult results = CharacterDatabase.PQuery("SELECT name, text, type FROM ai_playerbot_speech");
+		QueryResult results = PlayerbotDatabase.PQuery("SELECT name, text, type FROM ai_playerbot_speech");
 		if (results)
 		{
             do
@@ -43,14 +43,15 @@ bool SayAction::Execute(Event event)
                 if (type == "yell")
                     text = "/y " + text;
 
-                stringTable[name].push_back(text);
+                if (!text.empty() && text != "")
+                    stringTable[name].push_back(text);
             } while (results->NextRow());
 		}
 	}
 
 	if (probabilityTable.empty())
 	{
-        QueryResult results = CharacterDatabase.PQuery("SELECT name, probability FROM ai_playerbot_speech_probability");
+        QueryResult results = PlayerbotDatabase.PQuery("SELECT name, probability FROM ai_playerbot_speech_probability");
         if (results)
         {
             do
@@ -123,6 +124,23 @@ bool SayAction::Execute(Event event)
 
     replaceAll(text, "<randomfaction>", IsAlliance(bot->getRace()) ? "Alliance" : "Horde");
 
+    if (qualifier == "low ammo" || qualifier == "no ammo")
+    {
+        if (Item* const pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, EQUIPMENT_SLOT_RANGED))
+        {
+            switch (pItem->GetTemplate()->SubClass)
+            {
+                case ITEM_SUBCLASS_WEAPON_GUN:
+                    replaceAll(text, "<ammo>", "bullets");
+                    break;
+                case ITEM_SUBCLASS_WEAPON_BOW:
+                case ITEM_SUBCLASS_WEAPON_CROSSBOW:
+                    replaceAll(text, "<ammo>", "arrows");
+                    break;
+            }
+        }
+    }
+
     if (bot->GetMap())
     {
         if (AreaTableEntry const* area = sAreaTableStore.LookupEntry(bot->GetAreaId()))
@@ -130,9 +148,9 @@ bool SayAction::Execute(Event event)
     }
 
     if (text.find("/y ") == 0)
-        bot->Yell(text.substr(3), LANG_UNIVERSAL);
+        bot->Yell(text.substr(3), (bot->GetTeamId() == TEAM_ALLIANCE ? LANG_COMMON : LANG_ORCISH));
     else
-        bot->Say(text, LANG_UNIVERSAL);
+        bot->Say(text, (bot->GetTeamId() == TEAM_ALLIANCE ? LANG_COMMON : LANG_ORCISH));
 
     return true;
 }

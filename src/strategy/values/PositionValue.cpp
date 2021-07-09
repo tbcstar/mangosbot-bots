@@ -24,7 +24,7 @@ std::string const& PositionValue::Save()
             else
                 first = false;
 
-            out << name << "=" << pos.x << "," << pos.y << "," << pos.z << "," << pos.mapId;
+            out << name << "=" << pos.x << "," << pos.y << "," << pos.z << "," << pos.GetMapId();
         }
     }
 

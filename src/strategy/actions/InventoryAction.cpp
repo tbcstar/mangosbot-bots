@@ -233,6 +233,23 @@ std::list<Item*> InventoryAction::parseItems(std::string const& text, IterateIte
         found.insert(visitor.GetResult().begin(), visitor.GetResult().end());
     }
 
+    if (text == "ammo")
+    {
+        if (Item* const pItem = bot->GetItemByPos(INVENTORY_SLOT_BAG_0, EQUIPMENT_SLOT_RANGED))
+        {
+            FindAmmoVisitor visitor(bot, pItem->GetTemplate()->SubClass);
+            IterateItems(&visitor, ITERATE_ITEMS_IN_BAGS);
+            found.insert(visitor.GetResult().begin(), visitor.GetResult().end());
+        }
+    }
+
+    if (text == "recipe")
+    {
+        FindRecipeVisitor visitor(bot);
+        IterateItems(&visitor, ITERATE_ITEMS_IN_BAGS);
+        found.insert(visitor.GetResult().begin(), visitor.GetResult().end());
+    }
+
     FindNamedItemVisitor visitor(bot, text);
     IterateItems(&visitor, ITERATE_ITEMS_IN_BAGS);
     found.insert(visitor.GetResult().begin(), visitor.GetResult().end());
@@ -302,7 +319,7 @@ uint32 InventoryAction::GetItemCount(FindItemVisitor* visitor, IterateItemsMask 
 
 ItemIds InventoryAction::FindOutfitItems(std::string const& name)
 {
-    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit std::list");
+    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit list");
     for (std::vector<std::string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
         std::string const& outfit = *i;

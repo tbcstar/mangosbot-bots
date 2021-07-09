@@ -45,9 +45,9 @@ void PullStrategy::InitMultipliers(std::vector<Multiplier*>& multipliers)
     CombatStrategy::InitMultipliers(multipliers);
 }
 
-void PossibleAdsStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
+void PossibleAddsStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     Strategy::InitTriggers(triggers);
 
-    triggers.push_back(new TriggerNode("possible ads", NextAction::array(0, new NextAction("flee with pet", 60), nullptr)));
+    triggers.push_back(new TriggerNode("possible adds", NextAction::array(0, new NextAction("flee with pet", 60), nullptr)));
 }

@@ -126,7 +126,7 @@ bool OutfitAction::Execute(Event event)
 
 void OutfitAction::Save(std::string const& name, ItemIds items)
 {
-    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit std::list");
+    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit list");
     for (std::vector<std::string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
         std::string const& outfit = *i;
@@ -159,7 +159,7 @@ void OutfitAction::Save(std::string const& name, ItemIds items)
 
 void OutfitAction::List()
 {
-    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit std::list");
+    std::vector<std::string>& outfits = AI_VALUE(std::vector<std::string>&, "outfit list");
     for (std::vector<std::string>::iterator i = outfits.begin(); i != outfits.end(); ++i)
     {
         std::string const& outfit = *i;

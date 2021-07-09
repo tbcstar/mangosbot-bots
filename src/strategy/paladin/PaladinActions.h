@@ -91,7 +91,7 @@ class CastSealSpellAction : public CastBuffSpellAction
     public:
         CastSealSpellAction(PlayerbotAI* botAI, std::string const& name) : CastBuffSpellAction(botAI, name) { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastSealOfRighteousnessAction : public CastSealSpellAction

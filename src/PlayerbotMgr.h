@@ -26,6 +26,7 @@ class PlayerbotHolder : public PlayerbotAIBase
         void AddPlayerBot(ObjectGuid guid, uint32 masterAccountId);
 
         void LogoutPlayerBot(ObjectGuid guid);
+        void DisablePlayerBot(ObjectGuid guid);
         Player* GetPlayerBot (ObjectGuid guid) const;
         PlayerBotMap::const_iterator GetPlayerBotsBegin() const { return playerBots.begin(); }
         PlayerBotMap::const_iterator GetPlayerBotsEnd()   const { return playerBots.end();   }
@@ -37,7 +38,7 @@ class PlayerbotHolder : public PlayerbotAIBase
         void OnBotLogin(Player* const bot);
 
         std::vector<std::string> HandlePlayerbotCommand(char const* args, Player* master = nullptr);
-        std::string ProcessBotCommand(std::string const& cmd, ObjectGuid guid, bool admin, uint32 masterAccountId, uint32 masterGuildId);
+        std::string ProcessBotCommand(std::string const& cmd, ObjectGuid guid, ObjectGuid masterguid, bool admin, uint32 masterAccountId, uint32 masterGuildId);
         uint32 GetAccountId(std::string const& name);
         std::string ListBots(Player* master);
 

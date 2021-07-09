@@ -18,7 +18,7 @@ class GenericDruidNonCombatStrategy : public NonCombatStrategy
 class GenericDruidBuffStrategy : public NonCombatStrategy
 {
     public:
-        GenericDruidBuffStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
+        GenericDruidBuffStrategy(PlayerbotAI* botAI);
 
         std::string const& getName() override { return "buff"; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;

@@ -33,3 +33,11 @@ class PartyMemberNeedCureTrigger : public NeedCureTrigger
 
 		Value<Unit*>* GetTargetValue() override;
 };
+
+class NeedWorldBuffTrigger : public Trigger
+{
+    public:
+        NeedWorldBuffTrigger(PlayerbotAI* ai) : Trigger(ai) {}
+
+        bool IsActive() override;
+};

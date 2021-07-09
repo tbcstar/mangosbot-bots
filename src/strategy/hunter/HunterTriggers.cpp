@@ -5,6 +5,7 @@
 #include "HunterTriggers.h"
 #include "HunterActions.h"
 #include "Playerbot.h"
+#include "ServerFacade.h"
 
 bool HunterNoStingsActiveTrigger::IsActive()
 {
@@ -38,3 +39,27 @@ bool HunterAspectOfThePackTrigger::IsActive()
 {
     return BuffTrigger::IsActive() && !botAI->HasAura("aspect of the cheetah", GetTarget());
 };
+
+bool HunterLowAmmoTrigger::IsActive()
+{
+    return (AI_VALUE2(uint8, "item count", "ammo") < 2) && (AI_VALUE2(uint8, "item count", "ammo") > 0);
+}
+
+bool HunterHasAmmoTrigger::IsActive()
+{
+    return !AmmoCountTrigger::IsActive();
+}
+
+bool SwitchToRangedTrigger::IsActive()
+{
+    Unit* target = AI_VALUE(Unit*, "current target");
+    return ai->HasStrategy("close", BOT_STATE_COMBAT) && target && (target->GetVictim() != bot ||
+        sServerFacade.IsDistanceGreaterThan(AI_VALUE2(float, "distance", "current target"), 8.0f));
+}
+
+bool SwitchToMeleeTrigger::IsActive()
+{
+    Unit* target = AI_VALUE(Unit*, "current target");
+    return ai->HasStrategy("ranged", BOT_STATE_COMBAT) && target && (target->GetVictim() == bot ||
+        sServerFacade.IsDistanceLessOrEqualThan(AI_VALUE2(float, "distance", "current target"), 8.0f));
+}

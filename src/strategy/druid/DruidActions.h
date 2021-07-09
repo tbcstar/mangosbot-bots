@@ -2,12 +2,11 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
-#include "GenericActions.h"
+#include "GenericSpellActions.h"
 
 class Event;
 class PlayerbotAI;
 class Unit;
-class Value;
 
 class CastFaerieFireAction : public CastDebuffSpellAction
 {
@@ -97,6 +96,12 @@ class CastThornsAction : public CastBuffSpellAction
 {
 	public:
 		CastThornsAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "thorns") { }
+};
+
+class CastThornsOnPartyAction : public BuffOnPartyAction
+{
+    public:
+        CastThornsOnPartyAction(PlayerbotAI* botAI) : BuffOnPartyAction(botAI, "thorns") { }
 };
 
 class CastOmenOfClarityAction : public CastBuffSpellAction

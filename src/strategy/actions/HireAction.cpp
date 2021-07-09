@@ -15,14 +15,14 @@ bool HireAction::Execute(Event event)
     if (!sRandomPlayerbotMgr->IsRandomBot(bot))
         return false;
 
-    uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(master->GetGUID().GetRawValue());
+    uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(master->GetGUID().GetCounter());
     QueryResult results = CharacterDatabase.PQuery("SELECT COUNT(*) FROM characters WHERE account = '%u'", account);
 
     uint32 charCount = 10;
     if (results)
     {
         Field* fields = results->Fetch();
-        charCount = fields[0].GetUInt32();
+        charCount = uint32(fields[0].GetUInt64());
     }
 
     if (charCount >= 10)
@@ -52,7 +52,7 @@ bool HireAction::Execute(Event event)
 
     bot->SetMoney(moneyReq);
     sRandomPlayerbotMgr->Remove(bot);
-    CharacterDatabase.PExecute("UPDATE characters SET account = '%u' WHERE guid = '%u'", account, bot->GetGUID().GetRawValue());
+    CharacterDatabase.PExecute("UPDATE characters SET account = '%u' WHERE guid = '%u'", account, bot->GetGUID().GetCounter());
 
     return true;
 }

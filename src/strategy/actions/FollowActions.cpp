@@ -27,8 +27,8 @@ bool FollowAction::Execute(Event event)
         moved = MoveTo(loc.GetMapId(), loc.GetPositionX(), loc.GetPositionY(), loc.GetPositionZ());
     }
 
-    if (moved)
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig->reactDelay);
+    //if (moved)
+        //botAI->SetNextCheckDelay(sPlayerbotAIConfig->reactDelay);
 
     return moved;
 }
@@ -37,6 +37,16 @@ bool FollowAction::isUseful()
 {
     Formation* formation = AI_VALUE(Formation*, "formation");
     std::string const& target = formation->GetTargetName();
+
+    Unit* fTarget = NULL;
+    if (!target.empty())
+        fTarget = AI_VALUE(Unit*, target);
+    else
+        fTarget = AI_VALUE(Unit*, "master target");
+
+    if (fTarget && (fTarget->HasUnitState(UNIT_STATE_IN_FLIGHT) && (bot->IsAlive() || bot->GetCorpse()) ||
+        fTarget->GetGUID() == bot->GetGUID() || fTarget->getDeathState() != bot->getDeathState()))
+        return false;
 
     float distance = 0.f;
     if (!target.empty())
@@ -55,3 +65,24 @@ bool FollowAction::isUseful()
     return sServerFacade->IsDistanceGreaterThan(distance, formation->GetMaxDistance());
 }
 
+bool FleeToMasterAction::Execute(Event event)
+{
+    bool canFollow = Follow(AI_VALUE(Unit*, "master target"));
+    if (!canFollow)
+    {
+        //ai->SetNextCheckDelay(5000);
+        return false;
+    }
+
+    botAI->TellMaster("Wait for me!");
+    botAI->SetNextCheckDelay(3000);
+
+    return true;
+}
+
+bool FleeToMasterAction::isUseful()
+{
+    Unit* target = AI_VALUE(Unit*, "current target");
+    return botAI->GetGroupMaster() && botAI->GetGroupMaster() != bot &&
+        (!target || (target && !botAI->GetGroupMaster()->HasTarget(target->GetGUID()))) && botAI->HasStrategy("follow", BOT_STATE_NON_COMBAT);
+}

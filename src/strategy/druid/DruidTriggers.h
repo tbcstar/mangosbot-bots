@@ -22,10 +22,20 @@ class MarkOfTheWildTrigger : public BuffTrigger
         bool IsActive() override;
 };
 
+class ThornsOnPartyTrigger : public BuffOnPartyTrigger
+{
+    public:
+        ThornsOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "thorns", 2) { }
+
+        bool IsActive() override;
+};
+
 class ThornsTrigger : public BuffTrigger
 {
     public:
-        ThornsTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "thorns") { }
+        ThornsTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "thorns", 2) { }
+
+        bool IsActive() override;
 };
 
 class OmenOfClarityTrigger : public BuffTrigger

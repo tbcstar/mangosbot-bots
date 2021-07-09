@@ -10,18 +10,18 @@ class GenericWarlockStrategyActionNodeFactory : public NamedObjectFactory<Action
     public:
         GenericWarlockStrategyActionNodeFactory()
         {
-            creators["summon voidwalker"] = &summon_voidwalker;
+            //creators["summon voidwalker"] = &summon_voidwalker;
             creators["banish"] = &banish;
         }
 
     private:
-        static ActionNode* summon_voidwalker(PlayerbotAI* botAI)
-        {
-            return new ActionNode ("summon voidwalker",
-                /*P*/ nullptr,
-                /*A*/ NextAction::array(0, new NextAction("drain soul"), nullptr),
-                /*C*/ nullptr);
-        }
+        //static ActionNode* summon_voidwalker(PlayerbotAI* botAI)
+        //{
+            //return new ActionNode ("summon voidwalker",
+                /*P*/ //nullptr,
+                /*A*/ //NextAction::array(0, new NextAction("drain soul"), nullptr),
+                /*C*/ //nullptr);
+        //}
         static ActionNode* banish(PlayerbotAI* botAI)
         {
             return new ActionNode ("banish",

@@ -2,7 +2,7 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
-#include "Action.h"
+#include "MovementActions.h"
 
 class Event;
 class PlayerbotAI;
@@ -16,10 +16,10 @@ class ReturnPositionResetAction : public Action
         void SetReturnPosition(float x, float y, float z);
 };
 
-class FollowChatShortcutAction : public ReturnPositionResetAction
+class FollowChatShortcutAction : public MovementAction
 {
     public:
-        FollowChatShortcutAction(PlayerbotAI* botAI) : ReturnPositionResetAction(botAI, "follow chat shortcut") { }
+        FollowChatShortcutAction(PlayerbotAI* botAI) : MovementAction(botAI, "follow chat shortcut") { }
 
         bool Execute(Event event) override;
 };

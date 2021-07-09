@@ -6,6 +6,7 @@
 #include "Playerbot.h"
 #include "PlayerbotDbStore.h"
 #include "PlayerbotFactory.h"
+#include "TravelMgr.h"
 
 PlayerbotHolder::PlayerbotHolder() : PlayerbotAIBase()
 {
@@ -29,6 +30,7 @@ void PlayerbotHolder::UpdateSessions(uint32 /*elapsed*/)
 
 void PlayerbotHolder::LogoutAllBots()
 {
+    /*
     while (true)
     {
         PlayerBotMap::const_iterator itr = GetPlayerBotsBegin();
@@ -36,6 +38,18 @@ void PlayerbotHolder::LogoutAllBots()
             break;
 
         Player* bot= itr->second;
+        if (!bot->GetPlayerbotAI()->IsRealPlayer())
+            LogoutPlayerBot(bot->GetObjectGuid().GetRawValue());
+    }
+    */
+
+    PlayerBotMap bots = playerBots;
+    for (auto& itr : bots)
+    {
+        Player* bot = itr.second;
+        if (!bot->GetPlayerbotAI() || bot->GetPlayerbotAI()->IsRealPlayer())
+            continue;
+
         LogoutPlayerBot(bot->GetGUID());
     }
 }
@@ -45,15 +59,60 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
     if (Player* bot = GetPlayerBot(guid))
     {
         bot->GetPlayerbotAI()->TellMaster("Goodbye!");
-        sPlayerbotDbStore->Save(bot->GetPlayerbotAI());
+        Player* master = bot->GetPlayerbotAI()->GetMaster();
+        Group* group = bot->GetGroup();
+        if (group && !bot->InBattleGround() && !bot->InBattleGroundQueue() && (master && !master->GetPlayerbotAI()))
+        {
+            sPlayerbotDbStore->Save(bot->GetPlayerbotAI());
+        }
 
         sLog->outString("Bot %s logged out", bot->GetName());
-        //bot->SaveToDB();
+        bot->SaveToDB();
+
+        if (bot->GetPlayerbotAI()->GetAiObjectContext()) //Maybe some day re-write to delate all pointer values.
+        {
+            if (TravelTarget* target = bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<TravelTarget*>("travel target")->Get())
+                delete target;
+        }
 
         WorldSession* botWorldSessionPtr = bot->GetSession();
         playerBots.erase(guid);    // deletes bot player ptr inside this WorldSession PlayerBotMap
         botWorldSessionPtr->LogoutPlayer(true); // this will delete the bot Player object and PlayerbotAI object
         delete botWorldSessionPtr;  // finally delete the bot's WorldSession
+    }
+}
+
+void PlayerbotHolder::DisablePlayerBot(ObjectGuid guid)
+{
+    if (Player* bot = GetPlayerBot(guid))
+    {
+        PlayerbotAI* botAI = bot->GetPlayerbotAI();
+        botAI->TellMaster("Goodbye!");
+        bot->StopMoving();
+        bot->GetMotionMaster()->Clear();
+
+        Player* master = botAI->GetMaster();
+        Group* group = bot->GetGroup();
+        if (group && !bot->InBattleground() && !bot->InBattlegroundQueue() && (master && !master->GetPlayerbotAI()))
+        {
+            sPlayerbotDbStore.Save(botAI);
+        }
+
+        sLog->outDebug("Bot %s logged out", bot->GetName());
+
+        bot->SaveToDB();
+
+        if (botAI->GetAiObjectContext()) //Maybe some day re-write to delate all pointer values.
+        {
+            TravelTarget* target = botAI->GetAiObjectContext()->GetValue<TravelTarget*>("travel target")->Get();
+            if (target)
+                delete target;
+        }
+
+        playerBots.erase(guid);    // deletes bot player ptr inside this WorldSession PlayerBotMap
+
+        delete botAI;
+        bot->SetPlayerbotAI(nullptr);
     }
 }
 
@@ -102,11 +161,31 @@ void PlayerbotHolder::OnBotLogin(Player* const bot)
         }
     }
 
-    botAI->ResetStrategies();
+    if (group)
+    {
+        botAI->ResetStrategies();
+
+        if (master && !master->GetPlayerbotAI())
+        {
+            botAI->ChangeStrategy("-rpg", BOT_STATE_NON_COMBAT);
+            botAI->ChangeStrategy("-grind", BOT_STATE_NON_COMBAT);
+        }
+    }
+    else
+    {
+        botAI->ResetStrategies(!sRandomPlayerbotMgr.IsRandomBot(bot->GetGUIDLow()));
+    }
+
+    if (master && !master->HasUnitState(UNIT_STATE_IN_FLIGHT))
+    {
+        bot->GetMotionMaster()->MovementExpired();
+        bot->m_taxi.ClearTaxiDestinations();
+    }
+
     botAI->TellMaster("Hello!");
 }
 
-std::string PlayerbotHolder::ProcessBotCommand(std::string const& cmd, ObjectGuid guid, bool admin, uint32 masterAccountId, uint32 masterGuildId)
+std::string PlayerbotHolder::ProcessBotCommand(std::string const& cmd, ObjectGuid guid, ObjectGuid masterguid, bool admin, uint32 masterAccountId, uint32 masterGuildId)
 {
     if (!sPlayerbotAIConfig->enabled || guid.IsEmpty())
         return "bot system is disabled";
@@ -116,16 +195,10 @@ std::string PlayerbotHolder::ProcessBotCommand(std::string const& cmd, ObjectGui
     bool isRandomAccount = sPlayerbotAIConfig->IsInRandomAccountList(botAccount);
     bool isMasterAccount = (masterAccountId == botAccount);
 
-    if (!isRandomAccount && !isMasterAccount && !admin)
+    if (!isRandomAccount && !isMasterAccount && !admin && masterguid)
     {
-        uint32 guildId = 0;
-        if (QueryResult results = CharacterDatabase.PQuery("SELECT guildid FROM guild_member WHERE guid = '%u'", guid))
-        {
-            Field* fields = results->Fetch();
-            guildId = fields[0].GetUInt32();
-        }
-
-        if (!sPlayerbotAIConfig->allowGuildBots || guildId != masterGuildId)
+        Player* master = sObjectMgr.GetPlayer(masterguid);
+        if (master && (!sPlayerbotAIConfig.allowGuildBots || !masterGuildId || (masterGuildId && master->GetGuildIdFromDB(guid) != masterGuildId)))
             return "not in your guild or account";
     }
 
@@ -184,6 +257,12 @@ std::string PlayerbotHolder::ProcessBotCommand(std::string const& cmd, ObjectGui
                 factory.Randomize(false);
                 return "ok";
             }
+            else if (cmd == "init=legendary" || cmd == "init=yellow")
+            {
+                PlayerbotFactory factory(bot, master->getLevel(), ITEM_QUALITY_LEGENDARY);
+                factory.Randomize(false);
+                return "ok";
+            }
         }
 
         if (cmd == "levelup" || cmd == "level")
@@ -237,7 +316,7 @@ bool PlayerbotMgr::HandlePlayerbotMgrCommand(ChatHandler* handler, char const* a
 
     for (std::vector<std::string>::iterator i = messages.begin(); i != messages.end(); ++i)
     {
-        handler->PSendSysMessage(i->c_str());
+        handler->PSendSysMessage("%s", i->c_str());
     }
 
     return true;
@@ -249,7 +328,7 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
 
     if (!*args)
     {
-        messages.push_back("usage: std::list or add/init/remove PLAYERNAME");
+        messages.push_back("usage: list/reload or add/init/remove PLAYERNAME");
         return std::move(messages);
     }
 
@@ -257,19 +336,46 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
     char* charname = strtok (nullptr, " ");
     if (!cmd)
     {
-        messages.push_back("usage: std::list or add/init/remove PLAYERNAME");
+        messages.push_back("usage: list/reload or add/init/remove PLAYERNAME");
         return std::move(messages);
     }
 
-    if (!strcmp(cmd, "std::list"))
+    if (!strcmp(cmd, "list"))
     {
         messages.push_back(ListBots(master));
         return std::move(messages);
     }
 
+    if (!strcmp(cmd, "reload"))
+    {
+        messages.push_back("Reloading config");
+        sPlayerbotAIConfig->Initialize();
+        return messages;
+    }
+
+    if (!strcmp(cmd, "self"))
+    {
+        if (master->GetPlayerbotAI())
+        {
+            messages.push_back("Disable player ai");
+            DisablePlayerBot(master->GetGUID());
+        }
+        else if (sPlayerbotAIConfig.selfBotLevel == 0)
+            messages.push_back("Self-bot is disabled");
+        else if (sPlayerbotAIConfig.selfBotLevel == 1 && master->GetSession()->GetSecurity() < SEC_GAMEMASTER)
+            messages.push_back("You do not have permission to enable player ai");
+        else
+        {
+            messages.push_back("Enable player ai");
+            OnBotLogin(master);
+        }
+
+        return messages;
+    }
+
     if (!charname)
     {
-        messages.push_back("usage: std::list or add/init/remove PLAYERNAME");
+        messages.push_back("usage: list/reload or add/init/remove PLAYERNAME");
         return std::move(messages);
     }
 
@@ -338,7 +444,7 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
     {
         std::string bot = *i;
 
-        ostringstream out;
+        std::ostringstream out;
         out << cmdStr << ": " << bot << " - ";
 
         ObjectGuid member = sObjectMgr->GetPlayerGUIDByName(bot);
@@ -348,11 +454,11 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
         }
         else if (master && member != master->GetGUID())
         {
-            out << ProcessBotCommand(cmdStr, member, master->GetSession()->GetSecurity() >= SEC_GAMEMASTER, master->GetSession()->GetAccountId(), master->GetGuildId());
+            out << ProcessBotCommand(cmdStr, member, master->GetGUID(), master->GetSession()->GetSecurity() >= SEC_GAMEMASTER, master->GetSession()->GetAccountId(), master->GetGuildId());
         }
         else if (!master)
         {
-            out << ProcessBotCommand(cmdStr, member, true, -1, -1);
+            out << ProcessBotCommand(cmdStr, member, ObjectGuid::Empty, true, -1, -1);
         }
 
         messages.push_back(out.str());
@@ -564,11 +670,14 @@ void PlayerbotMgr::OnBotLoginInternal(Player * const bot)
     bot->GetPlayerbotAI()->SetMaster(master);
     bot->GetPlayerbotAI()->ResetStrategies();
 
-    sLog->outString("Bot %s logged in", bot->GetName());
+    sLog->outString("Bot %s logged in", bot->GetName().c_str());
 }
 
 void PlayerbotMgr::OnPlayerLogin(Player* player)
 {
+    if (sPlayerbotAIConfig.selfBotLevel > 2)
+        HandlePlayerbotCommand("self", player);
+
     if (!sPlayerbotAIConfig->botAutologin)
         return;
 
@@ -633,8 +742,7 @@ void PlayerbotMgr::CheckTellErrors(uint32 elapsed)
 
         out << "|cfff00000: " << text;
 
-        ChatHandler& chat = ChatHandler(master->GetSession());
-        chat.PSendSysMessage(out.str().c_str());
+        ChatHandler(master->GetSession()).PSendSysMessage(out.str().c_str());
     }
 
     errors.clear();

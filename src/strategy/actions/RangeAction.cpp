@@ -34,7 +34,7 @@ bool RangeAction::Execute(Event event)
     context->GetValue<float>("range", qualifier)->Set(newVal);
 
     std::ostringstream out;
-    out << qualifier << " range std::set to: " << newVal;
+    out << qualifier << " range set to: " << newVal;
     botAI->TellMaster(out.str());
     return true;
 }

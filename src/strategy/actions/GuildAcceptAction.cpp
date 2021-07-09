@@ -9,15 +9,23 @@
 
 bool GuildAcceptAction::Execute(Event event)
 {
-    Player* master = GetMaster();
-    if (!master)
+    WorldPacket p(event.getPacket());
+    p.rpos(0);
+    Player* inviter = nullptr;
+    std::string Invitedname;
+    p >> Invitedname;
+
+    if (normalizePlayerName(Invitedname))
+        inviter = ObjectAccessor::FindPlayerByName(Invitedname.c_str());
+
+    if (!inviter)
         return false;
 
     bool accept = true;
-    uint32 guildId = master->GetGuildId();
+    uint32 guildId = inviter->GetGuildId();
     if (!guildId)
     {
-        botAI->TellError("You are not in a guild");
+        botAI->TellError("You are not in a guild!");
         accept = false;
     }
     else if (bot->GetGuildId())
@@ -25,15 +33,15 @@ bool GuildAcceptAction::Execute(Event event)
         botAI->TellError("Sorry, I am in a guild already");
         accept = false;
     }
-    else if (!botAI->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, master, true))
+    else if (!botAI->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, inviter, true))
     {
+        botAI->TellError("Sorry, I don't want to join your guild :(");
         accept = false;
     }
 
     WorldPacket packet;
     if (accept)
     {
-        bot->SetGuildIdInvited(guildId);
         bot->GetSession()->HandleGuildAcceptOpcode(packet);
     }
     else

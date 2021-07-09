@@ -112,7 +112,7 @@ class PartyMemberDeadTrigger : public Trigger
 class DeadTrigger : public Trigger
 {
     public:
-        DeadTrigger(PlayerbotAI* botAI) : Trigger(botAI, "dead", 30) { }
+        DeadTrigger(PlayerbotAI* botAI) : Trigger(botAI, "dead") { }
 
         std::string const& GetTargetName() override { return "self target"; }
         bool IsActive() override;

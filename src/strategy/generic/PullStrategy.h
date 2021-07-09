@@ -20,11 +20,11 @@ class PullStrategy : public CombatStrategy
         std::string action;
 };
 
-class PossibleAdsStrategy : public Strategy
+class PossibleAddsStrategy : public Strategy
 {
     public:
-        PossibleAdsStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
+        PossibleAddsStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }
 
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
-        std::string const& getName() override { return "ads"; }
+        std::string const& getName() override { return "adds"; }
 };

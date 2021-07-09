@@ -32,9 +32,19 @@ bool AcceptInvitationAction::Execute(Event event)
     bot->GetSession()->HandleGroupAcceptOpcode(p);
 
     if (sRandomPlayerbotMgr->IsRandomBot(bot))
-        bot->GetPlayerbotAI()->SetMaster(inviter);
+        botAI->SetMaster(inviter);
+    //else
+        //sPlayerbotDbStore.Save(botAI);
 
-    botAI->ResetStrategies();
+    ai->ResetStrategies();
+    ai->ChangeStrategy("+follow,-lfg,-bg", BOT_STATE_NON_COMBAT);
+    if (!inviter->GetPlayerbotAI() && !bot->GetPlayerbotAI()->IsRealPlayer())
+    {
+        ai->ChangeStrategy("-rpg,-travel,-grind", BOT_STATE_NON_COMBAT);
+    }
+
+    botAI->Reset();
+
     botAI->TellMaster("Hello");
     return true;
 }

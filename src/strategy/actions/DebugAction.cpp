@@ -13,6 +13,30 @@ bool DebugAction::Execute(Event event)
         return false;
 
     std::string const& text = event.getParam();
+
+    if (text == "scan")
+    {
+        std::vector<WorldPosition> apos;
+        std::vector<WorldPosition> ipos;
+        for (auto p : WorldPosition().getCreaturesNear())
+        {
+            Unit* unit = ai->GetUnit(p);
+            if (unit)
+                apos.push_back(WorldPosition(p));
+            else
+                ipos.push_back(WorldPosition(p));
+        }
+
+        std::ostringstream out;
+        out << "1,";
+        WorldPosition().printWKT(apos, out);
+        out << "\n0,";
+        WorldPosition().printWKT(ipos, out);
+
+        sPlayerbotAIConfig.log("active.csv", out.str().c_str());
+
+    }
+
     std::string const& response = botAI->HandleRemoteCommand(text);
     botAI->TellMaster(response);
     return true;

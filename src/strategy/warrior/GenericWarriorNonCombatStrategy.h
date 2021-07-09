@@ -12,4 +12,5 @@ class GenericWarriorNonCombatStrategy : public NonCombatStrategy
         GenericWarriorNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }
 
         std::string const& getName() override { return "nc"; }
+        void InitTriggers(std::vector<TriggerNode*>& triggers) override;
 };

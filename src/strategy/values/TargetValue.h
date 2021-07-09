@@ -7,6 +7,7 @@
 
 class PlayerbotAI;
 class ThreatManager;
+class TravelTarget;
 
 class FindTargetStrategy
 {
@@ -46,6 +47,39 @@ class RpgTargetValue : public ManualSetValue<ObjectGuid>
 {
     public:
         RpgTargetValue(PlayerbotAI* botAI) : ManualSetValue<ObjectGuid>(botAI, ObjectGuid::Empty) { }
+};
+
+class TravelTargetValue : public ManualSetValue<TravelTarget*>
+{
+    public:
+        TravelTargetValue(PlayerbotAI* botAI) : ManualSetValue<TravelTarget*>(botAI, new TravelTarget(botAI)) { }
+
+        virtual ~TravelTargetValue() { delete value; }
+};
+
+class LastLongMoveValue : public CalculatedValue<WorldPosition>
+{
+    public:
+        LastLongMoveValue(PlayerbotAI* ai) : CalculatedValue<WorldPosition>(ai, "last long move", 30) {}
+
+        WorldPosition Calculate() override;
+};
+
+class HomeBindValue : public CalculatedValue<WorldPosition>
+{
+    public:
+        HomeBindValue(PlayerbotAI* ai) : CalculatedValue<WorldPosition>(ai, "home bind", 30) {}
+
+        WorldPosition Calculate() override;
+};
+
+class IgnoreRpgTargetValue : public ManualSetValue<GuidSet&>
+{
+    public:
+        IgnoreRpgTargetValue(PlayerbotAI* botAI) : ManualSetValue<GuidSet&>(botAI, data, "ignore rpg targets") { }
+
+    private:
+        GuidSet data;
 };
 
 class TalkTargetValue : public ManualSetValue<ObjectGuid>

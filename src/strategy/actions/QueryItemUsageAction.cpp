@@ -10,7 +10,7 @@
 
 bool QueryItemUsageAction::Execute(Event event)
 {
-    if (!GetMaster())
+    if (!GetMaster() && !sPlayerbotAIConfig->randomBotSayWithoutMaster)
         return false;
 
     WorldPacket& data = event.getPacket();
@@ -50,7 +50,7 @@ bool QueryItemUsageAction::Execute(Event event)
         if (!item)
             return false;
 
-        botAI->TellMaster(QueryItem(item, count, GetCount(item)));
+        bot->Say(QueryItem(item, count, GetCount(item)), 0);
         return true;
     }
 
@@ -122,6 +122,8 @@ std::string const& QueryItemUsageAction::QueryItemUsage(ItemTemplate const* item
 		    return "Guild task";
 	    case ITEM_USAGE_DISENCHANT:
 		    return "Disenchant";
+        case ITEM_USAGE_AMMO:
+            return "Ammunition";
 	}
 
     return "";

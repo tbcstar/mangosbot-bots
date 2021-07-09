@@ -5,12 +5,24 @@
 #include "Action.h"
 
 class Event;
+class Player;
 class PlayerbotAI;
 
 class InviteToGroupAction : public Action
 {
     public:
-        InviteToGroupAction(PlayerbotAI* botAI) : Action(botAI, "invite") { }
+        InviteToGroupAction(PlayerbotAI* botAI, std::string const& name = "invite") : Action(botAI, name) { }
 
         bool Execute(Event event) override;
+
+        virtual bool Invite(Player* player);
+};
+
+class InviteNearbyToGroupAction : public InviteToGroupAction
+{
+    public:
+        InviteNearbyToGroupAction(PlayerbotAI* botAI, std::string const& name = "invite nearby") : InviteToGroupAction(botAI, name) { }
+
+        bool Execute(Event event) override;
+        bool isUseful() override;
 };

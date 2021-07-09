@@ -12,6 +12,9 @@ class GenericWarlockNonCombatStrategyActionNodeFactory : public NamedObjectFacto
         {
             creators["fel armor"] = &fel_armor;
             creators["demon armor"] = &demon_armor;
+            creators["summon voidwalker"] = &summon_voidwalker;
+            creators["summon felguard"] = &summon_felguard;
+            creators["summon succubus"] = &summon_succubus;
         }
 
     private:
@@ -30,6 +33,30 @@ class GenericWarlockNonCombatStrategyActionNodeFactory : public NamedObjectFacto
                 /*A*/ NextAction::array(0, new NextAction("demon skin"), nullptr),
                 /*C*/ nullptr);
         }
+
+        static ActionNode* summon_voidwalker(PlayerbotAI* botAI)
+        {
+            return new ActionNode("summon voidwalker",
+                /*P*/ NULL,
+                /*A*/ NextAction::array(0, new NextAction("summon imp"), NULL),
+                /*C*/ NULL);
+        }
+
+        static ActionNode* summon_felguard(PlayerbotAI* botAI)
+        {
+            return new ActionNode("summon felguard",
+                /*P*/ NULL,
+                /*A*/ NextAction::array(0, new NextAction("summon succubus"), NULL),
+                /*C*/ NULL);
+        }
+
+        static ActionNode* summon_succubus(PlayerbotAI* botAI)
+        {
+            return new ActionNode("summon succubus",
+                /*P*/ NULL,
+                /*A*/ NextAction::array(0, new NextAction("summon voidwalker"), NULL),
+                /*C*/ NULL);
+        }
 };
 
 GenericWarlockNonCombatStrategy::GenericWarlockNonCombatStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI)
@@ -46,5 +73,8 @@ void GenericWarlockNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& tr
 
 void WarlockPetStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-    triggers.push_back(new TriggerNode("no pet", NextAction::array(0, new NextAction("summon voidwalker", 30.0f), nullptr)));
+    triggers.push_back(new TriggerNode("no pet", NextAction::array(0, new NextAction("summon felguard", 60.0f), nullptr)));
+    // TODO Warlock pets
+
+    triggers.push_back(new TriggerNode("often", NextAction::array(0, new NextAction("apply oil", 1.0f), nullptr)));
 }

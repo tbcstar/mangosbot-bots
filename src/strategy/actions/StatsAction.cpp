@@ -38,18 +38,18 @@ void StatsAction::ListBagSlots(ostringstream &out)
 {
     uint32 totalused = 0, total = 16;
 
-    // std::list out items in main backpack
+    // list out items in main backpack
     for (uint8 slot = INVENTORY_SLOT_ITEM_START; slot < INVENTORY_SLOT_ITEM_END; slot++)
     {
         if (bot->GetItemByPos(INVENTORY_SLOT_BAG_0, slot))
         {
-            totalused++;
+            ++totalused;
         }
     }
 
     uint32 totalfree = 16 - totalused;
 
-    // std::list out items in other removable backpacks
+    // list out items in other removable backpacks
     for (uint8 bag = INVENTORY_SLOT_BAG_START; bag < INVENTORY_SLOT_BAG_END; ++bag)
     {
         if (Bag const* pBag = (Bag*)bot->GetItemByPos(INVENTORY_SLOT_BAG_0, bag))
@@ -85,7 +85,7 @@ void StatsAction::ListXP(std::ostringstream& out)
         xpPercent = 100 * curXP / nextLevelXP;
 
     uint32 restPercent = 0;
-    if (restXP)
+    if (restXP && nextLevelXP)
         restPercent = 2 * (100 * restXP / nextLevelXP);
 
     out << "|cff00ff00" << xpPercent << "|cffffd333/|cff00ff00" << restPercent << "%|cffffffff XP";
@@ -105,7 +105,7 @@ void StatsAction::ListRepairCost(std::ostringstream& out)
         if (repair < 100)
         {
             repairPercent += repair;
-            repairCount++;
+            ++repairCount;
         }
     }
 

@@ -25,18 +25,18 @@ bool LootRollAction::Execute(Event event)
     p >> rollType; //need,greed or pass on roll
 
     RollVote vote = PASS;
-    std::vector<Roll*>& rolls = group->GetRolls();
-    for (Roll* roll : rolls)
+    if (ItemTemplate const* proto = sObjectMgr->GetItemTemplate(guid.GetEntry()))
     {
-        if (roll->isValid() && roll->itemGUID == guid && roll->itemSlot == slot)
+        switch (proto->Class)
         {
-            uint32 itemId = roll->itemid;
-            ItemTemplate const* proto = sObjectMgr->GetItemTemplate(itemId);
-            if (!proto)
-                continue;
-
-            vote = CalculateRollVote(proto);
-            if (vote != PASS)
+            case ITEM_CLASS_WEAPON:
+            case ITEM_CLASS_ARMOR:
+                if (QueryItemUsage(proto))
+                    vote = ROLL_NEED;
+                break;
+            default:
+                if (StoreLootAction::IsLootAllowed(guid.GetEntry(), botAI))
+                    vote = ROLL_NEED;
                 break;
         }
     }
@@ -69,9 +69,12 @@ RollVote LootRollAction::CalculateRollVote(ItemTemplate const* proto)
         case ITEM_USAGE_GUILD_TASK:
             needVote = NEED;
             break;
+        case ITEM_USAGE_BAD_EQUIP:
         case ITEM_USAGE_SKILL:
         case ITEM_USAGE_USE:
         case ITEM_USAGE_DISENCHANT:
+        case ITEM_USAGE_AH:
+        case ITEM_USAGE_VENDOR:
             needVote = GREED;
             break;
     }

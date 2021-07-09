@@ -8,25 +8,7 @@
 
 bool LeaveGroupAction::Execute(Event event)
 {
-    if (!bot->GetGroup())
-        return false;
-
-    botAI->TellMaster("Goodbye!", PLAYERBOT_SECURITY_TALK);
-
-    WorldPacket p;
-    string member = bot->GetName();
-    p << uint32(PARTY_OP_LEAVE) << member << uint32(0);
-    bot->GetSession()->HandleGroupDisbandOpcode(p);
-
-    bool randomBot = sRandomPlayerbotMgr->IsRandomBot(bot);
-    if (randomBot)
-    {
-        bot->GetPlayerbotAI()->SetMaster(nullptr);
-        sRandomPlayerbotMgr->ScheduleTeleport(bot->GetGUID());
-    }
-
-    botAI->ResetStrategies(!randomBot);
-    return true;
+    return Leave();
 }
 
 bool PartyCommandAction::Execute(Event event)
@@ -43,7 +25,7 @@ bool PartyCommandAction::Execute(Event event)
 
     Player* master = GetMaster();
     if (master && member == master->GetName())
-        return LeaveGroupAction::Execute(event);
+        return Leave();
 
     return false;
 }
@@ -51,13 +33,94 @@ bool PartyCommandAction::Execute(Event event)
 bool UninviteAction::Execute(Event event)
 {
     WorldPacket& p = event.getPacket();
-    p.rpos(0);
-    ObjectGuid guid;
+    if (p.GetOpcode() == CMSG_GROUP_UNINVITE)
+    {
+        p.rpos(0);
+        std::string membername;
+        p >> membername;
 
-    p >> guid;
+        // player not found
+        if (!normalizePlayerName(membername))
+        {
+            return false;
+        }
 
-    if (bot->GetGUID() == guid)
-        return LeaveGroupAction::Execute(event);
+        if (bot->GetName() == membername)
+            return Leave();
+    }
+
+    if (p.GetOpcode() == CMSG_GROUP_UNINVITE_GUID)
+    {
+        p.rpos(0);
+        ObjectGuid guid;
+        p >> guid;
+
+        if (bot->GetGUID() == guid)
+            return Leave();
+    }
+
+    return false;
+}
+
+bool LeaveGroupAction::Leave()
+{
+    bool aiMaster = botAI->GetMaster()->GetPlayerbotAI();
+
+    botAI->TellMaster("Goodbye!", PLAYERBOT_SECURITY_TALK);
+
+    WorldPacket p;
+    std::string const& member = bot->GetName();
+    p << uint32(PARTY_OP_LEAVE) << member << uint32(0);
+    bot->GetSession()->HandleGroupDisbandOpcode(p);
+
+    bool randomBot = sRandomPlayerbotMgr.IsRandomBot(bot);
+    if (randomBot)
+    {
+        bot->GetPlayerbotAI()->SetMaster(NULL);
+        sRandomPlayerbotMgr.ScheduleTeleport(bot->GetGUID());
+    }
+
+    if (!aiMaster)
+        botAI->ResetStrategies(!randomBot);
+
+    botAI->Reset();
+
+    return true;
+}
+
+bool LeaveFarAwayAction::isUseful()
+{
+    if (!sPlayerbotAIConfig.randomBotGroupNearby)
+        return false;
+
+    if (bot->InBattleGround())
+        return false;
+
+    if (bot->InBattleGroundQueue())
+        return false;
+
+    if (!bot->GetGroup())
+        return false;
+
+    Player* master = botAI->GetGroupMaster();
+    Player* trueMaster = ai->GetMaster();
+    if (!master || (bot == master && !botAI->IsRealPlayer()))
+        return false;
+
+    if (master && !master->GetPlayerbotAI())
+        return false;
+
+    if (trueMaster && !trueMaster->GetPlayerbotAI())
+        return false;
+
+    if (botAI->GetGrouperType() == SOLO)
+        return true;
+
+    if (abs(int32(master->getLevel() - bot->getLevel())) > 4)
+        return true;
+
+    if (master->GetDistance(bot) > sPlayerbotAIConfig.reactDistance * 4)
+        return true;
 
     return false;
 }

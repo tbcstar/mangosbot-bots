@@ -174,7 +174,7 @@ bool TradeStatusAction::CheckTrade()
             std::ostringstream out;
             out << item->GetTemplate()->ItemId;
             ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", out.str());
-            if (botMoney && !auctionbot.GetBuyPrice(item->GetTemplate()) || usage == ITEM_USAGE_NONE)
+            if ((botMoney && !auctionbot.GetBuyPrice(item->GetTemplate())) || usage == ITEM_USAGE_NONE)
             {
                 std::ostringstream out;
                 out << chat->formatItem(item->GetTemplate()) << " - I don't need this";

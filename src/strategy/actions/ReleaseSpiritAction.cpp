@@ -8,18 +8,101 @@
 
 bool ReleaseSpiritAction::Execute(Event event)
 {
-    if (bot->IsAlive() || bot->GetCorpse())
+    if (bot->IsAlive())
     {
-        botAI->TellError("I am not dead");
+        botAI->TellMasterNoFacing("I am not dead, will wait here");
+        botAI->ChangeStrategy("-follow,+stay", BOT_STATE_NON_COMBAT);
         return false;
     }
 
-    botAI->ChangeStrategy("-follow,+stay", BOT_STATE_NON_COMBAT);
+    if (bot->GetCorpse() && bot->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST))
+    {
+        ai->TellMasterNoFacing("I am already a spirit");
+        return false;
+    }
 
-    bot->SetBotDeathTimer();
-    bot->BuildPlayerRepop();
+    WorldPacket& p = event.getPacket();
+    if (!p.empty() && p.GetOpcode() == CMSG_REPOP_REQUEST)
+        ai->TellMasterNoFacing("Releasing...");
+    else
+        ai->TellMasterNoFacing("Meet me at the graveyard");
+
+    // Death Count to prevent skeleton piles
+    Player* master = GetMaster();
+    if (!master || (master && master->GetPlayerbotAI()))
+    {
+        uint32 dCount = AI_VALUE(uint32, "death count");
+        context->GetValue<uint32>("death count")->Set(dCount + 1);
+    }
+
+    sLog.outDetail("Bot #%d %s:%d <%s> released", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+
+    WorldPacket packet(CMSG_REPOP_REQUEST);
+    packet << uint8(0);
+    bot->GetSession()->HandleRepopRequestOpcode(packet);
+
+    // add waiting for ress aura
+    if (bot->InBattleGround() && !ai->HasAura(2584, bot))
+    {
+        // cast Waiting for Resurrect
+        bot->CastSpell(bot, 2584, TRIGGERED_OLD_TRIGGERED);
+    }
+
+    // add waiting for ress aura
+    if (bot->InBattleground())
+        bot->CastSpell(bot, 2584, true);
+
+    return true;
+}
+
+bool AutoReleaseSpiritAction::Execute(Event event)
+{
+    //Death Count to prevent skeleton piles
+    Player* master = GetMaster();
+    if (!master || (master && master->GetPlayerbotAI()))
+    {
+        uint32 dCount = AI_VALUE(uint32, "death count");
+        context->GetValue<uint32>("death count")->Set(dCount + 1);
+    }
+
+    sLog.outDetail("Bot #%d %s:%d <%s> auto released", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+
+    WorldPacket packet(CMSG_REPOP_REQUEST);
+    packet << uint8(0);
+    bot->GetSession()->HandleRepopRequestOpcode(packet);
+
+    sLog->outDetail("Bot #%d %s:%d <%s> releases spirit", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+
+    if (bot->InBattleGround() && !ai->HasAura(2584, bot))
+    {
+        // cast Waiting for Resurrect
+        bot->CastSpell(bot, 2584, TRIGGERED_OLD_TRIGGERED);
+    }
+
+    return true;
+}
+
+bool AutoReleaseSpiritAction::isUseful()
+{
+    if (bot->InBattleground())
+        return bot->isDead() && !bot->GetCorpse();
+
+    return ((!bot->GetGroup()) || (bot->GetGroup() && ai->GetGroupMaster() == bot) || (ai->GetGroupMaster() && ai->GetGroupMaster() != bot &&
+        ai->GetGroupMaster()->isDead() &&
+        bot->getDeathState() != ai->GetGroupMaster()->GetDeathState()))
+        && bot->isDead() && !bot->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST);
+}
+
+bool RepopAction::Execute(Event event)
+{
+    sLog.outBasic("Bot #%d %s:%d <%s> repops at graveyard", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
 
     bot->RepopAtGraveyard();
-    botAI->TellMaster("Meet me at the graveyard");
+
+    return true;
+}
+
+bool RepopAction::isUseful()
+{
     return true;
 }

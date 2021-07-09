@@ -3,6 +3,7 @@
  */
 
 #include "TargetValue.h"
+#include "LastMovementValue.h"
 #include "RtiTargetValue.h"
 #include "Playerbot.h"
 
@@ -87,11 +88,29 @@ void FindTargetStrategy::GetPlayerCount(Unit* creature, uint32* tankCount, uint3
             continue;
 
         if (botAI->IsTank(player))
-            (*tankCount)++;
+            ++(*tankCount);
         else
-            (*dpsCount)++;
+            ++(*dpsCount);
     }
 
     tankCountCache[creature] = *tankCount;
     dpsCountCache[creature] = *dpsCount;
+}
+
+WorldPosition LastLongMoveValue::Calculate()
+{
+    LastMovement& lastMove = *context->GetValue<LastMovement&>("last movement");
+    if (lastMove.lastPath.empty())
+        return WorldPosition();
+
+    return lastMove.lastPath.getBack();
+}
+
+
+WorldPosition HomeBindValue::Calculate()
+{
+    float x, y, z;
+    uint32 mapId;
+    bot->GetHomebindLocation(x, y, z, mapId);
+    return WorldPosition(mapId, x, y, z, 0.0);
 }

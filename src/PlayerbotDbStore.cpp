@@ -11,7 +11,7 @@ void PlayerbotDbStore::Load(PlayerbotAI* botAI)
 {
     ObjectGuid::LowType guid = botAI->GetBot()->GetGUID().GetCounter();
 
-    QueryResult results = CharacterDatabase.PQuery("SELECT `key`,`value` FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT `key`,`value` FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
     if (results)
     {
         botAI->ClearStrategies(BOT_STATE_COMBAT);
@@ -71,10 +71,10 @@ void PlayerbotDbStore::Reset(PlayerbotAI* botAI)
 {
     ObjectGuid::LowType guid = botAI->GetBot()->GetGUID().GetCounter();
     uint32 account = sObjectMgr->GetPlayerAccountIdByGUID(guid);
-    CharacterDatabase.PExecute("DELETE FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
+    PlayerbotDatabase.PExecute("DELETE FROM `ai_playerbot_db_store` WHERE `guid` = '%u'", guid);
 }
 
 void PlayerbotDbStore::SaveValue(uint32 guid, std::string const& key, std::string const& value)
 {
-    CharacterDatabase.PExecute("INSERT INTO `ai_playerbot_db_store` (`guid`, `key`, `value`) VALUES ('%u', '%s', '%s')", guid, key.c_str(), value.c_str());
+    PlayerbotDatabase.PExecute("INSERT INTO `ai_playerbot_db_store` (`guid`, `key`, `value`) VALUES ('%u', '%s', '%s')", guid, key.c_str(), value.c_str());
 }

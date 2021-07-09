@@ -68,7 +68,8 @@ class DruidTriggerFactoryInternal : public NamedObjectContext<Trigger>
         DruidTriggerFactoryInternal()
         {
             creators["omen of clarity"] = &DruidTriggerFactoryInternal::omen_of_clarity;
-            creators["thorns"] = &DruidTriggerFactoryInternal::Thorns;
+            creators["thorns"] = &DruidTriggerFactoryInternal::thorns;
+            creators["thorns on party"] = &DruidTriggerFactoryInternal::thorns_on_party;
             creators["bash"] = &DruidTriggerFactoryInternal::bash;
             creators["faerie fire (feral)"] = &DruidTriggerFactoryInternal::faerie_fire_feral;
             creators["faerie fire"] = &DruidTriggerFactoryInternal::faerie_fire;
@@ -90,13 +91,19 @@ class DruidTriggerFactoryInternal : public NamedObjectContext<Trigger>
             creators["eclipse (lunar)"] = &DruidTriggerFactoryInternal::eclipse_lunar;
             creators["bash on enemy healer"] = &DruidTriggerFactoryInternal::bash_on_enemy_healer;
             creators["nature's swiftness"] = &DruidTriggerFactoryInternal::natures_swiftness;
+            creators["prowl"] = &DruidTriggerFactoryInternal::prowl;
+            creators["dash"] = &DruidTriggerFactoryInternal::dash;
+            creators["shred"] = &DruidTriggerFactoryInternal::shred;
+            creators["ravage"] = &DruidTriggerFactoryInternal::ravage;
+            creators["pounce"] = &DruidTriggerFactoryInternal::pounce;
         }
 
     private:
         static Trigger* natures_swiftness(PlayerbotAI* botAI) { return new NaturesSwiftnessTrigger(botAI); }
         static Trigger* eclipse_solar(PlayerbotAI* botAI) { return new EclipseSolarTrigger(botAI); }
         static Trigger* eclipse_lunar(PlayerbotAI* botAI) { return new EclipseLunarTrigger(botAI); }
-        static Trigger* Thorns(PlayerbotAI* botAI) { return new ThornsTrigger(botAI); }
+        static Trigger* thorns(PlayerbotAI* botAI) { return new ThornsTrigger(botAI); }
+        static Trigger* thorns_on_party(PlayerbotAI* botAI) { return new ThornsOnPartyTrigger(botAI); }
         static Trigger* bash(PlayerbotAI* botAI) { return new BashInterruptSpellTrigger(botAI); }
         static Trigger* faerie_fire_feral(PlayerbotAI* botAI) { return new FaerieFireFeralTrigger(botAI); }
         static Trigger* insect_swarm(PlayerbotAI* botAI) { return new InsectSwarmTrigger(botAI); }
@@ -116,6 +123,11 @@ class DruidTriggerFactoryInternal : public NamedObjectContext<Trigger>
         static Trigger* tree_form(PlayerbotAI* botAI) { return new TreeFormTrigger(botAI); }
         static Trigger* bash_on_enemy_healer(PlayerbotAI* botAI) { return new BashInterruptEnemyHealerSpellTrigger(botAI); }
         static Trigger* omen_of_clarity(PlayerbotAI* botAI) { return new OmenOfClarityTrigger(botAI); }
+        static Action* ravage(PlayerbotAI* botAI) { return new CastRavageAction(botAI); }
+        static Action* pounce(PlayerbotAI* botAI) { return new CastPounceAction(botAI); }
+        static Action* prowl(PlayerbotAI* botAI) { return new CastProwlAction(botAI); }
+        static Action* dash(PlayerbotAI* botAI) { return new CastDashAction(botAI); }
+        static Action* shred(PlayerbotAI* botAI) { return new CastShredAction(botAI); }
 };
 
 class DruidAiObjectContextInternal : public NamedObjectContext<Action>
@@ -133,6 +145,8 @@ class DruidAiObjectContextInternal : public NamedObjectContext<Action>
             creators["moonkin form"] = &DruidAiObjectContextInternal::moonkin_form;
             creators["cat form"] = &DruidAiObjectContextInternal::cat_form;
             creators["tree form"] = &DruidAiObjectContextInternal::tree_form;
+            creators["travel form"] = &DruidAiObjectContextInternal::travel_form;
+            creators["aquatic form"] = &DruidAiObjectContextInternal::aquatic_form;
             creators["caster form"] = &DruidAiObjectContextInternal::caster_form;
             creators["mangle (bear)"] = &DruidAiObjectContextInternal::mangle_bear;
             creators["maul"] = &DruidAiObjectContextInternal::maul;
@@ -160,6 +174,7 @@ class DruidAiObjectContextInternal : public NamedObjectContext<Action>
             creators["cower"] = &DruidAiObjectContextInternal::cower;
             creators["survival instincts"] = &DruidAiObjectContextInternal::survival_instincts;
             creators["thorns"] = &DruidAiObjectContextInternal::thorns;
+            creators["thorns on party"] = &DruidAiObjectContextInternal::thorns_on_party;
             creators["cure poison"] = &DruidAiObjectContextInternal::cure_poison;
             creators["cure poison on party"] = &DruidAiObjectContextInternal::cure_poison_on_party;
             creators["abolish poison"] = &DruidAiObjectContextInternal::abolish_poison;
@@ -199,6 +214,8 @@ class DruidAiObjectContextInternal : public NamedObjectContext<Action>
         static Action* dire_bear_form(PlayerbotAI* botAI) { return new CastDireBearFormAction(botAI); }
         static Action* cat_form(PlayerbotAI* botAI) { return new CastCatFormAction(botAI); }
         static Action* tree_form(PlayerbotAI* botAI) { return new CastTreeFormAction(botAI); }
+        static Action* travel_form(PlayerbotAI* ai) { return new CastTravelFormAction(ai); }
+        static Action* aquatic_form(PlayerbotAI* ai) { return new CastAquaticFormAction(ai); }
         static Action* caster_form(PlayerbotAI* botAI) { return new CastCasterFormAction(botAI); }
         static Action* mangle_bear(PlayerbotAI* botAI) { return new CastMangleBearAction(botAI); }
         static Action* maul(PlayerbotAI* botAI) { return new CastMaulAction(botAI); }
@@ -226,6 +243,7 @@ class DruidAiObjectContextInternal : public NamedObjectContext<Action>
         static Action* cower(PlayerbotAI* botAI) { return new CastCowerAction(botAI); }
         static Action* survival_instincts(PlayerbotAI* botAI) { return new CastSurvivalInstinctsAction(botAI); }
         static Action* thorns(PlayerbotAI* botAI) { return new CastThornsAction(botAI); }
+        static Action* thorns_on_party(PlayerbotAI* botAI) { return new CastThornsOnPartyAction(botAI); }
         static Action* cure_poison(PlayerbotAI* botAI) { return new CastCurePoisonAction(botAI); }
         static Action* cure_poison_on_party(PlayerbotAI* botAI) { return new CastCurePoisonOnPartyAction(botAI); }
         static Action* abolish_poison(PlayerbotAI* botAI) { return new CastAbolishPoisonAction(botAI); }

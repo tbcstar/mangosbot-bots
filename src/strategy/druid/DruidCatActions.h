@@ -66,3 +66,33 @@ class CastRipAction : public CastMeleeSpellAction
 	public:
 		CastRipAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "rip") { }
 };
+
+class CastShredAction : public CastMeleeSpellAction
+{
+    public:
+        CastShredAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "shred") { }
+};
+
+class CastProwlAction : public CastBuffSpellAction
+{
+    public:
+        CastProwlAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "prowl") { }
+};
+
+class CastDashAction : public CastBuffSpellAction
+{
+    public:
+        CastDashAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "dash") { }
+};
+
+class CastRavageAction : public CastMeleeSpellAction
+{
+    public:
+        CastRavageAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "ravage") { }
+};
+
+class CastPounceAction : public CastMeleeSpellAction
+{
+    public:
+        CastPounceAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "pounce") { }
+};

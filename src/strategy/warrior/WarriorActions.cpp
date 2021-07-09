@@ -5,17 +5,17 @@
 #include "WarriorActions.h"
 #include "Playerbot.h"
 
-bool CastSunderArmorAction::isUseful() const
+bool CastSunderArmorAction::isUseful()
 {
     return CastSpellAction::isUseful();
 }
 
-bool CastBattleShoutAction::isUseful() const
+bool CastBattleShoutAction::isUseful()
 {
     return CastSpellAction::isUseful();
 }
 
-bool CastBattleShoutTauntAction::isUseful() const
+bool CastBattleShoutTauntAction::isUseful()
 {
     return CastSpellAction::isUseful();
 }

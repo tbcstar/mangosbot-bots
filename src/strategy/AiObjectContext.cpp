@@ -11,6 +11,7 @@
 #include "WorldPacketActionContext.h"
 #include "ChatTriggerContext.h"
 #include "TriggerContext.h"
+#include "SharedValueContext.h"
 #include "WorldPacketTriggerContext.h"
 #include "ValueContext.h"
 #include "Playerbot.h"
@@ -31,6 +32,8 @@ AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
     triggerContexts.Add(new WorldPacketTriggerContext());
 
     valueContexts.Add(new ValueContext());
+
+    valueContexts.Add(sSharedValueContext);
 }
 
 void AiObjectContext::Update()

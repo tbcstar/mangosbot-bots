@@ -93,3 +93,41 @@ class ScareBeastTrigger : public HasCcTargetTrigger
     public:
         ScareBeastTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "scare beast") { }
 };
+
+class HunterLowAmmoTrigger : public AmmoCountTrigger
+{
+    public:
+        HunterLowAmmoTrigger(PlayerbotAI* ai) : AmmoCountTrigger(ai, "ammo", 1, 30) { }
+
+        bool IsActive() override;
+};
+
+class HunterNoAmmoTrigger : public AmmoCountTrigger
+{
+    public:
+        HunterNoAmmoTrigger(PlayerbotAI* ai) : AmmoCountTrigger(ai, "ammo", 1, 10) { }
+};
+
+class HunterHasAmmoTrigger : public AmmoCountTrigger
+{
+    public:
+        HunterHasAmmoTrigger(PlayerbotAI* ai) : AmmoCountTrigger(ai, "ammo", 1, 10) { }
+
+        bool IsActive() override;
+};
+
+class SwitchToRangedTrigger : public Trigger
+{
+    public:
+        SwitchToRangedTrigger(PlayerbotAI* ai) : Trigger(ai, "switch to ranged", 1) { }
+
+        bool IsActive() override;
+};
+
+class SwitchToMeleeTrigger : public Trigger
+{
+    public:
+        SwitchToMeleeTrigger(PlayerbotAI* ai) : Trigger(ai, "switch to melee", 1) { }
+
+        bool IsActive() override;
+};

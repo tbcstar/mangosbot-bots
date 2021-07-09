@@ -22,6 +22,8 @@ class AdrenalineRushTrigger : public BuffTrigger
 {
     public:
         AdrenalineRushTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "adrenaline rush") { }
+
+        bool IsPossible() const override;
 };
 
 class RuptureTrigger : public DebuffTrigger
@@ -40,4 +42,49 @@ class KickInterruptEnemyHealerSpellTrigger : public InterruptEnemyHealerTrigger
 {
     public:
         KickInterruptEnemyHealerSpellTrigger(PlayerbotAI* botAI) : InterruptEnemyHealerTrigger(botAI, "kick") { }
+};
+
+class InStealthTrigger : public HasAuraTrigger
+{
+    public:
+        InStealthTrigger(PlayerbotAI* botAI) : HasAuraTrigger(botAI, "stealth") { }
+};
+
+class NoStealthTrigger : public HasNoAuraTrigger
+{
+    public:
+        NoStealthTrigger(PlayerbotAI* botAI) : HasNoAuraTrigger(botAI, "stealth") { }
+};
+
+class UnstealthTrigger : public BuffTrigger
+{
+    public:
+        UnstealthTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "stealth", 3) { }
+
+        bool IsActive() override;
+};
+
+class StealthTrigger : public Trigger
+{
+    public:
+        StealthTrigger(PlayerbotAI* botAI) : Trigger(botAI, "stealth") { }
+
+        bool IsActive() override;
+};
+
+class SapTrigger : public HasCcTargetTrigger
+{
+    public:
+        SapTrigger(PlayerbotAI* botAI) : HasCcTargetTrigger(botAI, "sap") { }
+
+        bool IsPossible() override;
+};
+
+class SprintTrigger : public BuffTrigger
+{
+    public:
+        SprintTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "sprint", 3) { }
+
+        bool IsPossible() override;
+        bool IsActive() override;
 };

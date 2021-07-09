@@ -53,7 +53,7 @@ void DpsWarriorStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericWarriorStrategy::InitTriggers(triggers);
 
-    triggers.push_back(new TriggerNode("enemy out of melee", NextAction::array(0, new NextAction("charge", ACTION_NORMAL + 9), nullptr)));
+    triggers.push_back(new TriggerNode("enemy out of melee", NextAction::array(0, new NextAction("battle stance", ACTION_HIGH), new NextAction("charge", ACTION_HIGH), nullptr)));
     triggers.push_back(new TriggerNode("battle stance", NextAction::array(0, new NextAction("battle stance", ACTION_HIGH + 9), nullptr)));
     triggers.push_back(new TriggerNode("target critical health", NextAction::array(0, new NextAction("execute", ACTION_HIGH + 4), nullptr)));
 	triggers.push_back(new TriggerNode("hamstring", NextAction::array(0, new NextAction("hamstring", ACTION_HIGH), nullptr)));

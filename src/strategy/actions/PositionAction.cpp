@@ -17,10 +17,10 @@ void TellPosition(PlayerbotAI* botAI, std::string const& name, PositionInfo pos)
         float x = pos.x;
         float y = pos.y;
         Map2ZoneCoordinates(x, y, botAI->GetBot()->GetZoneId());
-        out << " is std::set to " << x << "," << y;
+        out << " is set to " << x << "," << y;
     }
     else
-        out << " is not std::set";
+        out << " is not set";
 
     botAI->TellMaster(out);
 }
@@ -50,7 +50,7 @@ bool PositionAction::Execute(Event event)
     std::vector<std::string> params = split(param, ' ');
     if (params.size() != 2)
     {
-        botAI->TellMaster("Whisper position <name> ?/std::set/reset");
+        botAI->TellMaster("Whisper position <name> ?/set/reset");
         return false;
     }
 
@@ -70,18 +70,18 @@ bool PositionAction::Execute(Event event)
         posMap[name] = pos;
 
         std::ostringstream out;
-        out << "Position " << name << " is std::set";
+        out << "Position " << name << " is set";
         botAI->TellMaster(out);
         return true;
     }
 
-	if (action == "std::set")
+	if (action == "set")
 	{
 	    pos.Set( bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ(), botAI->GetBot()->GetMapId());
 	    posMap[name] = pos;
 
         std::ostringstream out;
-        out << "Position " << name << " is std::set";
+        out << "Position " << name << " is set";
 	    botAI->TellMaster(out);
 	    return true;
 	}
@@ -106,7 +106,7 @@ bool MoveToPositionAction::Execute(Event event)
     if (!pos.isSet())
     {
         std::ostringstream out;
-        out << "Position " << qualifier << " is not std::set";
+        out << "Position " << qualifier << " is not set";
         botAI->TellMaster(out);
         return false;
     }

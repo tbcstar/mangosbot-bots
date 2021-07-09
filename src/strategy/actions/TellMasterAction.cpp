@@ -14,14 +14,18 @@ bool TellMasterAction::Execute(Event event)
 
 bool OutOfReactRangeAction::Execute(Event event)
 {
+    botAI->TellMaster("Wait for me!");
+    return true;
+}
+
+bool OutOfReactRangeAction::isUseful()
+{
     bool canFollow = Follow(AI_VALUE(Unit*, "master target"));
     if (!canFollow)
     {
-        botAI->SetNextCheckDelay(5000);
         return false;
     }
 
-    botAI->TellMaster("Wait for me!");
     return true;
 }
 

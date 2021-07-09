@@ -6,7 +6,7 @@
 #include "Event.h"
 #include "Playerbot.h"
 
-bool CastDrainSoulAction::isUseful() const
+bool CastDrainSoulAction::isUseful()
 {
     return AI_VALUE2(uint8, "item count", "soul shard") < 2;
 }
@@ -36,12 +36,12 @@ bool CastFearOnCcAction::isPossible()
     return botAI->CanCastSpell("fear", GetTarget());
 }
 
-bool CastFearOnCcAction::isUseful() const
+bool CastFearOnCcAction::isUseful()
 {
     return true;
 }
 
-bool CastLifeTapAction::isUseful() const
+bool CastLifeTapAction::isUseful()
 {
     return AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->lowHealth;
 }

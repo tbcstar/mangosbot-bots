@@ -34,7 +34,7 @@ class CastDrainSoulAction : public CastSpellAction
 	public:
 		CastDrainSoulAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "drain soul") { }
 
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastDrainManaAction : public CastSpellAction
@@ -95,6 +95,12 @@ class CastSummonImpAction : public CastBuffSpellAction
 {
 	public:
 		CastSummonImpAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "summon imp") { }
+};
+
+class CastSummonSuccubusAction : public CastBuffSpellAction
+{
+    public:
+        CastSummonSuccubusAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "summon succubus") {}
 };
 
 class CastCreateHealthstoneAction : public CastBuffSpellAction
@@ -174,7 +180,7 @@ class CastFearOnCcAction : public CastBuffSpellAction
         Value<Unit*>* GetTargetValue() override;
         bool Execute(Event event) override;
         bool isPossible() override;
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastLifeTapAction: public CastSpellAction
@@ -183,7 +189,7 @@ class CastLifeTapAction: public CastSpellAction
         CastLifeTapAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "life tap") { }
 
         std::string const& GetTargetName() override { return "self target"; }
-        bool isUseful() const override;
+        bool isUseful() override;
 };
 
 class CastAmplifyCurseAction : public CastBuffSpellAction

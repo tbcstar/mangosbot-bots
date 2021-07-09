@@ -24,10 +24,10 @@ class AttackersValue : public ObjectGuidListCalculatedValue
 		void RemoveNonThreating(std::set<Unit*>& targets);
 };
 
-class PossibleAdsValue : public BoolCalculatedValue
+class PossibleAddsValue : public BoolCalculatedValue
 {
     public:
-        PossibleAdsValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
+        PossibleAddsValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }
 
         bool Calculate() override;
 };
