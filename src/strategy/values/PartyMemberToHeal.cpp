@@ -40,7 +40,7 @@ Unit* PartyMemberToHeal::Calculate()
 
     Group* group = bot->GetGroup();
     if (!group && needHeals.empty())
-        return NULL;
+        return nullptr;
 
     if (group)
     {

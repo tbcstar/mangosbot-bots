@@ -299,8 +299,8 @@ std::string ChatHelper::formatWorldobject(WorldObject* wo)
 
 std::string ChatHelper::formatWorldEntry(int32 entry)
 {
-    CreatureTemplate const* cInfo = NULL;
-    GameObjectTemplate const* gInfo = NULL;
+    CreatureTemplate const* cInfo = nullptr;
+    GameObjectTemplate const* gInfo = nullptr;
 
     if (entry > 0)
         cInfo = sObjectMgr->GetCreatureTemplate(entry);

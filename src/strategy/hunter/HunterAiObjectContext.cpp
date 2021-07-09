@@ -99,11 +99,11 @@ class HunterTriggerFactoryInternal : public NamedObjectContext<Trigger>
         static Trigger* rapid_fire(PlayerbotAI* botAI) { return new RapidFireTrigger(botAI); }
         static Trigger* aspect_of_the_hawk(PlayerbotAI* botAI) { return new HunterAspectOfTheHawkTrigger(botAI); }
         static Trigger* aspect_of_the_wild(PlayerbotAI* botAI) { return new HunterAspectOfTheWildTrigger(botAI); }
-        static Trigger* low_ammo(PlayerbotAI* ai) { return new HunterLowAmmoTrigger(ai); }
-        static Trigger* no_ammo(PlayerbotAI* ai) { return new HunterNoAmmoTrigger(ai); }
-        static Trigger* has_ammo(PlayerbotAI* ai) { return new HunterHasAmmoTrigger(ai); }
-        static Trigger* switch_to_melee(PlayerbotAI* ai) { return new SwitchToMeleeTrigger(ai); }
-        static Trigger* switch_to_ranged(PlayerbotAI* ai) { return new SwitchToRangedTrigger(ai); }
+        static Trigger* low_ammo(PlayerbotAI* botAI) { return new HunterLowAmmoTrigger(botAI); }
+        static Trigger* no_ammo(PlayerbotAI* botAI) { return new HunterNoAmmoTrigger(botAI); }
+        static Trigger* has_ammo(PlayerbotAI* botAI) { return new HunterHasAmmoTrigger(botAI); }
+        static Trigger* switch_to_melee(PlayerbotAI* botAI) { return new SwitchToMeleeTrigger(botAI); }
+        static Trigger* switch_to_ranged(PlayerbotAI* botAI) { return new SwitchToRangedTrigger(botAI); }
 };
 
 class HunterAiObjectContextInternal : public NamedObjectContext<Action>
@@ -184,7 +184,7 @@ class HunterAiObjectContextInternal : public NamedObjectContext<Action>
         static Action* aspect_of_the_pack(PlayerbotAI* botAI) { return new CastAspectOfThePackAction(botAI); }
         static Action* aspect_of_the_cheetah(PlayerbotAI* botAI) { return new CastAspectOfTheCheetahAction(botAI); }
         static Action* wing_clip(PlayerbotAI* botAI) { return new CastWingClipAction(botAI); }
-        static Action* raptor_strike(PlayerbotAI* ai) { return new CastRaptorStrikeAction(ai); }
+        static Action* raptor_strike(PlayerbotAI* botAI) { return new CastRaptorStrikeAction(botAI); }
 };
 
 HunterAiObjectContext::HunterAiObjectContext(PlayerbotAI* botAI) : AiObjectContext(botAI)

@@ -71,13 +71,13 @@ bool GoAction::Execute(Event event)
 
             std::ostringstream out;
             out << "Traveling to " << dest->getTitle();
-            ai->TellMasterNoFacing(out.str());
+            botAI->TellMasterNoFacing(out.str());
 
             return true;
         }
         else
         {
-            ai->TellMasterNoFacing("Clearing travel target");
+            botAI->TellMasterNoFacing("Clearing travel target");
             target->setTarget(sTravelMgr.nullTravelDestination, sTravelMgr.nullWorldPosition);
             target->setForced(false);
             return true;
@@ -135,7 +135,7 @@ bool GoAction::Execute(Event event)
         else
             z = bot->GetPositionZ();
 
-        if (ai->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
+        if (botAI->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
         {
             PathGenerator path(bot);
 
@@ -169,7 +169,7 @@ bool GoAction::Execute(Event event)
                 CreateWp(bot, i.x, i.y, i.z, 0.f, 11144);
             }
 
-            ai->TellMaster(out);
+            botAI->TellMaster(out);
         }
 
         if (bot->IsWithinLOS(x, y, z))

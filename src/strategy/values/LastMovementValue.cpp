@@ -28,7 +28,7 @@ void LastMovement::clear()
     lastMoveToY = 0;
     lastMoveToZ = 0;
     lastMoveToOri = 0;
-    lastFollow = NULL;
+    lastFollow = nullptr;
     lastAreaTrigger = 0;
     lastFlee = 0;
     nextTeleport = 0;
@@ -54,7 +54,7 @@ void LastMovement::Set(uint32 mapId, float x, float y, float z, float ori)
 
 void LastMovement::setShort(WorldPosition point)
 {
-    lastMoveShort = point; lastFollow = NULL;
+    lastMoveShort = point; lastFollow = nullptr;
 }
 
 void LastMovement::setPath(TravelPath path)

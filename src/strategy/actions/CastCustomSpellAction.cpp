@@ -167,8 +167,8 @@ bool CastRandomSpellAction::Execute(Event event)
 
     for (auto wo : wos)
     {
-        target = ai->GetUnit(wo);
-        got = ai->GetGameObject(wo);
+        target = botAI->GetUnit(wo);
+        got = botAI->GetGameObject(wo);
 
         if (got || target)
             break;
@@ -176,13 +176,13 @@ bool CastRandomSpellAction::Execute(Event event)
 
     if (!got && !target && bot->GetSelectionGuid())
     {
-        target = ai->GetUnit(bot->GetSelectionGuid());
-        got = ai->GetGameObject(bot->GetSelectionGuid());
+        target = botAI->GetUnit(bot->GetSelectionGuid());
+        got = botAI->GetGameObject(bot->GetSelectionGuid());
     }
 
     if (!got && !target)
         if (master && master->GetSelectionGuid())
-            target = ai->GetUnit(master->GetSelectionGuid());
+            target = botAI->GetUnit(master->GetSelectionGuid());
 
     if (!got && !target)
         target = bot;
@@ -208,11 +208,11 @@ bool CastRandomSpellAction::Execute(Event event)
 
         if (bot->HasSpell(spellId))
         {
-            if (target && ai->CanCastSpell(spellId, target, true))
+            if (target && botAI->CanCastSpell(spellId, target, true))
                 spellList.push_back(make_pair(spellId, make_pair(target, nullptr)));
-            if (got && ai->CanCastSpell(spellId, got->GetPositionX(), got->GetPositionY(), got->GetPositionZ(), true))
+            if (got && botAI->CanCastSpell(spellId, got->GetPositionX(), got->GetPositionY(), got->GetPositionZ(), true))
                 spellList.push_back(make_pair(spell.first, make_pair(nullptr, got)));
-            if (ai->CanCastSpell(spellId, bot, true))
+            if (botAI->CanCastSpell(spellId, bot, true))
                 spellList.push_back(make_pair(spellId, make_pair(bot, nullptr)));
         }
     }
@@ -232,9 +232,9 @@ bool CastRandomSpellAction::Execute(Event event)
         GameObject* go = spellList[rnd].second.second;
 
         if (unit)
-            isCast = ai->CastSpell(spellId, unit);
+            isCast = botAI->CastSpell(spellId, unit);
         else
-            isCast = ai->CastSpell(spellId, go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
+            isCast = botAI->CastSpell(spellId, go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
 
         if (isCast)
         {
@@ -247,7 +247,7 @@ bool CastRandomSpellAction::Execute(Event event)
                 else
                     cmd << "castnc " << chat->formatWorldobject(go) + " " << spellId << " " << 19;
 
-                ai->HandleCommand(CHAT_MSG_WHISPER, cmd.str(), *bot);
+                botAI->HandleCommand(CHAT_MSG_WHISPER, cmd.str(), *bot);
             }
             return true;
         }

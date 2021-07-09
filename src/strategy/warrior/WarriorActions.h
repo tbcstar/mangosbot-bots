@@ -170,7 +170,7 @@ class CastBattleStanceAction : public CastBuffSpellAction
 class CastChargeAction : public CastReachTargetSpellAction
 {
     public:
-        CastChargeAction(PlayerbotAI* ai) : CastReachTargetSpellAction(ai, "charge", 1.5f) {}
+        CastChargeAction(PlayerbotAI* botAI) : CastReachTargetSpellAction(botAI, "charge", 1.5f) {}
 };
 
 class CastDeathWishAction : public CastBuffSpellAction

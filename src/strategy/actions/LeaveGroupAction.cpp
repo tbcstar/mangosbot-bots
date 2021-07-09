@@ -76,7 +76,7 @@ bool LeaveGroupAction::Leave()
     bool randomBot = sRandomPlayerbotMgr.IsRandomBot(bot);
     if (randomBot)
     {
-        bot->GetPlayerbotAI()->SetMaster(NULL);
+        bot->GetPlayerbotAI()->SetMaster(nullptr);
         sRandomPlayerbotMgr.ScheduleTeleport(bot->GetGUID());
     }
 
@@ -103,7 +103,7 @@ bool LeaveFarAwayAction::isUseful()
         return false;
 
     Player* master = botAI->GetGroupMaster();
-    Player* trueMaster = ai->GetMaster();
+    Player* trueMaster = botAI->GetMaster();
     if (!master || (bot == master && !botAI->IsRealPlayer()))
         return false;
 

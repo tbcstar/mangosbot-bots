@@ -36,11 +36,11 @@ bool AcceptInvitationAction::Execute(Event event)
     //else
         //sPlayerbotDbStore.Save(botAI);
 
-    ai->ResetStrategies();
-    ai->ChangeStrategy("+follow,-lfg,-bg", BOT_STATE_NON_COMBAT);
+    botAI->ResetStrategies();
+    botAI->ChangeStrategy("+follow,-lfg,-bg", BOT_STATE_NON_COMBAT);
     if (!inviter->GetPlayerbotAI() && !bot->GetPlayerbotAI()->IsRealPlayer())
     {
-        ai->ChangeStrategy("-rpg,-travel,-grind", BOT_STATE_NON_COMBAT);
+        botAI->ChangeStrategy("-rpg,-travel,-grind", BOT_STATE_NON_COMBAT);
     }
 
     botAI->Reset();

@@ -7,7 +7,7 @@
 class DebugStrategy : public Strategy
 {
     public:
-        DebugStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        DebugStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
         uint32 GetType() const override { return STRATEGY_TYPE_NONCOMBAT; }
         std::string const& getName() override { return "debug"; }
@@ -16,7 +16,7 @@ class DebugStrategy : public Strategy
 class DebugMoveStrategy : public Strategy
 {
     public:
-        DebugMoveStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        DebugMoveStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
         uint32 GetType() const override { return STRATEGY_TYPE_NONCOMBAT; }
         std::string const& getName() override { return "debug move"; }
@@ -25,7 +25,7 @@ class DebugMoveStrategy : public Strategy
 class DebugRpgStrategy : public Strategy
 {
     public:
-        DebugRpgStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        DebugRpgStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
         uint32 GetType() const override { return STRATEGY_TYPE_NONCOMBAT; }
         std::string const& getName() override { return "debug rpg"; }
@@ -34,7 +34,7 @@ class DebugRpgStrategy : public Strategy
 class DebugSpellStrategy : public Strategy
 {
     public:
-        DebugSpellStrategy(PlayerbotAI* ai) : Strategy(ai) {}
+        DebugSpellStrategy(PlayerbotAI* botAI) : Strategy(botAI) {}
 
         uint32 GetType() const override { return STRATEGY_TYPE_NONCOMBAT; }
         std::string const& getName() override { return "debug spell"; }

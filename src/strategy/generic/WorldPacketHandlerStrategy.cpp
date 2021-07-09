@@ -10,8 +10,8 @@ void WorldPacketHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
     PassTroughStrategy::InitTriggers(triggers);
 
     triggers.push_back(new TriggerNode("group invite", NextAction::array(0, new NextAction("accept invitation", relevance), nullptr)));
-    triggers.push_back(new TriggerNode("uninvite", NextAction::array(0, new NextAction("uninvite", relevance), NULL)));
-    triggers.push_back(new TriggerNode("uninvite guid", NextAction::array(0, new NextAction("uninvite", relevance), NULL)));
+    triggers.push_back(new TriggerNode("uninvite", NextAction::array(0, new NextAction("uninvite", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("uninvite guid", NextAction::array(0, new NextAction("uninvite", relevance), nullptr)));
     triggers.push_back(new TriggerNode("group set leader", NextAction::array(0, new NextAction("leader", relevance), nullptr)));
     triggers.push_back(new TriggerNode("not enough money", NextAction::array(0, new NextAction("tell not enough money", relevance), nullptr)));
     triggers.push_back(new TriggerNode("not enough reputation", NextAction::array(0, new NextAction("tell not enough reputation", relevance), nullptr)));
@@ -28,17 +28,17 @@ void WorldPacketHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
     triggers.push_back(new TriggerNode("ready check finished", NextAction::array(0, new NextAction("finish ready check", relevance), nullptr)));
     triggers.push_back(new TriggerNode("often", NextAction::array(0, new NextAction("security check", relevance), new NextAction("check mail", relevance), nullptr)));
     triggers.push_back(new TriggerNode("guild invite", NextAction::array(0, new NextAction("guild accept", relevance), nullptr)));
-    triggers.push_back(new TriggerNode("petition offer", NextAction::array(0, new NextAction("petition sign", relevance), NULL)));
-    triggers.push_back(new TriggerNode("lfg proposal", NextAction::array(0, new NextAction("lfg accept", relevance), NULL)));
-    triggers.push_back(new TriggerNode("lfg proposal active", NextAction::array(0, new NextAction("lfg accept", relevance), NULL)));
-    triggers.push_back(new TriggerNode("arena team invite", NextAction::array(0, new NextAction("arena team accept", relevance), NULL)));
+    triggers.push_back(new TriggerNode("petition offer", NextAction::array(0, new NextAction("petition sign", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("lfg proposal", NextAction::array(0, new NextAction("lfg accept", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("lfg proposal active", NextAction::array(0, new NextAction("lfg accept", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("arena team invite", NextAction::array(0, new NextAction("arena team accept", relevance), nullptr)));
     //triggers.push_back(new TriggerNode("no non bot players around", NextAction::array(0, new NextAction("delay", relevance), nullptr)));
     triggers.push_back(new TriggerNode("bg status", NextAction::array(0, new NextAction("bg status", relevance), nullptr)));
-    triggers.push_back(new TriggerNode("xpgain", NextAction::array(0, new NextAction("xp gain", relevance), NULL)));
-    triggers.push_back(new TriggerNode("levelup", NextAction::array(0, new NextAction("auto talents", relevance), new NextAction("auto learn spell", relevance), NULL)));
-    triggers.push_back(new TriggerNode("see spell", NextAction::array(0, new NextAction("see spell", relevance), NULL)));
-    triggers.push_back(new TriggerNode("release spirit", NextAction::array(0, new NextAction("release", relevance), NULL)));
-    triggers.push_back(new TriggerNode("revive from corpse", NextAction::array(0, new NextAction("revive from corpse", relevance), NULL)));
+    triggers.push_back(new TriggerNode("xpgain", NextAction::array(0, new NextAction("xp gain", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("levelup", NextAction::array(0, new NextAction("auto talents", relevance), new NextAction("auto learn spell", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("see spell", NextAction::array(0, new NextAction("see spell", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("release spirit", NextAction::array(0, new NextAction("release", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("revive from corpse", NextAction::array(0, new NextAction("revive from corpse", relevance), nullptr)));
 }
 
 WorldPacketHandlerStrategy::WorldPacketHandlerStrategy(PlayerbotAI* botAI) : PassTroughStrategy(botAI)

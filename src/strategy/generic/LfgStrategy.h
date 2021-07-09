@@ -7,7 +7,7 @@
 class LfgStrategy : public PassTroughStrategy
 {
     public:
-        LfgStrategy(PlayerbotAI* ai);
+        LfgStrategy(PlayerbotAI* botAI);
 
 	    uint32 GetType() const override { return STRATEGY_TYPE_NONCOMBAT; }
         void InitTriggers(std::vector<TriggerNode*> &triggers) override;

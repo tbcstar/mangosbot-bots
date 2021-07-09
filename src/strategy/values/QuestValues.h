@@ -56,7 +56,7 @@ class FindQuestObjectData
 class QuestGuidpMapValue : public SingleCalculatedValue<questGuidpMap>
 {
     public:
-        QuestGuidpMapValue(PlayerbotAI* ai) : SingleCalculatedValue(ai, "quest guidp map") {}
+        QuestGuidpMapValue(PlayerbotAI* botAI) : SingleCalculatedValue(botAI, "quest guidp map") {}
 
         questGuidpMap Calculate() override;
 };
@@ -65,7 +65,7 @@ class QuestGuidpMapValue : public SingleCalculatedValue<questGuidpMap>
 class QuestGiversValue : public SingleCalculatedValue<questGivers>, public Qualified
 {
 	public:
-        QuestGiversValue(PlayerbotAI* ai) : SingleCalculatedValue(ai, "quest givers") {}
+        QuestGiversValue(PlayerbotAI* botAI) : SingleCalculatedValue(botAI, "quest givers") {}
 
         questGivers Calculate() override;
 };
@@ -74,7 +74,7 @@ class QuestGiversValue : public SingleCalculatedValue<questGivers>, public Quali
 class ActiveQuestGiversValue : public CalculatedValue<std::vector<GuidPosition>>
 {
     public:
-        ActiveQuestGiversValue(PlayerbotAI* ai) : CalculatedValue(ai, "active quest givers", 5) {}
+        ActiveQuestGiversValue(PlayerbotAI* botAI) : CalculatedValue(botAI, "active quest givers", 5) {}
 
         std::vector<GuidPosition> Calculate() override;
 };
@@ -83,7 +83,7 @@ class ActiveQuestGiversValue : public CalculatedValue<std::vector<GuidPosition>>
 class ActiveQuestTakersValue : public CalculatedValue<std::vector<GuidPosition>>
 {
     public:
-        ActiveQuestTakersValue(PlayerbotAI* ai) : CalculatedValue(ai, "active quest takers", 5) {}
+        ActiveQuestTakersValue(PlayerbotAI* botAI) : CalculatedValue(botAI, "active quest takers", 5) {}
 
         std::vector<GuidPosition> Calculate() override;
 };
@@ -92,7 +92,7 @@ class ActiveQuestTakersValue : public CalculatedValue<std::vector<GuidPosition>>
 class ActiveQuestObjectivesValue : public CalculatedValue<std::vector<GuidPosition>>
 {
     public:
-        ActiveQuestObjectivesValue(PlayerbotAI* ai) : CalculatedValue(ai, "active quest objectives", 5) {}
+        ActiveQuestObjectivesValue(PlayerbotAI* botAI) : CalculatedValue(botAI, "active quest objectives", 5) {}
 
         std::vector<GuidPosition> Calculate() override;
 };
@@ -101,7 +101,7 @@ class ActiveQuestObjectivesValue : public CalculatedValue<std::vector<GuidPositi
 class FreeQuestLogSlotValue : public Uint8CalculatedValue
 {
     public:
-        FreeQuestLogSlotValue(PlayerbotAI* ai) : Uint8CalculatedValue(ai, "free quest log slots") {}
+        FreeQuestLogSlotValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI, "free quest log slots") {}
 
         uint8 Calculate() override;
 };

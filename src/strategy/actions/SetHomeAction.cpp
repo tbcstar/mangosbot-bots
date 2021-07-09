@@ -17,7 +17,7 @@ bool SetHomeAction::Execute(Event event)
         else
             return false;
 
-    if (Unit* unit = ai->GetUnit(selection))
+    if (Unit* unit = botAI->GetUnit(selection))
         if (unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_INNKEEPER))
         {
             float angle = GetFollowAngle();

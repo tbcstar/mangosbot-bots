@@ -10,9 +10,9 @@ Value<T>* SharedValueContext::getGlobalValue(std::string const& name = "")
 {
     NamedObjectContextList<UntypedValue> valueContexts;
     valueContexts.Add(this);
-    PlayerbotAI* ai = new PlayerbotAI();
-    UntypedValue* value = valueContexts.GetObject(name, ai);
-    delete ai;
+    PlayerbotAI* botAI = new PlayerbotAI();
+    UntypedValue* value = valueContexts.GetObject(name, botAI);
+    delete botAI;
     return dynamic_cast<Value<T>*>(value);
 }
 

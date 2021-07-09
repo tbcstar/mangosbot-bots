@@ -37,25 +37,25 @@ class GenericWarlockNonCombatStrategyActionNodeFactory : public NamedObjectFacto
         static ActionNode* summon_voidwalker(PlayerbotAI* botAI)
         {
             return new ActionNode("summon voidwalker",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("summon imp"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("summon imp"), nullptr),
+                /*C*/ nullptr);
         }
 
         static ActionNode* summon_felguard(PlayerbotAI* botAI)
         {
             return new ActionNode("summon felguard",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("summon succubus"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("summon succubus"), nullptr),
+                /*C*/ nullptr);
         }
 
         static ActionNode* summon_succubus(PlayerbotAI* botAI)
         {
             return new ActionNode("summon succubus",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("summon voidwalker"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("summon voidwalker"), nullptr),
+                /*C*/ nullptr);
         }
 };
 

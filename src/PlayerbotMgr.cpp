@@ -66,7 +66,7 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
             sPlayerbotDbStore->Save(bot->GetPlayerbotAI());
         }
 
-        sLog->outString("Bot %s logged out", bot->GetName());
+        LOG_INFO("playerbots", "Bot %s logged out", bot->GetName().c_str());
         bot->SaveToDB();
 
         if (bot->GetPlayerbotAI()->GetAiObjectContext()) //Maybe some day re-write to delate all pointer values.
@@ -98,7 +98,7 @@ void PlayerbotHolder::DisablePlayerBot(ObjectGuid guid)
             sPlayerbotDbStore.Save(botAI);
         }
 
-        sLog->outDebug("Bot %s logged out", bot->GetName());
+        LOG_DEBUG("playerbots", "Bot %s logged out", bot->GetName().c_str());
 
         bot->SaveToDB();
 
@@ -357,16 +357,16 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
     {
         if (master->GetPlayerbotAI())
         {
-            messages.push_back("Disable player ai");
+            messages.push_back("Disable player botAI");
             DisablePlayerBot(master->GetGUID());
         }
         else if (sPlayerbotAIConfig.selfBotLevel == 0)
             messages.push_back("Self-bot is disabled");
         else if (sPlayerbotAIConfig.selfBotLevel == 1 && master->GetSession()->GetSecurity() < SEC_GAMEMASTER)
-            messages.push_back("You do not have permission to enable player ai");
+            messages.push_back("You do not have permission to enable player botAI");
         else
         {
-            messages.push_back("Enable player ai");
+            messages.push_back("Enable player botAI");
             OnBotLogin(master);
         }
 
@@ -485,6 +485,7 @@ string PlayerbotHolder::ListBots(Player* master)
     std::set<std::string> bots;
     std::map<uint8, std::string> classNames;
 
+    classNames[CLASS_DEATH_KNIGHT] = "Death Knight";
     classNames[CLASS_DRUID] = "Druid";
     classNames[CLASS_HUNTER] = "Hunter";
     classNames[CLASS_MAGE] = "Mage";
@@ -670,7 +671,7 @@ void PlayerbotMgr::OnBotLoginInternal(Player * const bot)
     bot->GetPlayerbotAI()->SetMaster(master);
     bot->GetPlayerbotAI()->ResetStrategies();
 
-    sLog->outString("Bot %s logged in", bot->GetName().c_str());
+    LOG_INFO("playerbots", "Bot %s logged in", bot->GetName().c_str());
 }
 
 void PlayerbotMgr::OnPlayerLogin(Player* player)

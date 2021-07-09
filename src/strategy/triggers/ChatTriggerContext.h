@@ -108,7 +108,7 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* wts(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "wts"); }
         static Trigger* cs(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "cs"); }
         static Trigger* debug(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "debug"); }
-        static Trigger* cdebug(PlayerbotAI* ai) { return new ChatCommandTrigger(ai, "cdebug"); }
+        static Trigger* cdebug(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "cdebug"); }
         static Trigger* go(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "go"); }
         static Trigger* outfit(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "outfit"); }
         static Trigger* mail(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "mail"); }
@@ -127,7 +127,7 @@ class ChatTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* rti(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "rti"); }
         static Trigger* invite(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "invite"); }
         static Trigger* cast(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "cast"); }
-        static Trigger* castnc(PlayerbotAI* ai) { return new ChatCommandTrigger(ai, "castnc"); }
+        static Trigger* castnc(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "castnc"); }
         static Trigger* talk(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "talk"); }
         static Trigger* flee(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "flee"); }
         static Trigger* grind(PlayerbotAI* botAI) { return new ChatCommandTrigger(botAI, "grind"); }

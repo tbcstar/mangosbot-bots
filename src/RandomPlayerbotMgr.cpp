@@ -195,19 +195,19 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed)
 
     if (sPlayerbotAIConfig.syncLevelWithPlayers && !players.empty())
     {
-        if (time(NULL) > (PlayersCheckTimer + 60))
+        if (time(nullptr) > (PlayersCheckTimer + 60))
             activateCheckPlayersThread();
     }
 
     if (sPlayerbotAIConfig.syncLevelWithPlayers && !players.empty())
     {
-        if (time(NULL) > (PlayersCheckTimer + 60))
+        if (time(nullptr) > (PlayersCheckTimer + 60))
             activateCheckPlayersThread();
     }
 
     if (sPlayerbotAIConfig.randomBotJoinBG && !players.empty())
     {
-        if (time(NULL) > (BgCheckTimer + 30))
+        if (time(nullptr) > (BgCheckTimer + 30))
             activateCheckBgQueueThread();
     }
 
@@ -286,7 +286,7 @@ uint32 RandomPlayerbotMgr::AddRandomBots()
                 bots.insert(bot);
                 currentBots.push_back(bot);
 
-                sLog.outDetail("Bot #%d %s:%d <%s>: log in", guid, IsAlliance(race) ? "A" : "H", level, name);
+                LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: log in", guid, IsAlliance(race) ? "A" : "H", level, name.c_str());
                 if (guids.size() >= min((int)(sPlayerbotAIConfig.randomBotsPerInterval / 4), maxAllowedNewBotCount))
                 {
                     return guids.size();
@@ -302,10 +302,10 @@ void RandomPlayerbotMgr::LoadBattleMastersCache()
 {
     BattleMastersCache.clear();
 
-    sLog.outString("---------------------------------------");
-    sLog.outString("          Loading BattleMasters Cache  ");
-    sLog.outString("---------------------------------------");
-    sLog.outString();
+    LOG_INFO("playerbots", "---------------------------------------");
+    LOG_INFO("playerbots", "          Loading BattleMasters Cache  ");
+    LOG_INFO("playerbots", "---------------------------------------");
+    LOG_INFO("playerbots", );
 
     QueryResult result = WorldDatabase.Query("SELECT `entry`,`bg_template` FROM `battlemaster_entry`");
 
@@ -347,33 +347,33 @@ void RandomPlayerbotMgr::LoadBattleMastersCache()
             bmTeam = TEAM_HORDE;
 
         BattleMastersCache[bmTeam][BattlegroundTypeId(bgTypeId)].insert(BattleMastersCache[bmTeam][BattlegroundTypeId(bgTypeId)].end(), entry);
-        sLog.outDetail("Cached Battmemaster #%d for BG Type %d (%s)", entry, bgTypeId, bmTeam == ALLIANCE ? "Alliance" : bmTeam == HORDE ? "Horde" : "Neutral");
+        LOG_INFO("playerbots", "Cached Battmemaster #%d for BG Type %d (%s)", entry, bgTypeId, bmTeam == ALLIANCE ? "Alliance" : bmTeam == HORDE ? "Horde" : "Neutral");
 
     } while (result->NextRow());
 
-    sLog.outString(">> Loaded %u battlemaster entries", count);
-    sLog.outString();
+    LOG_INFO("playerbots", ">> Loaded %u battlemaster entries", count);
+    LOG_INFO("playerbots", );
 }
 
 void RandomPlayerbotMgr::CheckBgQueue()
 {
     if (!BgCheckTimer)
-        BgCheckTimer = time(NULL);
+        BgCheckTimer = time(nullptr);
 
     uint32 count = 0;
     uint32 visual_count = 0;
 
     uint32 check_time = count > 0 ? 120 : 30;
-    if (time(NULL) < (BgCheckTimer + check_time))
+    if (time(nullptr) < (BgCheckTimer + check_time))
     {
         return;
     }
     else
     {
-        BgCheckTimer = time(NULL);
+        BgCheckTimer = time(nullptr);
     }
 
-    sLog.outBasic("Checking BG Queue...");
+    LOG_INFO("playerbots", "Checking BG Queue...");
 
     for (uint32 i = BG_BRACKET_ID_FIRST; i < MAX_BATTLEGROUND_BRACKETS; ++i)
     {
@@ -534,7 +534,7 @@ void RandomPlayerbotMgr::CheckBgQueue()
 
             if (ArenaType type = sServerFacade.BgArenaType(queueTypeId))
 
-                sLog.outBasic("ARENA:%s %s: P (Skirmish:%d, Rated:%d) B (Skirmish:%d, Rated:%d) Total (Skirmish:%d Rated:%d)",
+                LOG_INFO("playerbots", "ARENA:%s %s: P (Skirmish:%d, Rated:%d) B (Skirmish:%d, Rated:%d) Total (Skirmish:%d Rated:%d)",
                     type == ARENA_TYPE_2v2 ? "2v2" : type == ARENA_TYPE_3v3 ? "3v3" : "5v5", i == 0 ? "10-19" : i == 1 ? "20-29" : i == 2 ? "30-39" : i == 3 ? "40-49" :
                     i == 4 ? "50-59" : (i == 5 && MAX_BATTLEGROUND_BRACKETS == 6) ? "60" : (i == 5 && MAX_BATTLEGROUND_BRACKETS == 7) ? "60-69" :
                     i == 6 ? (i == 6 && MAX_BATTLEGROUND_BRACKETS == 16) ? "70-79" : "70" : "80",
@@ -544,7 +544,7 @@ void RandomPlayerbotMgr::CheckBgQueue()
             }
 
             BattlegroundTypeId bgTypeId = sBattlegroundMgr.BGTemplateId(queueTypeId);
-            sLog.outBasic("BG:%s %s: P (%d:%d) B (%d:%d) Total (A:%d H:%d)",
+            LOG_INFO("playerbots", "BG:%s %s: P (%d:%d) B (%d:%d) Total (A:%d H:%d)",
                 bgTypeId == BATTLEGROUND_AV ? "AV" : bgTypeId == BATTLEGROUND_WS ? "WSG" : bgTypeId == BATTLEGROUND_AB ? "AB" : "EoTS", i == 0 ? "10-19" : i == 1 ? "20-29" :
                 i == 2 ? "30-39" : i == 3 ? "40-49" : i == 4 ? "50-59" : (i == 5 && MAX_BATTLEGROUND_BRACKETS == 6) ? "60" :
                 (i == 5 && MAX_BATTLEGROUND_BRACKETS == 7) ? "60-69" : i == 6 ? (i == 6 && MAX_BATTLEGROUND_BRACKETS == 16) ? "70-79" : "70" : "80",
@@ -552,15 +552,15 @@ void RandomPlayerbotMgr::CheckBgQueue()
         }
     }
 
-    sLog->outBasic("BG Queue check finished");
+    LOG_INFO("playerbots", "BG Queue check finished");
 }
 
 void RandomPlayerbotMgr::CheckLfgQueue()
 {
-    if (!LfgCheckTimer || time(NULL) > (LfgCheckTimer + 30))
-        LfgCheckTimer = time(NULL);
+    if (!LfgCheckTimer || time(nullptr) > (LfgCheckTimer + 30))
+        LfgCheckTimer = time(nullptr);
 
-    sLog.outBasic("Checking LFG Queue...");
+    LOG_INFO("playerbots", "Checking LFG Queue...");
 
     // Clear LFG list
     LfgDungeons[HORDE].clear();
@@ -615,16 +615,16 @@ void RandomPlayerbotMgr::CheckLfgQueue()
         }
     }
 
-    sLog.outBasic("LFG Queue check finished");
+    LOG_INFO("playerbots", "LFG Queue check finished");
     return;
 }
 
 void RandomPlayerbotMgr::CheckPlayers()
 {
-    if (!PlayersCheckTimer || time(NULL) > (PlayersCheckTimer + 60))
-        PlayersCheckTimer = time(NULL);
+    if (!PlayersCheckTimer || time(nullptr) > (PlayersCheckTimer + 60))
+        PlayersCheckTimer = time(nullptr);
 
-    sLog.outBasic("Checking Players...");
+    LOG_INFO("playerbots", "Checking Players...");
 
     if (!playersLevel)
         playersLevel = sPlayerbotAIConfig.randombotStartingLevel;
@@ -643,7 +643,7 @@ void RandomPlayerbotMgr::CheckPlayers()
             playersLevel = player->getLevel() + 3;
     }
 
-    sLog.outBasic("Max player level is %d, max bot level set to %d", playersLevel - 3, playersLevel);
+    LOG_INFO("playerbots", "Max player level is %d, max bot level set to %d", playersLevel - 3, playersLevel);
 }
 
 void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId, bool isRated, bool visual)
@@ -717,19 +717,19 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
 
     if (BgCount >= BracketSize && !visual && (ACount >= TeamSize) && (HCount >= TeamSize))
     {
-        sLog.outDetail("Can't add BG Bots to %s %d (%s), it is full", bgType, bgTypeId, _bgType);
+        LOG_INFO("playerbots", "Can't add BG Bots to %s %d (%s), it is full", bgType.c_str(), bgTypeId, _bgType.c_str());
         return;
     }
 
-    Player* player = NULL;
+    Player* player = nullptr;
     if (!visual && isArena && ((!isRated && SCount >= BracketSize) || (!isRated && RCount >= BracketSize)))
     {
-        sLog.outDetail("Can't add bots to %s %s, Arena queue is full", bgType, _bgType);
+        LOG_INFO("playerbots", "Can't add bots to %s %s, Arena queue is full", bgType.c_str(), _bgType.c_str());
         return;
     }
 
     if (!visual)
-        sLog.outDetail("Searching bots for %s %s", bgType, _bgType);
+        LOG_INFO("playerbots", "Searching bots for %s %s", bgType.c_str(), _bgType.c_str());
 
     if (!isRated)
     {
@@ -799,7 +799,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
             //if (!visual && bracketId < BG_BRACKET_ID_LAST && (bot->getLevel() < ((bracketId * 10) + 12)))
             //	continue;
 
-            if (player == NULL)
+            if (player == nullptr)
             {
                 player = bot;
                 break;
@@ -831,7 +831,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
         if (aTeams.empty())
         {
             found_team = false;
-            sLog.outBasic("No teams found for %s match (Rating:%d)", _bgType, rating);
+            LOG_INFO("playerbots", "No teams found for %s match (Rating:%d)", _bgType.c_str(), rating);
         }
 
         ArenaTeam* arenateam;
@@ -876,7 +876,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
             if (!members.size() || members.size() < maxPlayers)
             {
                 found_team = false;
-                sLog.outDetail("Team #%d <%s> has no members for %s match, skipping", arenaTeamId, arenateam->GetName(), _bgType);
+                LOG_INFO("playerbots", "Team #%d <%s> has no members for %s match, skipping", arenaTeamId, arenateam->GetName().c_str(), _bgType.c_str());
             }
         }
 
@@ -932,7 +932,8 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
 
             if (cap && found_cap)
             {
-                sLog.outDetail("Bot %s <%s>: captian of <%s> %s", cap->GetGUID().ToString().c_str(), cap->GetName(), arenateam->GetName(), _bgType);
+                LOG_INFO("playerbots", "Bot %s <%s>: captian of <%s> %s",
+                    cap->GetGUID().ToString().c_str(), cap->GetName().c_str(), arenateam->GetName().c_str(), _bgType.c_str());
 
                 Group* group = new Group();
                 group->Create(cap);
@@ -955,7 +956,8 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
                     if (!group->AddMember(member))
                         continue;
 
-                    sLog.outDetail("Bot %s <%s>: member of <%s> %s", member->GetGUID().ToString().c_str(), member->GetName(), arenateam->GetName(), _bgType);
+                    LOG_INFO("playerbots", "Bot %s <%s>: member of <%s> %s",
+                        member->GetGUID().ToString().c_str(), member->GetName().c_str(), arenateam->GetName().c_str(), _bgType.c_str());
 
                     count++;
                 }
@@ -969,15 +971,16 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
     if (!player)
     {
         if (visual)
-            sLog.outDetail("No Bots found to simulate waiting for %s (%s)", bgType, _bgType);
+            LOG_INFO("playerbots", "No Bots found to simulate waiting for %s (%s)", bgType.c_str(), _bgType.c_str());
         else
-            sLog.outBasic("No Bots found for %s (%s)", bgType, _bgType);
+            LOG_INFO("playerbots", "No Bots found for %s (%s)", bgType.c_str(), _bgType.c_str());
 
         return;
     }
 
     if (!visual)
-        sLog.outDetail("Found bot %s <%s> for %s %s", player->GetGUID().ToString().c_str(), player->GetName(), bgType, _bgType);
+        LOG_INFO("playerbots", "Found bot %s <%s> for %s %s",
+            player->GetGUID().ToString().c_str(), player->GetName().c_str(), bgType.c_str(), _bgType.c_str());
 
     uint32 bot = player->GetGUID().GetCounter();
     PlayerbotAI* botAI = player->GetPlayerbotAI();
@@ -985,25 +988,25 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
 
     if (!isArena && ((ACount >= TeamSize && TeamId == 0) || (HCount >= TeamSize && TeamId == 1)))
     {
-        sLog.outDetail("Can't add this bot to %s %s, BG queue for this faction is full", bgType, _bgType);
+        LOG_INFO("playerbots", "Can't add this bot to %s %s, BG queue for this faction is full", bgType.c_str(), _bgType.c_str());
         return;
     }
 
     if (isArena && (((ACount >= TeamSize && HCount > 0) && TeamId == 0) || ((HCount >= TeamSize && ACount > 0) && TeamId == 1)))
     {
-        sLog.outDetail("Can't add this bot to %s %s, Arena queue for this faction is full", bgType, _bgType);
+        LOG_INFO("playerbots", "Can't add this bot to %s %s, Arena queue for this faction is full", bgType.c_str(), _bgType.c_str());
         return;
     }
 
     if (isArena && (((ACount > TeamSize && HCount == 0) && TeamId == 1) || ((HCount > TeamSize && ACount == 0) && TeamId == 0)))
     {
-        sLog.outDetail("Can't add this bot to %s %s, Arena queue for this faction is full", bgType, _bgType);
+        LOG_INFO("playerbots", "Can't add this bot to %s %s, Arena queue for this faction is full", bgType.c_str(), _bgType.c_str());
         return;
     }
 
     if (isArena && ((!isRated && SCount >= BracketSize) || (!isRated && RCount >= BracketSize)))
     {
-        sLog.outDetail("Can't add this bot to %s %s, Arena queue is full", bgType, _bgType);
+        LOG_INFO("playerbots", "Can't add this bot to %s %s, Arena queue is full", bgType.c_str(), _bgType.c_str());
         return;
     }
 
@@ -1016,22 +1019,26 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
     }
 
     if (!visual)
-        sLog.outDetail("Bot %s <%s> (%d %s) : adding %s (%s) Bot", player->GetGUID().ToString().c_str(), player->GetName(), player->getLevel(), TeamId == 0 ? "A" : "H", bgType, _bgType);
+        LOG_INFO("playerbots", "Bot %s <%s> (%d %s) : adding %s (%s) Bot",
+            player->GetGUID().ToString().c_str(), player->GetName().c_str(), player->getLevel(), TeamId == 0 ? "A" : "H", bgType.c_str(), _bgType.c_str());
 
     TeamId == 0 ? ACount++ : HCount++;
 
     if (!visual)
     {
-        sLog.outDetail("Changing strategy for bot #%d <%s> to PVP", bot, player->GetName());
-        sLog.outDetail("Bot #%d <%s> (%d %s) %s bracket %d sent to BattmeMaster", bot, player->GetName(), player->getLevel(), TeamId == 0 ? "A" : "H", bgType, bracketId);
-        sLog.outBasic("Bot #%d <%s> (%d %s): %s %d (%s), bracket %d (%d/%d) (A:%d H:%d)", bot, player->GetName(), player->getLevel(), TeamId == 0 ? "A" : "H", bgType, bgTypeId, _bgType, bracketId, BgCount + 1, BracketSize, ACount, HCount);
+        LOG_INFO("playerbots", "Changing strategy for bot #%d <%s> to PVP", bot, player->GetName().c_str());
+        LOG_INFO("playerbots", "Bot #%d <%s> (%d %s) %s bracket %d sent to BattmeMaster",
+            bot, player->GetName().c_str(), player->getLevel(), TeamId == 0 ? "A" : "H", bgType.c_str(), bracketId);
+        LOG_INFO("playerbots", "Bot #%d <%s> (%d %s): %s %d (%s), bracket %d (%d/%d) (A:%d H:%d)",
+            bot, player->GetName().c_str(), player->getLevel(), TeamId == 0 ? "A" : "H", bgType.c_str(), bgTypeId, _bgType.c_str(), bracketId, BgCount + 1, BracketSize, ACount, HCount);
 
         // BG Tactics preference
         player->GetPlayerbotAI()->GetAiObjectContext()->GetValue<uint32>("bg role")->Set(urand(0, 9));
     }
     else
     {
-        sLog.outDetail("Bot #%d <%s> (%d %s) simulates waiting %s %d (%s) bracket %d", bot, player->GetName(), player->getLevel(), TeamId == 0 ? "A" : "H", bgType, bgTypeId, _bgType, bracketId);
+        LOG_INFO("playerbots", "Bot #%d <%s> (%d %s) simulates waiting %s %d (%s) bracket %d",
+            bot, player->GetName().c_str(), player->getLevel(), TeamId == 0 ? "A" : "H", bgType.c_str(), bgTypeId, _bgType.c_str(), bracketId);
     }
 
     PlayerbotAI* pai = player->GetPlayerbotAI();
@@ -1057,8 +1064,8 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
     if (!bm && isArena)
     {
         if (!visual)
-            sLog.outError("Bot %s <%s> could not find Battlemaster for %s %d (%s) bracket %d",
-                player->GetGUID().ToString().c_str(), player->GetName(), bgType, bgTypeId, _bgType, bracketId);
+            LOG_ERROR("playerbots", "Bot %s <%s> could not find Battlemaster for %s %d (%s) bracket %d",
+                player->GetGUID().ToString().c_str(), player->GetName().c_str(), bgType.c_str(), bgTypeId, _bgType.c_str(), bracketId);
 
         return;
     }
@@ -1151,9 +1158,9 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
 		if (!player || !player->GetGroup())
 		{
             if (player)
-                sLog.outDetail("Bot #%d %s:%d <%s>: log out", bot, IsAlliance(player->getRace()) ? "A" : "H", player->getLevel(), player->GetName());
+                LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: log out", bot, IsAlliance(player->getRace()) ? "A" : "H", player->getLevel(), player->GetName().c_str());
             else
-                sLog.outDetail("Bot #%d: log out", bot);
+                LOG_INFO("playerbots", "Bot #%d: log out", bot);
 
 			SetEventValue(bot, "add", 0, 0);
 			currentBots.remove(bot);
@@ -1207,7 +1214,7 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
     uint32 logout = GetEventValue(bot, "logout");
     if (player && !logout && !isValid)
     {
-        sLog.outBasic("Bot #%d %s:%d <%s>: log out", bot, IsAlliance(player->getRace()) ? "A" : "H", player->getLevel(), player->GetName());
+        LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: log out", bot, IsAlliance(player->getRace()) ? "A" : "H", player->getLevel(), player->GetName().c_str());
         LogoutPlayerBot(botGUID);
         SetEventValue(bot, "logout", 1, urand(sPlayerbotAIConfig.minRandomBotInWorldTime, sPlayerbotAIConfig.maxRandomBotInWorldTime));
         return true;
@@ -1238,7 +1245,7 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
             {
                 SetEventValue(bot, "deathcount", 1, sPlayerbotAIConfig->maxRandomBotInWorldTime);
                 Revive(player);
-                sLog->outDetail("Bot #%d <%s>: revived", bot, player->GetName().c_str());
+                LOG_INFO("playerbots", "Bot #%d <%s>: revived", bot, player->GetName().c_str());
             }
             else
             {
@@ -1253,13 +1260,13 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
                     ScheduleChangeStrategy(bot, randomChange);
                     SetEventValue(bot, "teleport", 1, sPlayerbotAIConfig->maxRandomBotInWorldTime);
                     uint32 restTime = int(randomChange / 60);
-                    sLog->outDetail("Bot #%d <%s>: died %d times, rest %d min", bot, player->GetName().c_str(), deathcount, int(randomChange / 60));
+                    LOG_INFO("playerbots", "Bot #%d <%s>: died %d times, rest %d min", bot, player->GetName().c_str(), deathcount, int(randomChange / 60));
                 }
                 else
                 {
                     SetEventValue(bot, "deathcount", deathcount + 1, sPlayerbotAIConfig->maxRandomBotInWorldTime);
                     Revive(player);
-                    sLog->outDetail("Bot #%d <%s>: revived %d/5", bot, player->GetName().c_str(), deathcount + 1);
+                    LOG_INFO("playerbots", "Bot #%d <%s>: revived %d/5", bot, player->GetName().c_str(), deathcount + 1);
                 }
             }
 
@@ -1302,11 +1309,11 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
 
         if (randomiser)
         {
-            sLog->outBasic("Bot #%d <%s>: randomized", bot, player->GetName().c_str());
+            LOG_INFO("playerbots", "Bot #%d <%s>: randomized", bot, player->GetName().c_str());
         }
         else
         {
-            sLog->outBasic("Bot #%d %s <%s>: consumables refreshed", bot, player->GetName().c_str(), sGuildMgr->GetGuildById(player->GetGuildId())->GetName());
+            LOG_INFO("playerbots", "Bot #%d %s <%s>: consumables refreshed", bot, player->GetName().c_str(), sGuildMgr->GetGuildById(player->GetGuildId())->GetName());
         }
 
         uint32 randomTime = urand(sPlayerbotAIConfig->minRandomBotRandomizeTime, sPlayerbotAIConfig->maxRandomBotRandomizeTime);
@@ -1317,7 +1324,7 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
     uint32 teleport = GetEventValue(bot, "teleport");
     if (!teleport)
     {
-        sLog->outBasic("Bot #%d <%s>: sent to grind", bot, player->GetName().c_str());
+        LOG_INFO("playerbots", "Bot #%d <%s>: sent to grind", bot, player->GetName().c_str());
         RandomTeleportForLevel(player);
         Refresh(player);
         SetEventValue(bot, "teleport", 1, sPlayerbotAIConfig->maxRandomBotInWorldTime);
@@ -1327,7 +1334,7 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
     uint32 changeStrategy = GetEventValue(bot, "change_strategy");
     if (!changeStrategy)
     {
-        sLog->outDetail("Changing strategy for bot  #%d <%s>", bot, player->GetName().c_str());
+        LOG_INFO("playerbots", "Changing strategy for bot  #%d <%s>", bot, player->GetName().c_str());
         ChangeStrategy(player);
         return true;
     }
@@ -1339,7 +1346,7 @@ void RandomPlayerbotMgr::Revive(Player* player)
 {
     uint32 bot = player->GetGUID().GetCounter();
 
-    //sLog->outString("Bot %d revived", bot);
+    //LOG_INFO("playerbots", "Bot %d revived", bot);
     SetEventValue(bot, "dead", 0, 0);
     SetEventValue(bot, "revive", 0, 0);
 
@@ -1371,7 +1378,7 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, std::vector<WorldLocation>&
 
     if (locs.empty())
     {
-        sLog->outError("Cannot teleport bot %s - no locations available", bot->GetName());
+        LOG_ERROR("playerbots", "Cannot teleport bot %s - no locations available", bot->GetName().c_str());
         return;
     }
 
@@ -1406,7 +1413,7 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, std::vector<WorldLocation>&
 
     if (tlocs.empty())
     {
-        sLog->outError("Cannot teleport bot %s - no locations available", bot->GetName());
+        LOG_ERROR("playerbots", "Cannot teleport bot %s - no locations available", bot->GetName().c_str());
         return;
     }
 
@@ -1447,7 +1454,8 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, std::vector<WorldLocation>&
 
             z = 0.05f + ground;
 
-            sLog->outDetail("Random teleporting bot %s to %s %f,%f,%f (%u/%zu locations)", bot->GetName(), area->area_name[0], x, y, z, attemtps, tlocs.size());
+            LOG_INFO("playerbots", "Random teleporting bot %s to %s %f,%f,%f (%u/%zu locations)",
+                bot->GetName().c_str(), area->area_name[0].c_str(), x, y, z, attemtps, tlocs.size());
 
             if (hearth)
             {
@@ -1469,7 +1477,7 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, std::vector<WorldLocation>&
     if (pmo)
         pmo->finish();
 
-    sLog->outError("Cannot teleport bot %s - no locations available", bot->GetName());
+    LOG_ERROR("playerbots", "Cannot teleport bot %s - no locations available", bot->GetName().c_str());
 }
 
 void RandomPlayerbotMgr::PrepareTeleportCache()
@@ -1481,7 +1489,7 @@ void RandomPlayerbotMgr::PrepareTeleportCache()
     QueryResult results = PlayerbotDatabase.PQuery("SELECT map_id, x, y, z, level FROM ai_playerbot_tele_cache");
     if (results)
     {
-        sLog->outString("Loading random teleport caches for %d levels...", maxLevel);
+        LOG_INFO("playerbots", "Loading random teleport caches for %d levels...", maxLevel);
 
         do
         {
@@ -1498,7 +1506,7 @@ void RandomPlayerbotMgr::PrepareTeleportCache()
     }
     else
     {
-        sLog->outString("Preparing random teleport caches for %d levels...", maxLevel);
+        LOG_INFO("playerbots", "Preparing random teleport caches for %d levels...", maxLevel);
 
         for (uint8 level = 1; level <= maxLevel; level++)
         {
@@ -1530,7 +1538,7 @@ void RandomPlayerbotMgr::PrepareTeleportCache()
         }
     }
 
-    sLog->outString("Preparing RPG teleport caches for %d factions...", sFactionTemplateStore.GetNumRows());
+    LOG_INFO("playerbots", "Preparing RPG teleport caches for %d factions...", sFactionTemplateStore.GetNumRows());
 
     results = WorldDatabase.PQuery("SELECT map, position_x, position_y, position_z, r.race, r.minl, r.maxl FROM creature c INNER JOIN ai_playerbot_rpg_races r ON c.id = r.entry "
         "WHERE r.race < 15");
@@ -1571,7 +1579,7 @@ void RandomPlayerbotMgr::RandomTeleportForLevel(Player* bot)
         return;
 
     uint32 level = bot->getLevel();
-    sLog->outDetail("Random teleporting bot %s for RPG (%zu locations available)", bot->GetName(), rpgLocsCacheLevel[race][level].size());
+    LOG_INFO("playerbots", "Random teleporting bot %s for RPG (%zu locations available)", bot->GetName().c_str(), rpgLocsCacheLevel[race][level].size());
     RandomTeleport(bot, rpgLocsCacheLevel[race][level]);
     Refresh(bot);
 }
@@ -1713,7 +1721,7 @@ void RandomPlayerbotMgr::Refresh(Player* bot)
     if (bot->InBattleground())
         return;
 
-    sLog->outDetail("Refreshing bot %s <%s>", bot->GetGUID().ToString().c_str(), bot->GetName().c_str());
+    LOG_INFO("playerbots", "Refreshing bot %s <%s>", bot->GetGUID().ToString().c_str(), bot->GetName().c_str());
 
     PerformanceMonitorOperation* pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "Refresh");
 
@@ -1860,13 +1868,13 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
 {
     if (!sPlayerbotAIConfig->enabled)
     {
-        sLog->outError("Playerbot system is currently disabled!");
+        LOG_ERROR("playerbots", "Playerbot system is currently disabled!");
         return false;
     }
 
     if (!args || !*args)
     {
-        sLog->outError("Usage: rndbot stats/update/reset/init/refresh/add/remove");
+        LOG_ERROR("playerbots", "Usage: rndbot stats/update/reset/init/refresh/add/remove");
         return false;
     }
 
@@ -1876,7 +1884,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
     {
         PlayerbotDatabase.PExecute("delete from ai_playerbot_random_bots");
         sRandomPlayerbotMgr->eventCache.clear();
-        sLog->outString("Random bots were reset for all players. Please restart the Server.");
+        LOG_INFO("playerbots", "Random bots were reset for all players. Please restart the Server.");
         return true;
     }
 
@@ -1933,7 +1941,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
 
         if (botIds.empty())
         {
-            sLog->outString("Nothing to do");
+            LOG_INFO("playerbots", "Nothing to do");
             return false;
         }
 
@@ -1945,7 +1953,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
             if (!bot)
                 continue;
 
-            sLog->outString("[%u/%zu] Processing command '%s' for bot '%s'", processed++, botIds.size(), cmd.c_str(), bot->GetName());
+            LOG_INFO("playerbots", "[%u/%zu] Processing command '%s' for bot '%s'", processed++, botIds.size(), cmd.c_str(), bot->GetName().c_str());
 
             ConsoleCommandHandler handler = j->second;
             (sRandomPlayerbotMgr->*handler)(bot);
@@ -1957,7 +1965,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
     std::vector<std::string> messages = sRandomPlayerbotMgr->HandlePlayerbotCommand(args);
     for (std::vector<std::string>::iterator i = messages.begin(); i != messages.end(); ++i)
     {
-        sLog->outString("%s", i->c_str());
+        LOG_INFO("playerbots", "%s", i->c_str());
     }
     return true;
 }
@@ -1998,7 +2006,7 @@ void RandomPlayerbotMgr::OnPlayerLogout(Player* player)
 
 void RandomPlayerbotMgr::OnBotLoginInternal(Player * const bot)
 {
-    sLog->outDetail("%zu/%d Bot %s logged in", playerBots.size(), sRandomPlayerbotMgr->GetMaxAllowedBotCount(), bot->GetName().c_str());
+    LOG_INFO("playerbots", "%zu/%d Bot %s logged in", playerBots.size(), sRandomPlayerbotMgr->GetMaxAllowedBotCount(), bot->GetName().c_str());
 }
 
 void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
@@ -2046,7 +2054,7 @@ void RandomPlayerbotMgr::OnPlayerLogin(Player* player)
     else
     {
         players.push_back(player);
-        sLog->outDebug("Including non-random bot player %s into random bot update", player->GetName());
+        LOG_DEBUG("playerbots", "Including non-random bot player %s into random bot update", player->GetName().c_str());
     }
 }
 
@@ -2067,7 +2075,7 @@ Player* RandomPlayerbotMgr::GetRandomPlayer()
 
 void RandomPlayerbotMgr::PrintStats()
 {
-    sLog->outString("%zu Random Bots online", playerBots.size());
+    LOG_INFO("playerbots", "%zu Random Bots online", playerBots.size());
 
     std::map<uint8, uint32> alliance, horde;
     for (uint32 i = 0; i < 10; ++i)
@@ -2208,7 +2216,7 @@ void RandomPlayerbotMgr::PrintStats()
         }
     }
 
-    sLog->outString("Per level:");
+    LOG_INFO("playerbots", "Per level:");
 	uint32 maxLevel = sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL);
 	for (uint8 i = 0; i < 10; ++i)
     {
@@ -2220,54 +2228,54 @@ void RandomPlayerbotMgr::PrintStats()
         if (!from)
             from = 1;
 
-        sLog->outString("    %d..%d: %d alliance, %d horde", from, to, alliance[i], horde[i]);
+        LOG_INFO("playerbots", "    %d..%d: %d alliance, %d horde", from, to, alliance[i], horde[i]);
     }
 
-    sLog->outString("Per race:");
+    LOG_INFO("playerbots", "Per race:");
     for (uint8 race = RACE_HUMAN; race < MAX_RACES; ++race)
     {
         if (perRace[race])
-            sLog->outString("    %s: %d", ChatHelper::formatRace(race).c_str(), perRace[race]);
+            LOG_INFO("playerbots", "    %s: %d", ChatHelper::formatRace(race).c_str(), perRace[race]);
     }
 
-    sLog->outString("Per class:");
+    LOG_INFO("playerbots", "Per class:");
     for (uint8 cls = CLASS_WARRIOR; cls < MAX_CLASSES; ++cls)
     {
         if (perClass[cls])
-            sLog->outString("    %s: %d", ChatHelper::formatClass(cls).c_str(), perClass[cls]);
+            LOG_INFO("playerbots", "    %s: %d", ChatHelper::formatClass(cls).c_str(), perClass[cls]);
     }
 
-    sLog->outString("Per role:");
-    sLog->outString("    tank: %d", tank);
-    sLog->outString("    heal: %d", heal);
-    sLog->outString("    dps: %d", dps);
+    LOG_INFO("playerbots", "Per role:");
+    LOG_INFO("playerbots", "    tank: %d", tank);
+    LOG_INFO("playerbots", "    heal: %d", heal);
+    LOG_INFO("playerbots", "    dps: %d", dps);
 
-    sLog->outString("Active bots: %d", active);
-    sLog->outString("Dead bots: %d", dead);
-    sLog->outString("Bots to:");
-    sLog->outString("    update: %d", update);
-    sLog->outString("    randomize: %d", randomize);
-    sLog->outString("    teleport: %d", teleport);
-    sLog->outString("    change_strategy: %d", changeStrategy);
-    sLog->outString("    revive: %d", revive);
+    LOG_INFO("playerbots", "Active bots: %d", active);
+    LOG_INFO("playerbots", "Dead bots: %d", dead);
+    LOG_INFO("playerbots", "Bots to:");
+    LOG_INFO("playerbots", "    update: %d", update);
+    LOG_INFO("playerbots", "    randomize: %d", randomize);
+    LOG_INFO("playerbots", "    teleport: %d", teleport);
+    LOG_INFO("playerbots", "    change_strategy: %d", changeStrategy);
+    LOG_INFO("playerbots", "    revive: %d", revive);
 
-    sLog->outString("Bots travel:");
-    sLog->outString("    travel to pick up quest: %d", stateCount[TRAVEL_STATE_TRAVEL_PICK_UP_QUEST]);
-    sLog->outString("    try to pick up quest: %d", stateCount[TRAVEL_STATE_WORK_PICK_UP_QUEST]);
-    sLog->outString("    travel to do quest: %d", stateCount[TRAVEL_STATE_TRAVEL_DO_QUEST]);
-    sLog->outString("    try to do quest: %d", stateCount[TRAVEL_STATE_WORK_DO_QUEST]);
-    sLog->outString("    travel to hand in quest: %d", stateCount[TRAVEL_STATE_TRAVEL_HAND_IN_QUEST]);
-    sLog->outString("    try to hand in quest: %d", stateCount[TRAVEL_STATE_WORK_HAND_IN_QUEST]);
-    sLog->outString("    idling: %d", stateCount[TRAVEL_STATE_IDLE]);
+    LOG_INFO("playerbots", "Bots travel:");
+    LOG_INFO("playerbots", "    travel to pick up quest: %d", stateCount[TRAVEL_STATE_TRAVEL_PICK_UP_QUEST]);
+    LOG_INFO("playerbots", "    try to pick up quest: %d", stateCount[TRAVEL_STATE_WORK_PICK_UP_QUEST]);
+    LOG_INFO("playerbots", "    travel to do quest: %d", stateCount[TRAVEL_STATE_TRAVEL_DO_QUEST]);
+    LOG_INFO("playerbots", "    try to do quest: %d", stateCount[TRAVEL_STATE_WORK_DO_QUEST]);
+    LOG_INFO("playerbots", "    travel to hand in quest: %d", stateCount[TRAVEL_STATE_TRAVEL_HAND_IN_QUEST]);
+    LOG_INFO("playerbots", "    try to hand in quest: %d", stateCount[TRAVEL_STATE_WORK_HAND_IN_QUEST]);
+    LOG_INFO("playerbots", "    idling: %d", stateCount[TRAVEL_STATE_IDLE]);
 
     sort(questCount.begin(), questCount.end(), [](std::pair<Quest const*, int32> i, std::pair<Quest const*, int32> j) { return i.second > j.second; });
 
-    sLog->outString("Bots top quests:");
+    LOG_INFO("playerbots", "Bots top quests:");
 
     uint32 cnt = 0;
     for (auto& quest : questCount)
     {
-        sLog->outString("    [%d]: %s (%d)", quest.second, quest.first->GetTitle().c_str(), quest.first->GetQuestLevel());
+        LOG_INFO("playerbots", "    [%d]: %s (%d)", quest.second, quest.first->GetTitle().c_str(), quest.first->GetQuestLevel());
         cnt++;
         if (cnt > 25)
             break;
@@ -2369,13 +2377,13 @@ void RandomPlayerbotMgr::ChangeStrategy(Player* player)
 
     if (frand(0.f, 100.f) > sPlayerbotAIConfig->randomBotRpgChance)
     {
-        sLog->outDetail("Changing strategy for #%d <%s> to grinding", bot, player->GetName().c_str());
+        LOG_INFO("playerbots", "Changing strategy for #%d <%s> to grinding", bot, player->GetName().c_str());
         ScheduleTeleport(bot, 30);
     }
     else
     {
-        sLog->outDetail("Changing strategy for bot #%d <%s> to RPG", bot, player->GetName().c_str());
-        sLog->outBasic("Bot #%d <%s>: sent to inn", bot, player->GetName().c_str());
+        LOG_INFO("playerbots", "Changing strategy for bot #%d <%s> to RPG", bot, player->GetName().c_str());
+        LOG_INFO("playerbots", "Bot #%d <%s>: sent to inn", bot, player->GetName().c_str());
         RandomTeleportForRpg(player);
         SetEventValue(bot, "teleport", 1, sPlayerbotAIConfig->maxRandomBotInWorldTime);
     }
@@ -2386,7 +2394,7 @@ void RandomPlayerbotMgr::ChangeStrategy(Player* player)
 void RandomPlayerbotMgr::RandomTeleportForRpg(Player* bot)
 {
     uint32 race = bot->getRace();
-    sLog->outDetail("Random teleporting bot %s for RPG (%zu locations available)", bot->GetName(), rpgLocsCache[race].size());
+    LOG_INFO("playerbots", "Random teleporting bot %s for RPG (%zu locations available)", bot->GetName().c_str(), rpgLocsCache[race].size());
     RandomTeleport(bot, rpgLocsCache[race], true);
 }
 
@@ -2403,7 +2411,7 @@ CreatureData const* RandomPlayerbotMgr::GetCreatureDataByEntry(uint32 entry)
 {
     if (entry != 0 && sObjectMgr->GetCreatureTemplate(entry))
     {
-        FindCreatureData worker(entry, NULL);
+        FindCreatureData worker(entry, nullptr);
         sObjectMgr.DoCreatureData(worker);
         CreatureDataPair const* dataPair = worker.GetResult();
         return dataPair;

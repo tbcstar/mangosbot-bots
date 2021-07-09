@@ -66,7 +66,7 @@ DpsHunterStrategy::DpsHunterStrategy(PlayerbotAI* botAI) : GenericHunterStrategy
 
 NextAction** DpsHunterStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("explosive shot", 11.0f), new NextAction("auto shot", 10.0f), new NextAction("auto attack", 9.0f), NULL);
+    return NextAction::array(0, new NextAction("explosive shot", 11.0f), new NextAction("auto shot", 10.0f), new NextAction("auto attack", 9.0f), nullptr);
 }
 
 void DpsHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
@@ -77,7 +77,7 @@ void DpsHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
     triggers.push_back(new TriggerNode("low mana", NextAction::array(0, new NextAction("viper sting", 23), nullptr)));
     triggers.push_back(new TriggerNode("hunter's mark", NextAction::array(0, new NextAction("hunter's mark", 19.0f), nullptr)));
     triggers.push_back(new TriggerNode("concussive shot on snare target", NextAction::array(0, new NextAction("concussive shot", 20.0f), nullptr)));
-    /*triggers.push_back(new TriggerNode("has aggro", NextAction::array(0, new NextAction("concussive shot", 20.0f), NULL)));*/
+    /*triggers.push_back(new TriggerNode("has aggro", NextAction::array(0, new NextAction("concussive shot", 20.0f), nullptr)));*/
 }
 
 void DpsAoeHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)

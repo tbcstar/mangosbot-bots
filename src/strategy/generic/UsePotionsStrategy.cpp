@@ -13,16 +13,16 @@ class UsePotionsStrategyActionNodeFactory : public NamedObjectFactory<ActionNode
             creators["healthstone"] = &healthstone;
         }
     private:
-        static ActionNode* healthstone(PlayerbotAI* ai)
+        static ActionNode* healthstone(PlayerbotAI* botAI)
         {
             return new ActionNode("healthstone",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("healing potion"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("healing potion"), nullptr),
+                /*C*/ nullptr);
         }
 };
 
-UsePotionsStrategy::UsePotionsStrategy(PlayerbotAI* ai) : Strategy(ai)
+UsePotionsStrategy::UsePotionsStrategy(PlayerbotAI* botAI) : Strategy(botAI)
 {
     actionNodeFactories.Add(new UsePotionsStrategyActionNodeFactory());
 }

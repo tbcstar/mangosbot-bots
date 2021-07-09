@@ -149,5 +149,5 @@ class IsInGroupValue : public BoolCalculatedValue
 class DeathCountValue : public ManualSetValue<uint32>
 {
     public:
-        DeathCountValue(PlayerbotAI* ai) : ManualSetValue<uint32>(ai, 0, "death_count") {}
+        DeathCountValue(PlayerbotAI* botAI) : ManualSetValue<uint32>(botAI, 0, "death_count") {}
 };

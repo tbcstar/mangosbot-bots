@@ -145,18 +145,18 @@ bool EmoteActionBase::ReceiveEmote(Player* source, uint32 emote)
             emoteId = EMOTE_ONESHOT_SALUTE;
             break;
         case 325:
-            if (ai->GetMaster() == source)
+            if (botAI->GetMaster() == source)
             {
-                ai->ChangeStrategy("-follow,+stay", BOT_STATE_NON_COMBAT);
-                ai->TellMasterNoFacing("Fine.. I'll stay right here..");
+                botAI->ChangeStrategy("-follow,+stay", BOT_STATE_NON_COMBAT);
+                botAI->TellMasterNoFacing("Fine.. I'll stay right here..");
             }
             break;
         case TEXTEMOTE_BECKON:
         case 324:
-            if (ai->GetMaster() == source)
+            if (botAI->GetMaster() == source)
             {
-                ai->ChangeStrategy("+follow", BOT_STATE_NON_COMBAT);
-                ai->TellMasterNoFacing("Wherever you go, I'll follow..");
+                botAI->ChangeStrategy("+follow", BOT_STATE_NON_COMBAT);
+                botAI->TellMasterNoFacing("Wherever you go, I'll follow..");
             }
             break;
         case TEXTEMOTE_WAVE:
@@ -565,7 +565,7 @@ bool EmoteAction::Execute(Event event)
     WorldPacket p(event.getPacket());
     uint32 emote = 0;
 
-    Player* pSource = NULL;
+    Player* pSource = nullptr;
     bool isReact = false;
     if (!p.empty() && p.GetOpcode() == SMSG_TEXT_EMOTE)
     {
@@ -586,7 +586,8 @@ bool EmoteAction::Execute(Event event)
 
             if (pSource && sServerFacade.GetDistance2d(bot, pSource) < sPlayerbotAIConfig.farDistance)
             {
-                sLog.outDetail("Bot #%d %s:%d <%s> received SMSG_TEXT_EMOTE %d", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), text_emote);
+                LOG_INFO("playerbots", "Bot #%d %s:%d <%s> received SMSG_TEXT_EMOTE %d",
+                    bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str(), text_emote);
                 emote = text_emote;
             }
 
@@ -606,7 +607,8 @@ bool EmoteAction::Execute(Event event)
         {
             if (pSource->GetSelectionGuid() == bot->GetObjectGuid())
             {
-                sLog.outDetail("Bot #%d %s:%d <%s> received SMSG_EMOTE %d", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), emoteId);
+                LOG_INFO("playerbots", "Bot #%d %s:%d <%s> received SMSG_EMOTE %d",
+                    bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str(), emoteId);
 
                 std::vector<uint32> types;
                 for (int32 i = sEmotesTextStore.GetNumRows(); i >= 0; --i)
@@ -681,7 +683,7 @@ bool EmoteAction::Execute(Event event)
 
 bool EmoteAction::isUseful()
 {
-    if (!ai->HasPlayerNearby())
+    if (!botAI->HasPlayerNearby())
         return false;
 
     if (bot->isMoving())

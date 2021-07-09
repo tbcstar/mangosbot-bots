@@ -25,7 +25,7 @@ bool CastTravelFormAction::isUseful()
     bool firstmount = bot->getLevel() >= 20;
 
     // useful if no mount or with wsg flag
-    return !bot->IsMounted() && (!firstmount || (bot->HasAura(23333) || bot->HasAura(23335))) && !ai->HasAura("dash", bot);
+    return !bot->IsMounted() && (!firstmount || (bot->HasAura(23333) || bot->HasAura(23335))) && !botAI->HasAura("dash", bot);
 }
 
 bool CastCasterFormAction::isUseful()

@@ -152,7 +152,7 @@ bool UseItemAction::UseItem(Item* item, ObjectGuid goGuid, Item* itemTarget)
     }
 
 	Player* master = GetMaster();
-	if (!targetSelected && item->GetTemplate()->Class != ITEM_CLASS_CONSUMABLE && master && ai->HasActivePlayerMaster())
+	if (!targetSelected && item->GetTemplate()->Class != ITEM_CLASS_CONSUMABLE && master && botAI->HasActivePlayerMaster())
 	{
 		if (ObjectGuid masterSelection = master->GetTarget())
 		{
@@ -398,7 +398,7 @@ bool UseHearthStone::Execute(Event event)
 
     bool used = UseItemAction::Execute(event);
     if (used)
-        ai->SetNextCheckDelay(10 * IN_MILLISECONDS);
+        botAI->SetNextCheckDelay(10 * IN_MILLISECONDS);
 
     return used;
 }
@@ -410,7 +410,7 @@ bool UseHearthStone::isUseful()
 
 bool UseRandomRecipe::isUseful()
 {
-    return !bot->IsInCombat() && !ai->HasActivePlayerMaster();
+    return !bot->IsInCombat() && !botAI->HasActivePlayerMaster();
 }
 
 bool UseRandomRecipe::Execute(Event event)
@@ -437,7 +437,7 @@ bool UseRandomRecipe::Execute(Event event)
     bool used = UseItemAction::Execute(event);
 
     if (used)
-        ai->SetNextCheckDelay(3.0 * IN_MILLISECONDS);
+        botAI->SetNextCheckDelay(3.0 * IN_MILLISECONDS);
 
     return used;
 }

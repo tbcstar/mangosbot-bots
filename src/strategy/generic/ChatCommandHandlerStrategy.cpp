@@ -32,8 +32,8 @@ void ChatCommandHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
     triggers.push_back(new TriggerNode("add all loot", NextAction::array(0, new NextAction("add all loot", relevance), new NextAction("loot", relevance), nullptr)));
     triggers.push_back(new TriggerNode("u", NextAction::array(0, new NextAction("use", relevance), nullptr)));
     triggers.push_back(new TriggerNode("c", NextAction::array(0, new NextAction("item count", relevance), nullptr)));
-    triggers.push_back(new TriggerNode("items", NextAction::array(0, new NextAction("item count", relevance), NULL)));
-    triggers.push_back(new TriggerNode("inv", NextAction::array(0, new NextAction("item count", relevance), NULL)));
+    triggers.push_back(new TriggerNode("items", NextAction::array(0, new NextAction("item count", relevance), nullptr)));
+    triggers.push_back(new TriggerNode("inv", NextAction::array(0, new NextAction("item count", relevance), nullptr)));
     triggers.push_back(new TriggerNode("e", NextAction::array(0, new NextAction("equip", relevance), nullptr)));
     triggers.push_back(new TriggerNode("ue", NextAction::array(0, new NextAction("unequip", relevance), nullptr)));
     triggers.push_back(new TriggerNode("t", NextAction::array(0, new NextAction("trade", relevance), nullptr)));
@@ -50,7 +50,7 @@ void ChatCommandHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& trigger
     triggers.push_back(new TriggerNode("grind", NextAction::array(0, new NextAction("grind chat shortcut", relevance), nullptr)));
     triggers.push_back(new TriggerNode("talk", NextAction::array(0, new NextAction("gossip hello", relevance), new NextAction("talk to quest giver", relevance), nullptr)));
     triggers.push_back(new TriggerNode("cast", NextAction::array(0, new NextAction("cast custom spell", relevance), nullptr)));
-    triggers.push_back(new TriggerNode("castnc", NextAction::array(0, new NextAction("cast custom nc spell", relevance), NULL)));
+    triggers.push_back(new TriggerNode("castnc", NextAction::array(0, new NextAction("cast custom nc spell", relevance), nullptr)));
     triggers.push_back(new TriggerNode("revive", NextAction::array(0, new NextAction("spirit healer", relevance), nullptr)));
     triggers.push_back(new TriggerNode("runaway", NextAction::array(0, new NextAction("runaway chat shortcut", relevance), nullptr)));
     triggers.push_back(new TriggerNode("warning", NextAction::array(0, new NextAction("runaway chat shortcut", relevance), nullptr)));

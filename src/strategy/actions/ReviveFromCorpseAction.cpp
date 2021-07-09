@@ -19,10 +19,10 @@ bool ReviveFromCorpseAction::Execute(Event event)
     {
         if (sServerFacade->IsDistanceLessThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig.farDistance))
         {
-            if (!ai->HasStrategy("follow", BOT_STATE_NON_COMBAT))
+            if (!botAI->HasStrategy("follow", BOT_STATE_NON_COMBAT))
             {
-                ai->TellMasterNoFacing("Welcome back!");
-                ai->ChangeStrategy("+follow,-stay", BOT_STATE_NON_COMBAT);
+                botAI->TellMasterNoFacing("Welcome back!");
+                botAI->ChangeStrategy("+follow,-stay", BOT_STATE_NON_COMBAT);
                 return true;
             }
         }
@@ -41,7 +41,7 @@ bool ReviveFromCorpseAction::Execute(Event event)
             return false;
     }
 
-    sLog.outDetail("Bot #%d %s:%d <%s> revives at body", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+    LOG_INFO("playerbots", "Bot #%d %s:%d <%s> revives at body", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
 
     WorldPacket packet(CMSG_RECLAIM_CORPSE);
     packet << bot->GetGUID();
@@ -71,11 +71,12 @@ bool FindCorpseAction::Execute(Event event)
 
     uint32 dCount = AI_VALUE(uint32, "death count");
 
-    if (!ai->HasRealPlayerMaster())
+    if (!botAI->HasRealPlayerMaster())
     {
         if (dCount >= 5)
         {
-            sLog.outBasic("Bot #%d %s:%d <%s>: died too many times and was sent to an inn", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+            LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: died too many times and was sent to an inn",
+                bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
             context->GetValue<uint32>("death count")->Set(0);
             sRandomPlayerbotMgr.RandomTeleportForRpg(bot);
             return true;
@@ -92,7 +93,8 @@ bool FindCorpseAction::Execute(Event event)
 
         int64 deadTime = time(nullptr) - corpse->GetGhostTime();
 
-        sLog.outDetail("Bot #%d %s:%d <%s> looks for body", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+        LOG_INFO("playerbots", "Bot #%d %s:%d <%s> looks for body",
+            bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
 
         if (!botAI->AllowActive(ALL_ACTIVITY))
         {
@@ -121,10 +123,11 @@ bool FindCorpseAction::Execute(Event event)
 
             if (!moved)
             {
-                moved = ai->DoSpecificAction("spirit healer");
+                moved = botAI->DoSpecificAction("spirit healer");
 
                 if (moved)
-                    sLog.outBasic("Bot #%d %s:%d <%s> moves to graveyard", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+                    LOG_INFO("playerbots", "Bot #%d %s:%d <%s> moves to graveyard",
+                        bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
             }
 
             return moved;
@@ -159,7 +162,8 @@ bool SpiritHealerAction::Execute(Event event)
         if (Unit* unit = botAI->GetUnit(guid))
             if (unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_SPIRITHEALER))
             {
-                sLog.outBasic("Bot #%d %s:%d <%s> revives at spirit healer", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+                LOG_INFO("playerbots", "Bot #%d %s:%d <%s> revives at spirit healer",
+                    bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
 
                 PlayerbotChatHandler ch(bot);
                 bot->ResurrectPlayer(0.5f);
@@ -201,11 +205,12 @@ bool SpiritHealerAction::Execute(Event event)
     if (moved)
         return true;
 
-    if (!ai->HasRealPlayerMaster())
+    if (!botAI->HasRealPlayerMaster())
         bot->RepopAtGraveyard();
 
-    sLog.outBasic("Bot #%d %s:%d <%s> can't find a spirit healer", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+    LOG_INFO("playerbots", "Bot #%d %s:%d <%s> can't find a spirit healer",
+        bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
 
-    ai->TellError("Cannot find any spirit healer nearby");
+    botAI->TellError("Cannot find any spirit healer nearby");
     return false;
 }

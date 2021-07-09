@@ -11,7 +11,7 @@ class Unit;
 class WorldBuffAction : public Action
 {
     public:
-        WorldBuffAction(PlayerbotAI* ai) : Action(ai, "world buff") { }
+        WorldBuffAction(PlayerbotAI* botAI) : Action(botAI, "world buff") { }
 
         bool Execute(Event event) override;
 

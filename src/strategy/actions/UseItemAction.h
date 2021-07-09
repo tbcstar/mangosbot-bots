@@ -57,7 +57,7 @@ class UseManaPotion : public UseItemAction
 class UseHearthStone : public UseItemAction
 {
     public:
-        UseHearthStone(PlayerbotAI* ai) : UseItemAction(ai, "hearthstone") {}
+        UseHearthStone(PlayerbotAI* botAI) : UseItemAction(botAI, "hearthstone") {}
 
         bool isUseful() override;
         bool Execute(Event event) override;
@@ -66,7 +66,7 @@ class UseHearthStone : public UseItemAction
 class UseRandomRecipe : public UseItemAction
 {
     public:
-        UseRandomRecipe(PlayerbotAI* ai) : UseItemAction(ai, "random recipe") {}
+        UseRandomRecipe(PlayerbotAI* botAI) : UseItemAction(botAI, "random recipe") {}
 
         bool isUseful() override;
         bool isPossible() override { return true; }

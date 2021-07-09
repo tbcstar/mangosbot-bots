@@ -38,7 +38,7 @@ bool FollowAction::isUseful()
     Formation* formation = AI_VALUE(Formation*, "formation");
     std::string const& target = formation->GetTargetName();
 
-    Unit* fTarget = NULL;
+    Unit* fTarget = nullptr;
     if (!target.empty())
         fTarget = AI_VALUE(Unit*, target);
     else
@@ -70,7 +70,7 @@ bool FleeToMasterAction::Execute(Event event)
     bool canFollow = Follow(AI_VALUE(Unit*, "master target"));
     if (!canFollow)
     {
-        //ai->SetNextCheckDelay(5000);
+        //botAI->SetNextCheckDelay(5000);
         return false;
     }
 

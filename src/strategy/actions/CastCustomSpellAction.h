@@ -12,7 +12,7 @@ class WorldObject;
 class CastCustomSpellAction : public InventoryAction
 {
     public:
-        CastCustomSpellAction(PlayerbotAI* ai, std::string const& name = "cast custom spell") : InventoryAction(ai, name) { }
+        CastCustomSpellAction(PlayerbotAI* botAI, std::string const& name = "cast custom spell") : InventoryAction(botAI, name) { }
 
         bool Execute(Event event) override;
         virtual std::string const& castString(WorldObject* target) { return "cast"; }
@@ -24,7 +24,7 @@ protected:
 class CastCustomNcSpellAction : public CastCustomSpellAction
 {
     public:
-        CastCustomNcSpellAction(PlayerbotAI* ai, std::string const name = "cast custom nc spell") : CastCustomSpellAction(ai, name) {}
+        CastCustomNcSpellAction(PlayerbotAI* botAI, std::string const name = "cast custom nc spell") : CastCustomSpellAction(botAI, name) {}
 
         bool isUseful() override;
         std::string const& castString(WorldObject* target) override;
@@ -33,7 +33,7 @@ class CastCustomNcSpellAction : public CastCustomSpellAction
 class CastRandomSpellAction : public CastCustomSpellAction
 {
     public:
-        CastRandomSpellAction(PlayerbotAI* ai, std::string const& name = "cast random spell") : CastCustomSpellAction(ai, name) {}
+        CastRandomSpellAction(PlayerbotAI* botAI, std::string const& name = "cast random spell") : CastCustomSpellAction(botAI, name) {}
 
         virtual bool AcceptSpell(SpellInfo const* pSpellInfo) { return true; }
         bool Execute(Event event) override;
@@ -45,7 +45,7 @@ class CastRandomSpellAction : public CastCustomSpellAction
 class CraftRandomItemAction : public CastRandomSpellAction
 {
     public:
-        CraftRandomItemAction(PlayerbotAI* ai) : CastRandomSpellAction(ai, "craft random item")
+        CraftRandomItemAction(PlayerbotAI* botAI) : CastRandomSpellAction(botAI, "craft random item")
         {
             MultiCast = true;
         }

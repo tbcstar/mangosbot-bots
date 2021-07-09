@@ -34,7 +34,7 @@ template <class T>
 class SingleCalculatedValue : public UntypedValue, public Value<T>
 {
     public:
-        SingleCalculatedValue(PlayerbotAI* ai, string name = "value") : UntypedValue(ai, name)
+        SingleCalculatedValue(PlayerbotAI* botAI, string name = "value") : UntypedValue(botAI, name)
         {
             Reset();
         }
@@ -157,7 +157,7 @@ class UnitCalculatedValue : public CalculatedValue<Unit*>
 class CDPairCalculatedValue : public CalculatedValue<CreatureData const*>
 {
 public:
-    CDPairCalculatedValue(PlayerbotAI* ai, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<CreatureData const*>(ai, name, checkInterval)
+    CDPairCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<CreatureData const*>(botAI, name, checkInterval)
     {
         lastCheckTime = time(0) - checkInterval / 2;
     }
@@ -168,7 +168,7 @@ public:
 class CDPairListCalculatedValue : public CalculatedValue<std::vector<CreatureData const*>>
 {
 public:
-    CDPairListCalculatedValue(PlayerbotAI* ai, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<std::vector<CreatureData const*>>(ai, name, checkInterval)
+    CDPairListCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<std::vector<CreatureData const*>>(botAI, name, checkInterval)
     {
         lastCheckTime = time(0) - checkInterval / 2;
     }
@@ -179,7 +179,7 @@ public:
 class ObjectGuidCalculatedValue : public CalculatedValue<ObjectGuid>
 {
 public:
-    ObjectGuidCalculatedValue(PlayerbotAI* ai, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<ObjectGuid>(ai, name, checkInterval)
+    ObjectGuidCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<ObjectGuid>(botAI, name, checkInterval)
     {
         lastCheckTime = time(0) - checkInterval / 2;
     }

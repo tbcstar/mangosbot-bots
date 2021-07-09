@@ -297,7 +297,7 @@ uint32 stackCount = urand(1, proto->GetMaxStackSize());
     item->SaveToDB();
     auctionEntry->SaveToDB();
 
-    sLog.outErrorDb("AhBot %s added %d of %s to auction %d for %d..%d", bot->GetName(), stackCount, proto->Name1,1, bidPrice, buyoutPrice);
+    LOG_ERROR("playerbots", "AhBot %s added %d of %s to auction %d for %d..%d", bot->GetName().c_str(), stackCount, proto->Name1.c_str(), 1, bidPrice, buyoutPrice);
 
     if (oldItem->GetCount() > stackCount)
         oldItem->SetCount(oldItem->GetCount() - stackCount);
@@ -411,7 +411,7 @@ bool StoreLootAction::Execute(Event event)
         botAI->TellMasterNoFacing(out.str());
 
         //ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", proto->ItemId);
-        //sLog.outErrorDb("Bot %s is looting %d %s for usage %d.", bot->GetName(), itemcount, proto->Name1, usage);
+        //LOG_ERROR("playerbots", "Bot %s is looting %d %s for usage %d.", bot->GetName().c_str(), itemcount, proto->Name1.c_str(), usage);
     }
 
     AI_VALUE(LootObjectStack*, "available loot")->Remove(guid);

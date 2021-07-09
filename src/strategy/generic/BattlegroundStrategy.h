@@ -7,7 +7,7 @@
 class BGStrategy : public PassTroughStrategy
 {
     public:
-        BGStrategy(PlayerbotAI* ai);
+        BGStrategy(PlayerbotAI* botAI);
 
         uint32 GetType() const override { return STRATEGY_TYPE_NONCOMBAT; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
@@ -17,7 +17,7 @@ class BGStrategy : public PassTroughStrategy
 class BattlegroundStrategy : public Strategy
 {
     public:
-        BattlegroundStrategy(PlayerbotAI* ai) : Strategy(ai) {};
+        BattlegroundStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
 
         uint32 GetType() const override { return STRATEGY_TYPE_NONCOMBAT; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
@@ -27,7 +27,7 @@ class BattlegroundStrategy : public Strategy
 class WarsongStrategy : public Strategy
 {
     public:
-        WarsongStrategy(PlayerbotAI* ai) : Strategy(ai) {};
+        WarsongStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
 
         uint32 GetType() const override { return STRATEGY_TYPE_GENERIC; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
@@ -37,7 +37,7 @@ class WarsongStrategy : public Strategy
 class AlteracStrategy : public Strategy
 {
     public:
-        AlteracStrategy(PlayerbotAI* ai) : Strategy(ai) {};
+        AlteracStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
 
         uint32 GetType() const override { return STRATEGY_TYPE_GENERIC; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
@@ -47,7 +47,7 @@ class AlteracStrategy : public Strategy
 class ArathiStrategy : public Strategy
 {
     public:
-        ArathiStrategy(PlayerbotAI* ai) : Strategy(ai) {};
+        ArathiStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
 
         uint32 GetType() const override { return STRATEGY_TYPE_GENERIC; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
@@ -57,7 +57,7 @@ class ArathiStrategy : public Strategy
 class ArenaStrategy : public Strategy
 {
     public:
-        ArenaStrategy(PlayerbotAI* ai) : Strategy(ai) {};
+        ArenaStrategy(PlayerbotAI* botAI) : Strategy(botAI) {};
 
         uint32 GetType() const override { return STRATEGY_TYPE_GENERIC; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;

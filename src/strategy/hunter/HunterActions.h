@@ -162,7 +162,7 @@ class CastWingClipAction : public CastMeleeSpellAction
 class CastRaptorStrikeAction : public CastMeleeSpellAction
 {
     public:
-        CastRaptorStrikeAction(PlayerbotAI* ai) : CastMeleeSpellAction(ai, "raptor strike") { }
+        CastRaptorStrikeAction(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, "raptor strike") { }
 
         bool isUseful() override;
 };

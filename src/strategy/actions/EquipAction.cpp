@@ -109,7 +109,8 @@ bool EquipUpgradesAction::Execute(Event event)
         ItemUsage usage = AI_VALUE2(ItemUsage, "item usage", i->first);
         if (usage == ITEM_USAGE_EQUIP || usage == ITEM_USAGE_REPLACE || usage == ITEM_USAGE_BAD_EQUIP)
         {
-            sLog->outDetail("Bot %s <%s> auto equips item %d (%s)", bot->GetGUID().ToString().c_str(), bot->GetName().c_str(), i->first, usage == 1 ? "no item in slot" : usage == 2 ? "replace" : usage == 3 ? "wrong item but empty slot" : "");
+            LOG_INFO("playerbots", "Bot %s <%s> auto equips item %d (%s)",
+                bot->GetGUID().ToString().c_str(), bot->GetName().c_str(), i->first, usage == 1 ? "no item in slot" : usage == 2 ? "replace" : usage == 3 ? "wrong item but empty slot" : "");
             items.insert(i->first);
         }
     }

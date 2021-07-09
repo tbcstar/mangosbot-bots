@@ -9,7 +9,7 @@ void replaceAll(std::string& str, std::string const& from, std::string const& to
 
 void PlayerbotTextMgr::LoadTemplates()
 {
-    sLog->outBasic("Loading playerbot texts...");
+    LOG_INFO("playerbots", "Loading playerbot texts...");
 
     QueryResult results = PlayerbotDatabase.PQuery("SELECT `key`,`text` FROM `ai_playerbot_text`");
     uint32 count = 0;
@@ -25,7 +25,7 @@ void PlayerbotTextMgr::LoadTemplates()
         } while (results->NextRow());
     }
 
-    sLog->outBasic("%d playerbot texts loaded", count);
+    LOG_INFO("playerbots", "%d playerbot texts loaded", count);
 }
 
 std::string PlayerbotTextMgr::Format(std::string const& key, std::map<std::string, std::string> placeholders)

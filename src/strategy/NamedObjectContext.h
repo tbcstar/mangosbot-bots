@@ -59,7 +59,7 @@ class NamedObjectFactory
             if (!creator)
                 return nullptr;
 
-            T* object = (*creator)(ai);
+            T* object = (*creator)(botAI);
             Qualified* q = dynamic_cast<Qualified*>(object);
             if (q && found != std::string::npos)
                 q->Qualify(qualifier);

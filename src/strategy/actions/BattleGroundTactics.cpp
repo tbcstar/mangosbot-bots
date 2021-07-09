@@ -2047,7 +2047,7 @@ bool BGTactics::Execute(Event event)
         return false;
 
     if (bg->GetStatus() == STATUS_IN_PROGRESS)
-        ai->ChangeStrategy("-buff", BOT_STATE_NON_COMBAT);
+        botAI->ChangeStrategy("-buff", BOT_STATE_NON_COMBAT);
 
     std::vector<BattleBotPath*> const* vPaths;
     std::vector<uint32> const* vFlagIds;

@@ -89,7 +89,7 @@ BattleGroundTypeId ChooseRpgTargetAction::CanQueueBg(ObjectGuid guid)
 
 uint32 ChooseRpgTargetAction::HasSameTarget(ObjectGuid guid)
 {
-    if (ai->HasRealPlayerMaster())
+    if (botAI->HasRealPlayerMaster())
         return 0;
 
     uint32 num = 0;
@@ -222,7 +222,7 @@ bool ChooseRpgTargetAction::Execute(Event event)
 
     if (targets.empty())
     {
-        sLog->outDetail("%s can't choose RPG target: all %zu are not available", bot->GetName(), possibleTargets.size());
+        LOG_INFO("playerbots", "%s can't choose RPG target: all %zu are not available", bot->GetName().c_str(), possibleTargets.size());
         ignoreList.clear(); //Clear ignore list.
         context->GetValue<GuidSet&>("ignore rpg target")->Set(ignoreList);
         context->GetValue<ObjectGuid>("rpg target")->Set(ObjectGuid::Empty);
@@ -275,12 +275,12 @@ bool ChooseRpgTargetAction::isFollowValid(Player* bot, WorldObject* target)
 
 bool ChooseRpgTargetAction::isFollowValid(Player* bot, WorldLocation location)
 {
-    PlayerbotAI* ai = bot->GetPlayerbotAI();
+    PlayerbotAI* botAI = bot->GetPlayerbotAI();
     Player* master = botAI->GetGroupMaster();
     if (!master || bot == master)
         return true;
 
-    if (!ai->HasStrategy("follow", BOT_STATE_NON_COMBAT))
+    if (!botAI->HasStrategy("follow", BOT_STATE_NON_COMBAT))
         return true;
 
     if (bot->GetDistance(master) > sPlayerbotAIConfig.rpgDistance * 2)

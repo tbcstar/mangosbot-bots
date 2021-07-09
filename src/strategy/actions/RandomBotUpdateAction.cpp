@@ -14,7 +14,7 @@ bool RandomBotUpdateAction::Execute(Event event)
     if (bot->GetGroup() && (!botAI->GetGroupMaster()->GetPlayerbotAI() || botAI->GetGroupMaster()->GetPlayerbotAI()->IsRealPlayer()))
         return true;
 
-    if (ai->HasPlayerNearby(sPlayerbotAIConfig.grindDistance))
+    if (botAI->HasPlayerNearby(sPlayerbotAIConfig.grindDistance))
         return true;
 
     return sRandomPlayerbotMgr->ProcessBot(bot);

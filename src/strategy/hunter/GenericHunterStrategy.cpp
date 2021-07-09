@@ -43,20 +43,20 @@ class GenericHunterStrategyActionNodeFactory : public NamedObjectFactory<ActionN
                 /*C*/ nullptr);
         }
 
-        static ActionNode* wing_clip(PlayerbotAI* ai)
+        static ActionNode* wing_clip(PlayerbotAI* botAI)
         {
             return new ActionNode("wing clip",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("raptor strike"), NULL),
-                /*C*/ NextAction::array(0, new NextAction("flee"), NULL));
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("raptor strike"), nullptr),
+                /*C*/ NextAction::array(0, new NextAction("flee"), nullptr));
         }
 
-        static ActionNode* raptor_strike(PlayerbotAI* ai)
+        static ActionNode* raptor_strike(PlayerbotAI* botAI)
         {
             return new ActionNode("raptor strike",
-                /*P*/ NextAction::array(0, new NextAction("melee"), NULL),
-                /*A*/ NULL,
-                /*C*/ NULL);
+                /*P*/ NextAction::array(0, new NextAction("melee"), nullptr),
+                /*A*/ nullptr,
+                /*C*/ nullptr);
         }
 };
 
@@ -71,10 +71,10 @@ void GenericHunterStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 
     triggers.push_back(new TriggerNode("enemy is close", NextAction::array(0, new NextAction("wing clip", ACTION_HIGH), nullptr)));
     triggers.push_back(new TriggerNode("medium threat", NextAction::array(0, new NextAction("feign death", 35.0f), nullptr)));
-    triggers.push_back(new TriggerNode("hunters pet low health", NextAction::array(0, new NextAction("mend pet", ACTION_HIGH + 2), NULL)));
-    triggers.push_back(new TriggerNode("switch to melee", NextAction::array(0, new NextAction("switch to melee", ACTION_HIGH + 1), NULL)));
-    triggers.push_back(new TriggerNode("switch to ranged", NextAction::array(0, new NextAction("switch to ranged", ACTION_HIGH), NULL)));
-    triggers.push_back(new TriggerNode("no ammo", NextAction::array(0, new NextAction("switch to melee", ACTION_HIGH + 1), new NextAction("say::no ammo", ACTION_HIGH), NULL)));
+    triggers.push_back(new TriggerNode("hunters pet low health", NextAction::array(0, new NextAction("mend pet", ACTION_HIGH + 2), nullptr)));
+    triggers.push_back(new TriggerNode("switch to melee", NextAction::array(0, new NextAction("switch to melee", ACTION_HIGH + 1), nullptr)));
+    triggers.push_back(new TriggerNode("switch to ranged", NextAction::array(0, new NextAction("switch to ranged", ACTION_HIGH), nullptr)));
+    triggers.push_back(new TriggerNode("no ammo", NextAction::array(0, new NextAction("switch to melee", ACTION_HIGH + 1), new NextAction("say::no ammo", ACTION_HIGH), nullptr)));
 }
 
 NextAction** HunterBoostStrategy::getDefaultActions()
@@ -90,5 +90,5 @@ void HunterBoostStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 void HunterCcStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode("scare beast", NextAction::array(0, new NextAction("scare beast on cc", ACTION_HIGH + 3), nullptr)));
-    triggers.push_back(new TriggerNode("freezing trap", NextAction::array(0, new NextAction("freezing trap on cc", ACTION_HIGH + 3), NULL)));
+    triggers.push_back(new TriggerNode("freezing trap", NextAction::array(0, new NextAction("freezing trap on cc", ACTION_HIGH + 3), nullptr)));
 }

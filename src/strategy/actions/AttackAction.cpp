@@ -125,13 +125,13 @@ bool AttackAction::Attack(Unit* target)
     if (!bot->IsInFront(target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
         bot->SetFacingTo(target);
 
-    if (bot->Attack(target, !ai->IsRanged(bot) || sServerFacade.GetDistance2d(bot, target) <= sPlayerbotAIConfig.tooCloseDistance))
+    if (bot->Attack(target, !botAI->IsRanged(bot) || sServerFacade.GetDistance2d(bot, target) <= sPlayerbotAIConfig.tooCloseDistance))
     {
-        ai->ChangeEngine(BOT_STATE_COMBAT);
+        botAI->ChangeEngine(BOT_STATE_COMBAT);
         return ChaseTo(target);
     }
     else
-        context->GetValue<Unit*>("current target")->Set(NULL);
+        context->GetValue<Unit*>("current target")->Set(nullptr);
 
     return false;
 }

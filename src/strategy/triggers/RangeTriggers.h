@@ -92,7 +92,7 @@ class OutOfReactRangeTrigger : public FarFromMasterTrigger
 class HearthIsFasterTrigger : public Trigger
 {
     public:
-        HearthIsFasterTrigger(PlayerbotAI* ai) : Trigger(ai, "hearth is faster", 5) {}
+        HearthIsFasterTrigger(PlayerbotAI* botAI) : Trigger(botAI, "hearth is faster", 5) {}
 
         bool IsActive() override;
 };

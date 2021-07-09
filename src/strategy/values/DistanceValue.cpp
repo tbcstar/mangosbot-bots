@@ -58,12 +58,12 @@ float DistanceValue::Calculate()
     else if (qualifier == "last long move")
     {
         WorldPosition target = AI_VALUE(WorldPosition, qualifier);
-        return target.distance(ai->GetBot());
+        return target.distance(botAI->GetBot());
     }
     else if (qualifier == "home bind")
     {
         WorldPosition target = AI_VALUE(WorldPosition, qualifier);
-        return target.distance(ai->GetBot());
+        return target.distance(botAI->GetBot());
     }
     else if (qualifier == "current target")
     {

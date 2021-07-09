@@ -474,13 +474,13 @@ void PlayerbotAI::ChangeEngine(BotState type)
         switch (type)
         {
             case BOT_STATE_COMBAT:
-                sLog->outDebug( "=== %s COMBAT ===", bot->GetName());
+                LOG_DEBUG("playerbots",  "=== %s COMBAT ===", bot->GetName().c_str());
                 break;
             case BOT_STATE_NON_COMBAT:
-                sLog->outDebug( "=== %s NON-COMBAT ===", bot->GetName());
+                LOG_DEBUG("playerbots",  "=== %s NON-COMBAT ===", bot->GetName().c_str());
                 break;
             case BOT_STATE_DEAD:
-                sLog->outDebug( "=== %s DEAD ===", bot->GetName());
+                LOG_DEBUG("playerbots",  "=== %s DEAD ===", bot->GetName().c_str());
                 break;
         }
     }
@@ -515,8 +515,8 @@ void PlayerbotAI::DoNextAction()
             aiObjectContext->GetValue<uint32>("death count")->Set(++dCount);
         }
 
-        aiObjectContext->GetValue<Unit*>("current target")->Set(NULL);
-        aiObjectContext->GetValue<Unit*>("enemy player target")->Set(NULL);
+        aiObjectContext->GetValue<Unit*>("current target")->Set(nullptr);
+        aiObjectContext->GetValue<Unit*>("enemy player target")->Set(nullptr);
 
         ChangeEngine(BOT_STATE_DEAD);
         return;
@@ -536,7 +536,7 @@ void PlayerbotAI::DoNextAction()
             return;
     }
 
-    currentEngine->DoNextAction(NULL, 0, minimal);
+    currentEngine->DoNextAction(nullptr, 0, minimal);
 
     if (minimal)
     {
@@ -559,7 +559,7 @@ void PlayerbotAI::DoNextAction()
                 botAI->ChangeStrategy("-rpg,-grind,-travel", BOT_STATE_NON_COMBAT);
 
                 if (sServerFacade.GetDistance2d(bot, member) < 50.0f && member->IsInGroup(bot, true))
-                    ai->ChangeStrategy("+follow", BOT_STATE_NON_COMBAT);
+                    botAI->ChangeStrategy("+follow", BOT_STATE_NON_COMBAT);
 
                 botAI->TellMaster("Hello, I follow you!");
                 break;
@@ -841,17 +841,17 @@ Unit* PlayerbotAI::GetUnit(ObjectGuid guid)
 Unit* PlayerbotAI::GetUnit(CreatureData const* creatureDataPair)
 {
     if (!creatureDataPair)
-        return NULL;
+        return nullptr;
 
     ObjectGuid guid(HIGHGUID_UNIT, creatureDataPair->second.id, creatureDataPair->first);
 
     if (!guid)
-        return NULL;
+        return nullptr;
 
     Map* map = sMapMgr.FindMap(creatureDataPair->second.mapid);
 
     if (!map)
-        return NULL;
+        return nullptr;
 
     return map->GetUnit(guid);
 }
@@ -875,17 +875,17 @@ GameObject* PlayerbotAI::GetGameObject(ObjectGuid guid)
 GameObject* PlayerbotAI::GetGameObject(GameObjectData const* gameObjectDataPair)
 {
     if (!gameObjectDataPair)
-        return NULL;
+        return nullptr;
 
     ObjectGuid guid(HIGHGUID_GAMEOBJECT, gameObjectDataPair->second.id, gameObjectDataPair->first);
 
     if (!guid)
-        return NULL;
+        return nullptr;
 
     Map* map = sMapMgr.FindMap(gameObjectDataPair->second.mapid);
 
     if (!map)
-        return NULL;
+        return nullptr;
 
     return map->GetGameObject(guid);
 }
@@ -893,7 +893,7 @@ GameObject* PlayerbotAI::GetGameObject(GameObjectData const* gameObjectDataPair)
 WorldObject* PlayerbotAI::GetWorldObject(ObjectGuid guid)
 {
     if (!guid)
-        return NULL;
+        return nullptr;
 
     return ObjectAccessor::GetWorldObject(*bot, guid);
 }
@@ -1421,7 +1421,7 @@ bool PlayerbotAI::CastSpell(uint32 spellId, float x, float y, float z, Item* ite
         return true;
     }
 
-    aiObjectContext->GetValue<LastMovement&>("last movement")->Get().Set(NULL);
+    aiObjectContext->GetValue<LastMovement&>("last movement")->Get().Set(nullptr);
     aiObjectContext->GetValue<time_t>("stay time")->Set(0);
 
     MotionMaster& mm = *bot->GetMotionMaster();
@@ -1518,7 +1518,7 @@ bool PlayerbotAI::CastSpell(uint32 spellId, float x, float y, float z, Item* ite
 
     WaitForSpellCast(spell);
     aiObjectContext->GetValue<LastSpellCast&>("last spell cast")->Get().Set(spellId, bot->GetObjectGuid(), time(0));
-    aiObjectContext->GetValue<ai::PositionMap&>("position")->Get()["random"].Reset();
+    aiObjectContext->GetValue<PositionMap&>("position")->Get()["random"].Reset();
 
     if (oldSel)
         bot->SetSelectionGuid(oldSel);
@@ -2519,13 +2519,13 @@ void PlayerbotAI::EnchantItemT(uint32 spellid, uint8 slot)
     uint32 enchantid = spellInfo->Effects[0].MiscValue;
     if (!enchantid)
     {
-        sLog->outError("%s: Invalid enchantid ", enchantid, " report to devs", bot->GetName());
+        LOG_ERROR("playerbots", "%s: Invalid enchantid ", enchantid, " report to devs", bot->GetName().c_str());
         return;
     }
 
     if (!((1 << pItem->GetTemplate()->SubClass) & spellInfo->EquippedItemSubClassMask) && !((1 << pItem->GetTemplate()->InventoryType) & spellInfo->EquippedItemInventoryTypeMask))
     {
-        sLog->outError("%s: items could not be enchanted, wrong item type equipped", bot->GetName());
+        LOG_ERROR("playerbots", "%s: items could not be enchanted, wrong item type equipped", bot->GetName().c_str());
         return;
     }
 
@@ -2533,7 +2533,7 @@ void PlayerbotAI::EnchantItemT(uint32 spellid, uint8 slot)
     pItem->SetEnchantment(PERM_ENCHANTMENT_SLOT, enchantid, 0, 0);
     bot->ApplyEnchantment(pItem, PERM_ENCHANTMENT_SLOT, true);
 
-    sLog->outDetail("%s: items was enchanted successfully!", bot->GetName());
+    LOG_INFO("playerbots", "%s: items was enchanted successfully!", bot->GetName().c_str());
 }
 
 uint32 PlayerbotAI::GetBuffedCount(Player* player, std::string const& spellname)

@@ -100,7 +100,7 @@ bool MovementAction::MoveToLOS(WorldObject* target, bool ranged)
     {
         for (auto& point : path.getPath())
         {
-            if (ai->HasStrategy("debug", BOT_STATE_NON_COMBAT))
+            if (botAI->HasStrategy("debug", BOT_STATE_NON_COMBAT))
                 CreateWp(bot, point.x, point.y, point.z, 0.0, 15631);
 
             float distPoint = target->GetDistance(point.x, point.y, point.z, DIST_CALC_NONE);
@@ -118,7 +118,7 @@ bool MovementAction::MoveToLOS(WorldObject* target, bool ranged)
     if (dest.isSet())
         return MoveTo(dest.mapId, dest.x, dest.y, dest.z);
     else
-        ai->TellError("All paths not in LOS");
+        botAI->TellError("All paths not in LOS");
 
     return false;
 }
@@ -127,7 +127,7 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
 {
     UpdateMovementState();
 
-    bool detailedMove = ai->AllowActive(DETAILED_MOVE_ACTIVITY);
+    bool detailedMove = botAI->AllowActive(DETAILED_MOVE_ACTIVITY);
     if (!detailedMove)
     {
         time_t now = time(0);
@@ -214,8 +214,8 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
                         AI_VALUE(LastMovement&, "last movement").setPath(movePath);
 
                         bot->StopMoving();
-                        if (ai->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
-                            ai->TellMasterNoFacing("I have no path");
+                        if (botAI->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
+                            botAI->TellMasterNoFacing("I have no path");
                         return false;
                     }
 
@@ -223,7 +223,7 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
                 }
                 else
                 {
-                    endPath = route.getNodes().back()->getPosition()->getPathTo(endPosition, NULL);
+                    endPath = route.getNodes().back()->getPosition()->getPathTo(endPosition, nullptr);
                     movePath = route.buildPath(beginPath, endPath);
 
                     if (sPlayerbotAIConfig.hasLog("bot_pathfinding.csv"))
@@ -254,15 +254,15 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
     if (!movePath.empty())
     {
         if (movePath.makeShortCut(startPosition, maxDist))
-            if (ai->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
-                ai->TellMasterNoFacing("Found a shortcut.");
+            if (botAI->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
+                botAI->TellMasterNoFacing("Found a shortcut.");
 
         if (movePath.empty())
         {
             AI_VALUE(LastMovement&, "last movement").setPath(movePath);
 
-            if (ai->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
-                ai->TellMasterNoFacing("Too far from path. Rebuilding.");
+            if (botAI->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
+                botAI->TellMasterNoFacing("Too far from path. Rebuilding.");
 
             return true;
         }
@@ -271,7 +271,7 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
         uint32 entry;
         movePosition = movePath.getNextPoint(startPosition, maxDist, isTeleport, isTransport, entry);
 
-        if (isTeleport)// && !ai->IsRealPlayer())
+        if (isTeleport)// && !botAI->IsRealPlayer())
         {
             //Log bot movement
             if (sPlayerbotAIConfig.hasLog("bot_movement.csv"))
@@ -333,14 +333,14 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
 
         AI_VALUE(LastMovement&, "last movement").setPath(movePath);
 
-        if (ai->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
-            ai->TellMasterNoFacing("No point. Rebuilding.");
+        if (botAI->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
+            botAI->TellMasterNoFacing("No point. Rebuilding.");
 
         return false;
     }
 
     //Visual waypoints
-    if (ai->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
+    if (botAI->HasStrategy("debug move", BOT_STATE_NON_COMBAT))
     {
         if (!movePath.empty())
         {
@@ -388,7 +388,7 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
     if (bot->IsNonMeleeSpellCasted(true))
     {
         bot->CastStop();
-        ai->InterruptSpell();
+        botAI->InterruptSpell();
     }
 
     if (lastMove.lastMoveShort.distance(movePosition) < minDist)
@@ -397,7 +397,7 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
         bot->GetMotionMaster()->Clear();
     }
 
-    if (!detailedMove && !ai->HasPlayerNearby(&movePosition)) //Why walk if you can fly?
+    if (!detailedMove && !botAI->HasPlayerNearby(&movePosition)) //Why walk if you can fly?
     {
         time_t now = time(0);
 
@@ -408,9 +408,9 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
 
     // walk if master walks and is close
     bool masterWalking = false;
-    if (ai->GetMaster())
+    if (botAI->GetMaster())
     {
-        if (ai->GetMaster()->m_movementInfo.HasMovementFlag(MOVEFLAG_WALK_MODE) && sServerFacade.GetDistance2d(bot, ai->GetMaster()) < 20.0f)
+        if (botAI->GetMaster()->m_movementInfo.HasMovementFlag(MOVEFLAG_WALK_MODE) && sServerFacade.GetDistance2d(bot, botAI->GetMaster()) < 20.0f)
             masterWalking = true;
     }
 
@@ -549,7 +549,7 @@ void MovementAction::UpdateMovementState()
     }
 
     // Temporary speed increase in group
-    if (ai->HasRealPlayerMaster())
+    if (botAI->HasRealPlayerMaster())
         bot->SetSpeedRate(MOVE_RUN, 1.1f);
 }
 
@@ -562,13 +562,13 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
 
     if (!bot->InBattleground() && sServerFacade->IsDistanceLessOrEqualThan(sServerFacade.GetDistance2d(bot, target), sPlayerbotAIConfig.followDistance))
     {
-        //ai->TellError("No need to follow");
+        //botAI->TellError("No need to follow");
         return false;
     }
 
     if (!bot->InBattleground()
         && sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, target->GetPositionX(), target->GetPositionY()), sPlayerbotAIConfig->sightDistance)
-        && abs(bot->GetPositionZ() - target->GetPositionZ()) >= sPlayerbotAIConfig->spellDistance && ai->HasRealPlayerMaster()
+        && abs(bot->GetPositionZ() - target->GetPositionZ()) >= sPlayerbotAIConfig->spellDistance && botAI->HasRealPlayerMaster()
         && (target->GetMapId() && bot->GetMapId() != target->GetMapId()))
     {
         bot->StopMoving();
@@ -594,18 +594,18 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
         return true;
     }
 
-    if (!IsMovingAllowed(target) && ai->HasRealPlayerMaster())
+    if (!IsMovingAllowed(target) && botAI->HasRealPlayerMaster())
     {
         if ((target->GetMap() && target->GetMap()->IsBattlegroundOrArena()) || (bot->GetMap() && bot->GetMap()->IsBattlegroundOrArena()))
             return false;
 
-        if (sServerFacade.UnitIsDead(bot) && sServerFacade.IsAlive(ai->GetMaster()))
+        if (sServerFacade.UnitIsDead(bot) && sServerFacade.IsAlive(botAI->GetMaster()))
         {
             bot->ResurrectPlayer(1.0f, false);
-            ai->TellMasterNoFacing("I live, again!");
+            botAI->TellMasterNoFacing("I live, again!");
         }
         else
-            ai->TellError("I am stuck while following");
+            botAI->TellError("I am stuck while following");
 
         bot->CombatStop(true);
         botAI->TellMasterNoFacing("I will there soon.");
@@ -615,7 +615,7 @@ bool MovementAction::Follow(Unit* target, float distance, float angle)
 
     if (sServerFacade.IsDistanceLessOrEqualThan(sServerFacade.GetDistance2d(bot, target), sPlayerbotAIConfig.followDistance))
     {
-        //ai->TellError("No need to follow");
+        //botAI->TellError("No need to follow");
         return false;
     }
 
@@ -668,7 +668,7 @@ bool MovementAction::ChaseTo(WorldObject* obj)
     }
 
     bot->GetMotionMaster()->Clear();
-    bot->GetMotionMaster()->MoveChase((Unit*)obj, ai->IsRanged(bot) ? 25.0f : 1.5f);
+    bot->GetMotionMaster()->MoveChase((Unit*)obj, botAI->IsRanged(bot) ? 25.0f : 1.5f);
     return true;
 }
 
@@ -949,6 +949,6 @@ bool MoveRandomAction::Execute(Event event)
 
 bool MoveRandomAction::isUseful()
 {
-    return !ai->HasRealPlayerMaster() && ai->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest friendly players")->Get().size() > urand(25, 100);
+    return !botAI->HasRealPlayerMaster() && botAI->GetAiObjectContext()->GetValue<list<ObjectGuid> >("nearest friendly players")->Get().size() > urand(25, 100);
 }
 

@@ -100,22 +100,22 @@ bool AttackersValue::IsPossibleTarget(Unit *attacker, Player *bot)
     if (attacker && bot->GetGroup())
         rti = bot->GetGroup()->GetTargetIcon(7) == attacker->GetGUID();
 
-    PlayerbotAI* ai = bot->GetPlayerbotAI();
+    PlayerbotAI* botAI = bot->GetPlayerbotAI();
 
     bool leaderHasThreat = false;
-    if (attacker && bot->GetGroup() && ai->GetMaster())
-        leaderHasThreat = attacker->getThreatManager().getThreat(ai->GetMaster());
+    if (attacker && bot->GetGroup() && botAI->GetMaster())
+        leaderHasThreat = attacker->getThreatManager().getThreat(botAI->GetMaster());
 
     bool isMemberBotGroup = false;
-    if (bot->GetGroup() && ai->GetMaster() && ai->GetMaster()->GetPlayerbotAI() && !ai->GetMaster()->GetPlayerbotAI()->IsRealPlayer())
+    if (bot->GetGroup() && botAI->GetMaster() && botAI->GetMaster()->GetPlayerbotAI() && !botAI->GetMaster()->GetPlayerbotAI()->IsRealPlayer())
         isMemberBotGroup = true;
 
     return attacker && attacker->IsInWorld() && attacker->GetMapId() == bot->GetMapId() && !attacker->isDead() && !attacker->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) &&
         !attacker->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE) && !attacker->isInvisibleForAlive() && !attacker->HasStealthAura() && !attacker->HasInvisibilityAura() &&
-        /*!attacker->hasUnitState(UNIT_STAT_STUNNED) &&*/!((attacker->IsPolymorphed() || ai->HasAura("sap", attacker) || attacker->IsCharmed() || attacker->isFeared()) && !rti) &&
+        /*!attacker->hasUnitState(UNIT_STAT_STUNNED) &&*/!((attacker->IsPolymorphed() || botAI->HasAura("sap", attacker) || attacker->IsCharmed() || attacker->isFeared()) && !rti) &&
         /*!sServerFacade.IsInRoots(attacker) &&*/!attacker->IsFriendlyTo(bot) && bot->IsWithinDistInMap(attacker, sPlayerbotAIConfig->sightDistance) &&
         !(attacker->GetCreatureType() == CREATURE_TYPE_CRITTER) && !(sPlayerbotAIConfig->IsInPvpProhibitedZone(attacker->GetAreaId()) && (attacker->GetGUID().IsPlayer() ||
-        attacker->GetGUID().IsPet())) && (!c || (!c->IsInEvadeMode() && ((!isMemberBotGroup && ai->HasStrategy("attack tagged", BOT_STATE_NON_COMBAT)) ||
+        attacker->GetGUID().IsPet())) && (!c || (!c->IsInEvadeMode() && ((!isMemberBotGroup && botAI->HasStrategy("attack tagged", BOT_STATE_NON_COMBAT)) ||
         leaderHasThreat || !c->hasLootRecipient() || c->isTappedBy(bot))));
 }
 

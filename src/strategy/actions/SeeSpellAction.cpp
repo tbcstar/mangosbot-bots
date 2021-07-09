@@ -37,7 +37,7 @@ bool SeeSpellAction::Execute(Event event)
     p.rpos(0);
     p >> castCount >> spellId >> castFlags;
 
-    //ai->TellMaster(to_string(spellId));
+    //botAI->TellMaster(to_string(spellId));
 
     if (spellId != 30758)
         return false;
@@ -129,14 +129,14 @@ bool SeeSpellAction::Execute(Event event)
         if (flags & NAV_UNUSED4)
             out << ", unused4";
 
-        ai->TellMaster(out);
+        botAI->TellMaster(out);
         */
 
         /*
         WorldPosition pos = WorldPosition(bot->GetMapId(), x, y, z, 0);
 
         sTravelNodeMap.m_nMapMtx.lock();
-        TravelNode* node = sTravelNodeMap.getNode(&pos,NULL, 20);
+        TravelNode* node = sTravelNodeMap.getNode(&pos,nullptr, 20);
 
         if (!node)
         {
@@ -144,7 +144,7 @@ bool SeeSpellAction::Execute(Event event)
 
             if (node)
             {
-                ai->TellMaster("node added");
+                botAI->TellMaster("node added");
             }
         }
         else
@@ -152,13 +152,13 @@ bool SeeSpellAction::Execute(Event event)
             if (!node->isImportant())
             {
                 sTravelNodeMap.removeNode(node);
-                ai->TellMaster("node removed");
+                botAI->TellMaster("node removed");
             }
             else
             {
                 ostringstream out;
                 out << "node found" << node->getName();
-                ai->TellMaster(out);
+                botAI->TellMaster(out);
             }
         }
 

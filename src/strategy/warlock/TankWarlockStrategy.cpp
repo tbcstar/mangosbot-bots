@@ -27,9 +27,9 @@ class GenericWarlockStrategyActionNodeFactory : public NamedObjectFactory<Action
         static ActionNode* summon_felguard(PlayerbotAI* botAI)
         {
             return new ActionNode ("summon felguard",
-                /*P*/ NULL,
-                /*A*/ NextAction::array(0, new NextAction("summon succubus"), NULL),
-                /*C*/ NULL);
+                /*P*/ nullptr,
+                /*A*/ NextAction::array(0, new NextAction("summon succubus"), nullptr),
+                /*C*/ nullptr);
         }
 
         static ActionNode* summon_succubus(PlayerbotAI* botAI)

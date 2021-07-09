@@ -194,7 +194,7 @@ list<GuidPosition> ActiveQuestGiversValue::Calculate()
 
 			if (creatureInfo)
 			{
-				if (!ai->IsFriendlyTo(creatureInfo->Faction))
+				if (!botAI->IsFriendlyTo(creatureInfo->Faction))
 					continue;
 			}
 
@@ -248,7 +248,7 @@ list<GuidPosition> ActiveQuestTakersValue::Calculate()
 
 			if (creatureInfo)
 			{
-				if (!ai->IsFriendlyTo(creatureInfo->Faction))
+				if (!botAI->IsFriendlyTo(creatureInfo->Faction))
 					continue;
 			}
 

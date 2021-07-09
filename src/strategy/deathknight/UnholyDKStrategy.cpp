@@ -33,44 +33,44 @@ class UnholyDKStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 	    static ActionNode* death_strike(PlayerbotAI* botAI)
 	    {
 		    return new ActionNode("death strike",
-			    /*P*/ NextAction::array(0, new NextAction("unholy pressence"), NULL),
-			    /*A*/ NULL,
-			    /*C*/ NULL);
+			    /*P*/ NextAction::array(0, new NextAction("unholy pressence"), nullptr),
+			    /*A*/ nullptr,
+			    /*C*/ nullptr);
 	    }
 
 	    static ActionNode* corpse_explosion(PlayerbotAI* botAI)
 	    {
 		    return new ActionNode("corpse explosion",
-			    /*P*/ NextAction::array(0, new NextAction("unholy pressence"), NULL),
-			    /*A*/ NULL,
-			    /*C*/ NULL);
+			    /*P*/ NextAction::array(0, new NextAction("unholy pressence"), nullptr),
+			    /*A*/ nullptr,
+			    /*C*/ nullptr);
 	    }
 
 	    static ActionNode* scourge_strike(PlayerbotAI* botAI)
 	    {
 		    return new ActionNode("scourge strike",
-			    /*P*/ NextAction::array(0, new NextAction("unholy pressence"), NULL),
-			    /*A*/ NextAction::array(0, new NextAction("death strike"), NULL),
-			    /*C*/ NULL);
+			    /*P*/ NextAction::array(0, new NextAction("unholy pressence"), nullptr),
+			    /*A*/ NextAction::array(0, new NextAction("death strike"), nullptr),
+			    /*C*/ nullptr);
 	    }
 };
 
 NextAction** UnholyDKStrategy::getDefaultActions()
 {
-    return NextAction::array(0, new NextAction("melee", ACTION_NORMAL), new NextAction("scourge strike" , ACTION_NORMAL + 3), NULL);
+    return NextAction::array(0, new NextAction("melee", ACTION_NORMAL), new NextAction("scourge strike" , ACTION_NORMAL + 3), nullptr);
 }
 
 void UnholyDKStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericDKStrategy::InitTriggers(triggers);
 
-	triggers.push_back(new TriggerNode("often", NextAction::array(0, new NextAction("ghoul frenzy", ACTION_NORMAL + 2), NULL)));
-	triggers.push_back(new TriggerNode("critical health", NextAction::array(0, new NextAction("death pact", ACTION_EMERGENCY + 1), NULL)));
+	triggers.push_back(new TriggerNode("often", NextAction::array(0, new NextAction("ghoul frenzy", ACTION_NORMAL + 2), nullptr)));
+	triggers.push_back(new TriggerNode("critical health", NextAction::array(0, new NextAction("death pact", ACTION_EMERGENCY + 1), nullptr)));
 }
 
 void UnholyDKAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
-	triggers.push_back(new TriggerNode("loot avbotAIlable", NextAction::array(0, new NextAction("corpse explosion", ACTION_NORMAL + 1), NULL)));
+	triggers.push_back(new TriggerNode("loot avbotAIlable", NextAction::array(0, new NextAction("corpse explosion", ACTION_NORMAL + 1), nullptr)));
     triggers.push_back(new TriggerNode("medium aoe", NextAction::array(0, new NextAction("death and decay", ACTION_NORMAL + 3),
-        new NextAction("corpse explosion", ACTION_NORMAL + 3), NULL)));
+        new NextAction("corpse explosion", ACTION_NORMAL + 3), nullptr)));
 }

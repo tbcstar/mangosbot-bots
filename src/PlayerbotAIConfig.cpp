@@ -42,18 +42,18 @@ void LoadListString(std::string const& value, T& list)
 
 bool PlayerbotAIConfig::Initialize()
 {
-    sLog->outString("Initializing AI Playerbot by ike3, based on the original Playerbot by blueboy");
+    LOG_INFO("playerbots", "Initializing AI Playerbot by ike3, based on the original Playerbot by blueboy");
 
     if (!sConfigMgr->SetSource(SYSCONFDIR"aiplayerbot.conf"))
     {
-        sLog->outString("AI Playerbot is Disabled. Unable to open configuration file aiplayerbot.conf");
+        LOG_INFO("playerbots", "AI Playerbot is Disabled. Unable to open configuration file aiplayerbot.conf");
         return false;
     }
 
     enabled = sConfigMgr->GetBoolDefault("AiPlayerbot.Enabled", true);
     if (!enabled)
     {
-        sLog->outString("AI Playerbot is Disabled in aiplayerbot.conf");
+        LOG_INFO("playerbots", "AI Playerbot is Disabled in aiplayerbot.conf");
         return false;
     }
 
@@ -155,10 +155,10 @@ bool PlayerbotAIConfig::Initialize()
     commandServerPort = sConfigMgr->GetIntDefault("AiPlayerbot.CommandServerPort", 0);
     perfMonEnabled = sConfigMgr->GetBoolDefault("AiPlayerbot.PerfMonEnabled", false);
 
-    sLog->outString("---------------------------------------");
-    sLog->outString("          Loading TalentSpecs          ");
-    sLog->outString("---------------------------------------");
-    sLog->outString();
+    LOG_INFO("playerbots", "---------------------------------------");
+    LOG_INFO("playerbots", "          Loading TalentSpecs          ");
+    LOG_INFO("playerbots", "---------------------------------------");
+    LOG_INFO("playerbots", );
 
     for (uint32 cls = 1; cls < MAX_CLASSES; ++cls)
     {
@@ -194,8 +194,8 @@ bool PlayerbotAIConfig::Initialize()
                         //Ignore bad specs.
                         if (!classSpecs[cls].baseSpec.CheckTalentLink(specLink, &out))
                         {
-                            sLog->outErrorDb("Error with premade spec link: %s", specLink.c_str());
-                            sLog->outErrorDb("%s", out.str().c_str());
+                            LOG_ERROR("playerbots", "Error with premade spec link: %s", specLink.c_str());
+                            LOG_ERROR("playerbots", "%s", out.str().c_str());
                             continue;
                         }
 
@@ -203,8 +203,8 @@ bool PlayerbotAIConfig::Initialize()
 
                         if (!linkSpec.CheckTalents(level, &out))
                         {
-                            sLog->outErrorDb("Error with premade spec: %s", specLink.c_str());
-                            sLog->outErrorDb("%s", out.str().c_str());
+                            LOG_ERROR("playerbots", "Error with premade spec: %s", specLink.c_str());
+                            LOG_ERROR("playerbots", "%s", out.str().c_str());
                             continue;
                         }
 
@@ -298,17 +298,17 @@ bool PlayerbotAIConfig::Initialize()
 
     if (!sPlayerbotAIConfig.autoDoQuests)
     {
-        sLog->outString("Loading Quest Detail Data...");
+        LOG_INFO("playerbots", "Loading Quest Detail Data...");
         sTravelMgr->LoadQuestTravelTable();
     }
 
     if (sPlayerbotAIConfig.randomBotJoinBG)
         sRandomPlayerbotMgr.LoadBattleMastersCache();
 
-    sLog->outString("---------------------------------------");
-    sLog->outString("        AI Playerbot initialized       ");
-    sLog->outString("---------------------------------------");
-    sLog->outString();
+    LOG_INFO("playerbots", "---------------------------------------");
+    LOG_INFO("playerbots", "        AI Playerbot initialized       ");
+    LOG_INFO("playerbots", "---------------------------------------");
+    LOG_INFO("playerbots", );
 
     return true;
 }

@@ -622,7 +622,7 @@ bool TravelPath::makeShortCut(WorldPosition startPos, float maxDist)
         return true;
     }
 
-    std::vector<WorldPosition> toPath = startPos.getPathTo(beginPos, NULL);
+    std::vector<WorldPosition> toPath = startPos.getPathTo(beginPos, nullptr);
 
     //We can not reach the new begin position. Follow the complete path.
     if (!beginPos.isPathTo(toPath))
@@ -785,10 +785,10 @@ TravelPath TravelNodeRoute::buildPath(std::vector<WorldPosition> pathToStart, st
             if (!nodePath || !nodePath->getComplete()) //Build the path to the next node if it doesn't exist.
             {
                 if (!prevNode->isTransport())
-                    nodePath = prevNode->buildPath(node, NULL);
+                    nodePath = prevNode->buildPath(node, nullptr);
                 else //For transports we have no proper path since the node is in air/water. Instead we build a reverse path and follow that.
                 {
-                    node->buildPath(prevNode, NULL); //Reverse build to get proper path.
+                    node->buildPath(prevNode, nullptr); //Reverse build to get proper path.
                     nodePath = prevNode->getPathTo(node);
                 }
             }
@@ -797,7 +797,7 @@ TravelPath TravelNodeRoute::buildPath(std::vector<WorldPosition> pathToStart, st
 
             if (!nodePath || !nodePath->getComplete()) //It looks like we can't properly path to our node. Make a temporary reverse path and see if that works instead.
             {
-                returnNodePath = *node->buildPath(prevNode, NULL); //Build reverse path and save it to a temporary variable.
+                returnNodePath = *node->buildPath(prevNode, nullptr); //Build reverse path and save it to a temporary variable.
                 std::vector<WorldPosition> path = returnNodePath.getPath();
                 std::reverse(path.begin(), path.end()); //Reverse the path
                 returnNodePath.setPath(path);
@@ -931,7 +931,7 @@ TravelNode* TravelNodeMap::addNode(WorldPosition* pos, std::string const& prefer
 
 void TravelNodeMap::removeNode(TravelNode* node)
 {
-    node->removeLinkTo(NULL, true);
+    node->removeLinkTo(nullptr, true);
 
     for (auto& tnode : m_nodes)
     {
@@ -988,7 +988,7 @@ TravelNode* TravelNodeMap::getNode(WorldPosition* pos, std::vector<WorldPosition
     float z = pos->getZ();
 
     if (bot && !bot->GetMap())
-        return NULL;
+        return nullptr;
 
     uint32 c = 0;
 
@@ -1004,7 +1004,7 @@ TravelNode* TravelNodeMap::getNode(WorldPosition* pos, std::vector<WorldPosition
             break;
     }
 
-    return NULL;
+    return nullptr;
 }
 
 TravelNodeRoute TravelNodeMap::getRoute(TravelNode* start, TravelNode* goal, Unit* bot)
@@ -1136,7 +1136,7 @@ TravelNodeRoute TravelNodeMap::getRoute(WorldPosition* startPos, WorldPosition* 
         if (!route.isEmpty())
         {
             //Check if the bot can actually walk to this start position.
-            startPath = startPos->getPathTo(*startNode->getPosition(), NULL);
+            startPath = startPos->getPathTo(*startNode->getPosition(), nullptr);
 
             if (startNode->getPosition()->isPathTo(startPath, startNode->isTransport() ? 20.0f: sPlayerbotAIConfig->targetPosRecalcDistance))
                 return route;
@@ -1191,7 +1191,7 @@ TravelNode* TravelNodeMap::addZoneLinkNode(TravelNode* startNode)
             std::string const& newZoneName = pos.getAreaName(true, true);
             if (zoneName != newZoneName)
             {
-                if (!getNode(&pos, NULL, 100.0f))
+                if (!getNode(&pos, nullptr, 100.0f))
                 {
                     std::string const& nodeName = zoneName + " to " + newZoneName;
                     return sTravelNodeMap->addNode(&pos, nodeName, false, true);
@@ -1203,7 +1203,7 @@ TravelNode* TravelNodeMap::addZoneLinkNode(TravelNode* startNode)
         }
     }
 
-    return NULL;
+    return nullptr;
 }
 
 TravelNode* TravelNodeMap::addRandomExtNode(TravelNode* startNode)
@@ -1211,7 +1211,7 @@ TravelNode* TravelNodeMap::addRandomExtNode(TravelNode* startNode)
     std::unordered_map<TravelNode*, TravelNodePath> paths = *startNode->getPaths();
 
     if (paths.empty())
-        return NULL;
+        return nullptr;
 
     for (uint32 i = 0; i < 20; i++)
     {
@@ -1233,11 +1233,11 @@ TravelNode* TravelNodeMap::addRandomExtNode(TravelNode* startNode)
 
         WorldPosition point = path[urand(0, path.size() - 1)];
 
-        if (!getNode(&point, NULL, 100.0f))
+        if (!getNode(&point, nullptr, 100.0f))
             return sTravelNodeMap->addNode(&point, startNode->getName(), false, true);
     }
 
-    return NULL;
+    return nullptr;
 }
 
 void TravelNodeMap::manageNodes(Unit* bot, bool mapFull)
@@ -1268,7 +1268,7 @@ void TravelNodeMap::manageNodes(Unit* bot, bool mapFull)
                 uint32 j = urand(0, rnodes.size() - 1);
 
                 startNode = rnodes[j];
-                newNode = NULL;
+                newNode = nullptr;
 
                 bool nodeDone = false;
 

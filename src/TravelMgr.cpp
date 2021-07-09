@@ -422,7 +422,7 @@ AreaTableEntry const* WorldPosition::getArea()
 {
     uint16 areaId = getAreaId();
     if (!areaId)
-        return NULL;
+        return nullptr;
 
     return sAreaTableStore.LookupEntry(areaId);
 }
@@ -558,15 +558,15 @@ void WorldPosition::loadMapAndVMap(uint32 mapId, uint8 x, uint8 y)
         switch (vmapLoadResult)
         {
             case VMAP::VMAP_LOAD_RESULT_OK:
-                //sLog.outError("VMAP loaded name:%s, id:%d, x:%d, y:%d (vmap rep.: x:%d, y:%d)", mapName, mapId, x, y, x, y);
+                //LOG_ERROR("playerbots", "VMAP loaded name:%s, id:%d, x:%d, y:%d (vmap rep.: x:%d, y:%d)", mapName, mapId, x, y, x, y);
                 break;
             case VMAP::VMAP_LOAD_RESULT_ERROR:
-                //sLog.outError("Could not load VMAP name:%s, id:%d, x:%d, y:%d (vmap rep.: x:%d, y:%d)", mapName, mapId, x, y, x, y);
+                //LOG_ERROR("playerbots", "Could not load VMAP name:%s, id:%d, x:%d, y:%d (vmap rep.: x:%d, y:%d)", mapName, mapId, x, y, x, y);
                 sTravelMgr->addBadVmap(mapId, x, y);
                 break;
             case VMAP::VMAP_LOAD_RESULT_IGNORED:
                 sTravelMgr->addBadVmap(mapId, x, y);
-                //sLog.outError("Ignored VMAP name:%s, id:%d, x:%d, y:%d (vmap rep.: x:%d, y:%d)", mapName, mapId, x, y, x, y);
+                //LOG_ERROR("playerbots", "Ignored VMAP name:%s, id:%d, x:%d, y:%d (vmap rep.: x:%d, y:%d)", mapName, mapId, x, y, x, y);
                 break;
         }
 
@@ -1331,8 +1331,8 @@ void TravelMgr::logQuestError(uint32 errorNr, Quest* quest, uint32 objective, ui
         return;
 
     std::string unitName = "<unknown>";
-    CreatureTemplate const* cInfo = NULL;
-    GameObjectTemplate const* gInfo = NULL;
+    CreatureTemplate const* cInfo = nullptr;
+    GameObjectTemplate const* gInfo = nullptr;
 
     if (unitId > 0)
         cInfo = sObjectMgr->GetCreatureTemplate(unitId);
@@ -1348,39 +1348,39 @@ void TravelMgr::logQuestError(uint32 errorNr, Quest* quest, uint32 objective, ui
 
     if (errorNr == 1)
     {
-        sLog->outString("Quest %s [%d] has %s %s [%d] but none is found in the world.",
+        LOG_INFO("playerbots", "Quest %s [%d] has %s %s [%d] but none is found in the world.",
             quest->GetTitle().c_str(), quest->GetQuestId(), objective == 0 ? "quest giver" : "quest taker", unitName.c_str(), unitId);
     }
     else if (errorNr == 2)
     {
-        sLog->outErrorDb("Quest %s [%d] needs %s [%d] for objective %d but none is found in the world.",
+        LOG_ERROR("playerbots", "Quest %s [%d] needs %s [%d] for objective %d but none is found in the world.",
             quest->GetTitle().c_str(), quest->GetQuestId(), unitName.c_str(), unitId, objective);
     }
     else if (errorNr == 3)
     {
-        sLog->outErrorDb("Quest %s [%d] needs itemId %d but no such item exists.", quest->GetTitle().c_str(), quest->GetQuestId(), itemId);
+        LOG_ERROR("playerbots", "Quest %s [%d] needs itemId %d but no such item exists.", quest->GetTitle().c_str(), quest->GetQuestId(), itemId);
     }
     else if (errorNr == 4)
     {
-        sLog->outString("Quest %s [%d] needs %s [%d] for loot of item %s [%d] for objective %d but none is found in the world.",
-            quest->GetTitle().c_str(), quest->GetQuestId(), unitName.c_str(), unitId, proto->Name1, itemId, objective);
+        LOG_INFO("playerbots", "Quest %s [%d] needs %s [%d] for loot of item %s [%d] for objective %d but none is found in the world.",
+            quest->GetTitle().c_str(), quest->GetQuestId(), unitName.c_str(), unitId, proto->Name1.c_str(), itemId, objective);
     }
     else if (errorNr == 5)
     {
-        sLog->outString("Quest %s [%d] needs item %s [%d] for objective %d but none is found in the world.",
-            quest->GetTitle().c_str(), quest->GetQuestId(), proto->Name1, itemId, objective);
+        LOG_INFO("playerbots", "Quest %s [%d] needs item %s [%d] for objective %d but none is found in the world.",
+            quest->GetTitle().c_str(), quest->GetQuestId(), proto->Name1.c_str(), itemId, objective);
     }
     else if (errorNr == 6)
     {
-        sLog->outErrorDb("Quest %s [%d] has no quest giver.", quest->GetTitle().c_str(), quest->GetQuestId());
+        LOG_ERROR("playerbots", "Quest %s [%d] has no quest giver.", quest->GetTitle().c_str(), quest->GetQuestId());
     }
     else if (errorNr == 7)
     {
-        sLog->outErrorDb("Quest %s [%d] has no quest taker.", quest->GetTitle().c_str(), quest->GetQuestId());
+        LOG_ERROR("playerbots", "Quest %s [%d] has no quest taker.", quest->GetTitle().c_str(), quest->GetQuestId());
     }
     else if (errorNr == 8)
     {
-        sLog->outErrorDb("Quest %s [%d] has no quest viable quest objective.", quest->GetTitle().c_str(), quest->GetQuestId());
+        LOG_ERROR("playerbots", "Quest %s [%d] has no quest viable quest objective.", quest->GetTitle().c_str(), quest->GetQuestId());
     }
 }
 
@@ -1397,15 +1397,15 @@ void TravelMgr::LoadQuestTravelTable()
 
     for (auto cQuest : cQuestMap)
     {
-        sLog.outErrorDb("[Quest id: %d]", cQuest.first);
+        LOG_ERROR("playerbots", "[Quest id: %d]", cQuest.first);
 
         for (auto cObj : cQuest.second)
         {
-            sLog.outErrorDb(" [Objective type: %d]", cObj.first);
+            LOG_ERROR("playerbots", " [Objective type: %d]", cObj.first);
 
             for (auto cCre : cObj.second)
             {
-                sLog.outErrorDb(" %s %d", cCre.GetTypeName(), cCre.GetEntry());
+                LOG_ERROR("playerbots", " %s %d", cCre.GetTypeName().c_str(), cCre.GetEntry());
             }
         }
     }
@@ -1474,12 +1474,12 @@ void TravelMgr::LoadQuestTravelTable()
 
         } while (result->NextRow());
 
-        sLog->outString(">> Loaded %zu units locations.", units.size());
+        LOG_INFO("playerbots", ">> Loaded %zu units locations.", units.size());
     }
     else
     {
-        sLog->outString();
-        sLog->outErrorDb(">> Error loading units locations.");
+        LOG_INFO("playerbots", );
+        LOG_ERROR("playerbots", ">> Error loading units locations.");
     }
 
     query = "SELECT 0, 0, id, quest FROM creature_queststarter UNION ALL SELECT 0, 1, id, quest FROM creature_questender UNION ALL SELECT 1, 0, id, quest FROM gameobject_queststarter UNION ALL SELECT 1, 1, id, quest FROM gameobject_questender";
@@ -1500,12 +1500,12 @@ void TravelMgr::LoadQuestTravelTable()
 
         } while (result->NextRow());
 
-        sLog->outString(">> Loaded %zu relations.", relations.size());
+        LOG_INFO("playerbots", ">> Loaded %zu relations.", relations.size());
     }
     else
     {
-        sLog->outString();
-        sLog->outErrorDb(">> Error loading relations.");
+        LOG_INFO("playerbots", );
+        LOG_ERROR("playerbots", ">> Error loading relations.");
     }
 
     query = "SELECT 0, ct.entry, item FROM creature_template ct JOIN creature_loot_template clt ON (ct.lootid = clt.entry) UNION ALL SELECT 0, entry, item FROM npc_vendor UNION ALL SELECT 1, gt.entry, item FROM gameobject_template gt JOIN gameobject_loot_template glt ON (gt.TYPE = 3 AND gt.DATA1 = glt.entry)";
@@ -1525,12 +1525,12 @@ void TravelMgr::LoadQuestTravelTable()
 
         } while (result->NextRow());
 
-        sLog->outString(">> Loaded %zu loot lists.", loots.size());
+        LOG_INFO("playerbots", ">> Loaded %zu loot lists.", loots.size());
     }
     else
     {
-        sLog->outString();
-        sLog->outErrorDb(">> Error loading loot lists.");
+        LOG_INFO("playerbots", );
+        LOG_ERROR("playerbots", ">> Error loading loot lists.");
     }
 
     bool loadQuestData = true;
@@ -1698,7 +1698,7 @@ void TravelMgr::LoadQuestTravelTable()
             }
         }
 
-        sLog->outString(">> Loaded %zu quest details.", questIds.size());
+        LOG_INFO("playerbots", ">> Loaded %zu quest details.", questIds.size());
     }
 
     WorldPosition point;
@@ -1815,7 +1815,7 @@ void TravelMgr::LoadQuestTravelTable()
 
     if (reloadNavigationPoints)
     {
-        sLog->outString("Loading navigation points");
+        LOG_INFO("playerbots", "Loading navigation points");
 
         //Npc nodes
 
@@ -1955,11 +1955,11 @@ void TravelMgr::LoadQuestTravelTable()
             else
                 nodeName = inPos.getAreaName(false) + " portal";
 
-            TravelNode* entryNode = sTravelNodeMap->getNode(&outPos, NULL, 20.0f); //Entry side, portal exit.
+            TravelNode* entryNode = sTravelNodeMap->getNode(&outPos, nullptr, 20.0f); //Entry side, portal exit.
 
             TravelNode* outNode = sTravelNodeMap->addNode(&outPos, nodeName, true, true); //Exit size, portal exit.
 
-            TravelNode* inNode = sTravelNodeMap->getNode(&inPos, NULL, 5.0f); //Entry side, portal center.
+            TravelNode* inNode = sTravelNodeMap->getNode(&inPos, nullptr, 5.0f); //Entry side, portal center.
 
             //Portal link from area trigger to area trigger destination.
             if (outNode && inNode)
@@ -2139,7 +2139,7 @@ void TravelMgr::LoadQuestTravelTable()
 
                             if (p->delay > 0)
                             {
-                                TravelNode* node = sTravelNodeMap->getNode(&pos, NULL, 5.0f);
+                                TravelNode* node = sTravelNodeMap->getNode(&pos, nullptr, 5.0f);
                                 if (node != prevNode)
                                 {
                                     TravelNodePath travelPath(ppath, 0.1f, false, 0, true, moveSpeed);
@@ -2171,7 +2171,7 @@ void TravelMgr::LoadQuestTravelTable()
             TravelNode* node = sTravelNodeMap->addNode(&pos, pos.getAreaName(), true, true, false);
         }
 
-        sLog->outString(">> Loaded %zu navigation points.", sTravelNodeMap->getNodes().size());
+        LOG_INFO("playerbots", ">> Loaded %zu navigation points.", sTravelNodeMap->getNodes().size());
     }
 
     TravelNodeStore::loadUserNodes();
@@ -2235,7 +2235,7 @@ void TravelMgr::LoadQuestTravelTable()
                 //if (preloadUnlinkedPaths && !startNode->hasLinkTo(endNode) && startNode->isUselessLink(endNode))
                 //    continue;
 
-                startNode->buildPath(endNode, NULL, false);
+                startNode->buildPath(endNode, nullptr, false);
 
                 if (startNode->hasLinkTo(endNode) && !startNode->getPathTo(endNode)->getComplete())
                     startNode->removeLinkTo(endNode);
@@ -2258,7 +2258,7 @@ void TravelMgr::LoadQuestTravelTable()
             sTravelNodeMap->printMap();
         }
 
-        sLog->outString(">> Loaded paths for %zu nodes.", sTravelNodeMap->getNodes().size());
+        LOG_INFO("playerbots", ">> Loaded paths for %zu nodes.", sTravelNodeMap->getNodes().size());
     }
 
     bool removeLowLinkNodes = false || fullNavPointReload;
@@ -2286,7 +2286,7 @@ void TravelMgr::LoadQuestTravelTable()
         for (auto& node : remNodes)
             sTravelNodeMap->removeNode(node);
 
-        sLog->outString(">> Checked %zu nodes.", sTravelNodeMap->getNodes().size());
+        LOG_INFO("playerbots", ">> Checked %zu nodes.", sTravelNodeMap->getNodes().size());
     }
 
     bool cleanUpNodeLinks = false || fullNavPointReload || storeNavPointReload;
@@ -2311,7 +2311,7 @@ void TravelMgr::LoadQuestTravelTable()
              }
         }
 
-        sLog->outString(">> Cleaned paths for %zu nodes.", sTravelNodeMap->getNodes().size());
+        LOG_INFO("playerbots", ">> Cleaned paths for %zu nodes.", sTravelNodeMap->getNodes().size());
     }
 
     bool reCalculateCost = false || fullNavPointReload || storeNavPointReload;
@@ -2335,7 +2335,7 @@ void TravelMgr::LoadQuestTravelTable()
             }
         }
 
-        sLog->outString(">> Calculated pathcost for %zu nodes.", sTravelNodeMap->getNodes().size());
+        LOG_INFO("playerbots", ">> Calculated pathcost for %zu nodes.", sTravelNodeMap->getNodes().size());
     }
 
     sTravelNodeMap->printMap();
@@ -2511,7 +2511,7 @@ void TravelMgr::LoadQuestTravelTable()
             Field* fields = results->Fetch();
             uint32 accountId = fields[0].GetUInt32();
 
-            WorldSession* session = new WorldSession(accountId, NULL, SEC_PLAYER, EXPANSION_WRATH_OF_THE_LICH_KING, time_t(0), LOCALE_enUS, 0, false, false, 0);
+            WorldSession* session = new WorldSession(accountId, nullptr, SEC_PLAYER, EXPANSION_WRATH_OF_THE_LICH_KING, time_t(0), LOCALE_enUS, 0, false, false, 0);
 
             std::vector<std::pair<std::pair<uint32, uint32>, uint32>> classSpecLevel;
 
@@ -2555,26 +2555,26 @@ void TravelMgr::LoadQuestTravelTable()
                                     std::ostringstream tout;
                                     newSpec.ApplyTalents(player, &tout);
 
-                                    PlayerbotAI* ai = new PlayerbotAI(player);
+                                    PlayerbotAI* botAI = new PlayerbotAI(player);
 
-                                    ai->ResetStrategies(false);
+                                    botAI->ResetStrategies(false);
 
-                                    AiObjectContext* con = ai->GetAiObjectContext();
+                                    AiObjectContext* con = botAI->GetAiObjectContext();
 
                                     std::vector<std::string> tstrats;
                                     std::set<std::string> strategies;
                                     std::set<std::string> sstrats;
 
-                                    tstrats = ai->GetStrategies(BOT_STATE_COMBAT);
+                                    tstrats = botAI->GetStrategies(BOT_STATE_COMBAT);
                                     sstrats = con->GetSupportedStrategies();
                                     if (!sstrats.empty())
                                         strategies.insert(tstrats.begin(), tstrats.end());
 
-                                    tstrats = ai->GetStrategies(BOT_STATE_NON_COMBAT);
+                                    tstrats = botAI->GetStrategies(BOT_STATE_NON_COMBAT);
                                     if (!tstrats.empty())
                                         strategies.insert(tstrats.begin(), tstrats.end());
 
-                                    tstrats = ai->GetStrategies(BOT_STATE_DEAD);
+                                    tstrats = botAI->GetStrategies(BOT_STATE_DEAD);
                                     if (!tstrats.empty())
                                         strategies.insert(tstrats.begin(), tstrats.end());
 
@@ -2637,7 +2637,7 @@ void TravelMgr::LoadQuestTravelTable()
                                         }
                                     }
 
-                                    delete ai;
+                                    delete botAI;
                                 }
                             }
                         }

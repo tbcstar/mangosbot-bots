@@ -214,8 +214,8 @@ class DruidAiObjectContextInternal : public NamedObjectContext<Action>
         static Action* dire_bear_form(PlayerbotAI* botAI) { return new CastDireBearFormAction(botAI); }
         static Action* cat_form(PlayerbotAI* botAI) { return new CastCatFormAction(botAI); }
         static Action* tree_form(PlayerbotAI* botAI) { return new CastTreeFormAction(botAI); }
-        static Action* travel_form(PlayerbotAI* ai) { return new CastTravelFormAction(ai); }
-        static Action* aquatic_form(PlayerbotAI* ai) { return new CastAquaticFormAction(ai); }
+        static Action* travel_form(PlayerbotAI* botAI) { return new CastTravelFormAction(botAI); }
+        static Action* aquatic_form(PlayerbotAI* botAI) { return new CastAquaticFormAction(botAI); }
         static Action* caster_form(PlayerbotAI* botAI) { return new CastCasterFormAction(botAI); }
         static Action* mangle_bear(PlayerbotAI* botAI) { return new CastMangleBearAction(botAI); }
         static Action* maul(PlayerbotAI* botAI) { return new CastMaulAction(botAI); }

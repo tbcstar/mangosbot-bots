@@ -609,7 +609,7 @@ void Engine::LogAction(char const* format, ...)
         if (sPlayerbotAIConfig->logInGroupOnly && !bot->GetGroup())
             return;
 
-        sLog->outDetail( "%s %s", bot->GetName(), buf);
+        LOG_INFO("playerbots",  "%s %s", bot->GetName().c_str(), buf);
     }
 }
 
@@ -647,5 +647,5 @@ void Engine::LogValues()
         return;
 
     std::string const& text = botAI->GetAiObjectContext()->FormatValues();
-    sLog->outDebug( "Values for %s: %s", bot->GetName(), text.c_str());
+    LOG_DEBUG("playerbots",  "Values for %s: %s", bot->GetName().c_str(), text.c_str());
 }

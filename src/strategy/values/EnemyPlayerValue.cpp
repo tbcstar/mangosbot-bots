@@ -37,7 +37,7 @@ Unit* EnemyPlayerValue::Calculate()
 bool NearestEnemyPlayersValue::AcceptUnit(Unit* unit)
 {
     Player* enemy = dynamic_cast<Player*>(unit);
-    if (enemy && ai->IsOpposing(enemy) && enemy->IsPvP() && !sPlayerbotAIConfig.IsInPvpProhibitedZone(enemy->GetAreaId()) &&
+    if (enemy && botAI->IsOpposing(enemy) && enemy->IsPvP() && !sPlayerbotAIConfig.IsInPvpProhibitedZone(enemy->GetAreaId()) &&
         !enemy->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && /*!enemy->HasStealthAura() && !enemy->HasInvisibilityAura()*/ enemy->IsVisibleForOrDetect(bot, enemy, false) &&
         !(enemy->HasAuraType(SPELL_AURA_SPIRIT_OF_REDEMPTION)))
         return true;
@@ -90,7 +90,7 @@ Unit* EnemyPlayerValue::Calculate()
     float const maxAggroDistance = GetMaxAttackDistance();
     for (const auto& gTarget : players)
     {
-        Unit* pUnit = ai->GetUnit(gTarget);
+        Unit* pUnit = botAI->GetUnit(gTarget);
         if (!pUnit)
             continue;
 

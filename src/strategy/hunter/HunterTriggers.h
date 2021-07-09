@@ -97,7 +97,7 @@ class ScareBeastTrigger : public HasCcTargetTrigger
 class HunterLowAmmoTrigger : public AmmoCountTrigger
 {
     public:
-        HunterLowAmmoTrigger(PlayerbotAI* ai) : AmmoCountTrigger(ai, "ammo", 1, 30) { }
+        HunterLowAmmoTrigger(PlayerbotAI* botAI) : AmmoCountTrigger(botAI, "ammo", 1, 30) { }
 
         bool IsActive() override;
 };
@@ -105,13 +105,13 @@ class HunterLowAmmoTrigger : public AmmoCountTrigger
 class HunterNoAmmoTrigger : public AmmoCountTrigger
 {
     public:
-        HunterNoAmmoTrigger(PlayerbotAI* ai) : AmmoCountTrigger(ai, "ammo", 1, 10) { }
+        HunterNoAmmoTrigger(PlayerbotAI* botAI) : AmmoCountTrigger(botAI, "ammo", 1, 10) { }
 };
 
 class HunterHasAmmoTrigger : public AmmoCountTrigger
 {
     public:
-        HunterHasAmmoTrigger(PlayerbotAI* ai) : AmmoCountTrigger(ai, "ammo", 1, 10) { }
+        HunterHasAmmoTrigger(PlayerbotAI* botAI) : AmmoCountTrigger(botAI, "ammo", 1, 10) { }
 
         bool IsActive() override;
 };
@@ -119,7 +119,7 @@ class HunterHasAmmoTrigger : public AmmoCountTrigger
 class SwitchToRangedTrigger : public Trigger
 {
     public:
-        SwitchToRangedTrigger(PlayerbotAI* ai) : Trigger(ai, "switch to ranged", 1) { }
+        SwitchToRangedTrigger(PlayerbotAI* botAI) : Trigger(botAI, "switch to ranged", 1) { }
 
         bool IsActive() override;
 };
@@ -127,7 +127,7 @@ class SwitchToRangedTrigger : public Trigger
 class SwitchToMeleeTrigger : public Trigger
 {
     public:
-        SwitchToMeleeTrigger(PlayerbotAI* ai) : Trigger(ai, "switch to melee", 1) { }
+        SwitchToMeleeTrigger(PlayerbotAI* botAI) : Trigger(botAI, "switch to melee", 1) { }
 
         bool IsActive() override;
 };

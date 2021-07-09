@@ -15,7 +15,7 @@ bool PassLeadershipToMasterAction::Execute(Event event)
             p << master->GetGUID();
             bot->GetSession()->HandleGroupSetLeaderOpcode(p);
 
-            ai->TellMasterNoFacing("Passing leader to you!");
+            botAI->TellMasterNoFacing("Passing leader to you!");
 
             return true;
         }

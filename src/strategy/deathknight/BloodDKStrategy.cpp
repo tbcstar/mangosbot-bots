@@ -36,25 +36,25 @@ class BloodDKStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 	    static ActionNode* rune_strike(PlayerbotAI* botAI)
 	    {
 		    return new ActionNode("rune strike",
-			    /*P*/ NextAction::array(0, new NextAction("frost presence"), NULL),
-			    /*A*/ NextAction::array(0, new NextAction("death coil"), NULL),
-			    /*C*/ NULL);
+			    /*P*/ NextAction::array(0, new NextAction("frost presence"), nullptr),
+			    /*A*/ NextAction::array(0, new NextAction("death coil"), nullptr),
+			    /*C*/ nullptr);
 	    }
 
 	    static ActionNode* heart_strike(PlayerbotAI* botAI)
         {
             return new ActionNode ("heart strike",
-                /*P*/ NextAction::array(0, new NextAction("frost presence"), NULL),
-                /*A*/ NextAction::array(0, new NextAction("death strike"), NULL),
-                /*C*/ NULL);
+                /*P*/ NextAction::array(0, new NextAction("frost presence"), nullptr),
+                /*A*/ NextAction::array(0, new NextAction("death strike"), nullptr),
+                /*C*/ nullptr);
 	    }
 
 	    static ActionNode* death_strike(PlayerbotAI* botAI)
 	    {
 		    return new ActionNode("death strike",
-			    /*P*/ NextAction::array(0, new NextAction("frost presence"), NULL),
-			    /*A*/ NULL,
-			    /*C*/ NULL);
+			    /*P*/ NextAction::array(0, new NextAction("frost presence"), nullptr),
+			    /*A*/ nullptr,
+			    /*C*/ nullptr);
 	    }
 };
 
@@ -66,16 +66,16 @@ BloodDKStrategy::BloodDKStrategy(PlayerbotAI* botAI) : GenericDKStrategy(botAI)
 NextAction** BloodDKStrategy::getDefaultActions()
 {
 	return NextAction::array(0, new NextAction("melee", ACTION_NORMAL + 2), new NextAction("heart strike", ACTION_NORMAL + 5),
-        new NextAction("death strike", ACTION_NORMAL + 4), new NextAction("rune strike", ACTION_NORMAL + 3), NULL);
+        new NextAction("death strike", ACTION_NORMAL + 4), new NextAction("rune strike", ACTION_NORMAL + 3), nullptr);
 }
 
 void BloodDKStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     GenericDKStrategy::InitTriggers(triggers);
 
-    triggers.push_back(new TriggerNode("rune strike", NextAction::array(0, new NextAction("rune strike", ACTION_NORMAL + 3), NULL)));
-    triggers.push_back(new TriggerNode("blood tap", NextAction::array(0, new NextAction("blood tap", ACTION_HIGH + 5), NULL)));
-    triggers.push_back(new TriggerNode("lose aggro", NextAction::array(0, new NextAction("dark command", ACTION_HIGH + 3), NULL)));
+    triggers.push_back(new TriggerNode("rune strike", NextAction::array(0, new NextAction("rune strike", ACTION_NORMAL + 3), nullptr)));
+    triggers.push_back(new TriggerNode("blood tap", NextAction::array(0, new NextAction("blood tap", ACTION_HIGH + 5), nullptr)));
+    triggers.push_back(new TriggerNode("lose aggro", NextAction::array(0, new NextAction("dark command", ACTION_HIGH + 3), nullptr)));
     triggers.push_back(new TriggerNode("low health", NextAction::array(0, new NextAction("blood tap", ACTION_HIGH + 5),
-        new NextAction("vampiric blood", ACTION_HIGH + 3), new NextAction("death strike", ACTION_HIGH + 4), NULL)));
+        new NextAction("vampiric blood", ACTION_HIGH + 3), new NextAction("death strike", ACTION_HIGH + 4), nullptr)));
 }

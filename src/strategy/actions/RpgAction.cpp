@@ -49,7 +49,7 @@ bool RpgAction::Execute(Event event)
         bot->SetShapeshiftForm(FORM_NONE);
 
     //Random taxi action.
-    if (unit && unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_FLIGHTMASTER) && !ai->HasRealPlayerMaster())
+    if (unit && unit->HasFlag(UNIT_NPC_FLAGS, UNIT_NPC_FLAG_FLIGHTMASTER) && !botAI->HasRealPlayerMaster())
     {
         WorldPacket emptyPacket;
         bot->GetSession()->HandleCancelMountAuraOpcode(emptyPacket);
@@ -215,7 +215,7 @@ void RpgAction::taxi(ObjectGuid guid)
 
     if (nodes.empty())
     {
-        sLog->outError("Bot %s - No flight paths available", bot->GetName());
+        LOG_ERROR("playerbots", "Bot %s - No flight paths available", bot->GetName().c_str());
         return;
     }
 
@@ -233,17 +233,17 @@ void RpgAction::taxi(ObjectGuid guid)
     Creature* flightMaster = bot->GetNPCIfCanInteractWith(guid, UNIT_NPC_FLAG_FLIGHTMASTER);
     if (!flightMaster)
     {
-        sLog->outError("Bot %s cannot talk to flightmaster (%zu location available)", bot->GetName().c_str(), nodes.size());
+        LOG_ERROR("playerbots", "Bot %s cannot talk to flightmaster (%zu location available)", bot->GetName().c_str(), nodes.size());
         return;
     }
 
     if (!bot->ActivateTaxiPathTo({ entry->from, entry->to }, flightMaster, 0))
     {
-        sLog->outError("Bot %s cannot fly (%zu location available)", bot->GetName().c_str(), nodes.size());
+        LOG_ERROR("playerbots", "Bot %s cannot fly (%zu location available)", bot->GetName().c_str(), nodes.size());
         return;
     }
 
-    sLog->outString("Bot %s is flying to %u (%zu location available)", bot->GetName().c_str(), path, nodes.size());
+    LOG_INFO("playerbots", "Bot %s is flying to %u (%zu location available)", bot->GetName().c_str(), path, nodes.size());
     bot->SetMoney(money);
 }
 
@@ -265,12 +265,12 @@ void RpgAction::quest(ObjectGuid guid)
 
     if (bot->GetSession()->getDialogStatus(bot, wo, DIALOG_STATUS_NONE) == DIALOG_STATUS_AVAILABLE ||
         bot->GetSession()->getDialogStatus(bot, wo, DIALOG_STATUS_NONE) == DIALOG_STATUS_REWARD_REP)
-        retVal = ai->DoSpecificAction("accept all quests", Event("rpg action", p));
+        retVal = botAI->DoSpecificAction("accept all quests", Event("rpg action", p));
 
     if (bot->GetSession()->getDialogStatus(bot, wo, DIALOG_STATUS_NONE) == DIALOG_STATUS_REWARD2 ||
         bot->GetSession()->getDialogStatus(bot, wo, DIALOG_STATUS_NONE) == DIALOG_STATUS_REWARD ||
         bot->GetSession()->getDialogStatus(bot, wo, DIALOG_STATUS_NONE) == DIALOG_STATUS_REWARD_REP)
-        retVal = ai->DoSpecificAction("talk to quest giver", Event("rpg action", p));
+        retVal = botAI->DoSpecificAction("talk to quest giver", Event("rpg action", p));
 
     if (!retVal)
         bot->HandleEmoteCommand(type);
@@ -287,8 +287,8 @@ void RpgAction::quest(ObjectGuid guid)
         bot->SetTarget(oldSelection);
 
     //Speed up if
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 
     cancel(guid);
 }
@@ -308,8 +308,8 @@ void RpgAction::trade(ObjectGuid guid)
     if (oldSelection)
         bot->SetTarget(oldSelection);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 void RpgAction::repair(ObjectGuid guid)
@@ -326,8 +326,8 @@ void RpgAction::repair(ObjectGuid guid)
     if (oldSelection)
         bot->SetTarget(oldSelection);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 void RpgAction::train(ObjectGuid guid)
@@ -344,8 +344,8 @@ void RpgAction::train(ObjectGuid guid)
     if (oldSelection)
         bot->SetTarget(oldSelection);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 void RpgAction::heal(ObjectGuid guid)
@@ -382,8 +382,8 @@ void RpgAction::heal(ObjectGuid guid)
     if (oldSelection)
         bot->SetTarget(oldSelection);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 void RpgAction::use(ObjectGuid guid)
@@ -399,8 +399,8 @@ void RpgAction::use(ObjectGuid guid)
     if (oldSelection)
         bot->SetTarget(oldSelection);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 void RpgAction::spell(ObjectGuid guid)
@@ -409,19 +409,19 @@ void RpgAction::spell(ObjectGuid guid)
 
     bot->SetSelectionGuid(guid);
 
-    WorldObject* wo = ai->GetWorldObject(guid);
+    WorldObject* wo = botAI->GetWorldObject(guid);
 
-    ai->DoSpecificAction("cast random spell", Event("rpg action", chat->formatWorldobject(wo)));
+    botAI->DoSpecificAction("cast random spell", Event("rpg action", chat->formatWorldobject(wo)));
 
-    Unit* unit = ai->GetUnit(guid);
+    Unit* unit = botAI->GetUnit(guid);
     if (unit)
         unit->SetFacingTo(unit->GetAngle(bot));
 
     if (oldSelection)
         bot->SetSelectionGuid(oldSelection);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 void RpgAction::craft(ObjectGuid guid)
@@ -430,11 +430,11 @@ void RpgAction::craft(ObjectGuid guid)
 
     bot->SetSelectionGuid(guid);
 
-    WorldObject* wo = ai->GetWorldObject(guid);
+    WorldObject* wo = botAI->GetWorldObject(guid);
 
-    bool crafted = ai->DoSpecificAction("craft random item", Event("rpg action", chat->formatWorldobject(wo)));
+    bool crafted = botAI->DoSpecificAction("craft random item", Event("rpg action", chat->formatWorldobject(wo)));
 
-    Unit* unit = ai->GetUnit(guid);
+    Unit* unit = botAI->GetUnit(guid);
     if (unit)
         unit->SetFacingTo(unit->GetAngle(bot));
 
@@ -444,8 +444,8 @@ void RpgAction::craft(ObjectGuid guid)
     if (crafted)
         RemIgnore(guid);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 void RpgAction::homebind(ObjectGuid guid)
@@ -454,17 +454,17 @@ void RpgAction::homebind(ObjectGuid guid)
 
     bot->SetSelectionGuid(guid);
 
-    ai->DoSpecificAction("home");
+    botAI->DoSpecificAction("home");
 
-    Unit* unit = ai->GetUnit(guid);
+    Unit* unit = botAI->GetUnit(guid);
     if (unit)
         unit->SetFacingTo(unit->GetAngle(bot));
 
     if (oldSelection)
         bot->SetSelectionGuid(oldSelection);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 void RpgAction::queuebg(ObjectGuid guid)
@@ -476,17 +476,17 @@ void RpgAction::queuebg(ObjectGuid guid)
     BattleGroundTypeId bgTypeId = CanQueueBg(guid);
 
     bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<uint32>("bg type")->Set((uint32)bgTypeId);
-    ai->DoSpecificAction("free bg join");
+    botAI->DoSpecificAction("free bg join");
 
-    Unit* unit = ai->GetUnit(guid);
+    Unit* unit = botAI->GetUnit(guid);
     if (unit)
         unit->SetFacingTo(unit->GetAngle(bot));
 
     if (oldSelection)
         bot->SetSelectionGuid(oldSelection);
 
-    if (!ai->HasRealPlayerMaster())
-        ai->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+    if (!botAI->HasRealPlayerMaster())
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
 }
 
 bool RpgAction::isUseful()

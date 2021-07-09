@@ -14,11 +14,11 @@ bool EnemyPlayerNear::IsActive()
 
 bool PlayerHasNoFlag::IsActive()
 {
-    if (ai->GetBot()->InBattleGround())
+    if (botAI->GetBot()->InBattleGround())
     {
-        if (ai->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
+        if (botAI->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
         {
-            BattleGroundWS *bg = (BattleGroundWS*)ai->GetBot()->GetBattleGround();
+            BattleGroundWS *bg = (BattleGroundWS*)botAI->GetBot()->GetBattleGround();
             if (!(bg->GetFlagState(bg->GetOtherTeam(bot->GetTeam())) == BG_WS_FLAG_STATE_ON_PLAYER))
                 return true;
 
@@ -36,7 +36,7 @@ bool PlayerHasNoFlag::IsActive()
 
 bool PlayerIsInBattleground::IsActive()
 {
-    return ai->GetBot()->InBattleGround();
+    return botAI->GetBot()->InBattleGround();
 }
 
 bool BgWaitingTrigger::IsActive()
@@ -63,11 +63,11 @@ bool BgActiveTrigger::IsActive()
 
 bool PlayerIsInBattlegroundWithoutFlag::IsActive()
 {
-    if (ai->GetBot()->InBattleGround())
+    if (botAI->GetBot()->InBattleGround())
     {
-        if (ai->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
+        if (botAI->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
         {
-            BattleGroundWS *bg = (BattleGroundWS*)ai->GetBot()->GetBattleGround();
+            BattleGroundWS *bg = (BattleGroundWS*)botAI->GetBot()->GetBattleGround();
             if (!(bg->GetFlagState(bg->GetOtherTeam(bot->GetTeam())) == BG_WS_FLAG_STATE_ON_PLAYER))
                 return true;
 
@@ -89,7 +89,7 @@ bool PlayerHasFlag::IsActive()
     {
         if (bot->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
         {
-            BattleGroundWS *bg = (BattleGroundWS*)ai->GetBot()->GetBattleGround();
+            BattleGroundWS *bg = (BattleGroundWS*)botAI->GetBot()->GetBattleGround();
             if (bot->GetObjectGuid() == bg->GetFlagCarrierGuid(TEAM_INDEX_ALLIANCE) || bot->GetObjectGuid() == bg->GetFlagCarrierGuid(TEAM_INDEX_HORDE))
             {
                 return true;
@@ -104,11 +104,11 @@ bool PlayerHasFlag::IsActive()
 
 bool TeamHasFlag::IsActive()
 {
-    if (ai->GetBot()->InBattleGround())
+    if (botAI->GetBot()->InBattleGround())
     {
-        if (ai->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
+        if (botAI->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
         {
-            BattleGroundWS *bg = (BattleGroundWS*)ai->GetBot()->GetBattleGround();
+            BattleGroundWS *bg = (BattleGroundWS*)botAI->GetBot()->GetBattleGround();
 
             if (bot->GetObjectGuid() == bg->GetAllianceFlagCarrierGuid() || bot->GetObjectGuid() == bg->GetHordeFlagCarrierGuid())
             {
@@ -127,11 +127,11 @@ bool TeamHasFlag::IsActive()
 
 bool EnemyTeamHasFlag::IsActive()
 {
-    if (ai->GetBot()->InBattleGround())
+    if (botAI->GetBot()->InBattleGround())
     {
-        if (ai->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
+        if (botAI->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
         {
-            BattleGroundWS *bg = (BattleGroundWS*)ai->GetBot()->GetBattleGround();
+            BattleGroundWS *bg = (BattleGroundWS*)botAI->GetBot()->GetBattleGround();
 
             if (bot->GetTeam() == HORDE)
             {

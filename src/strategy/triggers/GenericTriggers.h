@@ -392,7 +392,7 @@ class ItemCountTrigger : public Trigger
 class AmmoCountTrigger : public ItemCountTrigger
 {
     public:
-        AmmoCountTrigger(PlayerbotAI* ai, std::string const& item, uint32 count = 1, int32 interval = 30) : ItemCountTrigger(ai, item, count, interval) { }
+        AmmoCountTrigger(PlayerbotAI* botAI, std::string const& item, uint32 count = 1, int32 interval = 30) : ItemCountTrigger(botAI, item, count, interval) { }
 };
 
 class HasAuraTrigger : public Trigger
@@ -647,7 +647,7 @@ class CorpseNearTrigger : public Trigger
 class IsFallingTrigger : public Trigger
 {
     public:
-        IsFallingTrigger(PlayerbotAI* ai) : Trigger(ai, "falling", 10) {}
+        IsFallingTrigger(PlayerbotAI* botAI) : Trigger(botAI, "falling", 10) {}
 
         bool IsActive() override;
 };
@@ -655,7 +655,7 @@ class IsFallingTrigger : public Trigger
 class IsFallingFarTrigger : public Trigger
 {
     public:
-        IsFallingFarTrigger(PlayerbotAI* ai) : Trigger(ai, "falling far", 10) {}
+        IsFallingFarTrigger(PlayerbotAI* botAI) : Trigger(botAI, "falling far", 10) {}
 
         bool IsActive() override;
 };

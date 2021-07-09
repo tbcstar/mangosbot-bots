@@ -19,9 +19,9 @@ class SharedValueContext : public NamedObjectContext<UntypedValue>
         }
 
     private:
-        static UntypedValue* bg_masters(PlayerbotAI* ai) { return new BgMastersValue(ai); }
-        static UntypedValue* quest_guidp_map(PlayerbotAI* ai) { return new QuestGuidpMapValue(ai); }
-        static UntypedValue* quest_givers(PlayerbotAI* ai) { return new QuestGiversValue(ai); }
+        static UntypedValue* bg_masters(PlayerbotAI* botAI) { return new BgMastersValue(botAI); }
+        static UntypedValue* quest_guidp_map(PlayerbotAI* botAI) { return new QuestGuidpMapValue(botAI); }
+        static UntypedValue* quest_givers(PlayerbotAI* botAI) { return new QuestGiversValue(botAI); }
 
     //Global acess functions
     public:

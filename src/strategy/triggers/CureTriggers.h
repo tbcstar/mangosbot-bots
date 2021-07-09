@@ -37,7 +37,7 @@ class PartyMemberNeedCureTrigger : public NeedCureTrigger
 class NeedWorldBuffTrigger : public Trigger
 {
     public:
-        NeedWorldBuffTrigger(PlayerbotAI* ai) : Trigger(ai) {}
+        NeedWorldBuffTrigger(PlayerbotAI* botAI) : Trigger(botAI) {}
 
         bool IsActive() override;
 };

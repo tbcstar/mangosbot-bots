@@ -19,8 +19,8 @@ class Unit;
 class NearestEnemyPlayersValue : public PossibleTargetsValue
 {
     public:
-        NearestEnemyPlayersValue(PlayerbotAI* ai, float range = sPlayerbotAIConfig.sightDistance) :
-            PossibleTargetsValue(ai, "nearest enemy players", range) { }
+        NearestEnemyPlayersValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig.sightDistance) :
+            PossibleTargetsValue(botAI, "nearest enemy players", range) { }
 
     public:
         bool AcceptUnit(Unit* unit) override;
@@ -29,7 +29,7 @@ class NearestEnemyPlayersValue : public PossibleTargetsValue
 class EnemyPlayerValue : public UnitCalculatedValue
 {
     public:
-        EnemyPlayerValue(PlayerbotAI* ai) : UnitCalculatedValue(ai) { }
+        EnemyPlayerValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) { }
 
         Unit* Calculate() override;
 

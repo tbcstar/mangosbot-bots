@@ -21,7 +21,7 @@ bool InviteToGroupAction::Invite(Player* player)
     if (!player)
         return false;
 
-    if (!player->GetPlayerbotAI() && !ai->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, player))
+    if (!player->GetPlayerbotAI() && !botAI->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, player))
         return false;
 
     WorldPacket p;

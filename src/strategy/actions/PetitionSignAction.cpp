@@ -58,12 +58,12 @@ bool PetitionSignAction::Execute(Event event)
     if (!inviter)
         return false;
 
-    if (!accept || !ai->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, _inviter, true))
+    if (!accept || !botAI->GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, false, _inviter, true))
     {
         WorldPacket data(MSG_PETITION_DECLINE);
         p << petitionGuid;
         bot->GetSession()->HandlePetitionDeclineOpcode(data);
-        sLog.outBasic("Bot %s <%s> declines %s invite", bot->GetGUID().ToString().c_str(), bot->GetName(), isArena ? "Arena" : "Guild");
+        LOG_INFO("playerbots", "Bot %s <%s> declines %s invite", bot->GetGUID().ToString().c_str(), bot->GetName().c_str(), isArena ? "Arena" : "Guild");
         return false;
     }
 
@@ -73,7 +73,7 @@ bool PetitionSignAction::Execute(Event event)
         data << petitionGuid << unk;
         bot->GetSession()->HandlePetitionSignOpcode(data);
         bot->Say("Thanks for the invite!", LANG_UNIVERSAL);
-        sLog.outBasic("Bot %s <%s> accepts %s invite", bot->GetGUID().ToString().c_str(), bot->GetName(), isArena ? "Arena" : "Guild");
+        LOG_INFO("playerbots", "Bot %s <%s> accepts %s invite", bot->GetGUID().ToString().c_str(), bot->GetName().c_str(), isArena ? "Arena" : "Guild");
         return true;
     }
 

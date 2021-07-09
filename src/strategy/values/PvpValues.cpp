@@ -10,11 +10,11 @@ Unit* FlagCarrierValue::Calculate()
 {
     Unit* carrier = nullptr;
 
-    if (ai->GetBot()->InBattleGround())
+    if (botAI->GetBot()->InBattleGround())
     {
-        if (ai->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
+        if (botAI->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
         {
-            BattleGroundWS *bg = (BattleGroundWS*)ai->GetBot()->GetBattleGround();
+            BattleGroundWS *bg = (BattleGroundWS*)botAI->GetBot()->GetBattleGround();
 
             if ((!sameTeam && bot->GetTeam() == HORDE || (sameTeam && bot->GetTeam() == ALLIANCE)) && !bg->GetFlagCarrierGuid(TEAM_INDEX_HORDE).IsEmpty())
                 carrier = bg->GetBgMap()->GetPlayer(bg->GetFlagCarrierGuid(TEAM_INDEX_HORDE));
@@ -98,7 +98,7 @@ CreatureData const* BgMasterValue::NearestBm(bool allowDead)
         FactionTemplateEntry const* bmFactionEntry = sFactionTemplateStore.LookupEntry(bmTemplate->Faction);
 
         //Is the unit hostile?
-        if (ai->getReaction(bmFactionEntry) < REP_NEUTRAL)
+        if (botAI->getReaction(bmFactionEntry) < REP_NEUTRAL)
             continue;
 
         AreaTableEntry const* area = bmPos.getArea();
@@ -114,7 +114,7 @@ CreatureData const* BgMasterValue::NearestBm(bool allowDead)
 
         if (!allowDead)
         {
-            Unit* unit = ai->GetUnit(bmPair);
+            Unit* unit = botAI->GetUnit(bmPair);
 
             if (!unit)
                 continue;

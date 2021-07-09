@@ -174,7 +174,7 @@ class ChatActionContext : public NamedObjectContext<Action>
         static Action* invite() { return new InviteToGroupAction(); }
         static Action* spell() { return new TellSpellAction(); }
         static Action* cast_custom_spell() { return new CastCustomSpellAction(); }
-        static Action* cast_custom_nc_spell(PlayerbotAI* ai) { return new CastCustomNcSpellAction(ai); }
+        static Action* cast_custom_nc_spell(PlayerbotAI* botAI) { return new CastCustomNcSpellAction(botAI); }
         static Action* tank_attack_chat_shortcut() { return new TankAttackChatShortcutAction(); }
         static Action* grind_chat_shortcut() { return new GrindChatShortcutAction(); }
         static Action* flee_chat_shortcut() { return new FleeChatShortcutAction(); }
@@ -210,7 +210,7 @@ class ChatActionContext : public NamedObjectContext<Action>
         static Action* taxi() { return new TaxiAction(); }
         static Action* teleport() { return new TeleportAction(); }
         static Action* release() { return new ReleaseSpiritAction(); }
-        static Action* repop(PlayerbotAI* ai) { return new RepopAction(ai); }
+        static Action* repop(PlayerbotAI* botAI) { return new RepopAction(botAI); }
         static Action* query_item_usage() { return new QueryItemUsageAction(); }
         static Action* query_quest() { return new QueryQuestAction(); }
         static Action* drop() { return new DropQuestAction(); }

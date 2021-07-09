@@ -9,7 +9,7 @@ class PlayerbotAI;
 class EnemyPlayerNear : public Trigger
 {
     public:
-        EnemyPlayerNear(PlayerbotAI* ai) : Trigger(ai, "enemy player near") { }
+        EnemyPlayerNear(PlayerbotAI* botAI) : Trigger(botAI, "enemy player near") { }
 
         bool IsActive() override;
 };
@@ -17,7 +17,7 @@ class EnemyPlayerNear : public Trigger
 class PlayerHasNoFlag : public Trigger
 {
     public:
-        PlayerHasNoFlag(PlayerbotAI* ai) : Trigger(ai, "player has no flag") { }
+        PlayerHasNoFlag(PlayerbotAI* botAI) : Trigger(botAI, "player has no flag") { }
 
         bool IsActive() override;
 };
@@ -25,7 +25,7 @@ class PlayerHasNoFlag : public Trigger
 class PlayerHasFlag : public Trigger
 {
     public:
-        PlayerHasFlag(PlayerbotAI* ai) : Trigger(ai, "player has flag") { }
+        PlayerHasFlag(PlayerbotAI* botAI) : Trigger(botAI, "player has flag") { }
 
         bool IsActive() override;
 };
@@ -33,7 +33,7 @@ class PlayerHasFlag : public Trigger
 class EnemyFlagCarrierNear : public Trigger
 {
     public:
-        EnemyFlagCarrierNear(PlayerbotAI* ai) : Trigger(ai, "enemy flagcarrier near") { }
+        EnemyFlagCarrierNear(PlayerbotAI* botAI) : Trigger(botAI, "enemy flagcarrier near") { }
 
         bool IsActive() override;
 };
@@ -41,7 +41,7 @@ class EnemyFlagCarrierNear : public Trigger
 class TeamFlagCarrierNear : public Trigger
 {
     public:
-        TeamFlagCarrierNear(PlayerbotAI* ai) : Trigger(ai, "team flagcarrier near") { }
+        TeamFlagCarrierNear(PlayerbotAI* botAI) : Trigger(botAI, "team flagcarrier near") { }
 
         bool IsActive() override;
 };
@@ -49,7 +49,7 @@ class TeamFlagCarrierNear : public Trigger
 class TeamHasFlag : public Trigger
 {
     public:
-        TeamHasFlag(PlayerbotAI* ai) : Trigger(ai, "team has flag") { }
+        TeamHasFlag(PlayerbotAI* botAI) : Trigger(botAI, "team has flag") { }
 
         bool IsActive() override;
 };
@@ -57,7 +57,7 @@ class TeamHasFlag : public Trigger
 class EnemyTeamHasFlag : public Trigger
 {
     public:
-        EnemyTeamHasFlag(PlayerbotAI* ai) : Trigger(ai, "enemy team has flag") { }
+        EnemyTeamHasFlag(PlayerbotAI* botAI) : Trigger(botAI, "enemy team has flag") { }
 
         bool IsActive() override;
 };
@@ -65,7 +65,7 @@ class EnemyTeamHasFlag : public Trigger
 class PlayerIsInBattleground : public Trigger
 {
     public:
-        PlayerIsInBattleground(PlayerbotAI* ai) : Trigger(ai, "in battleground") {}
+        PlayerIsInBattleground(PlayerbotAI* botAI) : Trigger(botAI, "in battleground") {}
 
         bool IsActive() override;
 };
@@ -73,7 +73,7 @@ class PlayerIsInBattleground : public Trigger
 class BgWaitingTrigger : public Trigger
 {
     public:
-        BgWaitingTrigger(PlayerbotAI* ai) : Trigger(ai, "bg waiting", 30) {}
+        BgWaitingTrigger(PlayerbotAI* botAI) : Trigger(botAI, "bg waiting", 30) {}
 
         bool IsActive() override;
 };
@@ -81,7 +81,7 @@ class BgWaitingTrigger : public Trigger
 class BgActiveTrigger : public Trigger
 {
     public:
-        BgActiveTrigger(PlayerbotAI* ai) : Trigger(ai, "bg active", 1) {}
+        BgActiveTrigger(PlayerbotAI* botAI) : Trigger(botAI, "bg active", 1) {}
 
         bool IsActive() override;
 };
@@ -89,7 +89,7 @@ class BgActiveTrigger : public Trigger
 class PlayerIsInBattlegroundWithoutFlag : public Trigger
 {
     public:
-        PlayerIsInBattlegroundWithoutFlag(PlayerbotAI* ai) : Trigger(ai, "in battleground without flag") {}
+        PlayerIsInBattlegroundWithoutFlag(PlayerbotAI* botAI) : Trigger(botAI, "in battleground without flag") {}
 
         bool IsActive() override;
 };
@@ -97,7 +97,7 @@ class PlayerIsInBattlegroundWithoutFlag : public Trigger
 class PlayerWantsInBattlegroundTrigger : public Trigger
 {
     public:
-        PlayerWantsInBattlegroundTrigger(PlayerbotAI* ai) : Trigger(ai, "wants in bg") {}
+        PlayerWantsInBattlegroundTrigger(PlayerbotAI* botAI) : Trigger(botAI, "wants in bg") {}
 
         bool IsActive() override;
 };

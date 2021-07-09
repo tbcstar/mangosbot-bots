@@ -75,8 +75,8 @@ void ChooseTravelTargetAction::ReportTravelTarget(TravelTarget* newTarget, Trave
         Quest const* quest = QuestDestination->GetQuestTemplate();
         WorldPosition botLocation(bot);
 
-        CreatureTemplate const* cInfo = NULL;
-        GameObjectTemplate const* gInfo = NULL;
+        CreatureTemplate const* cInfo = nullptr;
+        GameObjectTemplate const* gInfo = nullptr;
 
         if (destination->getEntry() > 0)
             cInfo = sObjectMgr->GetCreatureTemplate(destination->getEntry());

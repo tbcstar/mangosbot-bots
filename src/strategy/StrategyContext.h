@@ -128,24 +128,24 @@ class StrategyContext : public NamedObjectContext<Strategy>
         static Strategy* collision() { return new CollisionStrategy(); }
         static Strategy* rpg() { return new RpgStrategy(); }
         static Strategy* travel(PlayerbotAI* botAI) { return new TravelStrategy(botAI); }
-        static Strategy* explore(PlayerbotAI* ai) { return new ExploreStrategy(ai); }
-        static Strategy* map(PlayerbotAI* ai) { return new MapStrategy(ai); }
-        static Strategy* map_full(PlayerbotAI* ai) { return new MapFullStrategy(ai); }
+        static Strategy* explore(PlayerbotAI* botAI) { return new ExploreStrategy(botAI); }
+        static Strategy* map(PlayerbotAI* botAI) { return new MapStrategy(botAI); }
+        static Strategy* map_full(PlayerbotAI* botAI) { return new MapFullStrategy(botAI); }
         static Strategy* sit() { return new SitStrategy(); }
         static Strategy* possible_adds() { return new PossibleAddsStrategy(); }
         static Strategy* mount(PlayerbotAI* botAI) { return new MountStrategy(botAI); }
         static Strategy* bg(PlayerbotAI* botAI) { return new BGStrategy(botAI); }
-        static Strategy* battleground(PlayerbotAI* ai) { return new BattlegroundStrategy(ai); }
-        static Strategy* warsong(PlayerbotAI* ai) { return new WarsongStrategy(ai); }
-        static Strategy* alterac(PlayerbotAI* ai) { return new AlteracStrategy(ai); }
-        static Strategy* arathi(PlayerbotAI* ai) { return new ArathiStrategy(ai); }
+        static Strategy* battleground(PlayerbotAI* botAI) { return new BattlegroundStrategy(botAI); }
+        static Strategy* warsong(PlayerbotAI* botAI) { return new WarsongStrategy(botAI); }
+        static Strategy* alterac(PlayerbotAI* botAI) { return new AlteracStrategy(botAI); }
+        static Strategy* arathi(PlayerbotAI* botAI) { return new ArathiStrategy(botAI); }
         static Strategy* arena(PlayerbotAI* botAI) { return new ArenaStrategy(botAI); }
         static Strategy* rtsc(PlayerbotAI* botAI) { return new RTSCStrategy(botAI); }
         static Strategy* attack_tagged(PlayerbotAI* botAI) { return new AttackTaggedStrategy(botAI); }
         static Strategy* debug(PlayerbotAI* botAI) { return new DebugStrategy(botAI); }
-        static Strategy* debug_move(PlayerbotAI* ai) { return new DebugMoveStrategy(ai); }
-        static Strategy* debug_rpg(PlayerbotAI* ai) { return new DebugRpgStrategy(ai); }
-        static Strategy* debug_spell(PlayerbotAI* ai) { return new DebugSpellStrategy(ai); }
+        static Strategy* debug_move(PlayerbotAI* botAI) { return new DebugMoveStrategy(botAI); }
+        static Strategy* debug_rpg(PlayerbotAI* botAI) { return new DebugRpgStrategy(botAI); }
+        static Strategy* debug_spell(PlayerbotAI* botAI) { return new DebugSpellStrategy(botAI); }
 };
 
 class MovementStrategyContext : public NamedObjectContext<Strategy>

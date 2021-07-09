@@ -29,7 +29,7 @@ class BGJoinAction : public Action
 class FreeBGJoinAction : public BGJoinAction
 {
     public:
-        FreeBGJoinAction(PlayerbotAI* ai, std::string const& name = "free bg join") : BGJoinAction(ai, name) {}
+        FreeBGJoinAction(PlayerbotAI* botAI, std::string const& name = "free bg join") : BGJoinAction(botAI, name) {}
 
         bool shouldJoinBg(BattleGroundQueueTypeId queueTypeId, BattleGroundBracketId bracketId) override;
 };

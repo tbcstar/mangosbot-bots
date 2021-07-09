@@ -59,7 +59,7 @@ bool OutNumberedTrigger::IsActive()
     uint32 foePower = 0;
     for (auto& attacker : botAI->GetAiObjectContext()->GetValue<GuidVector>("attackers")->Get())
     {
-        Creature* creature = ai->GetCreature(attacker);
+        Creature* creature = botAI->GetCreature(attacker);
         if (!creature)
             continue;
 
@@ -71,9 +71,9 @@ bool OutNumberedTrigger::IsActive()
     if (!foePower)
         return false;
 
-    for (auto& helper : ai->GetAiObjectContext()->GetValue<GuidVector>("nearest friendly players")->Get())
+    for (auto& helper : botAI->GetAiObjectContext()->GetValue<GuidVector>("nearest friendly players")->Get())
     {
-        Unit* player = ai->GetUnit(helper);
+        Unit* player = botAI->GetUnit(helper);
         if (!player || player == bot)
             continue;
 

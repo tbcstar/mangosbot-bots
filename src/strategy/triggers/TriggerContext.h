@@ -153,7 +153,7 @@ class TriggerContext : public NamedObjectContext<Trigger>
         static Trigger* _return(PlayerbotAI* botAI) { return new ReturnTrigger(botAI); }
         static Trigger* sit(PlayerbotAI* botAI) { return new SitTrigger(botAI); }
         static Trigger* far_from_rpg_target(PlayerbotAI* botAI) { return new FarFromRpgTargetTrigger(botAI); }
-        static Trigger* near_rpg_target(PlayerbotAI* ai) { return new NearRpgTargetTrigger(ai); }
+        static Trigger* near_rpg_target(PlayerbotAI* botAI) { return new NearRpgTargetTrigger(botAI); }
         static Trigger* far_from_travel_target(PlayerbotAI* botAI) { return new FarFromTravelTargetTrigger(botAI); }
         static Trigger* no_travel_target(PlayerbotAI* botAI) { return new NoTravelTargetTrigger(botAI); }
         static Trigger* no_rpg_target(PlayerbotAI* botAI) { return new NoRpgTargetTrigger(botAI); }
@@ -174,7 +174,7 @@ class TriggerContext : public NamedObjectContext<Trigger>
         static Trigger* not_behind_target(PlayerbotAI* botAI) { return new IsNotBehindTargetTrigger(botAI); }
         static Trigger* not_facing_target(PlayerbotAI* botAI) { return new IsNotFacingTargetTrigger(botAI); }
         static Trigger* panic(PlayerbotAI* botAI) { return new PanicTrigger(botAI); }
-        static Trigger* outnumbered(PlayerbotAI* ai) { return new OutNumberedTrigger(ai); }
+        static Trigger* outnumbered(PlayerbotAI* botAI) { return new OutNumberedTrigger(botAI); }
         static Trigger* no_drink(PlayerbotAI* botAI) { return new NoDrinkTrigger(botAI); }
         static Trigger* no_food(PlayerbotAI* botAI) { return new NoFoodTrigger(botAI); }
         static Trigger* LightAoe(PlayerbotAI* botAI) { return new LightAoeTrigger(botAI); }
@@ -218,7 +218,7 @@ class TriggerContext : public NamedObjectContext<Trigger>
         static Trigger* ComboPointsAvailable(PlayerbotAI* botAI) { return new ComboPointsAvailableTrigger(botAI); }
         static Trigger* MediumThreat(PlayerbotAI* botAI) { return new MediumThreatTrigger(botAI); }
         static Trigger* Dead(PlayerbotAI* botAI) { return new DeadTrigger(botAI); }
-        static Trigger* corpse_near(PlayerbotAI* ai) { return new CorpseNearTrigger(ai); }
+        static Trigger* corpse_near(PlayerbotAI* botAI) { return new CorpseNearTrigger(botAI); }
         static Trigger* PartyMemberDead(PlayerbotAI* botAI) { return new PartyMemberDeadTrigger(botAI); }
         static Trigger* PartyMemberLowHealth(PlayerbotAI* botAI) { return new PartyMemberLowHealthTrigger(botAI); }
         static Trigger* PartyMemberMediumHealth(PlayerbotAI* botAI) { return new PartyMemberMediumHealthTrigger(botAI); }
@@ -229,8 +229,8 @@ class TriggerContext : public NamedObjectContext<Trigger>
         static Trigger* random_bot_update_trigger(PlayerbotAI* botAI) { return new RandomBotUpdateTrigger(botAI); }
         static Trigger* no_non_bot_players_around(PlayerbotAI* botAI) { return new NoNonBotPlayersAroundTrigger(botAI); }
         static Trigger* new_player_nearby(PlayerbotAI* botAI) { return new NewPlayerNearbyTrigger(botAI); }
-        static Trigger* bg_waiting(PlayerbotAI* ai) { return new BgWaitingTrigger(ai); }
-        static Trigger* bg_active(PlayerbotAI* ai) { return new BgActiveTrigger(ai); }
+        static Trigger* bg_waiting(PlayerbotAI* botAI) { return new BgWaitingTrigger(botAI); }
+        static Trigger* bg_active(PlayerbotAI* botAI) { return new BgActiveTrigger(botAI); }
         static Trigger* player_has_no_flag(PlayerbotAI* botAI) { return new PlayerHasNoFlag(botAI); }
         static Trigger* player_has_flag(PlayerbotAI* botAI) { return new PlayerHasFlag(botAI); }
         static Trigger* team_has_flag(PlayerbotAI* botAI) { return new TeamHasFlag(botAI); }
@@ -242,9 +242,9 @@ class TriggerContext : public NamedObjectContext<Trigger>
         static Trigger* at_dark_portal_outland(PlayerbotAI* botAI) { return new AtDarkPortalOutlandTrigger(botAI); }
         static Trigger* at_dark_portal_azeroth(PlayerbotAI* botAI) { return new AtDarkPortalAzerothTrigger(botAI); }
         static Trigger* near_dark_portal(PlayerbotAI* botAI) { return new NearDarkPortalTrigger(botAI); }
-        static Trigger* need_world_buff(PlayerbotAI* ai) { return new NeedWorldBuffTrigger(ai); }
-        static Trigger* falling(PlayerbotAI* ai) { return new IsFallingTrigger(ai); }
-        static Trigger* falling_far(PlayerbotAI* ai) { return new IsFallingFarTrigger(ai); }
-        static Trigger* hearth_is_faster(PlayerbotAI* ai) { return new HearthIsFasterTrigger(ai); }
-        static Trigger* player_wants_in_bg(PlayerbotAI* ai) { return new PlayerWantsInBattlegroundTrigger(ai); }
+        static Trigger* need_world_buff(PlayerbotAI* botAI) { return new NeedWorldBuffTrigger(botAI); }
+        static Trigger* falling(PlayerbotAI* botAI) { return new IsFallingTrigger(botAI); }
+        static Trigger* falling_far(PlayerbotAI* botAI) { return new IsFallingFarTrigger(botAI); }
+        static Trigger* hearth_is_faster(PlayerbotAI* botAI) { return new HearthIsFasterTrigger(botAI); }
+        static Trigger* player_wants_in_bg(PlayerbotAI* botAI) { return new PlayerWantsInBattlegroundTrigger(botAI); }
 };

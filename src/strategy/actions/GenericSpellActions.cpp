@@ -63,7 +63,7 @@ bool CastSpellAction::isPossible() const
     }
 
     Spell* currentSpell = bot->GetCurrentSpell(CURRENT_GENERIC_SPELL);
-    return ai->CanCastSpell(spell, GetTarget(), true) && (!currentSpell || currentSpell->getState() != SPELL_STATE_CASTING);
+    return botAI->CanCastSpell(spell, GetTarget(), true) && (!currentSpell || currentSpell->getState() != SPELL_STATE_CASTING);
 }
 
 bool CastSpellAction::isUseful()

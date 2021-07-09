@@ -171,8 +171,9 @@ bool LfgJoinAction::JoinLFG()
     if (roleMask & PLAYER_ROLE_DAMAGE)
         _roles = "DPS";
 
-    sLog->outBasic("Bot %s %s:%d <%s>: queues LFG, Dungeon as %s (%s)",
-        bot->GetGUID().ToString().c_str(), bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), _roles, many ? "several dungeons" : dungeon->name[0]);
+    LOG_INFO("playerbots", "Bot %s %s:%d <%s>: queues LFG, Dungeon as %s (%s)",
+        bot->GetGUID().ToString().c_str(), bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H",
+        bot->getLevel(), bot->GetName().c_str(), _roles, many ? "several dungeons" : dungeon->name[0]);
 
     /*if (lfgState->IsSingleRole())
     {
@@ -211,23 +212,28 @@ bool LfgJoinAction::JoinLFG()
         list.insert(dungeon);
 
         pState->SetType(LFG_TYPE_RANDOM_DUNGEON);
-        sLog.outBasic("Bot #%d %s:%d <%s>: queues LFG, Random Dungeon as %s (%s)", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), _roles, dungeon->name[0]);
+        LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: queues LFG, Random Dungeon as %s (%s)",
+        bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str(), _roles, dungeon->name[0]);
         return true;
     }
     else if (heroic)
     {
         pState->SetType(LFG_TYPE_HEROIC_DUNGEON);
-        sLog.outBasic("Bot #%d %s:%d <%s>: queues LFG, Heroic Dungeon as %s (%s)", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), _roles, many ? "several dungeons" : dungeon->name[0]);
+        LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: queues LFG, Heroic Dungeon as %s (%s)",
+        bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H",
+        bot->getLevel(), bot->GetName().c_str(), _roles, many ? "several dungeons" : dungeon->name[0]);
     }
     else if (rbotAId)
     {
         pState->SetType(LFG_TYPE_RAID);
-        sLog.outBasic("Bot #%d  %s:%d <%s>: queues LFG, RbotAId as %s (%s)", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), _roles, many ? "several dungeons" : dungeon->name[0]);
+        LOG_INFO("playerbots", "Bot #%d  %s:%d <%s>: queues LFG, RbotAId as %s (%s)",
+        bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str(), _roles, many ? "several dungeons" : dungeon->name[0]);
     }
     else
     {
         pState->SetType(LFG_TYPE_DUNGEON);
-        sLog.outBasic("Bot #%d %s:%d <%s>: queues LFG, Dungeon as %s (%s)", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), _roles, many ? "several dungeons" : dungeon->name[0]);
+        LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: queues LFG, Dungeon as %s (%s)",
+        bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str(), _roles, many ? "several dungeons" : dungeon->name[0]);
     }*/
 
     // Set RbotAId Browser comment
@@ -251,7 +257,8 @@ bool LfgRoleCheckAction::Execute(Event event)
 
         sLFGMgr->UpdateRoleCheck(group->GetGUID());
 
-        sLog->outBasic("Bot %s %s:%d <%s>: LFG roles checked", bot->GetGUID().ToString().c_str(), bot->GetTeamId() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName());
+        LOG_INFO("playerbots", "Bot %s %s:%d <%s>: LFG roles checked",
+            bot->GetGUID().ToString().c_str(), bot->GetTeamId() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
 
         return true;
     }
@@ -273,14 +280,14 @@ bool LfgAcceptAction::Execute(Event event)
 
         if (bot->IsInCombat() || bot->isDead())
         {
-            sLog->outBasic("Bot %s %s:%d <%s> is in combat and refuses LFG proposal %d",
-                bot->GetGUID().ToString().c_str(), bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), id);
+            LOG_INFO("playerbots", "Bot %s %s:%d <%s> is in combat and refuses LFG proposal %d",
+                bot->GetGUID().ToString().c_str(), bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str(), id);
             sLFGMgr->UpdateProposal(id, bot->GetGUID(), false);
             return true;
         }
 
-        sLog->outBasic("Bot %s %s:%d <%s> accepts LFG proposal %d",
-            bot->GetGUID().ToString().c_str(), bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName(), id);
+        LOG_INFO("playerbots", "Bot %s %s:%d <%s> accepts LFG proposal %d",
+            bot->GetGUID().ToString().c_str(), bot->GetTeamId() == TEAM_ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str(), id);
 
         botAI->GetAiObjectContext()->GetValue<uint32>("lfg proposal")->Set(0);
 

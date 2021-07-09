@@ -60,7 +60,7 @@ void PerformanceMonitor::PrintStats()
             float avg = (float)pd->totalTime / (float)pd->count;
             if (avg >= 0.5f || pd->maxTime > 10)
             {
-                sLog->outString("%6u .. %6u (%.4f of %6u) - %s: %s", pd->minTime, pd->maxTime, avg, pd->count, key.c_str(), j->first.c_str());
+                LOG_INFO("playerbots", "%6u .. %6u (%.4f of %6u) - %s: %s", pd->minTime, pd->maxTime, avg, pd->count, key.c_str(), j->first.c_str());
             }
         }
     }

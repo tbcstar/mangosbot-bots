@@ -20,7 +20,7 @@ bool DebugAction::Execute(Event event)
         std::vector<WorldPosition> ipos;
         for (auto p : WorldPosition().getCreaturesNear())
         {
-            Unit* unit = ai->GetUnit(p);
+            Unit* unit = botAI->GetUnit(p);
             if (unit)
                 apos.push_back(WorldPosition(p));
             else

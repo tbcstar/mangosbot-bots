@@ -566,7 +566,7 @@ class NullTravelDestination : public TravelDestination
             cooldownDelay = coodownDelay1;
         };
 
-        Quest const* GetQuestTemplate() override { return NULL; }
+        Quest const* GetQuestTemplate() override { return nullptr; }
 
         bool isActive(Player* bot) override { return false; }
 
@@ -842,7 +842,7 @@ class TravelTarget : AiObject
         uint32 moveRetryCount = 0;
 
         TravelDestination* tDestination = nullptr;
-        WorldPosition* wPosition = NULL;
+        WorldPosition* wPosition = nullptr;
 };
 
 //General container for all travel destinations.

@@ -45,13 +45,13 @@ class CastMoonkinFormAction : public CastBuffSpellAction
 class CastAquaticFormAction : public CastBuffSpellAction
 {
     public:
-        CastAquaticFormAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "aquatic form") {}
+        CastAquaticFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "aquatic form") {}
 };
 
 class CastTravelFormAction : public CastBuffSpellAction
 {
     public:
-        CastTravelFormAction(PlayerbotAI* ai) : CastBuffSpellAction(ai, "travel form") {}
+        CastTravelFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "travel form") {}
 
         bool isUseful() override;
 };

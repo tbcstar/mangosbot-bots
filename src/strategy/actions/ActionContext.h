@@ -182,8 +182,8 @@ class ActionContext : public NamedObjectContext<Action>
         static Action* _return() { return new ReturnAction(); }
         static Action* shoot() { return new CastShootAction(); }
         static Action* melee() { return new MeleeAction(); }
-        static Action* switch_to_melee(PlayerbotAI* ai) { return new SwitchToMeleeAction(ai); }
-        static Action* switch_to_ranged(PlayerbotAI* ai) { return new SwitchToRangedAction(ai); }
+        static Action* switch_to_melee(PlayerbotAI* botAI) { return new SwitchToMeleeAction(botAI); }
+        static Action* switch_to_ranged(PlayerbotAI* botAI) { return new SwitchToRangedAction(botAI); }
         static Action* ReachSpell() { return new ReachSpellAction(); }
         static Action* ReachMelee() { return new ReachMeleeAction(); }
         static Action* reach_party_member_to_heal() { return new ReachPartyMemberToHealAction(); }
@@ -244,23 +244,23 @@ class ActionContext : public NamedObjectContext<Action>
         static Action* move_to_dark_portal(PlayerbotAI* botAI) { return new MoveToDarkPortalAction(botAI); }
         static Action* use_dark_portal_azeroth(PlayerbotAI* botAI) { return new DarkPortalAzerothAction(botAI); }
         static Action* move_from_dark_portal(PlayerbotAI* botAI) { return new MoveFromDarkPortalAction(botAI); }
-        static Action* world_buff(PlayerbotAI* ai) { return new WorldBuffAction(ai); }
-        static Action* hearthstone(PlayerbotAI* ai) { return new UseHearthStone(ai); }
-        static Action* cast_random_spell(PlayerbotAI* ai) { return new CastRandomSpellAction(ai); }
-        static Action* free_bg_join(PlayerbotAI* ai) { return new FreeBGJoinAction(ai); }
+        static Action* world_buff(PlayerbotAI* botAI) { return new WorldBuffAction(botAI); }
+        static Action* hearthstone(PlayerbotAI* botAI) { return new UseHearthStone(botAI); }
+        static Action* cast_random_spell(PlayerbotAI* botAI) { return new CastRandomSpellAction(botAI); }
+        static Action* free_bg_join(PlayerbotAI* botAI) { return new FreeBGJoinAction(botAI); }
 
-        static Action* use_random_recipe(PlayerbotAI* ai) { return new UseRandomRecipe(ai); }
-        static Action* craft_random_item(PlayerbotAI* ai) { return new CraftRandomItemAction(ai); }
+        static Action* use_random_recipe(PlayerbotAI* botAI) { return new UseRandomRecipe(botAI); }
+        static Action* craft_random_item(PlayerbotAI* botAI) { return new CraftRandomItemAction(botAI); }
 
         // BG Tactics
-        static Action* bg_tactics(PlayerbotAI* ai) { return new BGTactics(ai); }
-        static Action* bg_move_to_start(PlayerbotAI* ai) { return new BGTactics(ai, "move to start"); }
-        static Action* bg_move_to_objective(PlayerbotAI* ai) { return new BGTactics(ai, "move to objective"); }
-        static Action* bg_select_objective(PlayerbotAI* ai) { return new BGTactics(ai, "select objective"); }
-        static Action* bg_check_objective(PlayerbotAI* ai) { return new BGTactics(ai, "check objective"); }
-        static Action* bg_attack_fc(PlayerbotAI* ai) { return new BGTactics(ai, "attack fc"); }
-        static Action* bg_protect_fc(PlayerbotAI* ai) { return new BGTactics(ai, "protect fc"); }
-        static Action* attack_enemy_fc(PlayerbotAI* ai) { return new AttackEnemyFlagCarrierAction(ai); }
-        static Action* bg_use_buff(PlayerbotAI* ai) { return new BGTactics(ai, "use buff"); }
-        static Action* bg_check_flag(PlayerbotAI* ai) { return new BGTactics(ai, "check flag"); }
+        static Action* bg_tactics(PlayerbotAI* botAI) { return new BGTactics(botAI); }
+        static Action* bg_move_to_start(PlayerbotAI* botAI) { return new BGTactics(botAI, "move to start"); }
+        static Action* bg_move_to_objective(PlayerbotAI* botAI) { return new BGTactics(botAI, "move to objective"); }
+        static Action* bg_select_objective(PlayerbotAI* botAI) { return new BGTactics(botAI, "select objective"); }
+        static Action* bg_check_objective(PlayerbotAI* botAI) { return new BGTactics(botAI, "check objective"); }
+        static Action* bg_attack_fc(PlayerbotAI* botAI) { return new BGTactics(botAI, "attack fc"); }
+        static Action* bg_protect_fc(PlayerbotAI* botAI) { return new BGTactics(botAI, "protect fc"); }
+        static Action* attack_enemy_fc(PlayerbotAI* botAI) { return new AttackEnemyFlagCarrierAction(botAI); }
+        static Action* bg_use_buff(PlayerbotAI* botAI) { return new BGTactics(botAI, "use buff"); }
+        static Action* bg_check_flag(PlayerbotAI* botAI) { return new BGTactics(botAI, "check flag"); }
 };

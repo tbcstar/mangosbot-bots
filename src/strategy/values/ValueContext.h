@@ -291,16 +291,16 @@ class ValueContext : public NamedObjectContext<UntypedValue>
         static UntypedValue* has_mana(PlayerbotAI* botAI) { return new HasManaValue(botAI); }
         static UntypedValue* nearest_game_objects(PlayerbotAI* botAI) { return new NearestGameObjects(botAI); }
         static UntypedValue* nearest_game_objects_no_los(PlayerbotAI* botAI) { return new NearestGameObjects(botAI, sPlayerbotAIConfig.sightDistance, true); }
-        static UntypedValue* closest_game_objects(PlayerbotAI* ai) { return new NearestGameObjects(ai, INTERACTION_DISTANCE); }
+        static UntypedValue* closest_game_objects(PlayerbotAI* botAI) { return new NearestGameObjects(botAI, INTERACTION_DISTANCE); }
         static UntypedValue* log_level(PlayerbotAI* botAI) { return new LogLevelValue(botAI); }
         static UntypedValue* nearest_npcs(PlayerbotAI* botAI) { return new NearestNpcsValue(botAI); }
         static UntypedValue* nearest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI); }
-        static UntypedValue* closest_friendly_players(PlayerbotAI* ai) { return new NearestFriendlyPlayersValue(ai, INTERACTION_DISTANCE); }
-        static UntypedValue* nearest_enemy_players(PlayerbotAI* ai) { return new NearestEnemyPlayersValue(ai); }
+        static UntypedValue* closest_friendly_players(PlayerbotAI* botAI) { return new NearestFriendlyPlayersValue(botAI, INTERACTION_DISTANCE); }
+        static UntypedValue* nearest_enemy_players(PlayerbotAI* botAI) { return new NearestEnemyPlayersValue(botAI); }
         static UntypedValue* nearest_corpses(PlayerbotAI* botAI) { return new NearestCorpsesValue(botAI); }
         static UntypedValue* possible_rpg_targets(PlayerbotAI* botAI) { return new PossibleRpgTargetsValue(botAI); }
         static UntypedValue* possible_targets(PlayerbotAI* botAI) { return new PossibleTargetsValue(botAI); }
-        static UntypedValue* possible_targets_no_los(PlayerbotAI* ai) { return new PossibleTargetsValue(ai, "possible targets", 50.0f, true); }
+        static UntypedValue* possible_targets_no_los(PlayerbotAI* botAI) { return new PossibleTargetsValue(botAI, "possible targets", 50.0f, true); }
         static UntypedValue* all_targets(PlayerbotAI* botAI) { return new AllTargetsValue(botAI); }
         static UntypedValue* nearest_adds(PlayerbotAI* botAI) { return new NearestAddsValue(botAI); }
         static UntypedValue* party_member_without_aura(PlayerbotAI* botAI) { return new PartyMemberWithoutAuraValue(botAI); }
@@ -330,8 +330,8 @@ class ValueContext : public NamedObjectContext<UntypedValue>
         static UntypedValue* combat(PlayerbotAI* botAI) { return new IsInCombatValue(botAI); }
         static UntypedValue* lfg_proposal(PlayerbotAI* botAI) { return new LfgProposalValue(botAI); }
         static UntypedValue* bag_space(PlayerbotAI* botAI) { return new BagSpaceValue(botAI); }
-        static UntypedValue* durability(PlayerbotAI* ai) { return new DurabilityValue(ai); }
-        static UntypedValue* repair_cost(PlayerbotAI* ai) { return new RepairCostValue(ai); }
+        static UntypedValue* durability(PlayerbotAI* botAI) { return new DurabilityValue(botAI); }
+        static UntypedValue* repair_cost(PlayerbotAI* botAI) { return new RepairCostValue(botAI); }
         static UntypedValue* enemy_healer_target(PlayerbotAI* botAI) { return new EnemyHealerTargetValue(botAI); }
         static UntypedValue* snare_target(PlayerbotAI* botAI) { return new SnareTargetValue(botAI); }
         static UntypedValue* speed(PlayerbotAI* botAI) { return new SpeedValue(botAI); }
@@ -353,16 +353,16 @@ class ValueContext : public NamedObjectContext<UntypedValue>
         static UntypedValue* bg_role(PlayerbotAI* botAI) { return new BgRoleValue(botAI); }
         static UntypedValue* arena_type(PlayerbotAI* botAI) { return new ArenaTypeValue(botAI); }
         static UntypedValue* bg_type(PlayerbotAI* botAI) { return new BgTypeValue(botAI); }
-        static UntypedValue* team_fc(PlayerbotAI* ai) { return new FlagCarrierValue(ai, true, true); }
-        static UntypedValue* enemy_fc(PlayerbotAI* ai) { return new FlagCarrierValue(ai, false, true); }
+        static UntypedValue* team_fc(PlayerbotAI* botAI) { return new FlagCarrierValue(botAI, true, true); }
+        static UntypedValue* enemy_fc(PlayerbotAI* botAI) { return new FlagCarrierValue(botAI, false, true); }
 
-        static UntypedValue* last_long_move(PlayerbotAI* ai) { return new LastLongMoveValue(ai); }
-        static UntypedValue* home_bind(PlayerbotAI* ai) { return new HomeBindValue(ai); }
+        static UntypedValue* last_long_move(PlayerbotAI* botAI) { return new LastLongMoveValue(botAI); }
+        static UntypedValue* home_bind(PlayerbotAI* botAI) { return new HomeBindValue(botAI); }
 
-        static UntypedValue* active_quest_givers(PlayerbotAI* ai) { return new ActiveQuestGiversValue(ai); }
-        static UntypedValue* active_quest_takers(PlayerbotAI* ai) { return new ActiveQuestTakersValue(ai); }
-        static UntypedValue* active_quest_objectives(PlayerbotAI* ai) { return new ActiveQuestObjectivesValue(ai); }
-        static UntypedValue* free_quest_log_slots(PlayerbotAI* ai) { return new FreeQuestLogSlotValue(ai); }
+        static UntypedValue* active_quest_givers(PlayerbotAI* botAI) { return new ActiveQuestGiversValue(botAI); }
+        static UntypedValue* active_quest_takers(PlayerbotAI* botAI) { return new ActiveQuestTakersValue(botAI); }
+        static UntypedValue* active_quest_objectives(PlayerbotAI* botAI) { return new ActiveQuestObjectivesValue(botAI); }
+        static UntypedValue* free_quest_log_slots(PlayerbotAI* botAI) { return new FreeQuestLogSlotValue(botAI); }
 
-        static UntypedValue* death_count(PlayerbotAI* ai) { return new DeathCountValue(ai); }
+        static UntypedValue* death_count(PlayerbotAI* botAI) { return new DeathCountValue(botAI); }
 };

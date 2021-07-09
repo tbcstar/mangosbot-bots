@@ -104,8 +104,8 @@ class WorldPacketActionContext : public NamedObjectContext<Action>
         static Action* reach_area_trigger(PlayerbotAI* botAI) { return new ReachAreaTriggerAction(botAI); }
         static Action* use_meeting_stone(PlayerbotAI* botAI) { return new UseMeetingStoneAction(botAI); }
         static Action* accept_resurrect(PlayerbotAI* botAI) { return new AcceptResurrectAction(botAI); }
-        static Action* find_corpse(PlayerbotAI* ai) { return new FindCorpseAction(ai); }
-        static Action* auto_release(PlayerbotAI* ai) { return new AutoReleaseSpiritAction(ai); }
+        static Action* find_corpse(PlayerbotAI* botAI) { return new FindCorpseAction(botAI); }
+        static Action* auto_release(PlayerbotAI* botAI) { return new AutoReleaseSpiritAction(botAI); }
         static Action* revive_from_corpse(PlayerbotAI* botAI) { return new ReviveFromCorpseAction(botAI); }
         static Action* accept_invitation(PlayerbotAI* botAI) { return new AcceptInvitationAction(botAI); }
         static Action* pass_leadership_to_master(PlayerbotAI* botAI) { return new PassLeadershipToMasterAction(botAI); }
@@ -129,5 +129,5 @@ class WorldPacketActionContext : public NamedObjectContext<Action>
         static Action* lfg_role_check(PlayerbotAI* botAI) { return new LfgRoleCheckAction(botAI); }
         static Action* lfg_join(PlayerbotAI* botAI) { return new LfgJoinAction(botAI); }
         static Action* see_spell(PlayerbotAI* botAI) { return new SeeSpellAction(botAI); }
-        static Action* arena_team_accept(PlayerbotAI* ai) { return new ArenaTeamAcceptAction(ai); }
+        static Action* arena_team_accept(PlayerbotAI* botAI) { return new ArenaTeamAcceptAction(botAI); }
 };

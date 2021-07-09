@@ -10,25 +10,25 @@ class Unit;
 class BgTypeValue : public ManualSetValue<uint32>
 {
     public:
-        BgTypeValue(PlayerbotAI* ai) : ManualSetValue<uint32>(ai, 0, "bg type") { }
+        BgTypeValue(PlayerbotAI* botAI) : ManualSetValue<uint32>(botAI, 0, "bg type") { }
 };
 
 class ArenaTypeValue : public ManualSetValue<uint32>
 {
     public:
-        ArenaTypeValue(PlayerbotAI* ai) : ManualSetValue<uint32>(ai, 0, "arena type") { }
+        ArenaTypeValue(PlayerbotAI* botAI) : ManualSetValue<uint32>(botAI, 0, "arena type") { }
 };
 
 class BgRoleValue : public ManualSetValue<uint32>
 {
     public:
-        BgRoleValue(PlayerbotAI* ai) : ManualSetValue<uint32>(ai, 0, "bg role") { }
+        BgRoleValue(PlayerbotAI* botAI) : ManualSetValue<uint32>(botAI, 0, "bg role") { }
 };
 
 class BgMastersValue : public SingleCalculatedValue<std::vector<CreatureData const*>>, public Qualified
 {
     public:
-        BgMastersValue(PlayerbotAI* ai) : SingleCalculatedValue<std::vector<CreatureData const*>>(ai, "bg masters") {}
+        BgMastersValue(PlayerbotAI* botAI) : SingleCalculatedValue<std::vector<CreatureData const*>>(botAI, "bg masters") {}
 
         std::vector<CreatureData const*> Calculate() override;
 };
@@ -36,7 +36,7 @@ class BgMastersValue : public SingleCalculatedValue<std::vector<CreatureData con
 class BgMasterValue : public CDPairCalculatedValue, public Qualified
 {
     public:
-        BgMasterValue(PlayerbotAI* ai) : CDPairCalculatedValue(ai, "bg master", 60) {}
+        BgMasterValue(PlayerbotAI* botAI) : CDPairCalculatedValue(botAI, "bg master", 60) {}
 
         CreatureData const* Calculate() override;
         CreatureData const* NearestBm(bool allowDead = true) override;
@@ -45,8 +45,8 @@ class BgMasterValue : public CDPairCalculatedValue, public Qualified
 class FlagCarrierValue : public UnitCalculatedValue
 {
     public:
-        FlagCarrierValue(PlayerbotAI* ai, bool sameTeam = false, bool ignoreRange = false) :
-            UnitCalculatedValue(ai), sameTeam(sameTeam), ignoreRange(ignoreRange) { }
+        FlagCarrierValue(PlayerbotAI* botAI, bool sameTeam = false, bool ignoreRange = false) :
+            UnitCalculatedValue(botAI), sameTeam(sameTeam), ignoreRange(ignoreRange) { }
 
         Unit* Calculate() override;
 

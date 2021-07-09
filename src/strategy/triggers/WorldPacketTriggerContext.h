@@ -68,7 +68,7 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* lfg_role_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg role check"); }
         static Trigger* lfg_update(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "lfg join"); }
         static Trigger* uninvite(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "uninvite"); }
-        static Trigger* uninvite_guid(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "uninvite guid"); }
+        static Trigger* uninvite_guid(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "uninvite guid"); }
         static Trigger* ready_check_finished(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "ready check finished"); }
         static Trigger* ready_check(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "ready check"); }
         static Trigger* duel_requested(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "duel requested"); }
@@ -101,9 +101,9 @@ class WorldPacketTriggerContext : public NamedObjectContext<Trigger>
         static Trigger* xpgain(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "xpgain"); }
         static Trigger* petition_offer(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "petition offer"); }
         static Trigger* seespell(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "see spell"); }
-        static Trigger* release_spirit(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "release spirit"); }
-        static Trigger* revive_from_corpse(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "revive from corpse"); }
-        static Trigger* receive_emote(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "receive emote"); }
-        static Trigger* receive_text_emote(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "receive text emote"); }
-        static Trigger* arena_team_invite(PlayerbotAI* ai) { return new WorldPacketTrigger(ai, "arena team invite"); }
+        static Trigger* release_spirit(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "release spirit"); }
+        static Trigger* revive_from_corpse(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "revive from corpse"); }
+        static Trigger* receive_emote(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "receive emote"); }
+        static Trigger* receive_text_emote(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "receive text emote"); }
+        static Trigger* arena_team_invite(PlayerbotAI* botAI) { return new WorldPacketTrigger(botAI, "arena team invite"); }
 };
