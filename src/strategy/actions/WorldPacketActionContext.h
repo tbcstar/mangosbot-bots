@@ -2,14 +2,14 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
-#include "AcceptBattleGroundInvitationAction.h"
+#include "AcceptBattlegroundInvitationAction.h"
 #include "AcceptDuelAction.h"
 #include "AcceptInvitationAction.h"
 #include "AcceptQuestAction.h"
 #include "AcceptResurrectAction.h"
 #include "AreaTriggerAction.h"
 #include "ArenaTeamActions.h"
-#include "BattleGroundTactics.h"
+#include "BattlegroundTactics.h"
 #include "CheckMountStateAction.h"
 #include "GuildAcceptAction.h"
 #include "InventoryChangeFailureAction.h"

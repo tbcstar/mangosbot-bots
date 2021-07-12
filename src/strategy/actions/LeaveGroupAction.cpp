@@ -73,11 +73,11 @@ bool LeaveGroupAction::Leave()
     p << uint32(PARTY_OP_LEAVE) << member << uint32(0);
     bot->GetSession()->HandleGroupDisbandOpcode(p);
 
-    bool randomBot = sRandomPlayerbotMgr.IsRandomBot(bot);
+    bool randomBot = sRandomPlayerbotMgr->IsRandomBot(bot);
     if (randomBot)
     {
         bot->GetPlayerbotAI()->SetMaster(nullptr);
-        sRandomPlayerbotMgr.ScheduleTeleport(bot->GetGUID());
+        sRandomPlayerbotMgr->ScheduleTeleport(bot->GetGUID());
     }
 
     if (!aiMaster)
@@ -90,13 +90,13 @@ bool LeaveGroupAction::Leave()
 
 bool LeaveFarAwayAction::isUseful()
 {
-    if (!sPlayerbotAIConfig.randomBotGroupNearby)
+    if (!sPlayerbotAIConfig->randomBotGroupNearby)
         return false;
 
-    if (bot->InBattleGround())
+    if (bot->InBattleground())
         return false;
 
-    if (bot->InBattleGroundQueue())
+    if (bot->InBattlegroundQueue())
         return false;
 
     if (!bot->GetGroup())
@@ -119,7 +119,7 @@ bool LeaveFarAwayAction::isUseful()
     if (abs(int32(master->getLevel() - bot->getLevel())) > 4)
         return true;
 
-    if (master->GetDistance(bot) > sPlayerbotAIConfig.reactDistance * 4)
+    if (master->GetDistance(bot) > sPlayerbotAIConfig->reactDistance * 4)
         return true;
 
     return false;

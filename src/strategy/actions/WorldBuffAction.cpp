@@ -22,13 +22,13 @@ std::vector<uint32> WorldBuffAction::NeedWorldBuffs(Unit* unit)
 {
     std::vector<uint32> retVec;
 
-    if (sPlayerbotAIConfig.worldBuffs.empty())
+    if (sPlayerbotAIConfig->worldBuffs.empty())
         return std::move(retVec);
 
     FactionTemplateEntry const* humanFaction = sFactionTemplateStore.LookupEntry(1);
     uint32 factionId = unit->GetFactionReaction(humanFaction, unit->GetFactionTemplateEntry()) >= REP_NEUTRAL ? 1 : 2;
 
-    for (auto& wb : sPlayerbotAIConfig.worldBuffs)
+    for (auto& wb : sPlayerbotAIConfig->worldBuffs)
     {
         if (wb.factionId != 0 && wb.factionId != factionId)
             continue;

@@ -3,7 +3,7 @@
  */
 
 #include "AiObject.h"
-#include "CreatureData.h" // Ultranix
+#include "CreatureData.h"
 #include "GameObject.h"
 #include "PlayerbotAIConfig.h"
 

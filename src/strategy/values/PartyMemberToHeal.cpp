@@ -58,7 +58,7 @@ Unit* PartyMemberToHeal::Calculate()
             if (pet && CanHealPet(pet))
             {
                 health = pet->GetHealthPct();
-                if (health < sPlayerbotAIConfig.almostFullHealth || !IsTargetOfSpellCast(pet, predicate))
+                if (health < sPlayerbotAIConfig->almostFullHealth || !IsTargetOfSpellCast(pet, predicate))
                     needHeals.push_back(pet);
             }
         }
@@ -80,7 +80,7 @@ Unit* PartyMemberToHeal::Calculate()
             if (botAI->IsHeal(player))
             {
                 float percent = (float)player->GetPower(POWER_MANA) / (float)player->GetMaxPower(POWER_MANA) * 100.0;
-                if (percent > sPlayerbotAIConfig.lowMana)
+                if (percent > sPlayerbotAIConfig->lowMana)
                     healerIndex++;
             }
         }
@@ -94,5 +94,5 @@ Unit* PartyMemberToHeal::Calculate()
 
 bool PartyMemberToHeal::Check(Unit* player)
 {
-    return player && player != bot && player->GetMapId() == bot->GetMapId() && sServerFacade.GetDistance2d(bot, player) < sPlayerbotAIConfig->spellDistance;
+    return player && player != bot && player->GetMapId() == bot->GetMapId() && sServerFacade->GetDistance2d(bot, player) < sPlayerbotAIConfig->spellDistance;
 }

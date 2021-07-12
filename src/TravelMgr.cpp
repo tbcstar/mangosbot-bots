@@ -1478,7 +1478,6 @@ void TravelMgr::LoadQuestTravelTable()
     }
     else
     {
-        LOG_INFO("playerbots", );
         LOG_ERROR("playerbots", ">> Error loading units locations.");
     }
 
@@ -1504,7 +1503,6 @@ void TravelMgr::LoadQuestTravelTable()
     }
     else
     {
-        LOG_INFO("playerbots", );
         LOG_ERROR("playerbots", ">> Error loading relations.");
     }
 
@@ -1529,7 +1527,6 @@ void TravelMgr::LoadQuestTravelTable()
     }
     else
     {
-        LOG_INFO("playerbots", );
         LOG_ERROR("playerbots", ">> Error loading loot lists.");
     }
 
@@ -2189,7 +2186,7 @@ void TravelMgr::LoadQuestTravelTable()
     sPlayerbotAIConfig->openLog("pathfind_attempt_point.csv", "w");
     sPlayerbotAIConfig->openLog("pathfind_result.csv", "w");
     sPlayerbotAIConfig->openLog("load_map_grid.csv", "w");
-    sPlayerbotAIConfig.openLog("strategy.csv", "w");
+    sPlayerbotAIConfig->openLog("strategy.csv", "w");
 
     bool preloadNodePaths = false || fullNavPointReload || storeNavPointReload;             //Calculate paths using pathfinder.
     bool preloadReLinkFullyLinked = false || fullNavPointReload || storeNavPointReload;      //Retry nodes that are fully linked.
@@ -2445,7 +2442,7 @@ void TravelMgr::LoadQuestTravelTable()
 
     bool printStrategyMap = false;
 
-    if (printStrategyMap && sPlayerbotAIConfig.hasLog("strategy.csv"))
+    if (printStrategyMap && sPlayerbotAIConfig->hasLog("strategy.csv"))
     {
         static std::map<uint8, std::string> classes;
         static std::map<uint8, std::map<uint8, std::string> > specs;
@@ -2501,7 +2498,7 @@ void TravelMgr::LoadQuestTravelTable()
 
         //Use randombot 0.
         std::ostringstream cout;
-        cout << sPlayerbotAIConfig.randomBotAccountPrefix << 0;
+        cout << sPlayerbotAIConfig->randomBotAccountPrefix << 0;
         std::string const& accountName = cout.str();
 
         QueryResult results = LoginDatabase.PQuery("SELECT id FROM account where username = '%s'", accountName.c_str());
@@ -2676,7 +2673,7 @@ void TravelMgr::LoadQuestTravelTable()
                 return false;
             });
 
-            sPlayerbotAIConfig.log("strategy.csv", "relevance, action, trigger, strategy, classes");
+            sPlayerbotAIConfig->log("strategy.csv", "relevance, action, trigger, strategy, classes");
 
             for (auto& actionkey : actionKeys)
             {
@@ -2781,7 +2778,7 @@ void TravelMgr::LoadQuestTravelTable()
                     out << actionkey << "\n";
             }
 
-            sPlayerbotAIConfig.log("strategy.csv", out.str().c_str());
+            sPlayerbotAIConfig->log("strategy.csv", out.str().c_str());
         }
     }
 
@@ -2814,7 +2811,7 @@ void TravelMgr::LoadQuestTravelTable()
                 WorldPosition  npos = WorldPosition(pos->getMapId(), nx, ny, nz, 0.0);
                 uint32 area = path.getArea(npos.getMapId(), npos.getX(), npos.getY(), npos.getZ());
 
-                ostringstream out;
+                std::ostringstream out;
                 out << std::fixed << area << "," << npos.getDisplayX() << "," << npos.getDisplayY();
                 sPlayerbotAIConfig->log(7, out.str().c_str());
             }
@@ -2832,7 +2829,7 @@ void TravelMgr::LoadQuestTravelTable()
     {
         for (auto j : i.second->getPoints())
         {
-            ostringstream out;
+            std::ostringstream out;
             string name = i.second->getTitle();
             name.erase(remove(name.begin(), name.end(), '\"'), name.end());
             out << std::fixed << std::setprecision(2) << name.c_str() << "," << i.first << "," << j->getDisplayX() << "," << j->getDisplayY() << "," << j->getX() << "," << j->getY() << "," << j->getZ();
@@ -2978,7 +2975,7 @@ std::vector<WorldPosition*> TravelMgr::getNextPoint(WorldPosition* center, std::
     });
 
 
-    std::mt19937 gen(time(0));
+    std::mt19937 gen(time(nullptr));
     weighted_shuffle(retVec.begin(), retVec.end(), weights.begin(), weights.end(), gen);
 
     std::vector<float> dists;

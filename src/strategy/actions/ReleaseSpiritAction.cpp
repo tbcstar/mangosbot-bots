@@ -42,7 +42,7 @@ bool ReleaseSpiritAction::Execute(Event event)
     bot->GetSession()->HandleRepopRequestOpcode(packet);
 
     // add waiting for ress aura
-    if (bot->InBattleGround() && !botAI->HasAura(2584, bot))
+    if (bot->InBattleground() && !botAI->HasAura(2584, bot))
     {
         // cast Waiting for Resurrect
         bot->CastSpell(bot, 2584, TRIGGERED_OLD_TRIGGERED);
@@ -73,7 +73,7 @@ bool AutoReleaseSpiritAction::Execute(Event event)
 
     LOG_INFO("playerbots", "Bot #%d %s:%d <%s> releases spirit", bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
 
-    if (bot->InBattleGround() && !botAI->HasAura(2584, bot))
+    if (bot->InBattleground() && !botAI->HasAura(2584, bot))
     {
         // cast Waiting for Resurrect
         bot->CastSpell(bot, 2584, TRIGGERED_OLD_TRIGGERED);

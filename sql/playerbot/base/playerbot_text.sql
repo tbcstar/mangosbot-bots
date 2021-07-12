@@ -1,13 +1,12 @@
-DROP TABLE IF EXISTS `ai_playerbot_text`;
-
-CREATE TABLE `ai_playerbot_text` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `playerbot_text`;
+CREATE TABLE `playerbot_text` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `key` varchar(255) NOT NULL,
   `text` varchar(1024) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `ai_playerbot_text` VALUES
+INSERT INTO `playerbot_text` VALUES
 
 -- %role - Healer, Tank, Frost Mage, Elemental Shaman etc
 -- %instance - name of the dungeon by bot's level

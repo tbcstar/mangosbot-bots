@@ -6,8 +6,8 @@
 #include "AccountMgr.h"
 #include "AiFactory.h"
 #include "ArenaTeam.h"
-#include "BattleGround.h"
-#include "BattleGroundMgr.h"
+#include "Battleground.h"
+#include "BattlegroundMgr.h"
 #include "FleeManager.h"
 #include "GuildMgr.h"
 #include "GuildTaskMgr.h"
@@ -21,74 +21,55 @@
 #include "TravelMgr.h"
 
 #include <iomanip>
+#include <boost/thread/thread.hpp>
 
-class PrintStatsThread: public ACE_Task<ACE_MT_SYNCH>
+void PrintStatsThread()
 {
-    public:
-        int svc(void)
-        {
-            sRandomPlayerbotMgr->PrintStats();
-            return 0;
-        }
-};
+    sRandomPlayerbotMgr->PrintStats();
+}
 
 void activatePrintStatsThread()
 {
-    PrintStatsThread* thread = new PrintStatsThread();
-    thread->activate();
+    boost::thread t(PrintStatsThread);
+    t.detach();
 }
 
-class CheckBgQueueThread : public ACE_Task<ACE_MT_SYNCH>
+void CheckBgQueueThread()
 {
-    public:
-        int svc(void)
-        {
-            sRandomPlayerbotMgr.CheckBgQueue();
-            return 0;
-        }
-};
+    sRandomPlayerbotMgr->CheckBgQueue();
+}
 
 void activateCheckBgQueueThread()
 {
-    CheckBgQueueThread* thread = new CheckBgQueueThread();
-    thread->activate();
+    boost::thread t(CheckBgQueueThread);
+    t.detach();
 }
 
-class CheckLfgQueueThread : public ACE_Task <ACE_MT_SYNCH>
+void CheckLfgQueueThread()
 {
-    public:
-        int svc(void)
-        {
-            sRandomPlayerbotMgr.CheckLfgQueue();
-            return 0;
-        }
-};
+    sRandomPlayerbotMgr->CheckLfgQueue();
+}
 
 void activateCheckLfgQueueThread()
 {
-    CheckLfgQueueThread* thread = new CheckLfgQueueThread();
-    thread->activate();
+    boost::thread t(CheckLfgQueueThread);
+    t.detach();
 }
 
-class CheckPlayersThread : public ACE_Task<ACE_MT_SYNCH>
+void CheckPlayersThread()
 {
-    public:
-        int svc(void)
-        {
-            sRandomPlayerbotMgr.CheckPlayers();
-            return 0;
-        }
-};
+    sRandomPlayerbotMgr->CheckPlayers();
+}
 
 void activateCheckPlayersThread()
 {
-    CheckPlayersThread* thread = new CheckPlayersThread();
-    thread->activate();
+    boost::thread t(CheckPlayersThread);
+    t.detach();
 }
 
 RandomPlayerbotMgr::RandomPlayerbotMgr() : PlayerbotHolder(), processTicks(0)
 {
-    playersLevel = sPlayerbotAIConfig.randombotStartingLevel;
+    playersLevel = sPlayerbotAIConfig->randombotStartingLevel;
 
     if (sPlayerbotAIConfig->enabled || sPlayerbotAIConfig->randomBotAutologin)
     {
@@ -108,11 +89,11 @@ uint32 RandomPlayerbotMgr::GetMaxAllowedBotCount()
 
 void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed)
 {
-    if (sPlayerbotAIConfig.hasLog("player_location.csv"))
+    if (sPlayerbotAIConfig->hasLog("player_location.csv"))
     {
-        sPlayerbotAIConfig.openLog("player_location.csv", "w");
+        sPlayerbotAIConfig->openLog("player_location.csv", "w");
 
-        if (sPlayerbotAIConfig.randomBotAutologin)
+        if (sPlayerbotAIConfig->randomBotAutologin)
         {
             for (auto i : GetAllBots())
             {
@@ -120,20 +101,20 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed)
                 if (!bot)
                     continue;
 
-                ostringstream out;
-                out << sPlayerbotAIConfig.GetTimestampStr() << "+00,";
+                std::ostringstream out;
+                out << sPlayerbotAIConfig->GetTimestampStr() << "+00,";
                 out << "RND" << ",";
                 out << bot->GetName() << ",";
                 out << std::fixed << std::setprecision(2);
                 WorldPosition(bot).printWKT(out);
                 out << bot->GetOrientation() << ",";
-                out << to_string(bot->getRace()) << ",";
-                out << to_string(bot->getClass()) << ",";
+                out << std::to_string(bot->getRace()) << ",";
+                out << std::to_string(bot->getClass()) << ",";
                 out << bot->getLevel() << ",";
                 out << bot->GetHealth() << ",";
                 out << bot->GetPowerPercent() << ",";
                 out << bot->GetMoney() << ",";
-                sPlayerbotAIConfig.log("player_location.csv", out.str().c_str());
+                sPlayerbotAIConfig->log("player_location.csv", out.str().c_str());
             }
         }
 
@@ -143,21 +124,21 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed)
             if (!bot)
                 continue;
 
-            ostringstream out;
-            out << sPlayerbotAIConfig.GetTimestampStr() << "+00,";
+            std::ostringstream out;
+            out << sPlayerbotAIConfig->GetTimestampStr() << "+00,";
             out << "PLR" << ",";
             out << bot->GetName() << ",";
             out << std::fixed << std::setprecision(2);
             WorldPosition(bot).printWKT(out);
             out << bot->GetOrientation() << ",";
-            out << to_string(bot->getRace()) << ",";
-            out << to_string(bot->getClass()) << ",";
+            out << std::to_string(bot->getRace()) << ",";
+            out << std::to_string(bot->getClass()) << ",";
             out << bot->getLevel() << ",";
             out << bot->GetHealth() << ",";
             out << bot->GetPowerPercent() << ",";
             out << bot->GetMoney() << ",";
             out << std::fixed << std::setprecision(2);
-            sPlayerbotAIConfig.log("player_location.csv", out.str().c_str());
+            sPlayerbotAIConfig->log("player_location.csv", out.str().c_str());
         }
     }
 
@@ -165,7 +146,7 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed)
         return;
 
     uint32 maxAllowedBotCount = GetEventValue(0, "bot_count");
-    if (!maxAllowedBotCount || (maxAllowedBotCount < sPlayerbotAIConfig.minRandomBots || maxAllowedBotCount > sPlayerbotAIConfig.maxRandomBots))
+    if (!maxAllowedBotCount || (maxAllowedBotCount < sPlayerbotAIConfig->minRandomBots || maxAllowedBotCount > sPlayerbotAIConfig->maxRandomBots))
     {
         maxAllowedBotCount = urand(sPlayerbotAIConfig->minRandomBots, sPlayerbotAIConfig->maxRandomBots);
         SetEventValue(0, "bot_count", maxAllowedBotCount, urand(sPlayerbotAIConfig->randomBotCountChangeMinInterval, sPlayerbotAIConfig->randomBotCountChangeMaxInterval));
@@ -176,36 +157,36 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed)
     if (maxAllowedBotCount > sPlayerbotAIConfig->randomBotsPerInterval)
         notDiv = maxAllowedBotCount / sPlayerbotAIConfig->randomBotsPerInterval;
 
-    //SetNextCheckDelay((uint32)max(1000, int(2000 * notDiv * sPlayerbotAIConfig.randomBotUpdateInterval) / 1000));
+    //SetNextCheckDelay((uint32)max(1000, int(2000 * notDiv * sPlayerbotAIConfig->randomBotUpdateInterval) / 1000));
 
-    if (playerBots.size() < int(sPlayerbotAIConfig.minRandomBots / 4))
-        SetNextCheckDelay((uint32)max(500, int(500 * notDiv * sPlayerbotAIConfig.randomBotUpdateInterval) / 1000));
-    else if (playerBots.size() < int(sPlayerbotAIConfig.minRandomBots / 2))
-        SetNextCheckDelay((uint32)max(1000, int(1000 * notDiv * sPlayerbotAIConfig.randomBotUpdateInterval) / 1000));
+    if (playerBots.size() < int(sPlayerbotAIConfig->minRandomBots / 4))
+        SetNextCheckDelay((uint32)max(500, int(500 * notDiv * sPlayerbotAIConfig->randomBotUpdateInterval) / 1000));
+    else if (playerBots.size() < int(sPlayerbotAIConfig->minRandomBots / 2))
+        SetNextCheckDelay((uint32)max(1000, int(1000 * notDiv * sPlayerbotAIConfig->randomBotUpdateInterval) / 1000));
     else
-        SetNextCheckDelay((uint32)max(1000, int(2000 * notDiv * sPlayerbotAIConfig.randomBotUpdateInterval) / 1000));
+        SetNextCheckDelay((uint32)max(1000, int(2000 * notDiv * sPlayerbotAIConfig->randomBotUpdateInterval) / 1000));
 
     std::vector<uint32> bots = GetBots();
     uint32 botCount = bots.size();
 
     PerformanceMonitorOperation* pmo = sPerformanceMonitor->start(PERF_MON_TOTAL, playerBots.size() < maxAllowedBotCount ? "RandomPlayerbotMgr::Login" : "RandomPlayerbotMgr::UpdateAIInternal");
 
-    if (bots.size() < sPlayerbotAIConfig.minRandomBots)
+    if (bots.size() < sPlayerbotAIConfig->minRandomBots)
         AddRandomBots();
 
-    if (sPlayerbotAIConfig.syncLevelWithPlayers && !players.empty())
+    if (sPlayerbotAIConfig->syncLevelWithPlayers && !players.empty())
     {
         if (time(nullptr) > (PlayersCheckTimer + 60))
             activateCheckPlayersThread();
     }
 
-    if (sPlayerbotAIConfig.syncLevelWithPlayers && !players.empty())
+    if (sPlayerbotAIConfig->syncLevelWithPlayers && !players.empty())
     {
         if (time(nullptr) > (PlayersCheckTimer + 60))
             activateCheckPlayersThread();
     }
 
-    if (sPlayerbotAIConfig.randomBotJoinBG && !players.empty())
+    if (sPlayerbotAIConfig->randomBotJoinBG && !players.empty())
     {
         if (time(nullptr) > (BgCheckTimer + 30))
             activateCheckBgQueueThread();
@@ -218,7 +199,7 @@ void RandomPlayerbotMgr::UpdateAIInternal(uint32 elapsed)
         if (ProcessBot(bot))
             ++botProcessed;
 
-        if (botProcessed >= sPlayerbotAIConfig.randomBotsPerInterval)
+        if (botProcessed >= sPlayerbotAIConfig->randomBotsPerInterval)
             break;
     }
 
@@ -230,7 +211,7 @@ uint32 RandomPlayerbotMgr::AddRandomBots()
 {
     std::set<uint32> bots;
 
-    QueryResult results = PlayerbotDatabase.PQuery("SELECT `bot` FROM ai_playerbot_random_bots WHERE event = 'add'");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT `bot` FROM playerbot_random_bots WHERE event = 'add'");
     if (results)
     {
         do
@@ -243,7 +224,7 @@ uint32 RandomPlayerbotMgr::AddRandomBots()
 
     std::vector<uint32> guids;
     uint32 maxAllowedBotCount = GetEventValue(0, "bot_count");
-    int32 maxAllowedNewBotCount = max((sPlayerbotAIConfig.randomBotsPerInterval / 4), (maxAllowedBotCount - currentBots.size()));
+    int32 maxAllowedNewBotCount = max((sPlayerbotAIConfig->randomBotsPerInterval / 4), (maxAllowedBotCount - currentBots.size()));
     for (std::vector<uint32>::iterator i = sPlayerbotAIConfig->randomBotAccounts.begin(); i != sPlayerbotAIConfig->randomBotAccounts.end(); i++)
     {
         uint32 accountId = *i;
@@ -287,7 +268,7 @@ uint32 RandomPlayerbotMgr::AddRandomBots()
                 currentBots.push_back(bot);
 
                 LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: log in", guid, IsAlliance(race) ? "A" : "H", level, name.c_str());
-                if (guids.size() >= min((int)(sPlayerbotAIConfig.randomBotsPerInterval / 4), maxAllowedNewBotCount))
+                if (guids.size() >= min((int)(sPlayerbotAIConfig->randomBotsPerInterval / 4), maxAllowedNewBotCount))
                 {
                     return guids.size();
                 }
@@ -305,7 +286,6 @@ void RandomPlayerbotMgr::LoadBattleMastersCache()
     LOG_INFO("playerbots", "---------------------------------------");
     LOG_INFO("playerbots", "          Loading BattleMasters Cache  ");
     LOG_INFO("playerbots", "---------------------------------------");
-    LOG_INFO("playerbots", );
 
     QueryResult result = WorldDatabase.Query("SELECT `entry`,`bg_template` FROM `battlemaster_entry`");
 
@@ -352,7 +332,6 @@ void RandomPlayerbotMgr::LoadBattleMastersCache()
     } while (result->NextRow());
 
     LOG_INFO("playerbots", ">> Loaded %u battlemaster entries", count);
-    LOG_INFO("playerbots", );
 }
 
 void RandomPlayerbotMgr::CheckBgQueue()
@@ -408,8 +387,8 @@ void RandomPlayerbotMgr::CheckBgQueue()
 
             uint32 TeamId = player->GetTeam() == ALLIANCE ? 0 : 1;
 
-            BattlegroundTypeId bgTypeId = sBattlegroundMgr.BGTemplateId(queueTypeId);
-            Battleground* bg = sBattlegroundMgr.GetBattleGroundTemplate(bgTypeId);
+            BattlegroundTypeId bgTypeId = sBattlegroundMgr->BGTemplateId(queueTypeId);
+            Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
             uint32 mapId = bg->GetMapId();
             PvPDifficultyEntry const* pvpDiff = GetBattlegroundBracketByLevel(mapId, player->getLevel());
             if (!pvpDiff)
@@ -417,9 +396,9 @@ void RandomPlayerbotMgr::CheckBgQueue()
 
             BattlegroundBracketId bracketId = pvpDiff->GetBracketId();
 
-            if (ArenaType arenaType = sServerFacade.BgArenaType(queueTypeId))
+            if (ArenaType arenaType = sServerFacade->BgArenaType(queueTypeId))
             {
-                BattlegroundQueue& bgQueue = sBattlegroundMgr.m_BattleGroundQueues[queueTypeId];
+                BattlegroundQueue& bgQueue = sBattlegroundMgr->m_BATTLEGROUNDQueues[queueTypeId];
                 GroupQueueInfo ginfo;
                 uint32 tempT = TeamId;
 
@@ -460,7 +439,7 @@ void RandomPlayerbotMgr::CheckBgQueue()
             else
                 BgPlayers[queueTypeId][bracketId][TeamId]++;
 
-            if (!player->IsInvitedForBattleGroundQueueType(queueTypeId) && (!player->InBattleGround() || player->GetBattleGround()->GetTypeId() != sServerFacade.BgTemplateId(queueTypeId)))
+            if (!player->IsInvitedForBattlegroundQueueType(queueTypeId) && (!player->InBattleground() || player->GetBattleground()->GetTypeId() != sServerFacade->BgTemplateId(queueTypeId)))
             {
                 NeedBots[queueTypeId][bracketId][TeamId] = true;
             }
@@ -477,19 +456,19 @@ void RandomPlayerbotMgr::CheckBgQueue()
         if (!IsRandomBot(bot->GetGUID().GetCounter()))
             continue;
 
-        if (bot->InBattleGround() && bot->GetBattleground()->GetStatus() == STATUS_WAIT_LEAVE)
+        if (bot->InBattleground() && bot->GetBattleground()->GetStatus() == STATUS_WAIT_LEAVE)
             continue;
 
         for (uint8 i = 0; i < PLAYER_MAX_BATTLEGROUND_QUEUES; ++i)
         {
-            BattleGroundQueueTypeId queueTypeId = bot->GetBattleGroundQueueTypeId(i);
+            BattlegroundQueueTypeId queueTypeId = bot->GetBattlegroundQueueTypeId(i);
             if (queueTypeId == BATTLEGROUND_QUEUE_NONE)
                 continue;
 
             uint32 TeamId = bot->GetTeam() == ALLIANCE ? 0 : 1;
 
-            BattlegroundTypeId bgTypeId = sBattlegroundMgr.BGTemplateId(queueTypeId);
-            Battleground* bg = sBattlegroundMgr.GetBattleGroundTemplate(bgTypeId);
+            BattlegroundTypeId bgTypeId = sBattlegroundMgr->BGTemplateId(queueTypeId);
+            Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
             uint32 mapId = bg->GetMapId();
             PvPDifficultyEntry const* pvpDiff = GetBattlegroundBracketByLevel(mapId, bot->getLevel());
             if (!pvpDiff)
@@ -497,10 +476,10 @@ void RandomPlayerbotMgr::CheckBgQueue()
 
             BattlegroundBracketId bracketId = pvpDiff->GetBracketId();
 
-            ArenaType arenaType = sBattlegroundMgr.BGArenaType(queueTypeId);
+            ArenaType arenaType = sBattlegroundMgr->BGArenaType(queueTypeId);
             if (arenaType)
             {
-                BattlegroundQueue& bgQueue = sBattlegroundMgr.m_BattleGroundQueues[queueTypeId];
+                BattlegroundQueue& bgQueue = sBattlegroundMgr->m_BATTLEGROUNDQueues[queueTypeId];
                 GroupQueueInfo ginfo;
                 uint32 tempT = TeamId;
                 if (bgQueue.GetPlayerGroupInfoData(bot->GetGUID(), &ginfo))
@@ -532,7 +511,7 @@ void RandomPlayerbotMgr::CheckBgQueue()
             if ((BgPlayers[j][i][0] + BgBots[j][i][0] + BgPlayers[j][i][1] + BgBots[j][i][1]) == 0)
                 continue;
 
-            if (ArenaType type = sServerFacade.BgArenaType(queueTypeId))
+            if (ArenaType type = sServerFacade->BgArenaType(queueTypeId))
 
                 LOG_INFO("playerbots", "ARENA:%s %s: P (Skirmish:%d, Rated:%d) B (Skirmish:%d, Rated:%d) Total (Skirmish:%d Rated:%d)",
                     type == ARENA_TYPE_2v2 ? "2v2" : type == ARENA_TYPE_3v3 ? "3v3" : "5v5", i == 0 ? "10-19" : i == 1 ? "20-29" : i == 2 ? "30-39" : i == 3 ? "40-49" :
@@ -543,7 +522,7 @@ void RandomPlayerbotMgr::CheckBgQueue()
                 continue;
             }
 
-            BattlegroundTypeId bgTypeId = sBattlegroundMgr.BGTemplateId(queueTypeId);
+            BattlegroundTypeId bgTypeId = sBattlegroundMgr->BGTemplateId(queueTypeId);
             LOG_INFO("playerbots", "BG:%s %s: P (%d:%d) B (%d:%d) Total (A:%d H:%d)",
                 bgTypeId == BATTLEGROUND_AV ? "AV" : bgTypeId == BATTLEGROUND_WS ? "WSG" : bgTypeId == BATTLEGROUND_AB ? "AB" : "EoTS", i == 0 ? "10-19" : i == 1 ? "20-29" :
                 i == 2 ? "30-39" : i == 3 ? "40-49" : i == 4 ? "50-59" : (i == 5 && MAX_BATTLEGROUND_BRACKETS == 6) ? "60" :
@@ -627,7 +606,7 @@ void RandomPlayerbotMgr::CheckPlayers()
     LOG_INFO("playerbots", "Checking Players...");
 
     if (!playersLevel)
-        playersLevel = sPlayerbotAIConfig.randombotStartingLevel;
+        playersLevel = sPlayerbotAIConfig->randombotStartingLevel;
 
     for (vector<Player*>::iterator i = players.begin(); i != players.end(); ++i)
     {
@@ -648,8 +627,8 @@ void RandomPlayerbotMgr::CheckPlayers()
 
 void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId, bool isRated, bool visual)
 {
-    BattlegroundTypeId bgTypeId = sBattlegroundMgr.BGTemplateId(queueTypeId);
-    Battleground* bg = sBattlegroundMgr->GetBattleGroundTemplate(bgTypeId);
+    BattlegroundTypeId bgTypeId = sBattlegroundMgr->BGTemplateId(queueTypeId);
+    Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
     if (!bg)
         return;
 
@@ -676,7 +655,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
             break;
     }
 
-    if (ArenaType type = sBattlegroundMgr.BGArenaType(queueTypeId))
+    if (ArenaType type = sBattlegroundMgr->BGArenaType(queueTypeId))
     {
         switch (type)
         {
@@ -701,7 +680,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
 
     uint32 SCount, RCount;
 
-    if (ArenaType type = sBattlegroundMgr.BGArenaType(queueTypeId))
+    if (ArenaType type = sBattlegroundMgr->BGArenaType(queueTypeId))
     {
         isArena = true;
         BracketSize = type * 2;
@@ -758,13 +737,13 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
             if (visual && bgType == 20)
                 continue;
 
-            if ((time(0) - bot->GetInGameTime()) < 30)
+            if ((time(nullptr) - bot->GetInGameTime()) < 30)
                 continue;
 
             if (bot->getLevel() < bg->GetMinLevel())
                 continue;
 
-            Battleground* bg = sBattlegroundMgr.GetBattleGroundTemplate(bgTypeId);
+            Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
             uint32 mapId = bg->GetMapId();
             PvPDifficultyEntry const* pvpDiff = GetBattlegroundBracketByLevel(mapId, bot->getLevel());
             if (!pvpDiff)
@@ -810,10 +789,10 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
     if (isRated)
     {
         bool found_team = true;
-        ArenaType type = sBattlegroundMgr.BGArenaType(queueTypeId);
+        ArenaType type = sBattlegroundMgr->BGArenaType(queueTypeId);
         std::vector<uint32> aTeams;
         uint32 rating = Rating[queueTypeId][bracketId][1];
-        for (std::vector<uint32>::iterator i = sPlayerbotAIConfig.randomBotArenaTeams.begin(); i != sPlayerbotAIConfig.randomBotArenaTeams.end(); ++i)
+        for (std::vector<uint32>::iterator i = sPlayerbotAIConfig->randomBotArenaTeams.begin(); i != sPlayerbotAIConfig->randomBotArenaTeams.end(); ++i)
         {
             ArenaTeam* arenateam = sObjectMgr.GetArenaTeamById(*i);
             if (!arenateam)
@@ -860,7 +839,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
                         continue;
 
                     if (offline)
-                        sRandomPlayerbotMgr.AddPlayerBot(itr->Guid, 0);
+                        sRandomPlayerbotMgr->AddPlayerBot(itr->Guid, 0);
 
                     //if (member->GetArenaPersonalRating(arenateam->GetSlot()) < (rating - 150))
                     //    continue;
@@ -898,7 +877,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
                 cap = ObjectAccessor::FindPlayer(capGuid);
 
                 if (!cap)
-                    sRandomPlayerbotMgr.AddPlayerBot(capGuid, 0);
+                    sRandomPlayerbotMgr->AddPlayerBot(capGuid, 0);
 
                 cap = ObjectAccessor::FindPlayer(capGuid);
             }
@@ -1010,7 +989,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
         return;
     }
 
-    if (ArenaType type = sBattlegroundMgr.BGArenaType(queueTypeId))
+    if (ArenaType type = sBattlegroundMgr->BGArenaType(queueTypeId))
     {
         isArena = true;
         BracketSize = type * 2;
@@ -1054,7 +1033,7 @@ void RandomPlayerbotMgr::AddBgBot(BattlegroundQueueTypeId queueTypeId, Battlegro
             player->m_taxi.ClearTaxiDestinations();
         }
 
-        //if (sServerFacade.BgArenaType(queueTypeId))
+        //if (sServerFacade->BgArenaType(queueTypeId))
             //player->TeleportTo(bm->GetMapId(), bm->GetPositionX(), bm->GetPositionY(), bm->GetPositionZ(), player->GetOrientation());
         //else
            // RandomTeleportForRpg(player);
@@ -1188,7 +1167,7 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
 
         ChangeStrategy(player);
 
-        uint32 randomTime = urand(sPlayerbotAIConfig.minRandomBotReviveTime, sPlayerbotAIConfig.maxRandomBotReviveTime * 5);
+        uint32 randomTime = urand(sPlayerbotAIConfig->minRandomBotReviveTime, sPlayerbotAIConfig->maxRandomBotReviveTime * 5);
         SetEventValue(bot, "update", 1, randomTime);
 
         return true;
@@ -1216,7 +1195,7 @@ bool RandomPlayerbotMgr::ProcessBot(uint32 bot)
     {
         LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: log out", bot, IsAlliance(player->getRace()) ? "A" : "H", player->getLevel(), player->GetName().c_str());
         LogoutPlayerBot(botGUID);
-        SetEventValue(bot, "logout", 1, urand(sPlayerbotAIConfig.minRandomBotInWorldTime, sPlayerbotAIConfig.maxRandomBotInWorldTime));
+        SetEventValue(bot, "logout", 1, urand(sPlayerbotAIConfig->minRandomBotInWorldTime, sPlayerbotAIConfig->maxRandomBotInWorldTime));
         return true;
     }
 
@@ -1293,7 +1272,7 @@ bool RandomPlayerbotMgr::ProcessBot(Player* player)
             }
 
             uint32 accountId = sObjectMgr.GetPlayerAccountIdByGUID(guild->GetLeaderGUID());
-            if (!sPlayerbotAIConfig.IsInRandomAccountList(accountId))
+            if (!sPlayerbotAIConfig->IsInRandomAccountList(accountId))
             {
                 int32 rank = guild->GetRank(player->GetGUID());
                 randomiser = rank < 4 ? false : true;
@@ -1373,7 +1352,7 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, std::vector<WorldLocation>&
     if (bot->getLevel() < 5)
         return;
 
-    if (sPlayerbotAIConfig.randomBotRpgChance < 0)
+    if (sPlayerbotAIConfig->randomBotRpgChance < 0)
         return;
 
     if (locs.empty())
@@ -1389,8 +1368,8 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, std::vector<WorldLocation>&
     //Do not teleport to maps disabled in config
     tlocs.erase(std::remove_if(tlocs.begin(), tlocs.end(), [bot](WorldPosition l)
     {
-        std::vector<uint32>::iterator i = find(sPlayerbotAIConfig.randomBotMaps.begin(), sPlayerbotAIConfig.randomBotMaps.end(), l.getMapId());
-        return i == sPlayerbotAIConfig.randomBotMaps.end();
+        std::vector<uint32>::iterator i = find(sPlayerbotAIConfig->randomBotMaps.begin(), sPlayerbotAIConfig->randomBotMaps.end(), l.getMapId());
+        return i == sPlayerbotAIConfig->randomBotMaps.end();
     }), tlocs.end());
 
 
@@ -1486,7 +1465,7 @@ void RandomPlayerbotMgr::PrepareTeleportCache()
     if (maxLevel > sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL))
         maxLevel = sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL);
 
-    QueryResult results = PlayerbotDatabase.PQuery("SELECT map_id, x, y, z, level FROM ai_playerbot_tele_cache");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT map_id, x, y, z, level FROM playerbot_tele_cache");
     if (results)
     {
         LOG_INFO("playerbots", "Loading random teleport caches for %d levels...", maxLevel);
@@ -1494,11 +1473,11 @@ void RandomPlayerbotMgr::PrepareTeleportCache()
         do
         {
             Field* fields = results->Fetch();
-            uint16 mapId = fields[0].GetUInt16();
+            uint32 mapId = fields[0].GetUInt32();
             float x = fields[1].GetFloat();
             float y = fields[2].GetFloat();
             float z = fields[3].GetFloat();
-            uint16 level = fields[4].GetUInt16();
+            uint8 level = fields[4].GetUInt8();
 
             WorldLocation loc(mapId, x, y, z, 0);
             locsPerLevelCache[level].push_back(std::move(loc));
@@ -1540,25 +1519,23 @@ void RandomPlayerbotMgr::PrepareTeleportCache()
 
     LOG_INFO("playerbots", "Preparing RPG teleport caches for %d factions...", sFactionTemplateStore.GetNumRows());
 
-    results = WorldDatabase.PQuery("SELECT map, position_x, position_y, position_z, r.race, r.minl, r.maxl FROM creature c INNER JOIN ai_playerbot_rpg_races r ON c.id = r.entry "
+    results = WorldDatabase.PQuery("SELECT map, position_x, position_y, position_z, r.race, r.minl, r.maxl FROM creature c INNER JOIN playerbot_rpg_races r ON c.id = r.entry "
         "WHERE r.race < 15");
     if (results)
     {
         do
         {
+            Field* fields = results->Fetch();
+            uint16 mapId = fields[0].GetUInt16();
+            float x = fields[1].GetFloat();
+            float y = fields[2].GetFloat();
+            float z = fields[3].GetFloat();
+            uint32 race = fields[4].GetUInt32();
+            uint32 minl = fields[5].GetUInt32();
+            uint32 maxl = fields[6].GetUInt32();
+
             for (uint32 level = 1; level < sPlayerbotAIConfig->randomBotMaxLevel + 1; level++)
             {
-                Field* fields = results->Fetch();
-                uint16 mapId = fields[0].GetUInt16();
-                float x = fields[1].GetFloat();
-                float y = fields[2].GetFloat();
-                float z = fields[3].GetFloat();
-                //uint32 faction = fields[4].GetUInt32();
-                //string name = fields[5].GetCppString();
-                uint32 race = fields[4].GetUInt32();
-                uint32 minl = fields[5].GetUInt32();
-                uint32 maxl = fields[6].GetUInt32();
-
                 if (level > maxl || level < minl)
                     continue;
 
@@ -1664,8 +1641,8 @@ void RandomPlayerbotMgr::RandomizeFirst(Player* bot)
 		maxLevel = sWorld->getIntConfig(CONFIG_MAX_PLAYER_LEVEL);
 
     // if lvl sync is enabled, max level is limited by online players lvl
-    if (sPlayerbotAIConfig.syncLevelWithPlayers)
-        maxLevel = max(sPlayerbotAIConfig.randomBotMinLevel, min(playersLevel, sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL)));
+    if (sPlayerbotAIConfig->syncLevelWithPlayers)
+        maxLevel = max(sPlayerbotAIConfig->randomBotMinLevel, min(playersLevel, sWorld.getConfig(CONFIG_UINT32_MAX_PLAYER_LEVEL)));
 
 	PerformanceMonitorOperation* pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "RandomizeFirst");
     uint32 level = urand(sPlayerbotAIConfig->randomBotMinLevel, maxLevel);
@@ -1683,8 +1660,8 @@ void RandomPlayerbotMgr::RandomizeFirst(Player* bot)
 
     uint32 randomTime = urand(sPlayerbotAIConfig->minRandomBotRandomizeTime, sPlayerbotAIConfig->maxRandomBotRandomizeTime);
     uint32 inworldTime = urand(sPlayerbotAIConfig->minRandomBotInWorldTime, sPlayerbotAIConfig->maxRandomBotInWorldTime);
-    PlayerbotDatabase.PExecute("UPDATE ai_playerbot_random_bots SET validIn = '%u' WHERE event = 'randomize' AND bot = '%u'", randomTime, bot->GetGUID().GetCounter());
-    PlayerbotDatabase.PExecute("UPDATE ai_playerbot_random_bots SET validIn = '%u' WHERE event = 'logout' AND bot = '%u'", inworldTime, bot->GetGUID().GetCounter());
+    PlayerbotDatabase.PExecute("UPDATE playerbot_random_bots SET validIn = '%u' WHERE event = 'randomize' AND bot = '%u'", randomTime, bot->GetGUID().GetCounter());
+    PlayerbotDatabase.PExecute("UPDATE playerbot_random_bots SET validIn = '%u' WHERE event = 'logout' AND bot = '%u'", inworldTime, bot->GetGUID().GetCounter());
 
 	if (pmo)
         pmo->finish();
@@ -1772,7 +1749,7 @@ std::vector<uint32> RandomPlayerbotMgr::GetBots()
     if (!currentBots.empty())
         return currentBots;
 
-    QueryResult results = PlayerbotDatabase.Query("SELECT bot FROM ai_playerbot_random_bots WHERE owner = 0 AND event = 'add'");
+    QueryResult results = PlayerbotDatabase.Query("SELECT bot FROM playerbot_random_bots WHERE owner = 0 AND event = 'add'");
     if (results)
     {
         do
@@ -1792,7 +1769,7 @@ std::vector<uint32> RandomPlayerbotMgr::GetBgBots(uint32 bracket)
 
     std::vector<uint32> BgBots;
 
-    QueryResult results = PlayerbotDatabase.PQuery("SELECT bot FROM ai_playerbot_random_bots WHERE event = 'bg' AND value = '%d'", bracket);
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT bot FROM playerbot_random_bots WHERE event = 'bg' AND value = '%d'", bracket);
     if (results)
     {
         do
@@ -1812,7 +1789,7 @@ uint32 RandomPlayerbotMgr::GetEventValue(uint32 bot, std::string const& event)
     CachedEvent& e = eventCache[bot][event];
     if (e.IsEmpty())
     {
-        QueryResult results = PlayerbotDatabase.PQuery("SELECT `value`, `time`, validIn FROM ai_playerbot_random_bots WHERE owner = 0 AND bot = '%u' AND event = '%s'",
+        QueryResult results = PlayerbotDatabase.PQuery("SELECT `value`, `time`, validIn FROM playerbot_random_bots WHERE owner = 0 AND bot = '%u' AND event = '%s'",
                 bot, event.c_str());
 
         if (results)
@@ -1824,7 +1801,7 @@ uint32 RandomPlayerbotMgr::GetEventValue(uint32 bot, std::string const& event)
         }
     }
 
-    if ((time(0) - e.lastChangeTime) >= e.validIn && (event == "add" || IsRandomBot(bot)))
+    if ((time(nullptr) - e.lastChangeTime) >= e.validIn && (event == "add" || IsRandomBot(bot)))
         e.value = 0;
 
     return e.value;
@@ -1832,14 +1809,14 @@ uint32 RandomPlayerbotMgr::GetEventValue(uint32 bot, std::string const& event)
 
 uint32 RandomPlayerbotMgr::SetEventValue(uint32 bot, std::string const& event, uint32 value, uint32 validIn)
 {
-    PlayerbotDatabase.PExecute("DELETE FROM ai_playerbot_random_bots WHERE owner = 0 AND bot = '%u' AND event = '%s'", bot, event.c_str());
+    PlayerbotDatabase.PExecute("DELETE FROM playerbot_random_bots WHERE owner = 0 AND bot = '%u' AND event = '%s'", bot, event.c_str());
     if (value)
     {
-        PlayerbotDatabase.PExecute("INSERT INTO ai_playerbot_random_bots (owner, bot, `time`, validIn, event, `value`) VALUES ('%u', '%u', '%u', '%u', '%s', '%u')",
-                0, bot, (uint32)time(0), validIn, event.c_str(), value);
+        PlayerbotDatabase.PExecute("INSERT INTO playerbot_random_bots (owner, bot, `time`, validIn, event, `value`) VALUES ('%u', '%u', '%u', '%u', '%s', '%u')",
+                0, bot, (uint32)time(nullptr), validIn, event.c_str(), value);
     }
 
-    CachedEvent e(value, (uint32)time(0), validIn);
+    CachedEvent e(value, (uint32)time(nullptr), validIn);
     eventCache[bot][event] = std::move(e);
     return value;
 }
@@ -1882,7 +1859,7 @@ bool RandomPlayerbotMgr::HandlePlayerbotConsoleCommand(ChatHandler* handler, cha
 
     if (cmd == "reset")
     {
-        PlayerbotDatabase.PExecute("delete from ai_playerbot_random_bots");
+        PlayerbotDatabase.PExecute("DELETE FROM playerbot_random_bots");
         sRandomPlayerbotMgr->eventCache.clear();
         LOG_INFO("playerbots", "Random bots were reset for all players. Please restart the Server.");
         return true;
@@ -2401,7 +2378,7 @@ void RandomPlayerbotMgr::RandomTeleportForRpg(Player* bot)
 void RandomPlayerbotMgr::Remove(Player* bot)
 {
     ObjectGuid owner = bot->GetGUID();
-    PlayerbotDatabase.PExecute("delete from ai_playerbot_random_bots where owner = 0 and bot = '%u'", owner.GetCounter());
+    PlayerbotDatabase.PExecute("DELETE FROM playerbot_random_bots WHERE owner = 0 AND bot = '%u'", owner.GetCounter());
     eventCache[owner.GetCounter()].clear();
 
     LogoutPlayerBot(owner);
@@ -2424,7 +2401,7 @@ uint32 RandomPlayerbotMgr::GetCreatureGuidByEntry(uint32 entry)
 {
     uint32 guid = 0;
 
-    if (CreatureData const* data= sRandomPlayerbotMgr.GetCreatureDataByEntry(entry))
+    if (CreatureData const* data= sRandomPlayerbotMgr->GetCreatureDataByEntry(entry))
         guid = data->id;
 
     return guid;
@@ -2453,7 +2430,7 @@ uint32 RandomPlayerbotMgr::GetBattleMasterEntry(Player* bot, BattlegroundTypeId 
 
     for (auto i = begin(Bms); i != end(Bms); ++i)
     {
-        CreatureDataPair const* dataPair = sRandomPlayerbotMgr.GetCreatureDataByEntry(*i);
+        CreatureDataPair const* dataPair = sRandomPlayerbotMgr->GetCreatureDataByEntry(*i);
         if (!dataPair)
             continue;
 
@@ -2486,7 +2463,7 @@ uint32 RandomPlayerbotMgr::GetBattleMasterEntry(Player* bot, BattlegroundTypeId 
         if (Bm->GetDeathState() == DEAD)
             continue;
 
-        float dist2 = sServerFacade.GetDistance2d(bot, data->posX, data->posY);
+        float dist2 = sServerFacade->GetDistance2d(bot, data->posX, data->posY);
         if (dist2 < dist1)
         {
             dist1 = dist2;

@@ -97,7 +97,7 @@ class ActionBasket
 {
 	public:
         ActionBasket(ActionNode* action, float relevance, bool skipPrerequisites, Event event) :
-            action(action), relevance(relevance), skipPrerequisites(skipPrerequisites), event(event), created(time(0)) { }
+            action(action), relevance(relevance), skipPrerequisites(skipPrerequisites), event(event), created(time(nullptr)) { }
 
         virtual ~ActionBasket(void) { }
 
@@ -107,7 +107,7 @@ class ActionBasket
         bool isSkipPrerequisites() { return skipPrerequisites; }
         void AmendRelevance(float k) {relevance *= k; }
         void setRelevance(float relevance) { this->relevance = relevance; }
-        bool isExpired(time_t secs) { return time(0) - created >= secs; }
+        bool isExpired(time_t secs) { return time(nullptr) - created >= secs; }
 
 	private:
 		ActionNode* action;

@@ -8,7 +8,7 @@
 
 bool SecurityCheckAction::isUseful()
 {
-    return sRandomPlayerbotMgr.IsRandomBot(bot) && botAI->GetMaster() && botAI->GetMaster()->GetSession()->GetSecurity() < SEC_GAMEMASTER && !botAI->GetMaster()->GetPlayerbotAI();
+    return sRandomPlayerbotMgr->IsRandomBot(bot) && botAI->GetMaster() && botAI->GetMaster()->GetSession()->GetSecurity() < SEC_GAMEMASTER && !botAI->GetMaster()->GetPlayerbotAI();
 }
 
 bool SecurityCheckAction::Execute(Event event)

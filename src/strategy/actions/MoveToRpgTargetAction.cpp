@@ -57,8 +57,8 @@ bool MoveToRpgTargetAction::Execute(Event event)
     else
         angle = 2 * M_PI * urand(0, 100) / 100.0; //A circle around the target.
 
-    x += cos(angle) * sPlayerbotAIConfig.followDistance;
-    y += sin(angle) * sPlayerbotAIConfig.followDistance;
+    x += cos(angle) * sPlayerbotAIConfig->followDistance;
+    y += sin(angle) * sPlayerbotAIConfig->followDistance;
 
     //WaitForReach(distance);
 
@@ -72,8 +72,8 @@ bool MoveToRpgTargetAction::isUseful()
 {
     return context->GetValue<ObjectGuid>("rpg target")->Get()
         && !context->GetValue<TravelTarget*>("travel target")->Get()->isTraveling()
-        && AI_VALUE2(float, "distance", "rpg target") > sPlayerbotAIConfig.followDistance
-        && AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig.mediumHealth
-        && (!AI_VALUE2(uint8, "mana", "self target") || AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig.mediumMana)
+        && AI_VALUE2(float, "distance", "rpg target") > sPlayerbotAIConfig->followDistance
+        && AI_VALUE2(uint8, "health", "self target") > sPlayerbotAIConfig->mediumHealth
+        && (!AI_VALUE2(uint8, "mana", "self target") || AI_VALUE2(uint8, "mana", "self target") > sPlayerbotAIConfig->mediumMana)
         && !bot->IsInCombat();
 }

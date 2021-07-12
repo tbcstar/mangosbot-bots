@@ -24,7 +24,7 @@ class TellMailProcessor : public MailProcessor
         bool Process(uint32 index, Mail* mail, PlayerbotAI* botAI) override
         {
             Player* bot = botAI->GetBot();
-            time_t cur_time = time(0);
+            time_t cur_time = time(nullptr);
             uint32 days = (cur_time - mail->deliver_time) / 3600 / 24;
 
             std::ostringstream out;
@@ -229,7 +229,7 @@ bool MailAction::Execute(Event event)
     MailProcessor* processor = processors[action];
     if (!processor)
     {
-        ostringstream out; out << action << ": I don't know how to do that";
+        std::ostringstream out; out << action << ": I don't know how to do that";
         botAI->TellMaster(out.str());
         return false;
     }
@@ -238,7 +238,7 @@ bool MailAction::Execute(Event event)
         return false;
 
     std::vector<Mail*> mailList;
-    time_t cur_time = time(0);
+    time_t cur_time = time(nullptr);
     for (PlayerMails::iterator itr = bot->GetMailBegin(); itr != bot->GetMailEnd(); ++itr)
     {
         if ((*itr)->state == MAIL_STATE_DELETED || cur_time < (*itr)->deliver_time)

@@ -10,7 +10,7 @@ class PlayerbotAI;
 class LastSpellCast
 {
     public:
-        LastSpellCast() : id(0), time(0) { }
+        LastSpellCast() : id(0), time(nullptr) { }
 
         void Set(uint32 id, ObjectGuid target, time_t time);
         void Reset();

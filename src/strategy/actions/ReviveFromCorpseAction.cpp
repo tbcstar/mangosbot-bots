@@ -15,9 +15,9 @@ bool ReviveFromCorpseAction::Execute(Event event)
 
     // follow master when master revives
     WorldPacket& p = event.getPacket();
-    if (!p.empty() && p.GetOpcode() == CMSG_RECLAIM_CORPSE && master && !corpse && sServerFacade.IsAlive(bot))
+    if (!p.empty() && p.GetOpcode() == CMSG_RECLAIM_CORPSE && master && !corpse && sServerFacade->IsAlive(bot))
     {
-        if (sServerFacade->IsDistanceLessThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig.farDistance))
+        if (sServerFacade->IsDistanceLessThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig->farDistance))
         {
             if (!botAI->HasStrategy("follow", BOT_STATE_NON_COMBAT))
             {
@@ -37,7 +37,7 @@ bool ReviveFromCorpseAction::Execute(Event event)
     if (master)
     {
         if (!master->GetPlayerbotAI() && master->isDead() && master->GetCorpse()
-            && sServerFacade.IsDistanceLessThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig.farDistance))
+            && sServerFacade->IsDistanceLessThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig->farDistance))
             return false;
     }
 
@@ -52,7 +52,7 @@ bool ReviveFromCorpseAction::Execute(Event event)
 
 bool FindCorpseAction::Execute(Event event)
 {
-    if (bot->InBattleGround())
+    if (bot->InBattleground())
         return false;
 
     Corpse* corpse = bot->GetCorpse();
@@ -65,7 +65,7 @@ bool FindCorpseAction::Execute(Event event)
     if (Player* master = GetMaster())
     {
         if (!master->GetPlayerbotAI() &&
-            sServerFacade.IsDistanceLessThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig.farDistance))
+            sServerFacade->IsDistanceLessThan(AI_VALUE2(float, "distance", "master target"), sPlayerbotAIConfig->farDistance))
             return false;
     }
 
@@ -78,7 +78,7 @@ bool FindCorpseAction::Execute(Event event)
             LOG_INFO("playerbots", "Bot #%d %s:%d <%s>: died too many times and was sent to an inn",
                 bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str());
             context->GetValue<uint32>("death count")->Set(0);
-            sRandomPlayerbotMgr.RandomTeleportForRpg(bot);
+            sRandomPlayerbotMgr->RandomTeleportForRpg(bot);
             return true;
         }
     }
@@ -98,7 +98,7 @@ bool FindCorpseAction::Execute(Event event)
 
         if (!botAI->AllowActive(ALL_ACTIVITY))
         {
-            uint32 delay = sServerFacade.GetDistance2d(bot, corpse) / bot->GetSpeed(MOVE_RUN); //Time a bot would take to travel to it's corpse.
+            uint32 delay = sServerFacade->GetDistance2d(bot, corpse) / bot->GetSpeed(MOVE_RUN); //Time a bot would take to travel to it's corpse.
             delay = min(delay, uint32(10 * MINUTE)); //Cap time to get to corpse at 10 minutes.
 
             if (deadTime > delay)

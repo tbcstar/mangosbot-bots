@@ -2,7 +2,7 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
-#include "BattleGroundTactics.h"
+#include "BattlegroundTactics.h"
 #include "ArenaTeam.h"
 #include "ArenaTeamMgr.h"
 #include "BattlegroundMgr.h"
@@ -18,7 +18,7 @@
 #include "BattlegroundRV.h"
 #include "BattlegroundSA.h"
 #include "BattlegroundWS.h"
-#include "BattleGroundEY.h"
+#include "BattlegroundEY.h"
 #include "Event.h"
 #include "Playerbot.h"
 #include "PositionValue.h"
@@ -1725,7 +1725,7 @@ static std::pair<uint32, uint32> AB_AttackObjectives[] =
 // old wsg waypoints
 //
 
-//cross the BattleGround to get to flags or flag carriers
+//cross the Battleground to get to flags or flag carriers
 
 bool BGTactics::wsgPaths()
 {
@@ -2428,7 +2428,7 @@ bool BGTactics::selectObjective(bool reset)
                             if (GameObject* pGO = bot->GetMap()->GetGameObject(bg->GetSingleGameObjectGuid(objective.first, objective.second)))
                             {
                                 BgObjective = pGO;
-                                //ostringstream out; out << "Defending Node #" << objective.first;
+                                //std::ostringstream out; out << "Defending Node #" << objective.first;
                                 //bot->Say(out.str(), LANG_UNIVERSAL);
                             }
                         }
@@ -2587,7 +2587,7 @@ bool BGTactics::selectObjective(bool reset)
                 {
                     if (Unit* teamFC = AI_VALUE(Unit*, "team flag carrier"))
                     {
-                        //ostringstream out;
+                        //std::ostringstream out;
                         //out << "Protecting " << (bot->GetTeam() == ALLIANCE ? "Alliance FC" : "Horde FC");
                         //bot->Say(out.str(), LANG_UNIVERSAL);
                         pos.Set(teamFC->GetPositionX(), teamFC->GetPositionY(), teamFC->GetPositionZ(), bot->GetMapId());
@@ -2600,7 +2600,7 @@ bool BGTactics::selectObjective(bool reset)
                         {
                             pos.Set(enemyFC->GetPositionX(), enemyFC->GetPositionY(), enemyFC->GetPositionZ(), bot->GetMapId());
 
-                            //ostringstream out;
+                            //std::ostringstream out;
                             //out << "Attacking " << (bot->GetTeam() == ALLIANCE ? "Horde FC" : "Alliance FC");
                             //bot->Say(out.str(), LANG_UNIVERSAL);
                         }
@@ -2624,7 +2624,7 @@ bool BGTactics::selectObjective(bool reset)
                     {
                         pos.Set(enemyFC->GetPositionX(), enemyFC->GetPositionY(), enemyFC->GetPositionZ(), bot->GetMapId());
 
-                        //ostringstream out;
+                        //std::ostringstream out;
                         //out << "Attacking " << (bot->GetTeam() == ALLIANCE ? "Horde FC" : "Alliance FC");
                         //bot->Say(out.str(), LANG_UNIVERSAL);
                     }
@@ -2635,7 +2635,7 @@ bool BGTactics::selectObjective(bool reset)
                             float rx, ry, rz;
                             bot->GetRandomPoint(1227.446f, 1476.235f, 307.484f, 150.0f, rx, ry, rz);
                             pos.Set(rx, ry, rz, bot->GetMapId());
-                            //ostringstream out;
+                            //std::ostringstream out;
                             //out << "Patrolling battlefield";
                             //bot->Say(out.str(), LANG_UNIVERSAL);
                         }
@@ -2804,7 +2804,7 @@ bool BGTactics::moveToObjective()
         if (sServerFacade->IsDistanceGreaterThan(sServerFacade->GetDistance2d(bot, pos.x, pos.y), 100.0f))
         {
             //std::ostringstream out;
-            //out << "It is too far away! " << pos.x << ", " << pos.y << ", Distance: " << sServerFacade.GetDistance2d(bot, pos.x, pos.y);
+            //out << "It is too far away! " << pos.x << ", " << pos.y << ", Distance: " << sServerFacade->GetDistance2d(bot, pos.x, pos.y);
             //bot->Say(out.str(), LANG_UNIVERSAL);
             return false;
         }
@@ -2817,7 +2817,7 @@ bool BGTactics::moveToObjective()
             return true;
         }
 
-        //ostringstream out; out << "Moving to objective " << pos.x << ", " << pos.y << ", Distance: " << sServerFacade.GetDistance2d(bot, pos.x, pos.y);
+        //std::ostringstream out; out << "Moving to objective " << pos.x << ", " << pos.y << ", Distance: " << sServerFacade->GetDistance2d(bot, pos.x, pos.y);
         //bot->Say(out.str(), LANG_UNIVERSAL);
 
         // more precise position for wsg
@@ -2990,7 +2990,7 @@ bool BGTactics::moveToObjectiveWp(BattleBotPath* const& currentPath, uint32 curr
     //std::ostringstream out;
     //out << "WP: ";
     //reverse ? out << currPoint << " <<< -> " << nPoint : out << currPoint << ">>> ->" << nPoint;
-    //out << ", " << nextPoint.x << ", " << nextPoint.y << " Path Size: " << currentPath->size() << ", Dist: " << sServerFacade.GetDistance2d(bot, nextPoint.x, nextPoint.y);
+    //out << ", " << nextPoint.x << ", " << nextPoint.y << " Path Size: " << currentPath->size() << ", Dist: " << sServerFacade->GetDistance2d(bot, nextPoint.x, nextPoint.y);
     //bot->Say(out.str(), LANG_UNIVERSAL);
 
     return MoveTo(bot->GetMapId(), nextPoint.x + frand(-2, 2), nextPoint.y + frand(-2, 2), nextPoint.z);
@@ -3127,7 +3127,7 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
         }
     }
 
-    //ostringstream out; out << "Found " << closeObjects.size() << " nearby objects";
+    //std::ostringstream out; out << "Found " << closeObjects.size() << " nearby objects";
     //bot->Say(out.str(), LANG_UNIVERSAL);
 
     for (ObjectGuid const guid : closeObjects)
@@ -3218,7 +3218,7 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
                     if (bot->IsInDisallowedMountForm())
                         bot->RemoveAurasByType(SPELL_AURA_MOD_SHAPESHIFT);
 
-                    //ostringstream out; out << "Flag is nearby, using " << go->GetName();
+                    //std::ostringstream out; out << "Flag is nearby, using " << go->GetName();
                     //bot->Say(out.str(), LANG_UNIVERSAL);
                     WorldPacket data(CMSG_GAMEOBJ_USE);
                     data << go->GetGUID();
@@ -3230,7 +3230,7 @@ bool BGTactics::atFlag(std::vector<BattleBotPath*> const& vPaths, std::vector<ui
                 else
                 {
                     //std::ostringstream out;
-                    //out << "Flag is far, moving to " << go->GetName() << " " << go->GetPositionX() << " " << go->GetPositionY() << " Distance:" << sServerFacade.GetDistance2d(bot, go->GetPositionX(), go->GetPositionY());
+                    //out << "Flag is far, moving to " << go->GetName() << " " << go->GetPositionX() << " " << go->GetPositionY() << " Distance:" << sServerFacade->GetDistance2d(bot, go->GetPositionX(), go->GetPositionY());
                     //bot->Say(out.str(), LANG_UNIVERSAL);
                     return MoveTo(bot->GetMapId(), go->GetPositionX(), go->GetPositionY(), go->GetPositionZ());
                 }
@@ -3383,7 +3383,7 @@ bool ArenaTactics::Execute(Event event)
     if (botAI->HasStrategy("buff", BOT_STATE_NON_COMBAT))
         botAI->ChangeStrategy("-buff", BOT_STATE_NON_COMBAT);
 
-    if (sBattleGroundMgr->IsArenaType(bg->GetBgTypeID()))
+    if (sBattlegroundMgr->IsArenaType(bg->GetBgTypeID()))
     {
         botAI->ResetStrategies(false);
         botAI->SetMaster(nullptr);

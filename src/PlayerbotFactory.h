@@ -17,7 +17,7 @@ struct EnchantTemplate
     uint8   SlotId;
 };
 
-typedef std::vector<EnchantTemplate*> EnchantContainer;
+typedef std::vector<EnchantTemplate> EnchantContainer;
 
 //TODO: more spec/role
 /* classid+talenttree

@@ -54,15 +54,15 @@ bool ChooseRpgTargetAction::CanTrain(ObjectGuid guid)
     return false;
 }
 
-BattleGroundTypeId ChooseRpgTargetAction::CanQueueBg(ObjectGuid guid)
+BattlegroundTypeId ChooseRpgTargetAction::CanQueueBg(ObjectGuid guid)
 {
     for (uint32 i = 1; i < MAX_BATTLEGROUND_QUEUE_TYPES; i++)
     {
-        BattleGroundQueueTypeId queueTypeId = (BattleGroundQueueTypeId)i;
+        BattlegroundQueueTypeId queueTypeId = (BattlegroundQueueTypeId)i;
 
-        BattleGroundTypeId bgTypeId = sServerFacade.BgTemplateId(queueTypeId);
+        BattlegroundTypeId bgTypeId = sServerFacade->BgTemplateId(queueTypeId);
 
-        BattleGround* bg = sBattleGroundMgr.GetBattleGroundTemplate(bgTypeId);
+        Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
         if (!bg)
             continue;
 
@@ -70,10 +70,10 @@ BattleGroundTypeId ChooseRpgTargetAction::CanQueueBg(ObjectGuid guid)
             continue;
 
         // check if already in queue
-        if (bot->InBattleGroundQueueForBattleGroundQueueType(queueTypeId))
+        if (bot->InBattlegroundQueueForBattlegroundQueueType(queueTypeId))
             continue;
 
-        std::map<Team, std::map<BattleGroundTypeId, std::vector<uint32>>> battleMastersCache = sRandomPlayerbotMgr.getBattleMastersCache();
+        std::map<Team, std::map<BattlegroundTypeId, std::vector<uint32>>> battleMastersCache = sRandomPlayerbotMgr->getBattleMastersCache();
 
         for (auto& entry : battleMastersCache[TEAM_BOTH_ALLOWED][bgTypeId])
             if (entry == guid.GetEntry())
@@ -283,15 +283,15 @@ bool ChooseRpgTargetAction::isFollowValid(Player* bot, WorldLocation location)
     if (!botAI->HasStrategy("follow", BOT_STATE_NON_COMBAT))
         return true;
 
-    if (bot->GetDistance(master) > sPlayerbotAIConfig.rpgDistance * 2)
+    if (bot->GetDistance(master) > sPlayerbotAIConfig->rpgDistance * 2)
         return true;
 
     float distance = master->GetDistance(location.GetPositionX(), location.GetPositionY(), location.GetPositionZ());
 
-    if (!master->isMoving() && distance < sPlayerbotAIConfig.sightDistance)
+    if (!master->isMoving() && distance < sPlayerbotAIConfig->sightDistance)
         return true;
 
-    if (distance < sPlayerbotAIConfig.lootDistance)
+    if (distance < sPlayerbotAIConfig->lootDistance)
         return true;
 
     return false;

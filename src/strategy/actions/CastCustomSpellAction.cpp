@@ -196,7 +196,7 @@ bool CastRandomSpellAction::Execute(Event event)
         if (spell.second.state == PLAYERSPELL_REMOVED || spell.second.disabled || IsPassiveSpell(spellId))
             continue;
 
-        const SpellEntry* pSpellInfo = sServerFacade.LookupSpellInfo(spellId);
+        const SpellEntry* pSpellInfo = sServerFacade->LookupSpellInfo(spellId);
         if (!pSpellInfo)
             continue;
 
@@ -238,8 +238,8 @@ bool CastRandomSpellAction::Execute(Event event)
 
         if (isCast)
         {
-            if (MultiCast && ((unit && sServerFacade.IsInFront(bot, unit, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT)) ||
-                (go && sServerFacade.IsInFront(bot, unit, sPlayerbotAIConfig.sightDistance, CAST_ANGLE_IN_FRONT))))
+            if (MultiCast && ((unit && sServerFacade->IsInFront(bot, unit, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT)) ||
+                (go && sServerFacade->IsInFront(bot, unit, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))))
             {
                 std::ostringstream cmd;
                 if (unit)

@@ -25,7 +25,7 @@ class ChooseRpgTargetAction : public MovementAction
     private:
         virtual uint32 HasSameTarget(ObjectGuid guid);
         virtual bool CanTrain(ObjectGuid guid);
-        virtual BattleGroundTypeId CanQueueBg(ObjectGuid guid);
+        virtual BattlegroundTypeId CanQueueBg(ObjectGuid guid);
 };
 
 class ClearRpgTargetAction : public ChooseRpgTargetAction

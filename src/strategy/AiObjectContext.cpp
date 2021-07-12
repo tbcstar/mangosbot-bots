@@ -68,7 +68,7 @@ std::vector<std::string> AiObjectContext::Save()
             continue;
 
         std::string const& name = *i;
-        ostringstream out;
+        std::ostringstream out;
         out << name;
 
         out << ">" << data;

@@ -113,7 +113,7 @@ bool AttackersValue::IsPossibleTarget(Unit *attacker, Player *bot)
     return attacker && attacker->IsInWorld() && attacker->GetMapId() == bot->GetMapId() && !attacker->isDead() && !attacker->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) &&
         !attacker->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NOT_SELECTABLE) && !attacker->isInvisibleForAlive() && !attacker->HasStealthAura() && !attacker->HasInvisibilityAura() &&
         /*!attacker->hasUnitState(UNIT_STAT_STUNNED) &&*/!((attacker->IsPolymorphed() || botAI->HasAura("sap", attacker) || attacker->IsCharmed() || attacker->isFeared()) && !rti) &&
-        /*!sServerFacade.IsInRoots(attacker) &&*/!attacker->IsFriendlyTo(bot) && bot->IsWithinDistInMap(attacker, sPlayerbotAIConfig->sightDistance) &&
+        /*!sServerFacade->IsInRoots(attacker) &&*/!attacker->IsFriendlyTo(bot) && bot->IsWithinDistInMap(attacker, sPlayerbotAIConfig->sightDistance) &&
         !(attacker->GetCreatureType() == CREATURE_TYPE_CRITTER) && !(sPlayerbotAIConfig->IsInPvpProhibitedZone(attacker->GetAreaId()) && (attacker->GetGUID().IsPlayer() ||
         attacker->GetGUID().IsPet())) && (!c || (!c->IsInEvadeMode() && ((!isMemberBotGroup && botAI->HasStrategy("attack tagged", BOT_STATE_NON_COMBAT)) ||
         leaderHasThreat || !c->hasLootRecipient() || c->isTappedBy(bot))));

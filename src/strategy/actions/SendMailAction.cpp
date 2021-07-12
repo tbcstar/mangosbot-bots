@@ -89,7 +89,7 @@ bool SendMailAction::Execute(Event event)
         body << "Thanks,\n";
         body << bot->GetName() << "\n";
 
-        SQLTransaction trans = CharacterDatabase.BeginTransaction();
+        CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
         MailDraft draft("Money you asked for", body.str());
         draft.AddMoney(money);
@@ -147,7 +147,7 @@ bool SendMailAction::Execute(Event event)
                 draft.AddCOD(price);
             }
 
-            SQLTransaction trans = CharacterDatabase.BeginTransaction();
+            CharacterDatabaseTransaction trans = CharacterDatabase.BeginTransaction();
 
             bot->MoveItemFromInventory(item->GetBagSlot(), item->GetSlot(), true);
             item->DeleteFromInventoryDB(trans);

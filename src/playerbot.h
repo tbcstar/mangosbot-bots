@@ -3,7 +3,7 @@
  */
 
 #include "Creature.h"
-#include "DatabaseEnv.h"
+#include "DatabaseEnvFwd.h"
 #include "Gameobject.h"
 #include "Group.h"
 #include "Guild.h"
@@ -33,10 +33,3 @@ int strcmpi(char const* s1, char const* s2);
 
 #define AI_VALUE(type, name) context->GetValue<type>(name)->Get()
 #define AI_VALUE2(type, name, param) context->GetValue<type>(name, param)->Get()
-
-// Ultranix: new sockets and threading
-// Ultranix: check bigints in database
-// Ultranix: check bg packets
-// Ultranix: update config with default values from playerbotconfig.cpp
-// Ultranix: logging for playerbots
-// Ultranix: move config to its folder

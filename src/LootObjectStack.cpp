@@ -8,7 +8,7 @@
 
 #define MAX_LOOT_OBJECT_COUNT 10
 
-LootTarget::LootTarget(ObjectGuid guid) : guid(guid), asOfTime(time(0))
+LootTarget::LootTarget(ObjectGuid guid) : guid(guid), asOfTime(time(nullptr))
 {
 }
 
@@ -222,7 +222,7 @@ LootObject LootObjectStack::GetLoot(float maxDistance)
 
 std::vector<LootObject> LootObjectStack::OrderByDistance(float maxDistance)
 {
-    availableLoot.shrink(time(0) - 30);
+    availableLoot.shrink(time(nullptr) - 30);
 
     std::map<float, LootObject> sortedMap;
     LootTargetList safeCopy(availableLoot);

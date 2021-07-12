@@ -28,7 +28,7 @@ class Trigger : public AiNamedObject
 {
 	public:
         Trigger(PlayerbotAI* botAI, std::string const& name = "trigger", int32 checkInterval = 1) : AiNamedObject(botAI, name), checkInterval(checkInterval),
-            lastCheckTime(time(0) - rand() % checkInterval) { }
+            lastCheckTime(time(nullptr) - rand() % checkInterval) { }
 
         virtual ~Trigger() { }
 
@@ -48,7 +48,7 @@ class Trigger : public AiNamedObject
 		    if (checkInterval < 2)
                 return true;
 
-		    time_t now = time(0);
+		    time_t now = time(nullptr);
 			if (!lastCheckTime || now - lastCheckTime >= checkInterval)
             {
 			    lastCheckTime = now;

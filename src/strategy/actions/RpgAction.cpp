@@ -288,7 +288,7 @@ void RpgAction::quest(ObjectGuid guid)
 
     //Speed up if
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 
     cancel(guid);
 }
@@ -309,7 +309,7 @@ void RpgAction::trade(ObjectGuid guid)
         bot->SetTarget(oldSelection);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::repair(ObjectGuid guid)
@@ -327,7 +327,7 @@ void RpgAction::repair(ObjectGuid guid)
         bot->SetTarget(oldSelection);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::train(ObjectGuid guid)
@@ -345,7 +345,7 @@ void RpgAction::train(ObjectGuid guid)
         bot->SetTarget(oldSelection);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::heal(ObjectGuid guid)
@@ -383,7 +383,7 @@ void RpgAction::heal(ObjectGuid guid)
         bot->SetTarget(oldSelection);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::use(ObjectGuid guid)
@@ -400,7 +400,7 @@ void RpgAction::use(ObjectGuid guid)
         bot->SetTarget(oldSelection);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::spell(ObjectGuid guid)
@@ -421,7 +421,7 @@ void RpgAction::spell(ObjectGuid guid)
         bot->SetSelectionGuid(oldSelection);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::craft(ObjectGuid guid)
@@ -445,7 +445,7 @@ void RpgAction::craft(ObjectGuid guid)
         RemIgnore(guid);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::homebind(ObjectGuid guid)
@@ -464,7 +464,7 @@ void RpgAction::homebind(ObjectGuid guid)
         bot->SetSelectionGuid(oldSelection);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 void RpgAction::queuebg(ObjectGuid guid)
@@ -473,7 +473,7 @@ void RpgAction::queuebg(ObjectGuid guid)
 
     bot->SetSelectionGuid(guid);
 
-    BattleGroundTypeId bgTypeId = CanQueueBg(guid);
+    BattlegroundTypeId bgTypeId = CanQueueBg(guid);
 
     bot->GetPlayerbotAI()->GetAiObjectContext()->GetValue<uint32>("bg type")->Set((uint32)bgTypeId);
     botAI->DoSpecificAction("free bg join");
@@ -486,7 +486,7 @@ void RpgAction::queuebg(ObjectGuid guid)
         bot->SetSelectionGuid(oldSelection);
 
     if (!botAI->HasRealPlayerMaster())
-        botAI->SetNextCheckDelay(sPlayerbotAIConfig.rpgDelay);
+        botAI->SetNextCheckDelay(sPlayerbotAIConfig->rpgDelay);
 }
 
 bool RpgAction::isUseful()
@@ -540,15 +540,15 @@ bool RpgAction::CanTrain(ObjectGuid guid)
     return false;
 }
 
-BattleGroundTypeId RpgAction::CanQueueBg(ObjectGuid guid)
+BattlegroundTypeId RpgAction::CanQueueBg(ObjectGuid guid)
 {
     for (uint32 i = 1; i < MAX_BATTLEGROUND_QUEUE_TYPES; i++)
     {
-        BattleGroundQueueTypeId queueTypeId = (BattleGroundQueueTypeId)i;
+        BattlegroundQueueTypeId queueTypeId = (BattlegroundQueueTypeId)i;
 
-        BattleGroundTypeId bgTypeId = sServerFacade.BgTemplateId(queueTypeId);
+        BattlegroundTypeId bgTypeId = sServerFacade->BgTemplateId(queueTypeId);
 
-        BattleGround* bg = sBattleGroundMgr.GetBattleGroundTemplate(bgTypeId);
+        Battleground* bg = sBattlegroundMgr->GetBattlegroundTemplate(bgTypeId);
         if (!bg)
             continue;
 
@@ -556,10 +556,10 @@ BattleGroundTypeId RpgAction::CanQueueBg(ObjectGuid guid)
             continue;
 
         // check if already in queue
-        if (bot->InBattleGroundQueueForBattleGroundQueueType(queueTypeId))
+        if (bot->InBattlegroundQueueForBattlegroundQueueType(queueTypeId))
             continue;
 
-        std::map<Team, std::map<BattleGroundTypeId, std::vector<uint32>>> battleMastersCache = sRandomPlayerbotMgr.getBattleMastersCache();
+        std::map<Team, std::map<BattlegroundTypeId, std::vector<uint32>>> battleMastersCache = sRandomPlayerbotMgr->getBattleMastersCache();
 
         for (auto& entry : battleMastersCache[TEAM_BOTH_ALLOWED][bgTypeId])
             if (entry == guid.GetEntry())

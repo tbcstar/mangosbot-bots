@@ -314,9 +314,9 @@ class PlayerbotAI : public PlayerbotAIBase
         //Returns a semi-random (cycling) number that is fixed for each bot.
         uint32 GetFixedBotNumer(BotTypeNumber typeNumber, uint32 maxNum = 100, float cyclePerMin = 1);
         GrouperType GetGrouperType();
-        bool HasPlayerNearby(WorldPosition* pos, float range = sPlayerbotAIConfig.reactDistance);
-        bool HasPlayerNearby(float range = sPlayerbotAIConfig.reactDistance);
-        bool HasManyPlayersNearby(uint32 trigerrValue = 20, float range = sPlayerbotAIConfig.sightDistance);
+        bool HasPlayerNearby(WorldPosition* pos, float range = sPlayerbotAIConfig->reactDistance);
+        bool HasPlayerNearby(float range = sPlayerbotAIConfig->reactDistance);
+        bool HasManyPlayersNearby(uint32 trigerrValue = 20, float range = sPlayerbotAIConfig->sightDistance);
         bool AllowActive(ActivityType activityType);
         void SetMaster(Player* master) { master = master; }
         AiObjectContext* GetAiObjectContext() { return aiObjectContext; }

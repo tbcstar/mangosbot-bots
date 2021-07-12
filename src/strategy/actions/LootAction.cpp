@@ -253,7 +253,7 @@ bool StoreLootAction::AuctionItem(uint32 itemId)
 
     AuctionHouseObject* auctionHouse = sAuctionMgr->GetAuctionsMap(ahEntry);
 
-    uint32 price = oldItem->GetCount() * proto->BuyPrice * sRandomPlayerbotMgr.GetBuyMultiplier(bot);
+    uint32 price = oldItem->GetCount() * proto->BuyPrice * sRandomPlayerbotMgr->GetBuyMultiplier(bot);
 
 uint32 stackCount = urand(1, proto->GetMaxStackSize());
     if (!price || !stackCount)

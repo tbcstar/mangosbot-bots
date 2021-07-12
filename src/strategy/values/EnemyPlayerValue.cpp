@@ -37,7 +37,7 @@ Unit* EnemyPlayerValue::Calculate()
 bool NearestEnemyPlayersValue::AcceptUnit(Unit* unit)
 {
     Player* enemy = dynamic_cast<Player*>(unit);
-    if (enemy && botAI->IsOpposing(enemy) && enemy->IsPvP() && !sPlayerbotAIConfig.IsInPvpProhibitedZone(enemy->GetAreaId()) &&
+    if (enemy && botAI->IsOpposing(enemy) && enemy->IsPvP() && !sPlayerbotAIConfig->IsInPvpProhibitedZone(enemy->GetAreaId()) &&
         !enemy->HasFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE) && /*!enemy->HasStealthAura() && !enemy->HasInvisibilityAura()*/ enemy->IsVisibleForOrDetect(bot, enemy, false) &&
         !(enemy->HasAuraType(SPELL_AURA_SPIRIT_OF_REDEMPTION)))
         return true;
@@ -132,7 +132,7 @@ Unit* EnemyPlayerValue::Calculate()
                 if (pMember == bot)
                     continue;
 
-                if (sServerFacade.GetDistance2d(bot, pMember) > 30.0f)
+                if (sServerFacade->GetDistance2d(bot, pMember) > 30.0f)
                     continue;
 
                 if (Unit* pAttacker = pMember->getAttackerForHelper())
@@ -148,7 +148,7 @@ Unit* EnemyPlayerValue::Calculate()
 
 float EnemyPlayerValue::GetMaxAttackDistance()
 {
-    if (!bot->GetBattleGround())
+    if (!bot->GetBattleground())
         return 60.0f;
 
     return 40.0f;

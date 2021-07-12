@@ -1,20 +1,20 @@
-DROP TABLE IF EXISTS `ai_playerbot_rpg_races`;
-
-CREATE TABLE `ai_playerbot_rpg_races` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `entry` bigint(20),
-  `race` bigint(20),
-  `minl` bigint(20),
-  `maxl` bigint(20),
+DROP TABLE IF EXISTS `playerbot_rpg_races`;
+CREATE TABLE `playerbot_rpg_races` 
+(
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `entry` int(11),
+  `race` int(11),
+  `minl` int(11),
+  `maxl` int(11),
   PRIMARY KEY (`id`),
   KEY `entry` (`entry`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DELETE FROM `ai_playerbot_rpg_races`;
+DELETE FROM `playerbot_rpg_races`;
 
 -- say
 
-INSERT INTO `ai_playerbot_rpg_races` VALUES
+INSERT INTO `playerbot_rpg_races` VALUES
 --
 --       DRAENEI
 --

@@ -30,7 +30,7 @@ bool SayAction::Execute(Event event)
 {
 	if (stringTable.empty())
 	{
-		QueryResult results = PlayerbotDatabase.PQuery("SELECT name, text, type FROM ai_playerbot_speech");
+		QueryResult results = PlayerbotDatabase.PQuery("SELECT name, text, type FROM playerbot_speech");
 		if (results)
 		{
             do
@@ -44,14 +44,14 @@ bool SayAction::Execute(Event event)
                     text = "/y " + text;
 
                 if (!text.empty() && text != "")
-                    stringTable[name].push_back(text);
+                    stringTable[name].push_back(std::move(text));
             } while (results->NextRow());
 		}
 	}
 
 	if (probabilityTable.empty())
 	{
-        QueryResult results = PlayerbotDatabase.PQuery("SELECT name, probability FROM ai_playerbot_speech_probability");
+        QueryResult results = PlayerbotDatabase.PQuery("SELECT name, probability FROM playerbot_speech_probability");
         if (results)
         {
             do
@@ -70,7 +70,7 @@ bool SayAction::Execute(Event event)
         return false;
 
     time_t lastSaid = AI_VALUE2(time_t, "last said", qualifier);
-    uint32 nextTime = time(0) + urand(1, 30);
+    uint32 nextTime = time(nullptr) + urand(1, 30);
     botAI->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(nextTime);
 
     if (Group* group = bot->GetGroup())
@@ -158,5 +158,5 @@ bool SayAction::Execute(Event event)
 bool SayAction::isUseful()
 {
     time_t lastSaid = AI_VALUE2(time_t, "last said", qualifier);
-    return (time(0) - lastSaid) > 30;
+    return (time(nullptr) - lastSaid) > 30;
 }

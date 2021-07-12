@@ -170,7 +170,7 @@ RandomItemList RandomItemMgr::Query(uint32 level, RandomItemType type, RandomIte
 
 void RandomItemMgr::BuildRandomItemCache()
 {
-    QueryResult results = PlayerbotDatabase.PQuery("SELECT lvl, type, item FROM ai_playerbot_rnditem_cache");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT lvl, type, item FROM playerbot_rnditem_cache");
     if (results)
     {
         LOG_INFO("playerbots", "Loading random item cache");
@@ -225,7 +225,7 @@ void RandomItemMgr::BuildRandomItemCache()
 
                 randomItemCache[level / 10][rit].push_back(itr.first);
 
-                PlayerbotDatabase.PExecute("INSERT INTO ai_playerbot_rnditem_cache (lvl, type, item) VALUES (%u, %u, %u)", level / 10, type, itr.first);
+                PlayerbotDatabase.PExecute("INSERT INTO playerbot_rnditem_cache (lvl, type, item) VALUES (%u, %u, %u)", level / 10, type, itr.first);
             }
         }
 
@@ -474,7 +474,7 @@ void RandomItemMgr::BuildEquipCache()
 
     ItemTemplateContainer const* itemTemplates = sObjectMgr->GetItemTemplateStore();
 
-    QueryResult results = PlayerbotDatabase.PQuery("SELECT clazz, lvl, slot, quality, item FROM ai_playerbot_equip_cache");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT clazz, lvl, slot, quality, item FROM playerbot_equip_cache");
     if (results)
     {
         LOG_INFO("playerbots", "Loading equipment cache for %d classes, %d levels, %d slots, %d quality from %zu items",
@@ -484,9 +484,9 @@ void RandomItemMgr::BuildEquipCache()
         do
         {
             Field* fields = results->Fetch();
-            uint32 clazz = fields[0].GetUInt32();
+            uint8 clazz = fields[0].GetUInt8();
             uint32 level = fields[1].GetUInt32();
-            uint32 slot = fields[2].GetUInt32();
+            uint8 slot = fields[2].GetUInt8();
             uint32 quality = fields[3].GetUInt32();
             uint32 itemId = fields[4].GetUInt32();
 
@@ -544,7 +544,7 @@ void RandomItemMgr::BuildEquipCache()
 
                             items.push_back(itr.first);
 
-                            PlayerbotDatabase.PExecute("INSERT INTO ai_playerbot_equip_cache (clazz, lvl, slot, quality, item) VALUES (%u, %u, %u, %u, %u)",
+                            PlayerbotDatabase.PExecute("INSERT INTO playerbot_equip_cache (clazz, lvl, slot, quality, item) VALUES (%u, %u, %u, %u, %u)",
                                     class_, level, slot, quality, itr.first);
                         }
 
@@ -857,7 +857,7 @@ uint32 RandomItemMgr::GetRandomTrade(uint32 level)
 
 void RandomItemMgr::BuildRarityCache()
 {
-    QueryResult results = PlayerbotDatabase.PQuery("SELECT item, rarity FROM ai_playerbot_rarity_cache");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT item, rarity FROM playerbot_rarity_cache");
     if (results)
     {
         LOG_INFO("playerbots", "Loading item rarity cache");
@@ -986,7 +986,7 @@ void RandomItemMgr::BuildRarityCache()
                 {
                     rarityCache[itr.first] = rarity;
 
-                    PlayerbotDatabase.PExecute("INSERT INTO ai_playerbot_rarity_cache (item, rarity) VALUES (%u, %f)", itr.first, rarity);
+                    PlayerbotDatabase.PExecute("INSERT INTO playerbot_rarity_cache (item, rarity) VALUES (%u, %f)", itr.first, rarity);
                 }
             }
         }

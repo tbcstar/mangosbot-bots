@@ -15,8 +15,8 @@ class BGJoinAction : public Action
         BGJoinAction(PlayerbotAI* botAI, std::string const& name = "bg join") : Action(botAI, name) { }
 
         bool isUseful() override;
-        virtual bool canJoinBg(BattleGroundQueueTypeId queueTypeId, BattleGroundBracketId bracketId);
-        virtual bool shouldJoinBg(BattleGroundQueueTypeId queueTypeId, BattleGroundBracketId bracketId);
+        virtual bool canJoinBg(BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId);
+        virtual bool shouldJoinBg(BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId);
         bool Execute(Event event) override;
         virtual bool gatherArenaTeam(ArenaType type);
 
@@ -31,7 +31,7 @@ class FreeBGJoinAction : public BGJoinAction
     public:
         FreeBGJoinAction(PlayerbotAI* botAI, std::string const& name = "free bg join") : BGJoinAction(botAI, name) {}
 
-        bool shouldJoinBg(BattleGroundQueueTypeId queueTypeId, BattleGroundBracketId bracketId) override;
+        bool shouldJoinBg(BattlegroundQueueTypeId queueTypeId, BattlegroundBracketId bracketId) override;
 };
 
 class BGLeaveAction : public Action

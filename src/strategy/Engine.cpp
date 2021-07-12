@@ -134,12 +134,12 @@ bool Engine::DoNextAction(Unit* unit, uint32 depth, bool minimal)
     bool actionExecuted = false;
     ActionBasket* basket = nullptr;
 
-    time_t currentTime = time(0);
+    time_t currentTime = time(nullptr);
     aiObjectContext->Update();
     ProcessTriggers();
 
     uint32 iterations = 0;
-    uint32 iterationsPerTick = queue.Size() * (minimal ? 1 : sPlayerbotAIConfig.iterationsPerTick);
+    uint32 iterationsPerTick = queue.Size() * (minimal ? 1 : sPlayerbotAIConfig->iterationsPerTick);
     do
     {
         basket = queue.Peek();
@@ -251,7 +251,7 @@ bool Engine::DoNextAction(Unit* unit, uint32 depth, bool minimal)
     while (basket);
     */
 
-    if (time(0) - currentTime > 1)
+    if (time(nullptr) - currentTime > 1)
     {
         LogAction("too long execution");
     }

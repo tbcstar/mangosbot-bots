@@ -290,7 +290,7 @@ class ValueContext : public NamedObjectContext<UntypedValue>
         static UntypedValue* pet_dead(PlayerbotAI* botAI) { return new PetIsDeadValue(botAI); }
         static UntypedValue* has_mana(PlayerbotAI* botAI) { return new HasManaValue(botAI); }
         static UntypedValue* nearest_game_objects(PlayerbotAI* botAI) { return new NearestGameObjects(botAI); }
-        static UntypedValue* nearest_game_objects_no_los(PlayerbotAI* botAI) { return new NearestGameObjects(botAI, sPlayerbotAIConfig.sightDistance, true); }
+        static UntypedValue* nearest_game_objects_no_los(PlayerbotAI* botAI) { return new NearestGameObjects(botAI, sPlayerbotAIConfig->sightDistance, true); }
         static UntypedValue* closest_game_objects(PlayerbotAI* botAI) { return new NearestGameObjects(botAI, INTERACTION_DISTANCE); }
         static UntypedValue* log_level(PlayerbotAI* botAI) { return new LogLevelValue(botAI); }
         static UntypedValue* nearest_npcs(PlayerbotAI* botAI) { return new NearestNpcsValue(botAI); }

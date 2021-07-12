@@ -11,15 +11,15 @@ void PlayerbotTextMgr::LoadTemplates()
 {
     LOG_INFO("playerbots", "Loading playerbot texts...");
 
-    QueryResult results = PlayerbotDatabase.PQuery("SELECT `key`,`text` FROM `ai_playerbot_text`");
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT `key`,`text` FROM `playerbot_text`");
     uint32 count = 0;
     if (results)
     {
         do
         {
             Field* fields = results->Fetch();
-            std::string key = fields[0].GetString();
-            std::string text = fields[1].GetString();
+            std::string const& key = fields[0].GetString();
+            std::string const& text = fields[1].GetString();
             templates[key].push_back(text);
             ++count;
         } while (results->NextRow());

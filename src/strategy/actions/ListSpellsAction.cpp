@@ -64,7 +64,7 @@ bool ListSpellsAction::Execute(Event event)
         for (uint32 j = 0; j < sSkillLineAbilityStore.GetNumRows(); ++j)
         {
             if (SkillLineAbilityEntry const* skillLine = sSkillLineAbilityStore.LookupEntry(j))
-                skillSpells[skillLine->spellId] = skillLine;
+                skillSpells[skillLine->Spell] = skillLine;
         }
     }
 

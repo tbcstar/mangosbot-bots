@@ -33,7 +33,7 @@ bool DebugAction::Execute(Event event)
         out << "\n0,";
         WorldPosition().printWKT(ipos, out);
 
-        sPlayerbotAIConfig.log("active.csv", out.str().c_str());
+        sPlayerbotAIConfig->log("active.csv", out.str().c_str());
 
     }
 

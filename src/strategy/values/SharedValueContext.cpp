@@ -25,6 +25,6 @@ Value<T>* SharedValueContext::getGlobalValue(std::string const& name, std::strin
 template<class T>
 Value<T>* SharedValueContext::getGlobalValue(std::string const& name, uint32 param)
 {
-    ostringstream out; out << param;
+    std::ostringstream out; out << param;
     return getGlobalValue<T>(name, out.str());
 }

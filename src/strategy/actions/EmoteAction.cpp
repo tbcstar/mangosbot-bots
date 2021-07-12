@@ -545,8 +545,8 @@ bool EmoteActionBase::ReceiveEmote(Player* source, uint32 emote)
             break;
     }
 
-    if (source && !bot->isMoving() && !bot->IsInFront(source, sPlayerbotAIConfig.sightDistance, EMOTE_ANGLE_IN_FRONT))
-        sServerFacade.SetFacingTo(bot, source);
+    if (source && !bot->isMoving() && !bot->IsInFront(source, sPlayerbotAIConfig->sightDistance, EMOTE_ANGLE_IN_FRONT))
+        sServerFacade->SetFacingTo(bot, source);
 
     if (emoteText.size())
         bot->Say(emoteText, (bot->GetTeam() == ALLIANCE ? LANG_COMMON : LANG_ORCISH));
@@ -584,7 +584,7 @@ bool EmoteAction::Execute(Event event)
         {
             pSource = sObjectMgr.GetPlayer(source);
 
-            if (pSource && sServerFacade.GetDistance2d(bot, pSource) < sPlayerbotAIConfig.farDistance)
+            if (pSource && sServerFacade->GetDistance2d(bot, pSource) < sPlayerbotAIConfig->farDistance)
             {
                 LOG_INFO("playerbots", "Bot #%d %s:%d <%s> received SMSG_TEXT_EMOTE %d",
                     bot->GetGUIDLow(), bot->GetTeam() == ALLIANCE ? "A" : "H", bot->getLevel(), bot->GetName().c_str(), text_emote);
@@ -603,7 +603,7 @@ bool EmoteAction::Execute(Event event)
         p >> emoteId >> source;
 
         pSource = sObjectMgr.GetPlayer(source);
-        if (pSource && sServerFacade.GetDistance2d(bot, pSource) < sPlayerbotAIConfig.farDistance && emoteId != EMOTE_ONESHOT_NONE)
+        if (pSource && sServerFacade->GetDistance2d(bot, pSource) < sPlayerbotAIConfig->farDistance && emoteId != EMOTE_ONESHOT_NONE)
         {
             if (pSource->GetSelectionGuid() == bot->GetObjectGuid())
             {
@@ -645,7 +645,7 @@ bool EmoteAction::Execute(Event event)
     if ((!isReact && param.empty()) || emote)
     {
         time_t lastEmote = AI_VALUE2(time_t, "last emote", qualifier);
-        botAI->GetAiObjectContext()->GetValue<time_t>("last emote", qualifier)->Set(time(0) + urand(1000, sPlayerbotAIConfig->repeatDelay) / 1000);
+        botAI->GetAiObjectContext()->GetValue<time_t>("last emote", qualifier)->Set(time(nullptr) + urand(1000, sPlayerbotAIConfig->repeatDelay) / 1000);
         param = qualifier;
     }
 
@@ -690,7 +690,7 @@ bool EmoteAction::isUseful()
         return false;
 
     time_t lastEmote = AI_VALUE2(time_t, "last emote", qualifier);
-    return (time(0) - lastEmote) >= sPlayerbotAIConfig->repeatDelay / 1000;
+    return (time(nullptr) - lastEmote) >= sPlayerbotAIConfig->repeatDelay / 1000;
 }
 
 bool TalkAction::Execute(Event event)

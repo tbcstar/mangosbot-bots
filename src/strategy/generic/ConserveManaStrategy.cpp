@@ -74,7 +74,7 @@ float SaveManaMultiplier::GetValue(Action* action)
     if (!lastCastTime)
         return 1.0f;
 
-    time_t elapsed = time(0) - lastCastTime;
+    time_t elapsed = time(nullptr) - lastCastTime;
     if ((double)elapsed < 10 * saveLevel)
         return 0.0f;
 

@@ -65,7 +65,7 @@ class EnemyTeamHasFlag : public Trigger
 class PlayerIsInBattleground : public Trigger
 {
     public:
-        PlayerIsInBattleground(PlayerbotAI* botAI) : Trigger(botAI, "in battleground") {}
+        PlayerIsInBattleground(PlayerbotAI* botAI) : Trigger(botAI, "in Battleground") {}
 
         bool IsActive() override;
 };
@@ -89,7 +89,7 @@ class BgActiveTrigger : public Trigger
 class PlayerIsInBattlegroundWithoutFlag : public Trigger
 {
     public:
-        PlayerIsInBattlegroundWithoutFlag(PlayerbotAI* botAI) : Trigger(botAI, "in battleground without flag") {}
+        PlayerIsInBattlegroundWithoutFlag(PlayerbotAI* botAI) : Trigger(botAI, "in Battleground without flag") {}
 
         bool IsActive() override;
 };

@@ -3,7 +3,7 @@
  */
 
 #include "CheckMountStateAction.h"
-#include "BattleGroundWS.h"
+#include "BattlegroundWS.h"
 #include "Event.h"
 #include "Playerbot.h"
 #include "ServerFacade.h"
@@ -91,7 +91,7 @@ bool CheckMountStateAction::Execute(Event event)
     if (!bot->IsMounted() && (fartarget || chasedistance))
         return Mount();
 
-    if (attackdistance && bot->IsMounted() && (!noattackers && sServerFacade.IsInCombat(bot)))
+    if (attackdistance && bot->IsMounted() && (!noattackers && sServerFacade->IsInCombat(bot)))
     {
         WorldPacket emptyPacket;
         bot->GetSession()->HandleCancelMountAuraOpcode(emptyPacket);
@@ -125,7 +125,7 @@ bool CheckMountStateAction::isUseful()
         return false;
 
     // Only mount if BG starts in less than 30 sec
-    if (bot->InBattleGround())
+    if (bot->InBattleground())
     {
         if (Battleground* bg = bot->GetBattleground())
             if (bg->GetStatus() == STATUS_WAIT_JOIN)

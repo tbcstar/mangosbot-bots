@@ -16,7 +16,7 @@ void TalkToQuestGiverAction::ProcessQuest(Quest const* quest, WorldObject* quest
     QuestStatus status = bot->GetQuestStatus(quest->GetQuestId());
     Player* master = GetMaster();
 
-    if (sPlayerbotAIConfig.syncQuestForPlayer)
+    if (sPlayerbotAIConfig->syncQuestForPlayer)
     {
         if (master && (!master->GetPlayerbotAI() || master->GetPlayerbotAI()->IsRealPlayer()))
         {
@@ -26,7 +26,7 @@ void TalkToQuestGiverAction::ProcessQuest(Quest const* quest, WorldObject* quest
         }
     }
 
-    if (sPlayerbotAIConfig.syncQuestWithPlayer)
+    if (sPlayerbotAIConfig->syncQuestWithPlayer)
     {
         if (master && master->GetQuestStatus(quest->GetQuestId()) == QUEST_STATUS_COMPLETE && (status == QUEST_STATUS_INCOMPLETE || status == QUEST_STATUS_FAILED))
         {

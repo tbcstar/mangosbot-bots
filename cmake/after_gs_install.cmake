@@ -16,3 +16,7 @@ add_dependencies(game playerbots)
 target_link_libraries(game
   PUBLIC
     playerbots)
+
+target_link_libraries(database
+  PUBLIC
+    playerbots)

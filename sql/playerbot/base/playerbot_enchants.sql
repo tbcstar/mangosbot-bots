@@ -12,19 +12,19 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping data for table characters-tbc.ai_playerbot_enchants: ~220 rows (approximately)
-DROP TABLE IF EXISTS `ai_playerbot_enchants`;
-
-CREATE TABLE `ai_playerbot_enchants` (
-  `class` TINYINT(2) NOT NULL,
-  `spec` TINYINT(2) NOT NULL,
-  `spellid` BIGINT(6) NOT NULL,
-  `slotid` TINYINT(2) DEFAULT 1,
+DROP TABLE IF EXISTS `playerbot_enchants`;
+CREATE TABLE `playerbot_enchants` (
+  `class` TINYINT(3) NOT NULL,
+  `spec` TINYINT(3) NOT NULL,
+  `spellid` INT(11) NOT NULL,
+  `slotid` TINYINT(3) DEFAULT 1,
   `name` VARCHAR(255) NOT NULL COMMENT 'name of the enchant',
   PRIMARY KEY (`class`,`spec`,`spellid`,`slotid`)
 ) ENGINE=INNODB DEFAULT CHARSET=latin1;
 
-/*!40000 ALTER TABLE `ai_playerbot_enchants` DISABLE KEYS */;
-INSERT INTO `ai_playerbot_enchants` (`class`, `spec`, `spellid`, `slotid`, `name`) VALUES
+/*!40000 ALTER TABLE `playerbot_enchants` DISABLE KEYS */;
+DELETE FROM `playerbot_enchants`;
+INSERT INTO `playerbot_enchants` (`class`, `spec`, `spellid`, `slotid`, `name`) VALUES
 	(1, 10, 20034, 15, 'Crusader            '),
 	(1, 10, 22779, 17, '30 Hit            '),
 	(1, 10, 27927, 10, '4 All Stats            '),
@@ -245,7 +245,7 @@ INSERT INTO `ai_playerbot_enchants` (`class`, `spec`, `spellid`, `slotid`, `name
 	(11, 112, 34003, 14, '20 Spell Penetration          '),
 	(11, 112, 34010, 15, '81 Healing 27 Spelldamage            '),
 	(11, 112, 35445, 0, '35 Healing 12 Spelldamage 7 mp5            ');
-/*!40000 ALTER TABLE `ai_playerbot_enchants` ENABLE KEYS */;
+/*!40000 ALTER TABLE `playerbot_enchants` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

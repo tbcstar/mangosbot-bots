@@ -405,7 +405,7 @@ bool UseHearthStone::Execute(Event event)
 
 bool UseHearthStone::isUseful()
 {
-    return !bot->IsInCombat() && !bot->InBattleGround();
+    return !bot->IsInCombat() && !bot->InBattleground();
 }
 
 bool UseRandomRecipe::isUseful()

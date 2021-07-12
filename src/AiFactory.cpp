@@ -3,7 +3,7 @@
  */
 
 #include "AiFactory.h"
-#include "BattleGroundMgr.h"
+#include "BattlegroundMgr.h"
 #include "Playerbot.h"
 #include "Engine.h"
 #include "DKAiObjectContext.h"
@@ -476,7 +476,7 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
             "default", "quest", "loot", "gather", "duel", "emote", "conserve mana", "buff", "mount", nullptr);
     }
 
-    if (sRandomPlayerbotMgr.IsRandomBot(player) && !player->InBattleGround())
+    if (sRandomPlayerbotMgr->IsRandomBot(player) && !player->InBattleground())
     {
         if (!player->GetGroup() || player->GetGroup()->GetLeaderGUID() == player->GetGUID())
         {
@@ -487,10 +487,10 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
             nonCombatEngine->addStrategy("pvp");
             nonCombatEngine->addStrategy("collision");
 
-            if (sPlayerbotAIConfig.autoDoQuests)
+            if (sPlayerbotAIConfig->autoDoQuests)
                 nonCombatEngine->addStrategy("travel");
 
-            if (sPlayerbotAIConfig.randomBotJoinLfg)
+            if (sPlayerbotAIConfig->randomBotJoinLfg)
                 nonCombatEngine->addStrategy("lfg");
 
             nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig->randomBotNonCombatStrategies);
@@ -506,10 +506,10 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
                         nonCombatEngine->addStrategy("pvp");
                         nonCombatEngine->addStrategy("collision");
 
-                        if (sPlayerbotAIConfig.autoDoQuests)
+                        if (sPlayerbotAIConfig->autoDoQuests)
                             nonCombatEngine->addStrategy("travel");
 
-                        nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig.randomBotNonCombatStrategies);
+                        nonCombatEngine->ChangeStrategy(sPlayerbotAIConfig->randomBotNonCombatStrategies);
                     }
                 }
             }
@@ -529,15 +529,15 @@ void AiFactory::AddDefaultNonCombatStrategies(Player* player, PlayerbotAI* const
         nonCombatEngine->removeStrategy("rpg");
         nonCombatEngine->removeStrategy("grind");
 
-        nonCombatEngine->addStrategies("battleground", nullptr);
+        nonCombatEngine->addStrategies("Battleground", nullptr);
 
         if (player->GetBattlegroundTypeId() == BATTLEGROUND_WS)
             nonCombatEngine->addStrategies("warsong", nullptr);
 
-        if (player->GetBattleGroundTypeId() == BATTLEGROUND_AV)
+        if (player->GetBattlegroundTypeId() == BATTLEGROUND_AV)
             nonCombatEngine->addStrategies("alterac", nullptr);
 
-        if (player->GetBattleGroundTypeId() == BATTLEGROUND_AB)
+        if (player->GetBattlegroundTypeId() == BATTLEGROUND_AB)
             nonCombatEngine->addStrategies("arathi", nullptr);
 
         if (player->InArena())

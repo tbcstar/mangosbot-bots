@@ -17,7 +17,7 @@ bool LfgJoinAction::Execute(Event event)
 
 uint32 LfgJoinAction::GetRoles()
 {
-    if (!sRandomPlayerbotMgr.IsRandomBot(bot))
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot))
     {
         if (botAI->IsTank(bot))
             return PLAYER_ROLE_TANK;
@@ -275,7 +275,7 @@ bool LfgAcceptAction::Execute(Event event)
     uint32 id = AI_VALUE(uint32, "lfg proposal");
     if (id)
     {
-        //if (urand(0, 1 + 10 / sPlayerbotAIConfig.randomChangeMultiplier))
+        //if (urand(0, 1 + 10 / sPlayerbotAIConfig->randomChangeMultiplier))
         //    return false;
 
         if (bot->IsInCombat() || bot->isDead())
@@ -295,9 +295,9 @@ bool LfgAcceptAction::Execute(Event event)
 
         sLFGMgr->UpdateProposal(id, bot->GetGUID(), true);
 
-        if (sRandomPlayerbotMgr.IsRandomBot(bot) && !bot->GetGroup())
+        if (sRandomPlayerbotMgr->IsRandomBot(bot) && !bot->GetGroup())
         {
-            sRandomPlayerbotMgr.Refresh(bot);
+            sRandomPlayerbotMgr->Refresh(bot);
             botAI->ResetStrategies();
             //bot->TeleportToHomebind();
         }
@@ -358,7 +358,7 @@ bool LfgTeleportAction::Execute(Event event)
 
 bool LfgJoinAction::isUseful()
 {
-    if (!sPlayerbotAIConfig.randomBotJoinLfg)
+    if (!sPlayerbotAIConfig->randomBotJoinLfg)
     {
         //botAI->ChangeStrategy("-lfg", BOT_STATE_NON_COMBAT);
         return false;
@@ -385,7 +385,7 @@ bool LfgJoinAction::isUseful()
     if (bot->isDead())
         return false;
 
-    if (!sRandomPlayerbotMgr.IsRandomBot(bot))
+    if (!sRandomPlayerbotMgr->IsRandomBot(bot))
         return false;
 
     Map* map = bot->GetMap();

@@ -114,7 +114,7 @@ class ChaosFormation : public MoveAheadFormation
             float range = sPlayerbotAIConfig->followDistance;
 			float angle = GetFollowAngle();
 
-            time_t now = time(0);
+            time_t now = time(nullptr);
             if (!lastChangeTime || now - lastChangeTime >= 3)
             {
                 lastChangeTime = now;

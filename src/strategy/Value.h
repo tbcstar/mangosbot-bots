@@ -75,7 +75,7 @@ class CalculatedValue : public UntypedValue, public Value<T>
 {
 	public:
         CalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", uint32 checkInterval = 1) : UntypedValue(botAI, name),
-            checkInterval(checkInterval), lastCheckTime(time(0) - rand() % checkInterval) { }
+            checkInterval(checkInterval), lastCheckTime(time(nullptr) - rand() % checkInterval) { }
 
         virtual ~CalculatedValue() { }
 
@@ -159,7 +159,7 @@ class CDPairCalculatedValue : public CalculatedValue<CreatureData const*>
 public:
     CDPairCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<CreatureData const*>(botAI, name, checkInterval)
     {
-        lastCheckTime = time(0) - checkInterval / 2;
+        lastCheckTime = time(nullptr) - checkInterval / 2;
     }
 
     std::string const& Format() override;
@@ -170,7 +170,7 @@ class CDPairListCalculatedValue : public CalculatedValue<std::vector<CreatureDat
 public:
     CDPairListCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<std::vector<CreatureData const*>>(botAI, name, checkInterval)
     {
-        lastCheckTime = time(0) - checkInterval / 2;
+        lastCheckTime = time(nullptr) - checkInterval / 2;
     }
 
     std::string const& Format() override;
@@ -181,7 +181,7 @@ class ObjectGuidCalculatedValue : public CalculatedValue<ObjectGuid>
 public:
     ObjectGuidCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<ObjectGuid>(botAI, name, checkInterval)
     {
-        lastCheckTime = time(0) - checkInterval / 2;
+        lastCheckTime = time(nullptr) - checkInterval / 2;
     }
 
     std::string const& Format() override;
@@ -192,7 +192,7 @@ class ObjectGuidListCalculatedValue : public CalculatedValue<GuidVector>
     public:
         ObjectGuidListCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<GuidVector>(botAI, name, checkInterval)
         {
-            lastCheckTime = time(0) - checkInterval / 2;
+            lastCheckTime = time(nullptr) - checkInterval / 2;
         }
 
         std::string const& Format() override

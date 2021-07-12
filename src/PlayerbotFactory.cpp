@@ -102,12 +102,12 @@ void PlayerbotFactory::Prepare()
         bot->SetLevel(sPlayerbotAIConfig->randombotStartingLevel);
     }
 
-    if (!sPlayerbotAIConfig.randomBotShowHelmet || !urand(0, 4))
+    if (!sPlayerbotAIConfig->randomBotShowHelmet || !urand(0, 4))
     {
         bot->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_HIDE_HELM);
     }
 
-    if (!sPlayerbotAIConfig.randomBotShowCloak || !urand(0, 4))
+    if (!sPlayerbotAIConfig->randomBotShowCloak || !urand(0, 4))
     {
         bot->SetFlag(PLAYER_FLAGS, PLAYER_FLAGS_HIDE_CLOAK);
     }
@@ -2311,14 +2311,14 @@ void PlayerbotFactory::InitStats()
 
 void PlayerbotFactory::InitArenaTeam()
 {
-    if (!sPlayerbotAIConfig.IsInRandomAccountList(bot->GetSession()->GetAccountId()))
+    if (!sPlayerbotAIConfig->IsInRandomAccountList(bot->GetSession()->GetAccountId()))
         return;
 
-    if (sPlayerbotAIConfig.randomBotArenaTeams.empty())
+    if (sPlayerbotAIConfig->randomBotArenaTeams.empty())
         RandomPlayerbotFactory::CreateRandomArenaTeams();
 
     std::vector<uint32> arenateams;
-    for (std::vector<uint32>::iterator i = sPlayerbotAIConfig.randomBotArenaTeams.begin(); i != sPlayerbotAIConfig.randomBotArenaTeams.end(); ++i)
+    for (std::vector<uint32>::iterator i = sPlayerbotAIConfig->randomBotArenaTeams.begin(); i != sPlayerbotAIConfig->randomBotArenaTeams.end(); ++i)
         arenateams.push_back(*i);
 
     if (arenateams.empty())
@@ -2417,37 +2417,28 @@ void PlayerbotFactory::ApplyEnchantTemplate()
 void PlayerbotFactory::ApplyEnchantTemplate(uint8 spec)
 {
    for (EnchantContainer::const_iterator itr = GetEnchantContainerBegin(); itr != GetEnchantContainerEnd(); ++itr)
-      if ((*itr)->ClassId == bot->getClass() && (*itr)->SpecId == spec)
-         botAI->EnchantItemT((*itr)->SpellId, (*itr)->SlotId);
+      if ((*itr).ClassId == bot->getClass() && (*itr).SpecId == spec)
+         botAI->EnchantItemT((*itr).SpellId, (*itr).SlotId);
 }
 
 void PlayerbotFactory::LoadEnchantContainer()
 {
-   for (EnchantContainer::const_iterator itr = m_EnchantContainer.begin(); itr != m_EnchantContainer.end(); ++itr)
-      delete *itr;
-
    m_EnchantContainer.clear();
 
-   uint32 count = 0;
-
-   QueryResult* result = PlayerbotDatabase.PQuery("SELECT class, spec, spellid, slotid FROM ai_playerbot_enchants");
+   QueryResult result = PlayerbotDatabase.PQuery("SELECT class, spec, spellid, slotid FROM playerbot_enchants");
    if (result)
    {
       do
       {
          Field* fields = result->Fetch();
 
-         EnchantTemplate* pEnchant = new EnchantTemplate;
+         EnchantTemplate pEnchant;
+         pEnchant.ClassId = fields[0].GetUInt8();
+         pEnchant.SpecId = fields[1].GetUInt8();
+         pEnchant.SpellId = fields[2].GetUInt32();
+         pEnchant.SlotId = fields[3].GetUInt8();
 
-         pEnchant->ClassId = fields[0].GetUInt8();
-         pEnchant->SpecId = fields[1].GetUInt8();
-         pEnchant->SpellId = fields[2].GetUInt32();
-         pEnchant->SlotId = fields[3].GetUInt8();
-
-         m_EnchantContainer.push_back(pEnchant);
-         ++count;
+         m_EnchantContainer.push_back(std::move(pEnchant));
       } while (result->NextRow());
-
-      delete result;
    }
 }

@@ -16,7 +16,7 @@
 Creature* SeeSpellAction::CreateWps(Player* wpOwner, float x, float y, float z, float o, uint32 entry, Creature* lastWp, bool important)
 {
     float dist = wpOwner->GetDistance(x, y, z);
-    float delay = 1000.0f * dist / wpOwner->GetSpeed(MOVE_RUN) + sPlayerbotAIConfig.reactDelay;
+    float delay = 1000.0f * dist / wpOwner->GetSpeed(MOVE_RUN) + sPlayerbotAIConfig->reactDelay;
 
     if (!important)
         delay *= 0.25;
@@ -37,7 +37,7 @@ bool SeeSpellAction::Execute(Event event)
     p.rpos(0);
     p >> castCount >> spellId >> castFlags;
 
-    //botAI->TellMaster(to_string(spellId));
+    //botAI->TellMaster(std::to_string(spellId));
 
     if (spellId != 30758)
         return false;
@@ -102,7 +102,7 @@ bool SeeSpellAction::Execute(Event event)
         /*
         PathFinder path(bot);
 
-        ostringstream out;
+        std::ostringstream out;
 
         out << " area = ";
 
@@ -156,7 +156,7 @@ bool SeeSpellAction::Execute(Event event)
             }
             else
             {
-                ostringstream out;
+                std::ostringstream out;
                 out << "node found" << node->getName();
                 botAI->TellMaster(out);
             }

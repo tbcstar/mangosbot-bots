@@ -61,7 +61,7 @@ void PlayerbotHolder::LogoutPlayerBot(ObjectGuid guid)
         bot->GetPlayerbotAI()->TellMaster("Goodbye!");
         Player* master = bot->GetPlayerbotAI()->GetMaster();
         Group* group = bot->GetGroup();
-        if (group && !bot->InBattleGround() && !bot->InBattleGroundQueue() && (master && !master->GetPlayerbotAI()))
+        if (group && !bot->InBattleground() && !bot->InBattlegroundQueue() && (master && !master->GetPlayerbotAI()))
         {
             sPlayerbotDbStore->Save(bot->GetPlayerbotAI());
         }
@@ -173,7 +173,7 @@ void PlayerbotHolder::OnBotLogin(Player* const bot)
     }
     else
     {
-        botAI->ResetStrategies(!sRandomPlayerbotMgr.IsRandomBot(bot->GetGUIDLow()));
+        botAI->ResetStrategies(!sRandomPlayerbotMgr->IsRandomBot(bot->GetGUIDLow()));
     }
 
     if (master && !master->HasUnitState(UNIT_STATE_IN_FLIGHT))
@@ -198,7 +198,7 @@ std::string PlayerbotHolder::ProcessBotCommand(std::string const& cmd, ObjectGui
     if (!isRandomAccount && !isMasterAccount && !admin && masterguid)
     {
         Player* master = sObjectMgr.GetPlayer(masterguid);
-        if (master && (!sPlayerbotAIConfig.allowGuildBots || !masterGuildId || (masterGuildId && master->GetGuildIdFromDB(guid) != masterGuildId)))
+        if (master && (!sPlayerbotAIConfig->allowGuildBots || !masterGuildId || (masterGuildId && master->GetGuildIdFromDB(guid) != masterGuildId)))
             return "not in your guild or account";
     }
 
@@ -360,9 +360,9 @@ std::vector<std::string> PlayerbotHolder::HandlePlayerbotCommand(char const* arg
             messages.push_back("Disable player botAI");
             DisablePlayerBot(master->GetGUID());
         }
-        else if (sPlayerbotAIConfig.selfBotLevel == 0)
+        else if (sPlayerbotAIConfig->selfBotLevel == 0)
             messages.push_back("Self-bot is disabled");
-        else if (sPlayerbotAIConfig.selfBotLevel == 1 && master->GetSession()->GetSecurity() < SEC_GAMEMASTER)
+        else if (sPlayerbotAIConfig->selfBotLevel == 1 && master->GetSession()->GetSecurity() < SEC_GAMEMASTER)
             messages.push_back("You do not have permission to enable player botAI");
         else
         {
@@ -676,7 +676,7 @@ void PlayerbotMgr::OnBotLoginInternal(Player * const bot)
 
 void PlayerbotMgr::OnPlayerLogin(Player* player)
 {
-    if (sPlayerbotAIConfig.selfBotLevel > 2)
+    if (sPlayerbotAIConfig->selfBotLevel > 2)
         HandlePlayerbotCommand("self", player);
 
     if (!sPlayerbotAIConfig->botAutologin)
@@ -718,7 +718,7 @@ void PlayerbotMgr::TellError(std::string const& botName, std::string const& text
 
 void PlayerbotMgr::CheckTellErrors(uint32 elapsed)
 {
-    time_t now = time(0);
+    time_t now = time(nullptr);
     if ((now - lastErrorTell) < sPlayerbotAIConfig->errorDelay / 1000)
         return;
 

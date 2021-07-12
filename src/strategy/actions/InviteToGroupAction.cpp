@@ -60,7 +60,7 @@ bool InviteNearbyToGroupAction::Execute(Event event)
         if (abs(int32(player->getLevel() - bot->getLevel())) > 2)
             continue;
 
-        if (sServerFacade->GetDistance2d(bot, player) > sPlayerbotAIConfig.sightDistance)
+        if (sServerFacade->GetDistance2d(bot, player) > sPlayerbotAIConfig->sightDistance)
             continue;
 
         return Invite(player);
@@ -71,13 +71,13 @@ bool InviteNearbyToGroupAction::Execute(Event event)
 
 bool InviteNearbyToGroupAction::isUseful()
 {
-    if (!sPlayerbotAIConfig.randomBotGroupNearby)
+    if (!sPlayerbotAIConfig->randomBotGroupNearby)
         return false;
 
-    if (bot->InBattleGround())
+    if (bot->InBattleground())
         return false;
 
-    if (bot->InBattleGroundQueue())
+    if (bot->InBattlegroundQueue())
         return false;
 
     GrouperType grouperType = botAI->GetGrouperType();

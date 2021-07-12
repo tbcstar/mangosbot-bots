@@ -308,7 +308,7 @@ class BoostTrigger : public BuffTrigger
 class RandomTrigger : public Trigger
 {
     public:
-        RandomTrigger(PlayerbotAI* botAI, std::string const& name, int32 probability = 7) : Trigger(botAI, name), probability(probability), lastCheck(time(0)) { }
+        RandomTrigger(PlayerbotAI* botAI, std::string const& name, int32 probability = 7) : Trigger(botAI, name), probability(probability), lastCheck(time(nullptr)) { }
 
         bool IsActive() override;
 

@@ -226,9 +226,9 @@ bool PlayerbotSecurity::CheckLevelFor(PlayerbotSecurityLevel level, bool silent,
     std::string text = out.str();
     ObjectGuid guid = from->GetGUID();
     time_t lastSaid = whispers[guid][text];
-    if (!lastSaid || (time(0) - lastSaid) >= sPlayerbotAIConfig->repeatDelay / 1000)
+    if (!lastSaid || (time(nullptr) - lastSaid) >= sPlayerbotAIConfig->repeatDelay / 1000)
     {
-        whispers[guid][text] = time(0);
+        whispers[guid][text] = time(nullptr);
         bot->Whisper(text, LANG_UNIVERSAL, guid);
     }
 

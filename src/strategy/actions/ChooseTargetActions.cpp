@@ -15,13 +15,13 @@ bool AttackEnemyPlayerAction::isUseful()
     if (bot->HasAura(23333) || bot->HasAura(23335))
         return false;
 
-    return !sPlayerbotAIConfig.IsInPvpProhibitedZone(bot->GetAreaId());
+    return !sPlayerbotAIConfig->IsInPvpProhibitedZone(bot->GetAreaId());
 }
 
 bool AttackEnemyFlagCarrierAction::isUseful()
 {
     Unit* target = context->GetValue<Unit*>("enemy flag carrier")->Get();
-    return target && sServerFacade.IsDistanceLessOrEqualThan(sServerFacade.GetDistance2d(bot, target), 75.0f) && (bot->HasAura(23333) || bot->HasAura(23335));
+    return target && sServerFacade->IsDistanceLessOrEqualThan(sServerFacade->GetDistance2d(bot, target), 75.0f) && (bot->HasAura(23333) || bot->HasAura(23335));
 }
 
 bool DropTargetAction::Execute(Event event)

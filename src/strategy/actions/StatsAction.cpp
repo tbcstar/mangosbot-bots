@@ -29,12 +29,12 @@ bool StatsAction::Execute(Event event)
     return true;
 }
 
-void StatsAction::ListGold(ostringstream &out)
+void StatsAction::ListGold(std::ostringstream &out)
 {
     out << chat->formatMoney(bot->GetMoney());
 }
 
-void StatsAction::ListBagSlots(ostringstream &out)
+void StatsAction::ListBagSlots(std::ostringstream &out)
 {
     uint32 totalused = 0, total = 16;
 

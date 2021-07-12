@@ -10,11 +10,11 @@ Unit* FlagCarrierValue::Calculate()
 {
     Unit* carrier = nullptr;
 
-    if (botAI->GetBot()->InBattleGround())
+    if (botAI->GetBot()->InBattleground())
     {
-        if (botAI->GetBot()->GetBattleGroundTypeId() == BattleGroundTypeId::BATTLEGROUND_WS)
+        if (botAI->GetBot()->GetBattlegroundTypeId() == BattlegroundTypeId::BATTLEGROUND_WS)
         {
-            BattleGroundWS *bg = (BattleGroundWS*)botAI->GetBot()->GetBattleGround();
+            BattlegroundWS *bg = (BattlegroundWS*)botAI->GetBot()->GetBattleground();
 
             if ((!sameTeam && bot->GetTeam() == HORDE || (sameTeam && bot->GetTeam() == ALLIANCE)) && !bg->GetFlagCarrierGuid(TEAM_INDEX_HORDE).IsEmpty())
                 carrier = bg->GetBgMap()->GetPlayer(bg->GetFlagCarrierGuid(TEAM_INDEX_HORDE));
@@ -24,7 +24,7 @@ Unit* FlagCarrierValue::Calculate()
 
             if (carrier)
             {
-                if (ignoreRange || bot->IsWithinDistInMap(carrier, sPlayerbotAIConfig.sightDistance))
+                if (ignoreRange || bot->IsWithinDistInMap(carrier, sPlayerbotAIConfig->sightDistance))
                 {
                     return carrier;
                 }
@@ -37,10 +37,10 @@ Unit* FlagCarrierValue::Calculate()
 
 std::vector<CreatureData const*> BgMastersValue::Calculate()
 {
-    BattleGroundTypeId bgTypeId = (BattleGroundTypeId)stoi(qualifier);
+    BattlegroundTypeId bgTypeId = (BattlegroundTypeId)stoi(qualifier);
 
     std::vector<uint32> entries;
-    std::map<Team, std::map<BattleGroundTypeId, std::vector<uint32>>> battleMastersCache = sRandomPlayerbotMgr.getBattleMastersCache();
+    std::map<Team, std::map<BattlegroundTypeId, std::vector<uint32>>> battleMastersCache = sRandomPlayerbotMgr->getBattleMastersCache();
     entries.insert(entries.end(), battleMastersCache[TEAM_BOTH_ALLOWED][bgTypeId].begin(), battleMastersCache[TEAM_BOTH_ALLOWED][bgTypeId].end());
     entries.insert(entries.end(), battleMastersCache[ALLIANCE][bgTypeId].begin(), battleMastersCache[ALLIANCE][bgTypeId].end());
     entries.insert(entries.end(), battleMastersCache[HORDE][bgTypeId].begin(), battleMastersCache[HORDE][bgTypeId].end());

@@ -21,7 +21,7 @@ class BattlegroundStrategy : public Strategy
 
         uint32 GetType() const override { return STRATEGY_TYPE_NONCOMBAT; }
         void InitTriggers(std::vector<TriggerNode*>& triggers) override;
-        std::string const& getName() override { return "battleground"; }
+        std::string const& getName() override { return "Battleground"; }
 };
 
 class WarsongStrategy : public Strategy

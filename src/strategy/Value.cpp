@@ -9,7 +9,7 @@
 template<class T>
 T CalculatedValue<T>::Get()
 {
-    time_t now = time(0);
+    time_t now = time(nullptr);
     if (!lastCheckTime || checkInterval < 2 || now - lastCheckTime >= checkInterval / 2)
     {
         lastCheckTime = now;
@@ -25,7 +25,7 @@ T CalculatedValue<T>::Get()
 
 UnitCalculatedValue::UnitCalculatedValue(PlayerbotAI* botAI, std::string const& name = "value", int32 checkInterval = 1) : CalculatedValue<Unit*>(botAI, name, checkInterval)
 {
-    lastCheckTime = time(0) - checkInterval / 2;
+    lastCheckTime = time(nullptr) - checkInterval / 2;
 }
 
 std::string const& UnitCalculatedValue::Format()
@@ -63,5 +63,5 @@ std::string const& CDPairListCalculatedValue::Format()
 std::string const& ObjectGuidCalculatedValue::Format()
 {
     ObjectGuid guid = Calculate();
-    return guid ? to_string(guid.GetRawValue()) : "<none>";
+    return guid ? std::to_string(guid.GetRawValue()) : "<none>";
 }

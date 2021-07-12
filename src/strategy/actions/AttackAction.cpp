@@ -125,7 +125,7 @@ bool AttackAction::Attack(Unit* target)
     if (!bot->IsInFront(target, sPlayerbotAIConfig->sightDistance, CAST_ANGLE_IN_FRONT))
         bot->SetFacingTo(target);
 
-    if (bot->Attack(target, !botAI->IsRanged(bot) || sServerFacade.GetDistance2d(bot, target) <= sPlayerbotAIConfig.tooCloseDistance))
+    if (bot->Attack(target, !botAI->IsRanged(bot) || sServerFacade->GetDistance2d(bot, target) <= sPlayerbotAIConfig->tooCloseDistance))
     {
         botAI->ChangeEngine(BOT_STATE_COMBAT);
         return ChaseTo(target);

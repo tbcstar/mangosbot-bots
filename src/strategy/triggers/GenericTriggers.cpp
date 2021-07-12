@@ -160,10 +160,10 @@ bool SpellCanBeCastTrigger::IsActive()
 
 bool RandomTrigger::IsActive()
 {
-    if (time(0) - lastCheck < sPlayerbotAIConfig->repeatDelay / 1000)
+    if (time(nullptr) - lastCheck < sPlayerbotAIConfig->repeatDelay / 1000)
         return false;
 
-    lastCheck = time(0);
+    lastCheck = time(nullptr);
     int32 k = (int32)(probability / sPlayerbotAIConfig->randomChangeMultiplier);
     if (k < 1)
         k = 1;
@@ -210,9 +210,9 @@ bool HasAuraTrigger::IsActive()
 
 bool TimerTrigger::IsActive()
 {
-    if (time(0) != lastCheck)
+    if (time(nullptr) != lastCheck)
     {
-        lastCheck = time(0);
+        lastCheck = time(nullptr);
         return true;
     }
 
@@ -342,7 +342,7 @@ bool RandomBotUpdateTrigger::IsActive()
 bool NoNonBotPlayersAroundTrigger::IsActive()
 {
     return !botAI->HasPlayerNearby();
-    /*if (!bot->InBattleGround())
+    /*if (!bot->InBattleground())
         return AI_VALUE(GuidVector, "nearest non bot players").empty();
 
     return false;
@@ -382,7 +382,7 @@ Value<Unit*>* SnareTargetTrigger::GetTargetValue()
 bool StayTimeTrigger::IsActive()
 {
     time_t stayTime = AI_VALUE(time_t, "stay time");
-    time_t now = time(0);
+    time_t now = time(nullptr);
     return delay && stayTime && now > stayTime + 2 * delay / 1000;
 }
 

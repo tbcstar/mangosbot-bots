@@ -88,7 +88,7 @@ void CustomStrategy::InitTriggers(std::vector<TriggerNode*> &triggers)
 
 void CustomStrategy::LoadActionLines(uint32 owner)
 {
-    QueryResult results = PlayerbotDatabase.PQuery("SELECT action_line FROM ai_playerbot_custom_strategy WHERE name = '%s' AND owner = '%u' ORDER BY idx",
+    QueryResult results = PlayerbotDatabase.PQuery("SELECT action_line FROM playerbot_custom_strategy WHERE name = '%s' AND owner = '%u' ORDER BY idx",
             qualifier.c_str(), owner);
     if (results)
     {

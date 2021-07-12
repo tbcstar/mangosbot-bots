@@ -33,7 +33,7 @@ bool SuggestWhatToDoAction::Execute(Event event)
 
     std::string const& qualifier = "suggest what to do";
     time_t lastSaid = AI_VALUE2(time_t, "last said", qualifier);
-    botAI->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(time(0) + urand(1, 60));
+    botAI->GetAiObjectContext()->GetValue<time_t>("last said", qualifier)->Set(time(nullptr) + urand(1, 60));
 
     return true;
 }
@@ -147,8 +147,8 @@ void SuggestWhatToDoAction::grindMaterials()
         return;
 
     // Ultranix
-    QueryResult result = PlayerbotDatabase.PQuery("SELECT DISTINCT category, multiplier FROM ahbot_category WHERE category NOT IN ('other', 'quest', 'trade', 'reagent') "
-        "AND multiplier > 3 ORDER BY multiplier DESC LIMIT 10");
+    //QueryResult result = PlayerbotDatabase.PQuery("SELECT DISTINCT category, multiplier FROM ahbot_category WHERE category NOT IN ('other', 'quest', 'trade', 'reagent') "
+        //"AND multiplier > 3 ORDER BY multiplier DESC LIMIT 10");
     if (!result)
         return;
 
@@ -406,5 +406,5 @@ bool SuggestWhatToDoAction::isUseful()
 {
     std::string const& qualifier = "suggest what to do";
     time_t lastSaid = AI_VALUE2(time_t, "last said", qualifier);
-    return (time(0) - lastSaid) > 30;
+    return (time(nullptr) - lastSaid) > 30;
 }

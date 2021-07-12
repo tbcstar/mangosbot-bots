@@ -1,28 +1,14 @@
-DROP TABLE IF EXISTS `ai_playerbot_speech`;
-
-CREATE TABLE `ai_playerbot_speech` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+DROP TABLE IF EXISTS `playerbot_speech`;
+CREATE TABLE `playerbot_speech` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `text` varchar(1024) NOT NULL,
   `type` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-DROP TABLE IF EXISTS `ai_playerbot_speech_probability`;
 
-CREATE TABLE `ai_playerbot_speech_probability` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `probability` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO `ai_playerbot_speech_probability` VALUES
-(NULL, 'taunt', 30),
-(NULL, 'aoe', 75),
-(NULL, 'loot', 20);
-
-INSERT INTO `ai_playerbot_speech` VALUES
+INSERT INTO `playerbot_speech` VALUES
 (NULL, 'taunt', 'I have puppies under my armor!', 'say'),
 (NULL, 'taunt', 'Bite me, <target>!', 'say'),
 (NULL, 'taunt', 'Hey <target>! Guess what your mom said last night!', 'say'),
@@ -138,7 +124,7 @@ INSERT INTO `ai_playerbot_speech` VALUES
 (NULL, 'taunt', 'Witness the firepower of this fully armed huntsman!', 'say');
 
 
-INSERT INTO `ai_playerbot_speech` VALUES
+INSERT INTO `playerbot_speech` VALUES
 (NULL, 'critical health', 'Heal me! Quick!', 'yell'),
 (NULL, 'critical health', 'Almost dead! Heal me!', 'yell'),
 (NULL, 'critical health', 'Help! Heal me!', 'yell'),
@@ -151,7 +137,7 @@ INSERT INTO `ai_playerbot_speech` VALUES
 (NULL, 'critical health', 'Oh the pain. Heal me quick!', 'yell');
 
 
-INSERT INTO `ai_playerbot_speech` VALUES
+INSERT INTO `playerbot_speech` VALUES
 (NULL, 'low health', 'Need heal', 'say'),
 (NULL, 'low health', 'Low health', 'say'),
 (NULL, 'low health', 'Drop a heal. Please.', 'say'),
@@ -165,7 +151,7 @@ INSERT INTO `ai_playerbot_speech` VALUES
 (NULL, 'low health', 'Can anybody heal me a bit?', 'say');
 
 
-INSERT INTO `ai_playerbot_speech` VALUES
+INSERT INTO `playerbot_speech` VALUES
 (NULL, 'low mana', 'OOM', 'say'),
 (NULL, 'low mana', 'I am out of mana', 'say'),
 (NULL, 'low mana', 'Damn I wasted all my mana on this', 'say'),
@@ -178,7 +164,7 @@ INSERT INTO `ai_playerbot_speech` VALUES
 (NULL, 'low mana', 'I''d get some drinks next time. Out of mana', 'say'),
 (NULL, 'low mana', 'Where is my mana?', 'say');
 
-INSERT INTO `ai_playerbot_speech` VALUES
+INSERT INTO `playerbot_speech` VALUES
 (NULL, 'aoe', 'Oh god!', 'say'),
 (NULL, 'aoe', 'I am scared', 'say'),
 (NULL, 'aoe', 'We are done for', 'say'),
@@ -202,7 +188,7 @@ INSERT INTO `ai_playerbot_speech` VALUES
 (NULL, 'aoe', 'I hope they won''t come for me', 'say'),
 (NULL, 'aoe', 'Oh no. I can''t see at this slaugther', 'say');
 
-INSERT INTO `ai_playerbot_speech` VALUES
+INSERT INTO `playerbot_speech` VALUES
 (NULL, 'loot', 'I hope there will be some money', 'say'),
 (NULL, 'loot', 'Loot! Loot!', 'say'),
 (NULL, 'loot', 'My precious', 'say'),
@@ -240,7 +226,7 @@ INSERT INTO `ai_playerbot_speech` VALUES
 (NULL, 'loot', 'No, I can''t resist', 'say'),
 (NULL, 'loot', 'I want more!', 'say');
 
-INSERT INTO `ai_playerbot_speech` VALUES
+INSERT INTO `playerbot_speech` VALUES
 (NULL, 'low ammo', 'I have few <ammo> left!', 'say'),
 (NULL, 'low ammo', 'I need more <ammo>!', 'say'),
 (NULL, 'low ammo', '100 <ammo> left!', 'say'),

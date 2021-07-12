@@ -83,7 +83,7 @@ class StrategyContext : public NamedObjectContext<Strategy>
             creators["ranged"] = &StrategyContext::ranged;
             creators["behind"] = &StrategyContext::behind;
             creators["bg"] = &StrategyContext::bg;
-            creators["battleground"] = &StrategyContext::battleground;
+            creators["Battleground"] = &StrategyContext::Battleground;
             creators["warsong"] = &StrategyContext::warsong;
             creators["alterac"] = &StrategyContext::alterac;
             creators["arathi"] = &StrategyContext::arathi;
@@ -135,7 +135,7 @@ class StrategyContext : public NamedObjectContext<Strategy>
         static Strategy* possible_adds() { return new PossibleAddsStrategy(); }
         static Strategy* mount(PlayerbotAI* botAI) { return new MountStrategy(botAI); }
         static Strategy* bg(PlayerbotAI* botAI) { return new BGStrategy(botAI); }
-        static Strategy* battleground(PlayerbotAI* botAI) { return new BattlegroundStrategy(botAI); }
+        static Strategy* Battleground(PlayerbotAI* botAI) { return new BattlegroundStrategy(botAI); }
         static Strategy* warsong(PlayerbotAI* botAI) { return new WarsongStrategy(botAI); }
         static Strategy* alterac(PlayerbotAI* botAI) { return new AlteracStrategy(botAI); }
         static Strategy* arathi(PlayerbotAI* botAI) { return new ArathiStrategy(botAI); }
