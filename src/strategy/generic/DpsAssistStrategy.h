@@ -3,10 +3,7 @@
  */
 
 #include "NonCombatStrategy.h"
-
-class PlayerbotAI;
-
-class DpsAssistStrategy : public NonCombatStrategy
+class DpsAssistStrategy : public NonCombatStrategy
 {
     public:
         DpsAssistStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }

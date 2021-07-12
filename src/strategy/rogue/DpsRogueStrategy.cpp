@@ -3,7 +3,6 @@
  */
 
 #include "DpsRogueStrategy.h"
-#include "Playerbot.h"
 
 class DpsRogueStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

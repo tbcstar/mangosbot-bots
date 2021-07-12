@@ -3,10 +3,7 @@
  */
 
 #include "GenericHunterStrategy.h"
-
-class PlayerbotAI;
-
-class DpsHunterStrategy : public GenericHunterStrategy
+class DpsHunterStrategy : public GenericHunterStrategy
 {
     public:
         DpsHunterStrategy(PlayerbotAI* botAI);

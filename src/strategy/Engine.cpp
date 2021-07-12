@@ -4,10 +4,8 @@
 
 #include "Engine.h"
 #include "Action.h"
-#include "Event.h"
 #include "Queue.h"
 #include "PerformanceMonitor.h"
-#include "Playerbot.h"
 
 Engine::Engine(PlayerbotAI* botAI, AiObjectContext* factory) : PlayerbotAIAware(botAI), aiObjectContext(factory)
 {

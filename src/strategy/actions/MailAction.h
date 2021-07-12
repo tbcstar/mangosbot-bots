@@ -3,12 +3,7 @@
  */
 
 #include "InventoryAction.h"
-
-class Event;
-class ObjectGuid;
-class PlayerbotAI;
-
-struct Mail;
+struct Mail;
 
 class MailProcessor
 {

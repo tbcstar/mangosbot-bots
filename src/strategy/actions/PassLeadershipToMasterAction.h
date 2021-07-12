@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class PassLeadershipToMasterAction : public Action
+class PassLeadershipToMasterAction : public Action
 {
     public:
         PassLeadershipToMasterAction(PlayerbotAI* botAI) : Action(botAI, "leader") { }

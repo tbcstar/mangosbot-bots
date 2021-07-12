@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class RangeAction : public Action
+class RangeAction : public Action
 {
     public:
         RangeAction(PlayerbotAI* botAI) : Action(botAI, "range") { }

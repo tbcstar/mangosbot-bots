@@ -3,7 +3,6 @@
  */
 
 #include "NearestAdsValue.h"
-#include "Playerbot.h"
 
 bool NearestAddsValue::AcceptUnit(Unit* unit)
 {

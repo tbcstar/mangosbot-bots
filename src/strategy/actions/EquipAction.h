@@ -5,10 +5,8 @@
 #include "ChatHelper.h"
 #include "InventoryAction.h"
 
-class Event;
 class FindItemVisitor;
 class Item;
-class PlayerbotAI;
 
 class EquipAction : public InventoryAction
 {

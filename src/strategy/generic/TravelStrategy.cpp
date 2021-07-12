@@ -3,7 +3,6 @@
  */
 
 #include "TravelStrategy.h"
-#include "Playerbot.h"
 
 TravelStrategy::TravelStrategy(PlayerbotAI* botAI) : Strategy(botAI)
 {

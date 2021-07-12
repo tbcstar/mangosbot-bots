@@ -3,7 +3,6 @@
  */
 
 #include "PartyMemberWithoutAuraValue.h"
-#include "Playerbot.h"
 
 extern std::vector<std::string> split(std::string const& s, char delim);
 

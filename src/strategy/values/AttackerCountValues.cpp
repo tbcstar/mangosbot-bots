@@ -3,7 +3,6 @@
  */
 
 #include "AttackerCountValues.h"
-#include "Playerbot.h"
 
 uint8 MyAttackerCountValue::Calculate()
 {

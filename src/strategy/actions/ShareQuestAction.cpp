@@ -3,8 +3,6 @@
  */
 
 #include "ShareQuestAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool ShareQuestAction::Execute(Event event)
 {

@@ -4,7 +4,6 @@
 
 #include "PvpTriggers.h"
 #include "BattlegroundWS.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool EnemyPlayerNear::IsActive()

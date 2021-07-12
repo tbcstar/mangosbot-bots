@@ -3,10 +3,7 @@
  */
 
 #include "GenericTriggers.h"
-
-class PlayerbotAI;
-
-BUFF_TRIGGER(BattleShoutTrigger, "battle shout", "battle shout")
+BUFF_TRIGGER(BattleShoutTrigger, "battle shout", "battle shout")
 BUFF_TRIGGER(BattleStanceTrigger, "battle stance", "battle stance")
 BUFF_TRIGGER(DefensiveStanceTrigger, "defensive stance", "defensive stance")
 BUFF_TRIGGER(ShieldBlockTrigger, "shield block", "shield block")

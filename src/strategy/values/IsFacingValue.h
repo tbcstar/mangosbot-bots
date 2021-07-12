@@ -4,10 +4,7 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-
-class PlayerbotAI;
-
-class IsFacingValue : public BoolCalculatedValue, public Qualified
+class IsFacingValue : public BoolCalculatedValue, public Qualified
 {
 	public:
         IsFacingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }

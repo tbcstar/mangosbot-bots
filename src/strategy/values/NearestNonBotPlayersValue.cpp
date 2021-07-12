@@ -4,7 +4,6 @@
 
 #include "NearestNonBotPlayersValue.h"
 #include "GridNotifiers.h"
-#include "Playerbot.h"
 
 void NearestNonBotPlayersValue::FindUnits(std::list<Unit*> &targets)
 {

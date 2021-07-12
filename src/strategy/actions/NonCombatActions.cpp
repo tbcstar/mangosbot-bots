@@ -3,8 +3,6 @@
  */
 
 #include "NonCombatActions.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool DrinkAction::Execute(Event event)
 {

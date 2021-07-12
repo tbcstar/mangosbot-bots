@@ -4,10 +4,7 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-
-class PlayerbotAI;
-
-class EnemyHealerTargetValue : public UnitCalculatedValue, public Qualified
+class EnemyHealerTargetValue : public UnitCalculatedValue, public Qualified
 {
 	public:
         EnemyHealerTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI, "enemy healer target") { }

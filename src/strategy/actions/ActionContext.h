@@ -43,10 +43,7 @@
 #include "TravelAction.h"
 #include "XpGainAction.h"
 #include "WorldBuffAction.h"
-
-class PlayerbotAI;
-
-class ActionContext : public NamedObjectContext<Action>
+class ActionContext : public NamedObjectContext<Action>
 {
     public:
         ActionContext()

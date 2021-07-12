@@ -3,7 +3,6 @@
  */
 
 #include "GenericRogueNonCombatStrategy.h"
-#include "Playerbot.h"
 
 void GenericRogueNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class AcceptResurrectAction : public Action
+class AcceptResurrectAction : public Action
 {
     public:
         AcceptResurrectAction(PlayerbotAI* botAI) : Action(botAI, "accept resurrect") { }

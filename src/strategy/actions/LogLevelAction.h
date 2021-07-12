@@ -4,11 +4,7 @@
 
 #include "LogCommon.h"
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class LogLevelAction : public Action
+class LogLevelAction : public Action
 {
     public:
         LogLevelAction(PlayerbotAI* botAI) : Action(botAI, "log") { }

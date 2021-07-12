@@ -3,12 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class ObjectGuid;
-class PlayerbotAI;
-
-class AddLootAction : public Action
+class AddLootAction : public Action
 {
     public:
         AddLootAction(PlayerbotAI* botAI) : Action(botAI, "add loot") { }

@@ -3,7 +3,6 @@
  */
 
 #include "IsMovingValue.h"
-#include "Playerbot.h"
 
 bool IsMovingValue::Calculate()
 {

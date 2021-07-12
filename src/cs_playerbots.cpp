@@ -15,8 +15,6 @@
 
 #include "Chat.h"
 #include "GuildTaskMgr.h"
-#include "PlayerbotMgr.h"
-#include "RandomPlayerbotMgr.h"
 #include "PerformanceMonitor.h"
 #include "ScriptMgr.h"
 

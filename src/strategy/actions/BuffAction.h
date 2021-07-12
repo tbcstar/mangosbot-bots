@@ -3,11 +3,7 @@
  */
 
 #include "InventoryAction.h"
-
-class Event;
-class PlayerbotAI;
-
-class BuffAction : public InventoryAction
+class BuffAction : public InventoryAction
 {
     public:
         BuffAction(PlayerbotAI* botAI) : InventoryAction(botAI, "buff") { }

@@ -5,7 +5,6 @@
 #include "ExternalEventHelper.h"
 #include "Trigger.h"
 #include "ChatHelper.h"
-#include "Playerbot.h"
 
 bool ExternalEventHelper::ParseChatCommand(std::string const& command, Player* owner)
 {

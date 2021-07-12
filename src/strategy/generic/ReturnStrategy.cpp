@@ -3,7 +3,6 @@
  */
 
 #include "ReturnStrategy.h"
-#include "Playerbot.h"
 
 void ReturnStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

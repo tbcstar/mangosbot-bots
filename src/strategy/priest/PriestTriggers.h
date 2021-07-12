@@ -3,10 +3,7 @@
  */
 
 #include "CureTriggers.h"
-
-class PlayerbotAI;
-
-class PowerWordFortitudeOnPartyTrigger : public BuffOnPartyTrigger
+class PowerWordFortitudeOnPartyTrigger : public BuffOnPartyTrigger
 {
     public:
         PowerWordFortitudeOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "power word: fortitude", 2) { }

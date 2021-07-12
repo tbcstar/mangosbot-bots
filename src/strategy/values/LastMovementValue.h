@@ -4,12 +4,7 @@
 
 #include "Value.h"
 #include "TravelMgr.h"
-
-class ObjectGuid;
-class PlayerbotAI;
-class Unit;
-
-class LastMovement
+class LastMovement
 {
     public:
         LastMovement();

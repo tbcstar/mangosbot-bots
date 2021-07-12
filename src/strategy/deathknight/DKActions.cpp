@@ -3,7 +3,6 @@
  */
 
 #include "DKActions.h"
-#include "Playerbot.h"
 
 NextAction** CastDeathchillAction::getPrerequisites()
 {

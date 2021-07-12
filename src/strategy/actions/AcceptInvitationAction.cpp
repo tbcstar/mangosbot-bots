@@ -3,8 +3,6 @@
  */
 
 #include "AcceptInvitationAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 #include "PlayerbotSecurity.h"
 
 bool AcceptInvitationAction::Execute(Event event)

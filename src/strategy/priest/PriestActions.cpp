@@ -3,7 +3,6 @@
  */
 
 #include "PriestActions.h"
-#include "Event.h"
 
 NextAction** CastAbolishDiseaseAction::getAlternatives()
 {

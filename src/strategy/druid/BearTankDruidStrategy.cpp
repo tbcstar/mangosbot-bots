@@ -3,7 +3,6 @@
  */
 
 #include "BearTankDruidStrategy.h"
-#include "Playerbot.h"
 
 class BearTankDruidStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

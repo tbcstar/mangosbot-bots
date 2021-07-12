@@ -4,7 +4,6 @@
 
 #include "GenericTriggers.h"
 #include "BattlegroundWS.h"
-#include "Playerbot.h"
 
 bool LowManaTrigger::IsActive()
 {

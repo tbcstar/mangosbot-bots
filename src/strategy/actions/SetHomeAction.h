@@ -3,11 +3,7 @@
  */
 
 #include "MovementActions.h"
-
-class Event;
-class PlayerbotAI;
-
-class SetHomeAction : public MovementAction
+class SetHomeAction : public MovementAction
 {
     public:
         SetHomeAction(PlayerbotAI* botAI) : MovementAction(botAI, "home") { }

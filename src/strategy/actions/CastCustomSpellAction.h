@@ -3,13 +3,7 @@
  */
 
 #include "InventoryAction.h"
-
-class Event;
-class PlayerbotAI;
-class SpellInfo;
-class WorldObject;
-
-class CastCustomSpellAction : public InventoryAction
+class CastCustomSpellAction : public InventoryAction
 {
     public:
         CastCustomSpellAction(PlayerbotAI* botAI, std::string const& name = "cast custom spell") : InventoryAction(botAI, name) { }

@@ -3,8 +3,6 @@
  */
 
 #include "AutoLearnSpellAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool AutoLearnSpellAction::Execute(Event event)
 {
@@ -26,9 +24,7 @@ bool AutoLearnSpellAction::Execute(Event event)
 
     return true;
 }
-
-
-void AutoLearnSpellAction::LearnSpells(std::ostringstream* out)
+void AutoLearnSpellAction::LearnSpells(std::ostringstream* out)
 {
     if (sPlayerbotAIConfig->autoLearnTrainerSpells)// || (!botAI->GetMaster() && sRandomPlayerbotMgr->IsRandomBot(bot)))
         LearnTrainerSpells(out);

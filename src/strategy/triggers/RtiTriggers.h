@@ -3,10 +3,7 @@
  */
 
 #include "Trigger.h"
-
-class PlayerbotAI;
-
-class NoRtiTrigger : public Trigger
+class NoRtiTrigger : public Trigger
 {
     public:
         NoRtiTrigger(PlayerbotAI* botAI) : Trigger(botAI, "no rti target") { }

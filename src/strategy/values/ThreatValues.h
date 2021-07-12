@@ -4,11 +4,7 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-
-class PlayerbotAI;
-class Unit;
-
-class ThreatValue : public Uint8CalculatedValue, public Qualified
+class ThreatValue : public Uint8CalculatedValue, public Qualified
 {
 	public:
         ThreatValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }

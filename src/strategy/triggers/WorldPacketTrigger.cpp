@@ -3,7 +3,6 @@
  */
 
 #include "WorldPacketTrigger.h"
-#include "Playerbot.h"
 
 void WorldPacketTrigger::ExternalEvent(WorldPacket& revData, Player* eventOwner = nullptr)
 {

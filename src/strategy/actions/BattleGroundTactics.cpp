@@ -19,8 +19,6 @@
 #include "BattlegroundSA.h"
 #include "BattlegroundWS.h"
 #include "BattlegroundEY.h"
-#include "Event.h"
-#include "Playerbot.h"
 #include "PositionValue.h"
 #include "ServerFacade.h"
 

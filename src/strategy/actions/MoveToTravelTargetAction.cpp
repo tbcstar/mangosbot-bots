@@ -6,7 +6,6 @@
 #include "ChooseRpgTargetAction.h"
 #include "LootObjectStack.h"
 #include "PathGenerator.h"
-#include "Playerbot.h"
 
 bool MoveToTravelTargetAction::Execute(Event event)
 {

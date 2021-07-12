@@ -31,10 +31,7 @@
 #include "TradeStatusAction.h"
 #include "UseMeetingStoneAction.h"
 #include "NamedObjectContext.h"
-
-class PlayerbotAI;
-
-class WorldPacketActionContext : public NamedObjectContext<Action>
+class WorldPacketActionContext : public NamedObjectContext<Action>
 {
     public:
         WorldPacketActionContext()

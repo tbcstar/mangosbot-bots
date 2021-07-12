@@ -3,10 +3,8 @@
  */
 
 #include "EquipAction.h"
-#include "Event.h"
 #include "ItemCountValue.h"
 #include "ItemUsageValue.h"
-#include "Playerbot.h"
 
 bool EquipAction::Execute(Event event)
 {

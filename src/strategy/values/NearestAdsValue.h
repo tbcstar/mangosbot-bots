@@ -3,11 +3,7 @@
  */
 
 #include "PossibleTargetsValue.h"
-#include "PlayerbotAIConfig.h"
-
-class PlayerbotAI;
-
-class NearestAddsValue : public PossibleTargetsValue
+class NearestAddsValue : public PossibleTargetsValue
 {
 	public:
         NearestAddsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->tooCloseDistance) : PossibleTargetsValue(botAI, "nearest adds", range) { }

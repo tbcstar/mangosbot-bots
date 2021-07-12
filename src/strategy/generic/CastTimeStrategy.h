@@ -3,10 +3,7 @@
  */
 
 #include "Strategy.h"
-
-class PlayerbotAI;
-
-class CastTimeMultiplier : public Multiplier
+class CastTimeMultiplier : public Multiplier
 {
     public:
         CastTimeMultiplier(PlayerbotAI* botAI) : Multiplier(botAI, "cast time") { }

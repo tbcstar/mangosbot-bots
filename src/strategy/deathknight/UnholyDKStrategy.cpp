@@ -3,7 +3,6 @@
  */
 
 #include "UnholyDKStrategy.h"
-#include "Playerbot.h"
 
 class UnholyDKStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

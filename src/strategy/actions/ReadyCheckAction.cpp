@@ -3,8 +3,6 @@
  */
 
 #include "ReadyCheckAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 string formatPercent(std::string const& name, uint8 value, float percent)
 {

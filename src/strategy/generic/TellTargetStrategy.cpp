@@ -3,7 +3,6 @@
  */
 
 #include "TellTargetStrategy.h"
-#include "Playerbot.h"
 
 void TellTargetStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

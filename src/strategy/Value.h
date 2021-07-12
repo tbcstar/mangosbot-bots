@@ -3,12 +3,7 @@
  */
 
 #include "AiObject.h"
-#include "ObjectGuid.h"
-
-class PlayerbotAI;
-class Unit;
-
-struct CreatureData;
+struct CreatureData;
 
 class UntypedValue : public AiNamedObject
 {

@@ -4,7 +4,6 @@
 
 #include "AiFactory.h"
 #include "BattlegroundMgr.h"
-#include "Playerbot.h"
 #include "Engine.h"
 #include "DKAiObjectContext.h"
 #include "PriestAiObjectContext.h"

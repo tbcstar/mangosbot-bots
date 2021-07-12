@@ -5,8 +5,6 @@
 #include "MovementActions.h"
 
 class Creature;
-class Event;
-class PlayerbotAI;
 
 class SeeSpellAction : public MovementAction
 {

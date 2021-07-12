@@ -3,11 +3,7 @@
  */
 
 #include "Trigger.h"
-#include "PlayerbotAIConfig.h"
-
-class PlayerbotAI;
-
-class ValueInRangeTrigger : public Trigger
+class ValueInRangeTrigger : public Trigger
 {
     public:
         ValueInRangeTrigger(PlayerbotAI* botAI, std::string const& name, float maxValue, float minValue) : Trigger(botAI, name), maxValue = maxValue), minValue = minValue) { }

@@ -3,8 +3,6 @@
  */
 
 #include "SetHomeAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool SetHomeAction::Execute(Event event)
 {

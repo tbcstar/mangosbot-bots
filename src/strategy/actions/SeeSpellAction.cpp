@@ -3,10 +3,8 @@
  */
 
 #include "SeeSpellAction.h"
-#include "Event.h"
 #include "Formations.h"
 #include "PathGenerator.h"
-#include "Playerbot.h"
 #include "TravelMgr.h"
 
 #ifdef ELUNA
@@ -165,9 +163,7 @@ bool SeeSpellAction::Execute(Event event)
         sTravelNodeMap.m_nMapMtx.unlock();
         */
     }
-
-
-    if (bot->IsWithinLOS(x, y, z))
+    if (bot->IsWithinLOS(x, y, z))
         return MoveNear(bot->GetMapId(), x, y, z, 0);
     else
         return MoveTo(bot->GetMapId(), x, y, z, false, false);

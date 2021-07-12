@@ -3,8 +3,6 @@
  */
 
 #include "SecurityCheckAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool SecurityCheckAction::isUseful()
 {

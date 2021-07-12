@@ -5,9 +5,7 @@
 #include "MoveToRpgTargetAction.h"
 #include "ChatHelper.h"
 #include "ChooseRpgTargetAction.h"
-#include "Event.h"
 #include "LastMovementValue.h"
-#include "Playerbot.h"
 #include "TravelMgr.h"
 
 bool MoveToRpgTargetAction::Execute(Event event)

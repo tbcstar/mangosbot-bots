@@ -3,10 +3,7 @@
  */
 
 #include "AiObjectContext.h"
-
-class PlayerbotAI;
-
-class PriestAiObjectContext : public AiObjectContext
+class PriestAiObjectContext : public AiObjectContext
 {
     public:
         PriestAiObjectContext(PlayerbotAI* botAI);

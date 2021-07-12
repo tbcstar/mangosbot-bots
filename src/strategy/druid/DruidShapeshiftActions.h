@@ -3,11 +3,7 @@
  */
 
 #include "GenericSpellActions.h"
-
-class Event;
-class PlayerbotAI;
-
-class CastBearFormAction : public CastBuffSpellAction
+class CastBearFormAction : public CastBuffSpellAction
 {
 	public:
 		CastBearFormAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "bear form") { }

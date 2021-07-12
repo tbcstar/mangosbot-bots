@@ -3,10 +3,8 @@
  */
 
 #include "RevealGatheringItemAction.h"
-#include "Event.h"
 #include "ChatHelper.h"
 #include "GridNotifiers.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 class AnyGameObjectInObjectRangeCheck

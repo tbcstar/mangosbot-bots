@@ -3,10 +3,7 @@
  */
 
 #include "GenericSpellActions.h"
-
-class PlayerbotAI;
-
-// all
+// all
 class CastHeroicStrikeAction : public CastMeleeSpellAction
 {
     public:

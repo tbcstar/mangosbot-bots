@@ -3,7 +3,6 @@
  */
 
 #include "MageActions.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 Value<Unit*>* CastPolymorphAction::GetTargetValue()

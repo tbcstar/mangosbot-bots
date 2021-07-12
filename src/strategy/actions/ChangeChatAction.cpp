@@ -3,8 +3,6 @@
  */
 
 #include "ChangeChatAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool ChangeChatAction::Execute(Event event)
 {

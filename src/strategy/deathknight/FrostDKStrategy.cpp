@@ -3,7 +3,6 @@
  */
 
 #include "FrostDKStrategy.h"
-#include "Playerbot.h"
 
 class FrostDKStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

@@ -4,9 +4,6 @@
 
 #include "Trigger.h"
 
-class Event;
-class Player;
-class PlayerbotAI;
 class WorldPacket;
 
 class WorldPacketTrigger : public Trigger

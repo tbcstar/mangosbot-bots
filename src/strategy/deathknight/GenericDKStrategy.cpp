@@ -4,7 +4,6 @@
 
 #include "GenericDKStrategy.h"
 #include "DKAiObjectContext.h"
-#include "Playerbot.h"
 
 class GenericDKStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

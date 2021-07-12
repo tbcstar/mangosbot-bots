@@ -3,8 +3,6 @@
  */
 
 #include "RemoveAuraAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 RemoveAuraAction::RemoveAuraAction(PlayerbotAI* botAI) : Action(botAI, "ra")
 {

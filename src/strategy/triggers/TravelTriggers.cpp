@@ -3,7 +3,6 @@
  */
 
 #include "TravelTriggers.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool NoTravelTargetTrigger::IsActive()

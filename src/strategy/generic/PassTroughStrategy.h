@@ -3,10 +3,7 @@
  */
 
 #include "Strategy.h"
-
-class PlayerbotAI;
-
-class PassTroughStrategy : public Strategy
+class PassTroughStrategy : public Strategy
 {
     public:
         PassTroughStrategy(PlayerbotAI* botAI, float relevance = 100.0f) : Strategy(botAI), relevance(relevance) { }

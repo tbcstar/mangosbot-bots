@@ -3,10 +3,7 @@
  */
 
 #include "CombatStrategy.h"
-
-class PlayerbotAI;
-
-class MeleeCombatStrategy : public CombatStrategy
+class MeleeCombatStrategy : public CombatStrategy
 {
     public:
         MeleeCombatStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI) { }

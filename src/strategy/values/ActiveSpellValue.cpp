@@ -3,7 +3,6 @@
  */
 
 #include "ActiveSpellValue.h"
-#include "Playerbot.h"
 
 uint32 ActiveSpellValue::Calculate()
 {

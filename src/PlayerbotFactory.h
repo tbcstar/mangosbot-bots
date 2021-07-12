@@ -3,11 +3,7 @@
  */
 
 #include "InventoryAction.h"
-
-class Item;
-class Player;
-
-struct ItemTemplate;
+struct ItemTemplate;
 
 struct EnchantTemplate
 {

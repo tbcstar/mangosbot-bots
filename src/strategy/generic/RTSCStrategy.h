@@ -3,10 +3,7 @@
  */
 
 #include "Strategy.h"
-
-class PlayerbotAI;
-
-class RTSCStrategy : public Strategy
+class RTSCStrategy : public Strategy
 {
     public:
         RTSCStrategy(PlayerbotAI* botAI);

@@ -4,10 +4,7 @@
 
 #ifndef _RandomPlayerbotFactory_H
 #define _RandomPlayerbotFactory_H
-
-#include "Common.h"
-
-class RandomPlayerbotFactory
+class RandomPlayerbotFactory
 {
     public:
         RandomPlayerbotFactory(uint32 accountId);

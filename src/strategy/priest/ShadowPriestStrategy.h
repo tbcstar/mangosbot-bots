@@ -3,10 +3,7 @@
  */
 
 #include "GenericPriestStrategy.h"
-
-class PlayerbotAI;
-
-class ShadowPriestStrategy : public GenericPriestStrategy
+class ShadowPriestStrategy : public GenericPriestStrategy
 {
     public:
         ShadowPriestStrategy(PlayerbotAI* botAI);

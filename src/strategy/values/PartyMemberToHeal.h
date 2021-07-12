@@ -5,7 +5,6 @@
 #include "PartyMemberValue.h"
 
 class Pet;
-class PlayerbotAI;
 
 class PartyMemberToHeal : public PartyMemberValue
 {

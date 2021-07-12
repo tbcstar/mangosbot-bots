@@ -5,15 +5,11 @@
 #include "AiObject.h"
 #include "CreatureData.h"
 #include "GameObject.h"
-#include "PlayerbotAIConfig.h"
 
 #include <boost/functional/hash.hpp>
 
 class GuidPosition;
-class ObjectGuid;
 class Quest;
-class Player;
-class PlayerbotAI;
 
 namespace G3D
 {

@@ -3,7 +3,6 @@
  */
 
 #include "RogueComboActions.h"
-#include "Playerbot.h"
 
 Value<Unit*>* CastSapAction::GetTargetValue()
 {

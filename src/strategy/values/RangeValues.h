@@ -4,10 +4,7 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-
-class PlayerbotAI;
-
-class RangeValue : public ManualSetValue<float>, public Qualified
+class RangeValue : public ManualSetValue<float>, public Qualified
 {
 	public:
         RangeValue(PlayerbotAI* botAI);

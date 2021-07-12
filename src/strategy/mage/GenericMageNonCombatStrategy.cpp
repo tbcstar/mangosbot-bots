@@ -3,7 +3,6 @@
  */
 
 #include "GenericMageNonCombatStrategy.h"
-#include "Playerbot.h"
 
 class GenericMageNonCombatStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

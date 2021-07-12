@@ -3,7 +3,6 @@
  */
 
 #include "DpsWarlockStrategy.h"
-#include "Playerbot.h"
 
 class DpsWarlockStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

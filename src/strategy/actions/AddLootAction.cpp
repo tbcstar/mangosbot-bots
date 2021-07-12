@@ -3,10 +3,8 @@
  */
 
 #include "AddLootAction.h"
-#include "Event.h"
 #include "GridNotifiers.h"
 #include "LootObjectStack.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool AddLootAction::Execute(Event event)

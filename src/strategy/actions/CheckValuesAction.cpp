@@ -3,8 +3,6 @@
  */
 
 #include "CheckValuesAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 #include "TravelNode.h"
 

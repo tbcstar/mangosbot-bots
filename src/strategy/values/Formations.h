@@ -5,11 +5,7 @@
 #include "Action.h"
 #include "NamedObjectContext.h"
 #include "Value.h"
-#include "PlayerbotAIConfig.h"
 
-class Event;
-class Player;
-class PlayerbotAI;
 class WorldLocation;
 
 class Formation : public AiNamedObject

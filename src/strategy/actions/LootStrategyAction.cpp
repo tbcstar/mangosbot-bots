@@ -4,10 +4,8 @@
 
 #include "LootStrategyAction.h"
 #include "LootAction.h"
-#include "Event.h"
 #include "LootStrategyValue.h"
 #include "ChatHelper.h"
-#include "Playerbot.h"
 
 bool LootStrategyAction::Execute(Event event)
 {

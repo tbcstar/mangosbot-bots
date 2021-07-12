@@ -9,7 +9,6 @@
 #include "HunterTriggers.h"
 #include "GenericHunterNonCombatStrategy.h"
 #include "NamedObjectContext.h"
-#include "Playerbot.h"
 
 class HunterStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

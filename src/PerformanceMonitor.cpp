@@ -3,7 +3,6 @@
  */
 
 #include "PerformanceMonitor.h"
-#include "Playerbot.h"
 
 PerformanceMonitorOperation* PerformanceMonitor::start(PerformanceMetric metric, std::string const& name)
 {

@@ -3,7 +3,6 @@
  */
 
 #include "OutfitListValue.h"
-#include "Playerbot.h"
 
 std::string const& OutfitListValue::Save()
 {

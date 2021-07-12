@@ -3,7 +3,6 @@
  */
 
 #include "FleeStrategy.h"
-#include "Playerbot.h"
 
 void FleeStrategy::InitTriggers(std::vector<TriggerNode*> &triggers)
 {

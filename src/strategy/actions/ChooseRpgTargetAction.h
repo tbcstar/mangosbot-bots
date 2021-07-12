@@ -4,11 +4,6 @@
 
 #include "MovementActions.h"
 
-class Event;
-class ObjectGuid;
-class Player;
-class PlayerbotAI;
-class WorldObject;
 class WorldLocation;
 
 class ChooseRpgTargetAction : public MovementAction

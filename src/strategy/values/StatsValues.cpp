@@ -3,7 +3,6 @@
  */
 
 #include "StatsValues.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 Unit* HealthValue::GetTarget()

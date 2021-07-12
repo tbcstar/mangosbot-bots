@@ -4,10 +4,7 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-
-class PlayerbotAI;
-
-class InvalidTargetValue : public BoolCalculatedValue, public Qualified
+class InvalidTargetValue : public BoolCalculatedValue, public Qualified
 {
 	public:
         InvalidTargetValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }

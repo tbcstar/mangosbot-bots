@@ -3,11 +3,7 @@
  */
 
 #include "MovementActions.h"
-
-class Event;
-class PlayerbotAI;
-
-class ReachTargetAction : public MovementAction
+class ReachTargetAction : public MovementAction
 {
     public:
         ReachTargetAction(PlayerbotAI* botAI, std::string const& name, float distance) : MovementAction(botAI, name) : distance(distance) { }

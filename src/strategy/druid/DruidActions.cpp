@@ -3,8 +3,6 @@
  */
 
 #include "DruidActions.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 NextAction** CastAbolishPoisonAction::getAlternatives()
 {

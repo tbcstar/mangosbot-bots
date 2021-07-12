@@ -3,7 +3,6 @@
  */
 
 #include "SkipSpellsListValue.h"
-#include "Playerbot.h"
 
 std::string const& SkipSpellsListValue::Save()
 {

@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class RevealGatheringItemAction : public Action
+class RevealGatheringItemAction : public Action
 {
     public:
         RevealGatheringItemAction(PlayerbotAI* botAI) : Action(botAI, "reveal gathering item") { }

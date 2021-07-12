@@ -4,7 +4,6 @@
 
 #include "HasAvailableLootValue.h"
 #include "LootObjectStack.h"
-#include "Playerbot.h"
 
 bool HasAvailableLootValue::Calculate()
 {

@@ -3,10 +3,8 @@
  */
 
 #include "ChatShortcutActions.h"
-#include "Event.h"
 #include "Formations.h"
 #include "PositionValue.h"
-#include "Playerbot.h"
 
 void ReturnPositionResetAction::ResetReturnPosition()
 {

@@ -3,9 +3,7 @@
  */
 
 #include "PositionAction.h"
-#include "Event.h"
 #include "PositionValue.h"
-#include "Playerbot.h"
 
 void TellPosition(PlayerbotAI* botAI, std::string const& name, PositionInfo pos)
 {
@@ -120,9 +118,7 @@ bool MoveToPositionAction::isUseful()
     float distance = AI_VALUE2(float, "distance", std::string("position_") + qualifier);
     return pos.isSet() && distance > sPlayerbotAIConfig->followDistance && distance < sPlayerbotAIConfig->reactDistance;
 }
-
-
-bool SetReturnPositionAction::Execute(Event event)
+bool SetReturnPositionAction::Execute(Event event)
 {
     PositionMap& posMap = context->GetValue<PositionMap&>("position")->Get();
     PositionInfo returnPos = posMap["return"];

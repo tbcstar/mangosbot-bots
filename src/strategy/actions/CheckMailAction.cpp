@@ -3,9 +3,7 @@
  */
 
 #include "CheckMailAction.h"
-#include "Event.h"
 #include "GuildTaskMgr.h"
-#include "Playerbot.h"
 
 bool CheckMailAction::Execute(Event event)
 {

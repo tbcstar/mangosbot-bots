@@ -3,10 +3,7 @@
  */
 
 #include "../Value.h"
-
-class PlayerbotAI;
-
-struct CreatureData;
+struct CreatureData;
 struct GameObjectData;
 
 enum class QuestRelationType : uint32

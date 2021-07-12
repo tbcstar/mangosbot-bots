@@ -3,11 +3,7 @@
  */
 
 #include "InventoryAction.h"
-
-class Event;
-class PlayerbotAI;
-
-class TellItemCountAction : public InventoryAction
+class TellItemCountAction : public InventoryAction
 {
     public:
         TellItemCountAction(PlayerbotAI* botAI) : InventoryAction(botAI, "c") { }

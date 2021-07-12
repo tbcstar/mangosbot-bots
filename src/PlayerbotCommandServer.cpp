@@ -3,7 +3,6 @@
  */
 
 #include "PlayerbotCommandServer.h"
-#include "Playerbot.h"
 
 #include <cstdlib>
 #include <iostream>

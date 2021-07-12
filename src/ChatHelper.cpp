@@ -4,7 +4,6 @@
 
 #include "ChatHelper.h"
 #include "AiFactory.h"
-#include "Playerbot.h"
 
 std::map<std::string, uint32> ChatHelper::consumableSubClasses;
 std::map<std::string, uint32> ChatHelper::tradeSubClasses;
@@ -371,9 +370,7 @@ std::string ChatHelper::formatChat(ChatMsg chat)
 
     return "unknown";
 }
-
-
-uint32 ChatHelper::parseSpell(std::string const& text)
+uint32 ChatHelper::parseSpell(std::string const& text)
 {
     PlayerbotChatHandler handler(botAI->GetBot());
     return handler.extractSpellId(text);

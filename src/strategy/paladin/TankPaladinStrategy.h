@@ -3,10 +3,7 @@
  */
 
 #include "GenericPaladinStrategy.h"
-
-class PlayerbotAI;
-
-class TankPaladinStrategy : public GenericPaladinStrategy
+class TankPaladinStrategy : public GenericPaladinStrategy
 {
     public:
         TankPaladinStrategy(PlayerbotAI* botAI);

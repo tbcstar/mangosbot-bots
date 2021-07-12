@@ -3,11 +3,7 @@
  */
 
 #include "InventoryAction.h"
-
-class Event;
-class PlayerbotAI;
-
-class GuildBankAction : public InventoryAction
+class GuildBankAction : public InventoryAction
 {
     public:
         GuildBankAction(PlayerbotAI* botAI) : InventoryAction(botAI, "guild bank") { }

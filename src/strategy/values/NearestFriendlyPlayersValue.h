@@ -3,11 +3,7 @@
  */
 
 #include "NearestUnitsValue.h"
-#include "PlayerbotAIConfig.h"
-
-class PlayerbotAI;
-
-class NearestFriendlyPlayersValue : public NearestUnitsValue
+class NearestFriendlyPlayersValue : public NearestUnitsValue
 {
 	public:
         NearestFriendlyPlayersValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) :

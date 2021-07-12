@@ -5,7 +5,6 @@
 #include "TargetValue.h"
 #include "LastMovementValue.h"
 #include "RtiTargetValue.h"
-#include "Playerbot.h"
 
 Unit* FindTargetStrategy::GetResult()
 {
@@ -27,9 +26,7 @@ Unit* TargetValue::FindTarget(FindTargetStrategy* strategy)
 
     return strategy->GetResult();
 }
-
-
-bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
+bool FindNonCcTargetStrategy::IsCcTarget(Unit* attacker)
 {
     if (Group* group = botAI->GetBot()->GetGroup())
     {
@@ -105,9 +102,7 @@ WorldPosition LastLongMoveValue::Calculate()
 
     return lastMove.lastPath.getBack();
 }
-
-
-WorldPosition HomeBindValue::Calculate()
+WorldPosition HomeBindValue::Calculate()
 {
     float x, y, z;
     uint32 mapId;

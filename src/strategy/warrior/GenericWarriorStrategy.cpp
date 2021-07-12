@@ -3,7 +3,6 @@
  */
 
 #include "GenericWarriorStrategy.h"
-#include "Playerbot.h"
 
 GenericWarriorStrategy::GenericWarriorStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {

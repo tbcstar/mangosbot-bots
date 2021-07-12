@@ -4,11 +4,9 @@
 
 #include "SuggestWhatToDoAction.h"
 #include "ChannelMgr.h"
-#include "Event.h"
 #include "ItemVisitors.h"
 #include "AiFactory.h"
 #include "ChatHelper.h"
-#include "Playerbot.h"
 #include "PlayerbotTextMgr.h"
 
 std::map<std::string, uint8> SuggestWhatToDoAction::instances;

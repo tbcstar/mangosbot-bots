@@ -3,8 +3,6 @@
  */
 
 #include "GenericSpellActions.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool CastSpellAction::Execute(Event event)
 {
@@ -103,9 +101,7 @@ bool CastAoeHealSpellAction::isUseful()
 {
 	return CastSpellAction::isUseful();
 }
-
-
-Value<Unit*>* CurePartyMemberAction::GetTargetValue()
+Value<Unit*>* CurePartyMemberAction::GetTargetValue()
 {
     return context->GetValue<Unit*>("party member to dispel", dispelType);
 }

@@ -3,12 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class Player;
-class PlayerbotAI;
-
-class InviteToGroupAction : public Action
+class InviteToGroupAction : public Action
 {
     public:
         InviteToGroupAction(PlayerbotAI* botAI, std::string const& name = "invite") : Action(botAI, name) { }

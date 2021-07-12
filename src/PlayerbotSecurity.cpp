@@ -3,7 +3,6 @@
  */
 
 #include "PlayerbotSecurity.h"
-#include "Playerbot.h"
 
 PlayerbotSecurity::PlayerbotSecurity(Player* const bot) : bot(bot)
 {

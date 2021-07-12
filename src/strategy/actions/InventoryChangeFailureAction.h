@@ -4,11 +4,7 @@
 
 #include "Item.h"
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class InventoryChangeFailureAction : public Action
+class InventoryChangeFailureAction : public Action
 {
     public:
         InventoryChangeFailureAction(PlayerbotAI* botAI) : Action(botAI, "inventory change failure") { }

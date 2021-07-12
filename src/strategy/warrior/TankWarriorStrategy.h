@@ -3,10 +3,7 @@
  */
 
 #include "GenericWarriorStrategy.h"
-
-class PlayerbotAI;
-
-class TankWarriorStrategy : public GenericWarriorStrategy
+class TankWarriorStrategy : public GenericWarriorStrategy
 {
     public:
         TankWarriorStrategy(PlayerbotAI* botAI);

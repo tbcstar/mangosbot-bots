@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class GuildAcceptAction : public Action
+class GuildAcceptAction : public Action
 {
     public:
         GuildAcceptAction(PlayerbotAI* botAI) : Action(botAI, "guild accept") { }

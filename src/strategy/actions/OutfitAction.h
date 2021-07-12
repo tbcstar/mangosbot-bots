@@ -4,11 +4,7 @@
 
 #include "EquipAction.h"
 #include "ChatHelper.h"
-
-class Event;
-class PlayerbotAI;
-
-class OutfitAction : public EquipAction
+class OutfitAction : public EquipAction
 {
     public:
         OutfitAction(PlayerbotAI* botAI) : EquipAction(botAI, "outfit") { }

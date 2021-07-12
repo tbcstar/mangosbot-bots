@@ -3,7 +3,6 @@
  */
 
 #include "PartyMemberToResurrect.h"
-#include "Playerbot.h"
 
 class IsTargetOfResurrectSpell : public SpellEntryPredicate
 {

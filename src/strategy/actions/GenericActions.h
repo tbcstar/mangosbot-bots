@@ -3,10 +3,7 @@
  */
 
 #include "AttackAction.h"
-
-class PlayerbotAI;
-
-class MeleeAction : public AttackAction
+class MeleeAction : public AttackAction
 {
     public:
         MeleeAction(PlayerbotAI* botAI) : AttackAction(botAI, "melee") { }

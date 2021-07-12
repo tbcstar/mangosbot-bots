@@ -4,7 +4,6 @@
 
 #include "WithinAreaTrigger.h"
 #include "LastMovementValue.h"
-#include "Playerbot.h"
 
 bool WithinAreaTrigger::IsActive()
 {

@@ -3,11 +3,7 @@
  */
 
 #include "GenericSpellActions.h"
-
-class Event;
-class PlayerbotAI;
-
-class CastEvasionAction : public CastBuffSpellAction
+class CastEvasionAction : public CastBuffSpellAction
 {
 	public:
 		CastEvasionAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "evasion") { }

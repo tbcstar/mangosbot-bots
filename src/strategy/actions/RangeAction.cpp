@@ -3,8 +3,6 @@
  */
 
 #include "RangeAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool RangeAction::Execute(Event event)
 {

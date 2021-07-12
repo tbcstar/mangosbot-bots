@@ -3,8 +3,6 @@
  */
 
 #include "FlagAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool FlagAction::TellUsage()
 {

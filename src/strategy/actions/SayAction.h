@@ -4,11 +4,7 @@
 
 #include "Action.h"
 #include "NamedObjectContext.h"
-
-class Event;
-class PlayerbotAI;
-
-class SayAction : public Action, public Qualified
+class SayAction : public Action, public Qualified
 {
     public:
         SayAction(PlayerbotAI* botAI);

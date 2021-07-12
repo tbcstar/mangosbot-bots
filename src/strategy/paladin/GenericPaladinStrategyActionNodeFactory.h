@@ -4,10 +4,7 @@
 
 #include "Action.h"
 #include "NamedObjectContext.h"
-
-class PlayerbotAI;
-
-class GenericPaladinStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
+class GenericPaladinStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
     public:
         GenericPaladinStrategyActionNodeFactory()

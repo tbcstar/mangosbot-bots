@@ -7,7 +7,6 @@
 #include "PositionValue.h"
 #include "Stances.h"
 #include "LootObjectStack.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 #include "TravelMgr.h"
 

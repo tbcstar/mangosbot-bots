@@ -6,8 +6,11 @@ CollectSourceFiles(
   ${CMAKE_CURRENT_SOURCE_DIR}
   PRIVATE_SOURCES
   # Exclude
-  ${CMAKE_CURRENT_SOURCE_DIR}/Debugging
   ${CMAKE_CURRENT_SOURCE_DIR}/PrecompiledHeaders)
+
+if(USE_COREPCH)
+  set(PRIVATE_PCH_HEADER PrecompiledHeaders/playerbotsPCH.h)
+endif()
 
 add_library(playerbots STATIC
   ${PRIVATE_SOURCES})
@@ -25,3 +28,8 @@ target_include_directories(playerbots
 target_link_libraries(playerbots
   PRIVATE
     game-interface)
+
+# Generate precompiled header
+if(USE_COREPCH)
+  target_precompile_headers(playerbots PRIVATE ${PRIVATE_PCH_HEADER})
+endif()

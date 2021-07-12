@@ -5,7 +5,6 @@
 #include "PossibleTargetsValue.h"
 #include "AttackersValue.h"
 #include "GridNotifiers.h"
-#include "Playerbot.h"
 
 void PossibleTargetsValue::FindUnits(std::list<Unit*>& targets)
 {

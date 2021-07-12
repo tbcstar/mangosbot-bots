@@ -4,12 +4,10 @@
 
 #include "TradeStatusAction.h"
 #include "SetCraftAction.h"
-#include "Event.h"
 #include "ItemVisitors.h"
 #include "CraftValue.h"
 #include "ItemUsageValue.h"
 #include "GuildTaskMgr.h"
-#include "Playerbot.h"
 #include "PlayerbotSecurity.h"
 
 bool TradeStatusAction::Execute(Event event)
@@ -81,9 +79,7 @@ bool TradeStatusAction::Execute(Event event)
 
                 sGuildTaskMgr->CheckItemTask(itemId, count, master, bot);
             }
-
-
-            for (std::map<uint32, uint32>::iterator i = takenItemIds.begin(); i != takenItemIds.end(); ++i)
+            for (std::map<uint32, uint32>::iterator i = takenItemIds.begin(); i != takenItemIds.end(); ++i)
             {
                 uint32 itemId = i->first;
                 uint32 count = i->second;

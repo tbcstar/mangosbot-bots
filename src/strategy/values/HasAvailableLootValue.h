@@ -3,10 +3,7 @@
  */
 
 #include "Value.h"
-
-class PlayerbotAI;
-
-class HasAvailableLootValue : public BoolCalculatedValue
+class HasAvailableLootValue : public BoolCalculatedValue
 {
 	public:
         HasAvailableLootValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }

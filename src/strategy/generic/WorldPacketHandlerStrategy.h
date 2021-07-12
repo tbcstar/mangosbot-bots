@@ -3,10 +3,7 @@
  */
 
 #include "PassTroughStrategy.h"
-
-class PlayerbotAI;
-
-class WorldPacketHandlerStrategy : public PassTroughStrategy
+class WorldPacketHandlerStrategy : public PassTroughStrategy
 {
     public:
         WorldPacketHandlerStrategy(PlayerbotAI* botAI);

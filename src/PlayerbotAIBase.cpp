@@ -3,7 +3,6 @@
  */
 
 #include "PlayerbotAIBase.h"
-#include "Playerbot.h"
 
 PlayerbotAIBase::PlayerbotAIBase() : nextAICheckDelay(0)
 {

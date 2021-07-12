@@ -3,12 +3,7 @@
  */
 
 #include "QueryItemUsageAction.h"
-
-class Event;
-class Player;
-class PlayerbotAI;
-
-class TradeStatusAction : public QueryItemUsageAction
+class TradeStatusAction : public QueryItemUsageAction
 {
     public:
         TradeStatusAction(PlayerbotAI* botAI) : QueryItemUsageAction(botAI, "accept trade") { }

@@ -3,7 +3,6 @@
  */
 
 #include "PartyMemberWithoutItemValue.h"
-#include "Playerbot.h"
 
 class PlayerWithoutItemPredicate : public FindPlayerPredicate, public PlayerbotAIAware
 {

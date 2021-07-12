@@ -4,8 +4,6 @@
 
 #include "GossipHelloAction.h"
 #include "GossipDef.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool GossipHelloAction::Execute(Event event)
 {
@@ -112,9 +110,7 @@ void GossipHelloAction::TellGossipMenus()
         botAI->TellMasterNoFacing(out.str());
     }
 }
-
-
-bool GossipHelloAction::ProcessGossip(int32 menuToSelect)
+bool GossipHelloAction::ProcessGossip(int32 menuToSelect)
 {
     GossipMenu& menu = bot->PlayerTalkClass->GetGossipMenu();
     if (menuToSelect != -1 && menuToSelect >= menu.GetMenuItemCount())

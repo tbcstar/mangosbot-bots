@@ -3,11 +3,7 @@
  */
 
 #include "Value.h"
-
-class PlayerbotAI;
-class Unit;
-
-class CurrentTargetValue : public UnitManualSetValue
+class CurrentTargetValue : public UnitManualSetValue
 {
 	public:
         CurrentTargetValue(PlayerbotAI* botAI) : UnitManualSetValue(botAI, nullptr) { }

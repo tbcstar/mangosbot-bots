@@ -3,7 +3,6 @@
  */
 
 #include "DpsPaladinStrategy.h"
-#include "Playerbot.h"
 
 class DpsPaladinStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

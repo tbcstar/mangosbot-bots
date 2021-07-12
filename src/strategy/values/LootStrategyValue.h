@@ -5,7 +5,6 @@
 #include "Value.h"
 
 class LootStrategy;
-class PlayerbotAI;
 
 class LootStrategyValue : public ManualSetValue<LootStrategy*>
 {

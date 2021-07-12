@@ -7,7 +7,6 @@
 #include "MapManager.h"
 #include "MMapFactory.h"
 #include "PathGenerator.h"
-#include "Playerbot.h"
 #include "SharedValueContext.h"
 #include "StrategyContext.h"
 #include "TransportMgr.h"
@@ -628,9 +627,7 @@ std::vector<WorldPosition> WorldPosition::getPathStepFrom(WorldPosition startPos
 
     Movement::PointsArray points = path.GetPath();
     PathType type = path.GetPathType();
-
-
-    if (sPlayerbotAIConfig->hasLog("pathfind_attempt_point.csv"))
+    if (sPlayerbotAIConfig->hasLog("pathfind_attempt_point.csv"))
     {
         std::ostringstream out;
         out << std::fixed << std::setprecision(1);
@@ -1574,9 +1571,7 @@ void TravelMgr::LoadQuestTravelTable()
                     delete loc;
                     continue;
                 }
-
-
-                if (r.role == 0)
+                if (r.role == 0)
                 {
                     container->questGivers.push_back(loc);
                 }
@@ -2973,9 +2968,7 @@ std::vector<WorldPosition*> TravelMgr::getNextPoint(WorldPosition* center, std::
     {
         return 200000 / (1 + point.distance(center));
     });
-
-
-    std::mt19937 gen(time(nullptr));
+    std::mt19937 gen(time(nullptr));
     weighted_shuffle(retVec.begin(), retVec.end(), weights.begin(), weights.end(), gen);
 
     std::vector<float> dists;

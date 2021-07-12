@@ -3,10 +3,8 @@
  */
 
 #include "WhoAction.h"
-#include "Event.h"
 #include "ItemVisitors.h"
 #include "AiFactory.h"
-#include "Playerbot.h"
 
 #ifndef WIN32
 inline int strcmpi(char const* s1, char const* s2)

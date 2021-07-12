@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class ResetAiAction : public Action
+class ResetAiAction : public Action
 {
     public:
         ResetAiAction(PlayerbotAI* botAI) : Action(botAI, "reset botAI") { }

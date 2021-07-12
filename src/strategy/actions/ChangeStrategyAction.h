@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class ChangeCombatStrategyAction : public Action
+class ChangeCombatStrategyAction : public Action
 {
 	public:
 		ChangeCombatStrategyAction(PlayerbotAI* botAI, std::string const& name = "co") : Action(botAI, name) { }

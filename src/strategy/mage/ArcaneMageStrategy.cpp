@@ -3,7 +3,6 @@
  */
 
 #include "ArcaneMageStrategy.h"
-#include "Playerbot.h"
 
 class ArcaneMageStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

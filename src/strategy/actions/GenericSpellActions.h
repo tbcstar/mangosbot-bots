@@ -4,19 +4,12 @@
 
 #include "Action.h"
 #include "Value.h"
-
-class Event;
-class PlayerbotAI;
-class Unit;
-
-#define BEGIN_SPELL_ACTION(clazz, name) \
+#define BEGIN_SPELL_ACTION(clazz, name) \
 class clazz : public CastSpellAction \
 { \
     public: \
         clazz(PlayerbotAI* botAI) : CastSpellAction(botAI, name) { } \
-
-
-#define END_SPELL_ACTION() \
+#define END_SPELL_ACTION() \
 };
 
 #define BEGIN_DEBUFF_ACTION(clazz, name) \
@@ -36,13 +29,9 @@ class clazz : public CastMeleeSpellAction \
 { \
     public: \
         clazz(PlayerbotAI* botAI) : CastMeleeSpellAction(botAI, name) { } \
-
-
-#define END_RANGED_SPELL_ACTION() \
+#define END_RANGED_SPELL_ACTION() \
 };
-
-
-#define BEGIN_BUFF_ON_PARTY_ACTION(clazz, name) \
+#define BEGIN_BUFF_ON_PARTY_ACTION(clazz, name) \
 class clazz : public BuffOnPartyAction \
 { \
     public: \

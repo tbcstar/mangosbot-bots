@@ -3,10 +3,7 @@
  */
 
 #include "GenericSpellActions.h"
-
-class PlayerbotAI;
-
-class CastFireballAction : public CastSpellAction
+class CastFireballAction : public CastSpellAction
 {
     public:
         CastFireballAction(PlayerbotAI* botAI) : CastSpellAction(botAI, "fireball") { }

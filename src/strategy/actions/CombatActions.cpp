@@ -3,9 +3,7 @@
  */
 
 #include "CombatActions.h"
-#include "Event.h"
 #include "LastMovementValue.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool SwitchToMeleeAction::Execute(Event event)

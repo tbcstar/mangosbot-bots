@@ -3,7 +3,6 @@
  */
 
 #include "HealShamanStrategy.h"
-#include "Playerbot.h"
 
 class HealShamanStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class TaxiAction : public Action
+class TaxiAction : public Action
 {
 	public:
 		TaxiAction(PlayerbotAI* botAI) : Action(botAI, "taxi") { }

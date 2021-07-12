@@ -3,7 +3,6 @@
  */
 
 #include "PlayerbotMgr.h"
-#include "Playerbot.h"
 #include "PlayerbotDbStore.h"
 #include "PlayerbotFactory.h"
 #include "TravelMgr.h"

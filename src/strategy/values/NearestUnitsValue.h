@@ -4,11 +4,7 @@
 
 #include "Unit.h"
 #include "Value.h"
-#include "PlayerbotAIConfig.h"
-
-class PlayerbotAI;
-
-class NearestUnitsValue : public ObjectGuidListCalculatedValue
+class NearestUnitsValue : public ObjectGuidListCalculatedValue
 {
 	public:
         NearestUnitsValue(PlayerbotAI* botAI, std::string const& name, float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :

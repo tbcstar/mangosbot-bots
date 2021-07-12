@@ -3,7 +3,6 @@
  */
 
 #include "RpgStrategy.h"
-#include "Playerbot.h"
 
 RpgStrategy::RpgStrategy(PlayerbotAI* botAI) : Strategy(botAI)
 {

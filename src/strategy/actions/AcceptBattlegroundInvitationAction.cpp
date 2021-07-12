@@ -3,8 +3,6 @@
  */
 
 #include "AcceptBattlegroundInvitationAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool AcceptBgInvitationAction::Execute(Event event)
 {

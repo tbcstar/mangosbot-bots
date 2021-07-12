@@ -4,8 +4,6 @@
 
 #include "CastCustomSpellAction.h"
 #include "ChatHelper.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 uint32 FindLastSeparator(std::string const& text, std::string const& sep)
 {

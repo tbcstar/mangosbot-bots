@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class QueryQuestAction : public Action
+class QueryQuestAction : public Action
 {
     public:
         QueryQuestAction(PlayerbotAI* botAI) : Action(botAI, "query quest") { }

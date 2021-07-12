@@ -3,7 +3,6 @@
  */
 
 #include "BattlegroundStrategy.h"
-#include "Playerbot.h"
 
 void BGStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {

@@ -3,7 +3,6 @@
  */
 
 #include "SnareTargetValue.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 Unit* SnareTargetValue::Calculate()

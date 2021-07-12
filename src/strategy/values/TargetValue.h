@@ -5,7 +5,6 @@
 #include "Unit.h"
 #include "Value.h"
 
-class PlayerbotAI;
 class ThreatManager;
 class TravelTarget;
 

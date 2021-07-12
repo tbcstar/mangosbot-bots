@@ -4,12 +4,10 @@
 
 #include "LootAction.h"
 #include "ChatHelper.h"
-#include "Event.h"
 #include "ItemUsageValue.h"
 #include "LootStrategyValue.h"
 #include "LootObjectStack.h"
 #include "GuildTaskMgr.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool LootAction::Execute(Event event)

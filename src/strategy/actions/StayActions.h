@@ -3,11 +3,7 @@
  */
 
 #include "MovementActions.h"
-
-class Event;
-class PlayerbotAI;
-
-class StayActionBase : public MovementAction
+class StayActionBase : public MovementAction
 {
     public:
         StayActionBase(PlayerbotAI* botAI, std::string const& name) : MovementAction(botAI, name) { }

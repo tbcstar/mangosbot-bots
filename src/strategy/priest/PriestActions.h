@@ -3,12 +3,7 @@
  */
 
 #include "GenericSpellActions.h"
-#include "Playerbot.h"
-
-class Event;
-class PlayerbotAI;
-
-class CastGreaterHealAction : public CastHealingSpellAction
+class CastGreaterHealAction : public CastHealingSpellAction
 {
     public:
         CastGreaterHealAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "greater heal") { }

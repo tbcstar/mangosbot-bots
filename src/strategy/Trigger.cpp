@@ -3,11 +3,7 @@
  */
 
 #include "Trigger.h"
-#include "Event.h"
-#include "Playerbot.h"
-
-
-Event Trigger::Check()
+Event Trigger::Check()
 {
 	if (IsActive())
 	{

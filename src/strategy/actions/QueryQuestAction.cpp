@@ -3,9 +3,7 @@
  */
 
 #include "QueryQuestAction.h"
-#include "Event.h"
 #include "ChatHelper.h"
-#include "Playerbot.h"
 #include "TravelMgr.h"
 
 void QueryQuestAction::TellObjective(std::string const& name, uint32 available, uint32 required)
@@ -67,9 +65,7 @@ bool QueryQuestAction::Execute(Event event)
 
                 uint32 tpoints = dest->getPoints(true).size();
                 uint32 apoints = dest->getPoints().size();
-
-
-                out << round(dest->distanceTo(botPos));
+                out << round(dest->distanceTo(botPos));
                 out << " to " << dest->getTitle();
                 out << " " << apoints;
 

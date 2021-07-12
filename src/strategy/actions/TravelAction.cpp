@@ -4,7 +4,6 @@
 
 #include "TravelAction.h"
 #include "GridNotifiers.h"
-#include "Playerbot.h"
 
 bool TravelAction::Execute(Event event)
 {

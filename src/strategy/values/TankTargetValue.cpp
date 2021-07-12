@@ -4,7 +4,6 @@
 
 #include "AttackersValue.h"
 #include "TankTargetValue.h"
-#include "Playerbot.h"
 
 class FindTargetForTankStrategy : public FindNonCcTargetStrategy
 {

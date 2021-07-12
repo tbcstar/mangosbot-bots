@@ -3,10 +3,8 @@
  */
 
 #include "QueryItemUsageAction.h"
-#include "Event.h"
 #include "ItemUsageValue.h"
 #include "ChatHelper.h"
-#include "Playerbot.h"
 
 bool QueryItemUsageAction::Execute(Event event)
 {

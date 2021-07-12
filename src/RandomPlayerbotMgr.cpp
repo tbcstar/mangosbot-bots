@@ -14,7 +14,6 @@
 #include "GridNotifiers.h"
 #include "MapManager.h"
 #include "PerformanceMonitor.h"
-#include "Playerbot.h"
 #include "PlayerbotCommandServer.h"
 #include "PlayerbotFactory.h"
 #include "ServerFacade.h"
@@ -1371,9 +1370,7 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, std::vector<WorldLocation>&
         std::vector<uint32>::iterator i = find(sPlayerbotAIConfig->randomBotMaps.begin(), sPlayerbotAIConfig->randomBotMaps.end(), l.getMapId());
         return i == sPlayerbotAIConfig->randomBotMaps.end();
     }), tlocs.end());
-
-
-    //Random shuffle based on distance. Closer distances are more likely (but not exclusivly) to be at the begin of the list.
+    //Random shuffle based on distance. Closer distances are more likely (but not exclusivly) to be at the begin of the list.
     tlocs = sTravelMgr.getNextPoint(WorldPosition(bot), tlocs, 0);
 
     // 5% + 0.1% per level chance node on different map in selection.
@@ -1381,9 +1378,7 @@ void RandomPlayerbotMgr::RandomTeleport(Player* bot, std::vector<WorldLocation>&
     {
         return l.GetMapId() != bot->GetMapId() && urand(1, 100) > 5 + 0.1 * bot->getLevel();
     }), tlocs.end());
-
-
-    // Continent is about 20.000 large
+    // Continent is about 20.000 large
     // Bot will travel 0-5000 units + 75-150 units per level.
     tlocs.erase(std::remove_if(tlocs.begin(), tlocs.end(), [bot](WorldLocation const& l)
     {

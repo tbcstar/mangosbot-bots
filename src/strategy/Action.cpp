@@ -3,7 +3,6 @@
  */
 
 #include "Action.h"
-#include "Playerbot.h"
 
 uint32 NextAction::size(NextAction** actions)
 {

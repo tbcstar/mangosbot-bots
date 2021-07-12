@@ -3,7 +3,6 @@
  */
 
 #include "TankAoeStrategy.h"
-#include "Playerbot.h"
 
 void TankAoeStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

@@ -3,7 +3,6 @@
  */
 
 #include "MeleeCombatStrategy.h"
-#include "Playerbot.h"
 
 void MeleeCombatStrategy::InitTriggers(std::vector<TriggerNode*> &triggers)
 {

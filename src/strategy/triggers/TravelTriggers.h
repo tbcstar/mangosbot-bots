@@ -3,10 +3,7 @@
  */
 
 #include "Trigger.h"
-
-class PlayerbotAI;
-
-class NoTravelTargetTrigger : public Trigger
+class NoTravelTargetTrigger : public Trigger
 {
     public:
         NoTravelTargetTrigger(PlayerbotAI* botAI) : Trigger(botAI, "no travel target") {}

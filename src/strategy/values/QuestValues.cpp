@@ -3,7 +3,6 @@
  */
 
 #include "QuestValues.h"
-#include "Playerbot.h"
 #include "SharedValueContext.h"
 
 //Get all the objective entries for a specific quest.

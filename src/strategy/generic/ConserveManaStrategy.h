@@ -3,10 +3,7 @@
  */
 
 #include "Strategy.h"
-
-class PlayerbotAI;
-
-class ConserveManaMultiplier : public Multiplier
+class ConserveManaMultiplier : public Multiplier
 {
     public:
         ConserveManaMultiplier(PlayerbotAI* botAI) : Multiplier(botAI, "conserve mana") { }

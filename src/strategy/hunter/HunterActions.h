@@ -3,12 +3,7 @@
  */
 
 #include "GenericSpellActions.h"
-
-class Event;
-class PlayerbotAI;
-class Unit;
-
-BEGIN_RANGED_SPELL_ACTION(CastHuntersMarkAction, "hunter's mark")
+BEGIN_RANGED_SPELL_ACTION(CastHuntersMarkAction, "hunter's mark")
 END_SPELL_ACTION()
 
 class CastAutoShotAction : public CastSpellAction

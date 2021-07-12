@@ -5,7 +5,6 @@
 #include "ChooseTravelTargetAction.h"
 #include "ChatHelper.h"
 #include "LootObjectStack.h"
-#include "Playerbot.h"
 
 bool ChooseTravelTargetAction::Execute(Event event)
 {
@@ -528,9 +527,7 @@ bool ChooseTravelTargetAction::isUseful()
         && !bot->IsInCombat()
         && botAI->AllowActive(TRAVEL_ACTIVITY);
 }
-
-
-bool ChooseTravelTargetAction::needForQuest(Unit* target)
+bool ChooseTravelTargetAction::needForQuest(Unit* target)
 {
     bool justCheck = (bot->GetGUID() == target->GetGUID());
 

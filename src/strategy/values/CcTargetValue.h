@@ -4,10 +4,7 @@
 
 #include "TargetValue.h"
 #include "NamedObjectContext.h"
-
-class PlayerbotAI;
-
-class CcTargetValue : public TargetValue, public Qualified
+class CcTargetValue : public TargetValue, public Qualified
 {
 	public:
         CcTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) { }

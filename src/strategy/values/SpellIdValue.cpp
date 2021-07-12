@@ -4,7 +4,6 @@
 
 #include "SpellIdValue.h"
 #include "ChatHelper.h"
-#include "Playerbot.h"
 
 SpellIdValue::SpellIdValue(PlayerbotAI* botAI) : CalculatedValue<uint32>(botAI, "spell id")
 {

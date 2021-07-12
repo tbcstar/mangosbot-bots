@@ -3,7 +3,6 @@
  */
 
 #include "LastMovementValue.h"
-#include "Playerbot.h"
 #include "TravelNode.h"
 
 LastMovement::LastMovement()

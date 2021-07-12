@@ -3,8 +3,6 @@
  */
 
 #include "XpGainAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 #ifdef ELUNA
 #include "LuaEngine.h"

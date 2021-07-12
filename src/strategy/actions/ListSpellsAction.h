@@ -4,11 +4,7 @@
 
 #include "DBCStructure.h"
 #include "InventoryAction.h"
-
-class Event;
-class PlayerbotAI;
-
-class ListSpellsAction : public InventoryAction
+class ListSpellsAction : public InventoryAction
 {
     public:
         ListSpellsAction(PlayerbotAI* botAI) : InventoryAction(botAI, "spells") { }

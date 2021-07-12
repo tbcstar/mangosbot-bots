@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-struct Mail;
+struct Mail;
 
 class CheckMailAction : public Action
 {

@@ -4,10 +4,7 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-
-class PlayerbotAI;
-
-class HasTotemValue : public BoolCalculatedValue, public Qualified
+class HasTotemValue : public BoolCalculatedValue, public Qualified
 {
 	public:
         HasTotemValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }

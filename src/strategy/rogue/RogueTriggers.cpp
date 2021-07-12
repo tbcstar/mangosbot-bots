@@ -3,7 +3,6 @@
  */
 
 #include "RogueTriggers.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool AdrenalineRushTrigger::IsPossible() const

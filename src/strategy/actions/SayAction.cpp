@@ -3,8 +3,6 @@
  */
 
 #include "SayAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 std::map<std::string, std::vector<std::string>> SayAction::stringTable;
 std::map<std::string, uint32> SayAction::probabilityTable;

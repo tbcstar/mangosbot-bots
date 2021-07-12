@@ -3,10 +3,7 @@
  */
 
 #include "Value.h"
-
-class PlayerbotAI;
-
-typedef std::vector<std::string> Outfit;
+typedef std::vector<std::string> Outfit;
 class OutfitListValue : public ManualSetValue<Outfit&>
 {
 	public:

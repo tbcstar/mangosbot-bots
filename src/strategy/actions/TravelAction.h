@@ -3,11 +3,7 @@
  */
 
 #include "MovementActions.h"
-
-class Event;
-class PlayerbotAI;
-
-class TravelAction : public MovementAction
+class TravelAction : public MovementAction
 {
     public:
         TravelAction(PlayerbotAI* botAI) : MovementAction(botAI, "travel") { }

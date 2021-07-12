@@ -5,10 +5,8 @@
 #ifndef _PLAYERBOTMGR_H
 #define _PLAYERBOTMGR_H
 
-#include "Common.h"
 #include "QueryHolder.h"
 #include "QueryResult.h"
-#include "Player.h"
 #include "PlayerbotAIBase.h"
 
 class ChatHandler;

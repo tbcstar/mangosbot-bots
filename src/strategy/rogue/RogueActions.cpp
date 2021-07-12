@@ -3,8 +3,6 @@
  */
 
 #include "RogueActions.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool CastStealthAction::isPossible() const
 {

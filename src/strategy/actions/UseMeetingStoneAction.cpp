@@ -3,9 +3,7 @@
  */
 
 #include "UseMeetingStoneAction.h"
-#include "Event.h"
 #include "GridNotifiers.h"
-#include "Playerbot.h"
 
 bool UseMeetingStoneAction::Execute(Event event)
 {

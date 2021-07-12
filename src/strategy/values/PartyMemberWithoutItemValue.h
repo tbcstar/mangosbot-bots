@@ -4,11 +4,7 @@
 
 #include "PartyMemberValue.h"
 #include "NamedObjectContext.h"
-#include "PlayerbotAIConfig.h"
-
-class PlayerbotAI;
-
-class PartyMemberWithoutItemValue : public PartyMemberValue, public Qualified
+class PartyMemberWithoutItemValue : public PartyMemberValue, public Qualified
 {
     public:
         PartyMemberWithoutItemValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->farDistance) : PartyMemberValue(botAI) { }

@@ -3,9 +3,7 @@
  */
 
 #include "RtiAction.h"
-#include "Event.h"
 #include "RtiTargetValue.h"
-#include "Playerbot.h"
 
 bool RtiAction::Execute(Event event)
 {

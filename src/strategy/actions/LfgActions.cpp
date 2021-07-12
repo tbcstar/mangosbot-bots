@@ -6,7 +6,6 @@
 #include "AiFactory.h"
 #include "ItemVisitors.h"
 #include "LFGMgr.h"
-#include "Playerbot.h"
 
 using namespace lfg;
 

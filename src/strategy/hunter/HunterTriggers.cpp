@@ -4,7 +4,6 @@
 
 #include "HunterTriggers.h"
 #include "HunterActions.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool HunterNoStingsActiveTrigger::IsActive()

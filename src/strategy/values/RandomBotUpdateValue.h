@@ -3,10 +3,7 @@
  */
 
 #include "Value.h"
-
-class PlayerbotAI;
-
-class RandomBotUpdateValue : public ManualSetValue<bool>
+class RandomBotUpdateValue : public ManualSetValue<bool>
 {
 	public:
         RandomBotUpdateValue(PlayerbotAI* botAI) : ManualSetValue<bool>(botAI, false) { }

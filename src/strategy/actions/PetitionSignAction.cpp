@@ -4,8 +4,6 @@
 
 #include "PetitionSignAction.h"
 #include "ArenaTeam.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool PetitionSignAction::Execute(Event event)
 {

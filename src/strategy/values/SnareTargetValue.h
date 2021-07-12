@@ -4,11 +4,7 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-
-class PlayerbotAI;
-class Unit;
-
-class SnareTargetValue : public UnitCalculatedValue, public Qualified
+class SnareTargetValue : public UnitCalculatedValue, public Qualified
 {
 	public:
         SnareTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI, "snare target") { }

@@ -5,10 +5,7 @@
 #include "MovementActions.h"
 #include "TravelMgr.h"
 
-class Event;
 class Quest;
-class PlayerbotAI;
-class Unit;
 
 struct QuestStatusData;
 

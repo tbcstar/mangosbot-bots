@@ -3,7 +3,6 @@
  */
 
 #include "MeleeDruidStrategy.h"
-#include "Playerbot.h"
 
 MeleeDruidStrategy::MeleeDruidStrategy(PlayerbotAI* botAI) : CombatStrategy(botAI)
 {

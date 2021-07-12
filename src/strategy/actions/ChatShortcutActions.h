@@ -3,11 +3,7 @@
  */
 
 #include "MovementActions.h"
-
-class Event;
-class PlayerbotAI;
-
-class ReturnPositionResetAction : public Action
+class ReturnPositionResetAction : public Action
 {
     public:
         ReturnPositionResetAction(PlayerbotAI* botAI, std::string const& name) : Action(botAI, name) { }

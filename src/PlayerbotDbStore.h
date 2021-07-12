@@ -5,10 +5,6 @@
 #ifndef _PlayerbotDbStore_H
 #define _PlayerbotDbStore_H
 
-#include "Common.h"
-
-class PlayerbotAI;
-
 class PlayerbotDbStore
 {
     public:

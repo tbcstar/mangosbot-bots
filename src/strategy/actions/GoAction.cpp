@@ -3,11 +3,9 @@
  */
 
 #include "GoAction.h"
-#include "Event.h"
 #include "Formations.h"
 #include "PathGenerator.h"
 #include "PositionValue.h"
-#include "Playerbot.h"
 #include "ServerFacade.h"
 #include "TravelMgr.h"
 
@@ -162,9 +160,7 @@ bool GoAction::Execute(Event event)
             out << " with offset ";
 
             out << (end - aend).length();
-
-
-            for (auto i : points)
+            for (auto i : points)
             {
                 CreateWp(bot, i.x, i.y, i.z, 0.f, 11144);
             }

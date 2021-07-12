@@ -3,8 +3,6 @@
  */
 
 #include "PaladinActions.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 inline std::string const& GetActualBlessingOfMight(Unit* target)
 {

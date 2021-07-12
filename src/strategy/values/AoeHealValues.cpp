@@ -3,7 +3,6 @@
  */
 
 #include "AoeHealValues.h"
-#include "Playerbot.h"
 
 uint8 AoeHealValue::Calculate()
 {

@@ -3,7 +3,6 @@
  */
 
 #include "PlayerbotDbStore.h"
-#include "Playerbot.h"
 
 #include <iostream>
 

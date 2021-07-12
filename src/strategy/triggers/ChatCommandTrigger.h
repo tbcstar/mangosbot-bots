@@ -3,12 +3,7 @@
  */
 
 #include "Trigger.h"
-
-class Event;
-class Player;
-class PlayerbotAI;
-
-class ChatCommandTrigger : public Trigger
+class ChatCommandTrigger : public Trigger
 {
     public:
         ChatCommandTrigger(PlayerbotAI* botAI, std::string const& command) : Trigger(botAI, command), triggered(false) { }

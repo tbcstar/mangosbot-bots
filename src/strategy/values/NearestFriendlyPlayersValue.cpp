@@ -4,7 +4,6 @@
 
 #include "NearestFriendlyPlayersValue.h"
 #include "GridNotifiers.h"
-#include "Playerbot.h"
 
 void NearestFriendlyPlayersValue::FindUnits(std::list<Unit*> &targets)
 {

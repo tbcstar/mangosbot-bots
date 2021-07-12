@@ -3,10 +3,7 @@
  */
 
 #include "Trigger.h"
-
-class PlayerbotAI;
-
-class LootAvailableTrigger : public Trigger
+class LootAvailableTrigger : public Trigger
 {
     public:
         LootAvailableTrigger(PlayerbotAI* botAI) : Trigger(botAI, "loot available") { }

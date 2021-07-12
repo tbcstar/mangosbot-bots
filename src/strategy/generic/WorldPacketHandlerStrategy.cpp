@@ -3,7 +3,6 @@
  */
 
 #include "WorldPacketHandlerStrategy.h"
-#include "Playerbot.h"
 
 void WorldPacketHandlerStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

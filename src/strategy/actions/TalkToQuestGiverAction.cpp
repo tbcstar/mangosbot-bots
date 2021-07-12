@@ -3,10 +3,8 @@
  */
 
 #include "TalkToQuestGiverAction.h"
-#include "Event.h"
 #include "ChatHelper.h"
 #include "ItemUsageValue.h"
-#include "Playerbot.h"
 
 void TalkToQuestGiverAction::ProcessQuest(Quest const* quest, WorldObject* questGiver)
 {

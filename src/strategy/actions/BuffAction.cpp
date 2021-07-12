@@ -3,9 +3,7 @@
  */
 
 #include "BuffAction.h"
-#include "Event.h"
 #include "ItemCountValue.h"
-#include "Playerbot.h"
 
 class FindBuffVisitor : public IterateItemsVisitor
 {

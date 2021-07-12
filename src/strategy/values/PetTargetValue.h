@@ -3,11 +3,7 @@
  */
 
 #include "Value.h"
-
-class PlayerbotAI;
-class Unit;
-
-class PetTargetValue : public UnitCalculatedValue
+class PetTargetValue : public UnitCalculatedValue
 {
 	public:
         PetTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) { }

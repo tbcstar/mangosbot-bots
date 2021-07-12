@@ -4,10 +4,7 @@
 
 #include "ChatCommandTrigger.h"
 #include "NamedObjectContext.h"
-
-class PlayerbotAI;
-
-class ChatTriggerContext : public NamedObjectContext<Trigger>
+class ChatTriggerContext : public NamedObjectContext<Trigger>
 {
     public:
         ChatTriggerContext()

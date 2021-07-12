@@ -3,12 +3,7 @@
  */
 
 #include "GenericSpellActions.h"
-
-class Event;
-class PlayerbotAI;
-class Unit;
-
-class CastDemonSkinAction : public CastBuffSpellAction
+class CastDemonSkinAction : public CastBuffSpellAction
 {
 	public:
 		CastDemonSkinAction(PlayerbotAI* botAI) : CastBuffSpellAction(botAI, "demon skin") { }

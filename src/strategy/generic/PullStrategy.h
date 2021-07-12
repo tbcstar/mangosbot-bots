@@ -3,10 +3,7 @@
  */
 
 #include "CombatStrategy.h"
-
-class PlayerbotAI;
-
-class PullStrategy : public CombatStrategy
+class PullStrategy : public CombatStrategy
 {
     public:
         PullStrategy(PlayerbotAI* botAI, std::string const& action) : CombatStrategy(botAI), action(action) { }

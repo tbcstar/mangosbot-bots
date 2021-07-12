@@ -3,13 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-struct CreatureData;
-
-class BGJoinAction : public Action
+class BGJoinAction : public Action
 {
     public:
         BGJoinAction(PlayerbotAI* botAI, std::string const& name = "bg join") : Action(botAI, name) { }

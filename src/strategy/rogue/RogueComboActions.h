@@ -3,10 +3,7 @@
  */
 
 #include "GenericSpellActions.h"
-
-class PlayerbotAI;
-
-class CastComboAction : public CastMeleeSpellAction
+class CastComboAction : public CastMeleeSpellAction
 {
 	public:
 	    CastComboAction(PlayerbotAI* botAI, std::string const& name) : CastMeleeSpellAction(botAI, name) { }

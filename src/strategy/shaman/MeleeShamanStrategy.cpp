@@ -3,7 +3,6 @@
  */
 
 #include "MeleeShamanStrategy.h"
-#include "Playerbot.h"
 
 class MeleeShamanStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

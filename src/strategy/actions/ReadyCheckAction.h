@@ -3,11 +3,7 @@
  */
 
 #include "InventoryAction.h"
-
-class Event;
-class PlayerbotAI;
-
-class ReadyCheckAction : public InventoryAction
+class ReadyCheckAction : public InventoryAction
 {
     public:
         ReadyCheckAction(PlayerbotAI* botAI, std::string const& name = "ready check") : InventoryAction(botAI, name) { }

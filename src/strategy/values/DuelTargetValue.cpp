@@ -3,7 +3,6 @@
  */
 
 #include "DuelTargetValue.h"
-#include "Playerbot.h"
 
 Unit* DuelTargetValue::Calculate()
 {

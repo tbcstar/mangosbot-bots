@@ -4,11 +4,7 @@
 
 #include "Action.h"
 #include "Talentspec.h"
-
-class Event;
-class PlayerbotAI;
-
-class ChangeTalentsAction : public Action
+class ChangeTalentsAction : public Action
 {
     public:
         ChangeTalentsAction(PlayerbotAI* botAI, std::string const& name = "talents") : Action(botAI, name) { }

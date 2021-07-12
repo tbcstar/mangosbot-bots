@@ -3,10 +3,7 @@
  */
 
 #include "GenericTriggers.h"
-
-class PlayerbotAI;
-
-class DemonArmorTrigger : public BuffTrigger
+class DemonArmorTrigger : public BuffTrigger
 {
 	public:
 		DemonArmorTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "demon armor") { }

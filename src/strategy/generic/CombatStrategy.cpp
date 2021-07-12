@@ -3,7 +3,6 @@
  */
 
 #include "CombatStrategy.h"
-#include "Playerbot.h"
 
 void CombatStrategy::InitTriggers(std::vector<TriggerNode*> &triggers)
 {

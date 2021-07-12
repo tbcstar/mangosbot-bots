@@ -3,14 +3,8 @@
  */
 
 #include "AiObject.h"
-#include "Common.h"
 #include "Value.h"
-
-class Event;
-class PlayerbotAI;
-class Unit;
-
-enum ActionThreatType
+enum ActionThreatType
 {
     ACTION_THREAT_NONE      = 0,
     ACTION_THREAT_SINGLE    = 1,

@@ -3,10 +3,7 @@
  */
 
 #include "Trigger.h"
-
-class PlayerbotAI;
-
-struct AreaTrigger;
+struct AreaTrigger;
 
 class WithinAreaTrigger : public Trigger
 {

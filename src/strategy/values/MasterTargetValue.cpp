@@ -3,7 +3,6 @@
  */
 
 #include "MasterTargetValue.h"
-#include "Playerbot.h"
 
 Unit* MasterTargetValue::Calculate()
 {

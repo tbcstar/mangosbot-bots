@@ -5,7 +5,6 @@
 #include "ConserveManaStrategy.h"
 #include "GenericSpellActions.h"
 #include "LastSpellCastValue.h"
-#include "Playerbot.h"
 
 float ConserveManaMultiplier::GetValue(Action* action)
 {

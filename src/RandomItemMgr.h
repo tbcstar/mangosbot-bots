@@ -4,10 +4,7 @@
 
 #ifndef _RandomItemMgr_H
 #define _RandomItemMgr_H
-
-#include "Common.h"
-
-class ChatHandler;
+class ChatHandler;
 
 struct ItemTemplate;
 

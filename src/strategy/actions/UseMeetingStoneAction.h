@@ -3,12 +3,7 @@
  */
 
 #include "MovementActions.h"
-
-class Event;
-class Player;
-class PlayerbotAI;
-
-class SummonAction : public MovementAction
+class SummonAction : public MovementAction
 {
     public:
         SummonAction(PlayerbotAI* botAI, std::string const& name = "summon") : MovementAction(botAI, name) { }

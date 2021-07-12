@@ -12,10 +12,7 @@
 #include "RtiTriggers.h"
 #include "TravelTriggers.h"
 #include "NamedObjectContext.h"
-
-class PlayerbotAI;
-
-class TriggerContext : public NamedObjectContext<Trigger>
+class TriggerContext : public NamedObjectContext<Trigger>
 {
     public:
         TriggerContext()

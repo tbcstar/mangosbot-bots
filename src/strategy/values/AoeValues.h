@@ -4,7 +4,6 @@
 
 #include "Value.h"
 
-class PlayerbotAI;
 class WorldLocation;
 
 class AoePositionValue : public CalculatedValue<WorldLocation>

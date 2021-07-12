@@ -3,8 +3,6 @@
  */
 
 #include "SaveManaAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 
 bool SaveManaAction::Execute(Event event)
 {

@@ -4,7 +4,6 @@
 
 #include "PullStrategy.h"
 #include "PassiveMultiplier.h"
-#include "Playerbot.h"
 
 class MagePullMultiplier : public PassiveMultiplier
 {

@@ -3,7 +3,6 @@
  */
 
 #include "ChatFilter.h"
-#include "Playerbot.h"
 #include "RtiTargetValue.h"
 
 std::string ChatFilter::Filter(std::string message)

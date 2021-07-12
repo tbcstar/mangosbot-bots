@@ -4,9 +4,7 @@
 
 #include "Action.h"
 
-class Event;
 class IterateItemsVisitor;
-class PlayerbotAI;
 
 struct ItemTemplate;
 

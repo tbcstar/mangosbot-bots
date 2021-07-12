@@ -3,7 +3,6 @@
  */
 
 #include "LastSpellCastValue.h"
-#include "Playerbot.h"
 
 void LastSpellCast::Set(uint32 newId, ObjectGuid newTarget, time_t newTime)
 {

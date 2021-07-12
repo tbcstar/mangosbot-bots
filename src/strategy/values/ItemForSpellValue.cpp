@@ -3,7 +3,6 @@
  */
 
 #include "ItemForSpellValue.h"
-#include "Playerbot.h"
 
 #ifndef WIN32
 inline int strcmpi(char const* s1, char const* s2)

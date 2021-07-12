@@ -28,6 +28,8 @@ class AC_DATABASE_API PlayerbotDatabaseConnection : public MySQLConnection
         PlayerbotDatabaseConnection(MySQLConnectionInfo& connInfo);
         PlayerbotDatabaseConnection(ProducerConsumerQueue<SQLOperation*>* q, MySQLConnectionInfo& connInfo);
         ~PlayerbotDatabaseConnection();
+
+        void DoPrepareStatements() override { }
 };
 
 #endif

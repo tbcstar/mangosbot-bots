@@ -3,7 +3,6 @@
  */
 
 #include "SharedValueContext.h"
-#include "Playerbot.h"
 
 template<class T>
 Value<T>* SharedValueContext::getGlobalValue(std::string const& name = "")

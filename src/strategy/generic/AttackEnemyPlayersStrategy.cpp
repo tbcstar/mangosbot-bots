@@ -3,7 +3,6 @@
  */
 
 #include "AttackEnemyPlayersStrategy.h"
-#include "Playerbot.h"
 
 void AttackEnemyPlayersStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

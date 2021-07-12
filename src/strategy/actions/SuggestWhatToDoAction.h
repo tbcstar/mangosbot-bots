@@ -3,11 +3,7 @@
  */
 
 #include "InventoryAction.h"
-
-class Event;
-class PlayerbotAI;
-
-class SuggestWhatToDoAction : public InventoryAction
+class SuggestWhatToDoAction : public InventoryAction
 {
     public:
         SuggestWhatToDoAction(PlayerbotAI* botAI, std::string const& name = "suggest what to do");

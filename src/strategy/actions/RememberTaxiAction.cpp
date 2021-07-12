@@ -3,9 +3,7 @@
  */
 
 #include "RememberTaxiAction.h"
-#include "Event.h"
 #include "LastMovementValue.h"
-#include "Playerbot.h"
 
 bool RememberTaxiAction::Execute(Event event)
 {

@@ -3,7 +3,6 @@
  */
 
 #include "GrindTargetValue.h"
-#include "Playerbot.h"
 #include "TravelMgr.h"
 
 Unit* GrindTargetValue::Calculate()

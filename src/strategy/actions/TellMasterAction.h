@@ -3,11 +3,7 @@
  */
 
 #include "MovementActions.h"
-
-class Event;
-class PlayerbotAI;
-
-class TellMasterAction : public Action
+class TellMasterAction : public Action
 {
     public:
         TellMasterAction(PlayerbotAI* botAI, std::string const& text) : Action(botAI, "tell master"), text(text) { }

@@ -6,8 +6,6 @@
 #include "Value.h"
 
 class Item;
-class PlayerbotAI;
-class SpellInfo;
 
 class ItemForSpellValue : public CalculatedValue<Item*>, public Qualified
 {

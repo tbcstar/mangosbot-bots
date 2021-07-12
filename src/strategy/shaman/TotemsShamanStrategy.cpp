@@ -3,7 +3,6 @@
  */
 
 #include "TotemsShamanStrategy.h"
-#include "Playerbot.h"
 
 TotemsShamanStrategy::TotemsShamanStrategy(PlayerbotAI* botAI) : GenericShamanStrategy(botAI)
 {

@@ -3,8 +3,6 @@
  */
 
 #include "ReviveFromCorpseAction.h"
-#include "Event.h"
-#include "Playerbot.h"
 #include "PlayerbotFactory.h"
 #include "ServerFacade.h"
 

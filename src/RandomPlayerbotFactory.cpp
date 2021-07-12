@@ -6,7 +6,6 @@
 #include "ArenaTeam.h"
 #include "AccountMgr.h"
 #include "GuildMgr.h"
-#include "Playerbot.h"
 #include "PlayerbotFactory.h"
 #include "SocialMgr.h"
 

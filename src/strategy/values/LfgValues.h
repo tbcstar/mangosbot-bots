@@ -3,10 +3,7 @@
  */
 
 #include "Value.h"
-
-class PlayerbotAI;
-
-class LfgProposalValue : public ManualSetValue<uint32>
+class LfgProposalValue : public ManualSetValue<uint32>
 {
     public:
         LfgProposalValue(PlayerbotAI* botAI) : ManualSetValue<uint32>(botAI, 0, "lfg proposal") { }

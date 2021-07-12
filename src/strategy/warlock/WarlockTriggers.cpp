@@ -3,7 +3,6 @@
  */
 
 #include "WarlockTriggers.h"
-#include "Playerbot.h"
 
 bool DemonArmorTrigger::IsActive()
 {

@@ -6,9 +6,6 @@
 #include "Action.h"
 #include "Value.h"
 
-class Event;
-class PlayerbotAI;
-class Unit;
 class WorldLocation;
 
 class Stance : public Formation

@@ -3,10 +3,7 @@
  */
 
 #include "Strategy.h"
-
-class PlayerbotAI;
-
-class TellTargetStrategy : public Strategy
+class TellTargetStrategy : public Strategy
 {
     public:
         TellTargetStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }

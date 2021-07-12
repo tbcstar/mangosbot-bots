@@ -4,7 +4,6 @@
 
 #include "NearestGameObjects.h"
 #include "GridNotifiers.h"
-#include "Playerbot.h"
 
 class AnyGameObjectInObjectRangeCheck
 {

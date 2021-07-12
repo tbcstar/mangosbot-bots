@@ -6,7 +6,6 @@
 
 class LootObject;
 class LootObjectStack;
-class PlayerbotAI;
 
 class AvailableLootValue : public ManualSetValue<LootObjectStack*>
 {

@@ -3,11 +3,7 @@
  */
 
 #include "Action.h"
-
-class Event;
-class PlayerbotAI;
-
-class CheckValuesAction : public Action
+class CheckValuesAction : public Action
 {
     public:
         CheckValuesAction(PlayerbotAI* botAI);

@@ -3,9 +3,7 @@
  */
 
 #include "ChooseTargetActions.h"
-#include "Event.h"
 #include "PossibleRpgTargetsValue.h"
-#include "Playerbot.h"
 #include "TravelMgr.h"
 #include "ServerFacade.h"
 
