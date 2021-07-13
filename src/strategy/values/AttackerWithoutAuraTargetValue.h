@@ -4,7 +4,10 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-class AttackerWithoutAuraTargetValue : public UnitCalculatedValue, public Qualified
+
+class PlayerbotAI;
+
+class AttackerWithoutAuraTargetValue : public UnitCalculatedValue, public Qualified
 {
 	public:
         AttackerWithoutAuraTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI, "attacker without aura") { }

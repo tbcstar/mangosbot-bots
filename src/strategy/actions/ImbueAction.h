@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class ImbueWithPoisonAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class ImbueWithPoisonAction : public Action
 {
 public:
     ImbueWithPoisonAction(PlayerbotAI* botAI);

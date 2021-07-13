@@ -4,6 +4,7 @@
 
 #include "PlayerbotAIConfig.h"
 #include "Config.h"
+#include "Playerbot.h"
 #include "PlayerbotFactory.h"
 #include "RandomItemMgr.h"
 #include "RandomPlayerbotFactory.h"
@@ -199,7 +200,9 @@ bool PlayerbotAIConfig::Initialize()
                             LOG_ERROR("playerbots", "%s", out.str().c_str());
                             continue;
                         }
-                        talentPath.talentSpec.push_back(linkSpec);
+
+
+                        talentPath.talentSpec.push_back(linkSpec);
                     }
                 }
 
@@ -356,7 +359,9 @@ bool PlayerbotAIConfig::openLog(std::string const& fileName, char const* mode)
         if ((m_logsDir.at(m_logsDir.length() - 1) != '/') && (m_logsDir.at(m_logsDir.length() - 1) != '\\'))
             m_logsDir.append("/");
     }
-    file = fopen((m_logsDir + fileName).c_str(), mode);
+
+
+    file = fopen((m_logsDir + fileName).c_str(), mode);
     fileOpen = true;
 
     logFileIt->second.first = file;

@@ -4,6 +4,7 @@
 
 #include "ArenaTeamActions.h"
 #include "ArenaTeam.h"
+#include "Playerbot.h"
 
 bool ArenaTeamAcceptAction::Execute(Event event)
 {

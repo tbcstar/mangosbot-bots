@@ -3,7 +3,11 @@
  */
 
 #include "UseItemAction.h"
-class DrinkAction : public UseItemAction
+
+class Event;
+class PlayerbotAI;
+
+class DrinkAction : public UseItemAction
 {
     public:
         DrinkAction(PlayerbotAI* botAI) : UseItemAction(botAI, "drink") { }

@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class ReleaseSpiritAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class ReleaseSpiritAction : public Action
 {
 	public:
 		ReleaseSpiritAction(PlayerbotAI* botAI, std::string const& name = "release") : Action(botAI, name) { }

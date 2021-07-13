@@ -3,7 +3,10 @@
  */
 
 #include "TargetValue.h"
-class LeastHpTargetValue : public TargetValue
+
+class PlayerbotAI;
+
+class LeastHpTargetValue : public TargetValue
 {
 	public:
         LeastHpTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) { }

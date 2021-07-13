@@ -3,7 +3,11 @@
  */
 
 #include "TargetValue.h"
-class RtiTargetValue : public TargetValue
+
+class PlayerbotAI;
+class Unit;
+
+class RtiTargetValue : public TargetValue
 {
     public:
         RtiTargetValue(PlayerbotAI* botAI, std::string const& type = "rti") : type(type), TargetValue(botAI) { }

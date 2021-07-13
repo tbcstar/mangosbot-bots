@@ -3,6 +3,8 @@
  */
 
 #include "WorldBuffAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool WorldBuffAction::Execute(Event event)
 {

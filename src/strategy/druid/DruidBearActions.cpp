@@ -3,6 +3,7 @@
  */
 
 #include "DruidBearActions.h"
+#include "Playerbot.h"
 
 bool CastMaulAction::isUseful()
 {

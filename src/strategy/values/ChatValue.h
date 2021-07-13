@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-enum ChatMsg : uint32;
+
+class PlayerbotAI;
+
+enum ChatMsg : uint32;
 
 class ChatValue : public ManualSetValue<ChatMsg>
 {

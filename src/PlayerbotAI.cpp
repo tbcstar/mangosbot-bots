@@ -2,6 +2,7 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
+#include "Playerbot.h"
 #include "AiFactory.h"
 #include "ChatFilter.h"
 #include "ChatHelper.h"
@@ -1381,7 +1382,9 @@ bool PlayerbotAI::CastSpell(uint32 spellId, Unit* target, Item* itemTarget)
 
     if (oldSel)
         bot->SetTarget(oldSel);
-    if (HasStrategy("debug spell", BOT_STATE_NON_COMBAT))
+
+
+    if (HasStrategy("debug spell", BOT_STATE_NON_COMBAT))
     {
         std::ostringstream out;
         out << "Casting " << ChatHelper::formatSpell(pSpellInfo);
@@ -1792,7 +1795,9 @@ enum ActivityType
 
    General function to check if a bot is allowed to be active or not.
    This function should be checked first before doing heavy-workload.
-*/
+
+
+*/
 
 bool PlayerbotAI::AllowActive(ActivityType activityType)
 {
@@ -1848,11 +1853,6 @@ bool PlayerbotAI::AllowActive(ActivityType activityType)
     return ActivityNumber <= sPlayerbotAIConfig->botActiveAlone;           //The given percentage of bots should be active and rotate 1% of those active bots each minute.
 }
 
-ChatHelper* PlayerbotAI::GetChatHelper()
-{
-    return &chatHelper;
-}
-
 bool PlayerbotAI::IsOpposing(Player* player)
 {
     return IsOpposing(player->getRace(), bot->getRace());
@@ -1861,11 +1861,6 @@ bool PlayerbotAI::IsOpposing(Player* player)
 bool PlayerbotAI::IsOpposing(uint8 race1, uint8 race2)
 {
     return (IsAlliance(race1) && !IsAlliance(race2)) || (!IsAlliance(race1) && IsAlliance(race2));
-}
-
-PlayerbotSecurity* PlayerbotAI::GetSecurity()
-{
-    return &security;
 }
 
 void PlayerbotAI::RemoveShapeshift()

@@ -4,6 +4,7 @@
 
 #include "ShadowPriestStrategy.h"
 #include "ShadowPriestStrategyActionNodeFactory.h"
+#include "Playerbot.h"
 
 ShadowPriestStrategy::ShadowPriestStrategy(PlayerbotAI* botAI) : GenericPriestStrategy(botAI)
 {

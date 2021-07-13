@@ -3,7 +3,10 @@
  */
 
 #include "GenericShamanStrategy.h"
-class HealShamanStrategy : public GenericShamanStrategy
+
+class PlayerbotAI;
+
+class HealShamanStrategy : public GenericShamanStrategy
 {
     public:
         HealShamanStrategy(PlayerbotAI* botAI);

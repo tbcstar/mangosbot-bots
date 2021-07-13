@@ -4,7 +4,10 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-class AoeHealValue : public Uint8CalculatedValue, public Qualified
+
+class PlayerbotAI;
+
+class AoeHealValue : public Uint8CalculatedValue, public Qualified
 {
 	public:
     	AoeHealValue(PlayerbotAI* botAI) : Uint8CalculatedValue(botAI) { }

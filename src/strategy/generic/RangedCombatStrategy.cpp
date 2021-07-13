@@ -3,6 +3,7 @@
  */
 
 #include "RangedCombatStrategy.h"
+#include "Playerbot.h"
 
 void RangedCombatStrategy::InitTriggers(std::vector<TriggerNode*> &triggers)
 {

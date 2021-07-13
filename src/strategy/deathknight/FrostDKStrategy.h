@@ -3,7 +3,10 @@
  */
 
 #include "GenericDKStrategy.h"
-class FrostDKStrategy : public GenericDKStrategy
+
+class PlayerbotAI;
+
+class FrostDKStrategy : public GenericDKStrategy
 {
     public:
         FrostDKStrategy(PlayerbotAI* botAI);

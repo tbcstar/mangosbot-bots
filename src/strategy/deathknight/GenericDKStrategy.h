@@ -3,7 +3,10 @@
  */
 
 #include "MeleeCombatStrategy.h"
-class GenericDKStrategy : public MeleeCombatStrategy
+
+class PlayerbotAI;
+
+class GenericDKStrategy : public MeleeCombatStrategy
 {
     public:
         GenericDKStrategy(PlayerbotAI* botAI);

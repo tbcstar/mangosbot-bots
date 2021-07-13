@@ -9,6 +9,7 @@
 #include "FrostDKStrategy.h"
 #include "GenericDKNonCombatStrategy.h"
 #include "UnholyDKStrategy.h"
+#include "Playerbot.h"
 
 class DeathKnightStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

@@ -3,6 +3,7 @@
  */
 
 #include "LfgStrategy.h"
+#include "Playerbot.h"
 
 void LfgStrategy::InitTriggers(std::list<TriggerNode*> &triggers)
 {

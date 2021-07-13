@@ -3,7 +3,11 @@
  */
 
 #include "Value.h"
-class LastSpellCast
+
+class ObjectGuid;
+class PlayerbotAI;
+
+class LastSpellCast
 {
     public:
         LastSpellCast() : id(0), time(nullptr) { }

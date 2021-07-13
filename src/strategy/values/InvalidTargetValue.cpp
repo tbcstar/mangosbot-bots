@@ -4,6 +4,7 @@
 
 #include "InvalidTargetValue.h"
 #include "AttackersValue.h"
+#include "Playerbot.h"
 
 bool InvalidTargetValue::Calculate()
 {

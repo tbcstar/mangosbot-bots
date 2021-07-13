@@ -3,6 +3,7 @@
  */
 
 #include "GenericWarriorNonCombatStrategy.h"
+#include "Playerbot.h"
 
 void GenericWarriorNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class LeaveGroupAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class LeaveGroupAction : public Action
 {
     public:
         LeaveGroupAction(PlayerbotAI* botAI, std::string const& name = "leave") : Action(botAI, name) { }

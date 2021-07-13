@@ -4,7 +4,11 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-struct ItemTemplate;
+
+class Player;
+class PlayerbotAI;
+
+struct ItemTemplate;
 
 enum ItemUsage
 {

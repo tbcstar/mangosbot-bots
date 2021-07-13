@@ -3,7 +3,10 @@
  */
 
 #include "GenericTriggers.h"
-BUFF_TRIGGER(HornOfWinterTrigger, "horn of winter", "horn of winter")
+
+class PlayerbotAI;
+
+BUFF_TRIGGER(HornOfWinterTrigger, "horn of winter", "horn of winter")
 BUFF_TRIGGER(BoneShieldTrigger, "bone shield", "bone shield")
 BUFF_TRIGGER(ImprovedIcyTalonsTrigger, "improved icy talons", "improved icy talons")
 DEBUFF_TRIGGER(PlagueStrikeDebuffTrigger, "plague strike", "plague strike")

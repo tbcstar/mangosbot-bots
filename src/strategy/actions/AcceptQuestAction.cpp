@@ -3,6 +3,8 @@
  */
 
 #include "AcceptQuestAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 void AcceptAllQuestsAction::ProcessQuest(Quest const* quest, WorldObject* questGiver)
 {

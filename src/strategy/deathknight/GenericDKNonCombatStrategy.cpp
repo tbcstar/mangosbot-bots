@@ -3,6 +3,7 @@
  */
 
 #include "GenericDKNonCombatStrategy.h"
+#include "Playerbot.h"
 
 class GenericDKNonCombatStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

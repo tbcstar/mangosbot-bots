@@ -4,8 +4,10 @@
 
 #include "SendMailAction.h"
 #include "Mail.h"
+#include "Event.h"
 #include "ItemVisitors.h"
 #include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool SendMailAction::Execute(Event event)
 {
@@ -52,7 +54,9 @@ bool SendMailAction::Execute(Event event)
         bot->Whisper("There is no mailbox nearby", LANG_UNIVERSAL, tellTo->GetGUID());
         return false;
     }
-    ItemIds ids = chat->parseItems(text);
+
+
+    ItemIds ids = chat->parseItems(text);
     if (ids.size() > 1)
     {
         bot->Whisper("You can not request more than one item", LANG_UNIVERSAL, tellTo->GetGUID());

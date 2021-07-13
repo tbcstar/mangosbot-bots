@@ -3,7 +3,11 @@
  */
 
 #include "InventoryAction.h"
-class GiveItemAction : public InventoryAction
+
+class Event;
+class PlayerbotAI;
+
+class GiveItemAction : public InventoryAction
 {
     public:
         GiveItemAction(PlayerbotAI* botAI, std::string const& name, std::string const& item) : InventoryAction(botAI, name), item(item) { }

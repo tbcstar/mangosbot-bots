@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-class ActiveSpellValue : public CalculatedValue<uint32>
+
+class PlayerbotAI;
+
+class ActiveSpellValue : public CalculatedValue<uint32>
 {
 	public:
         ActiveSpellValue(PlayerbotAI* botAI) : CalculatedValue<uint32>(botAI) { }

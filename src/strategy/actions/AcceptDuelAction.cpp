@@ -3,6 +3,8 @@
  */
 
 #include "AcceptDuelAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool AcceptDuelAction::Execute(Event event)
 {

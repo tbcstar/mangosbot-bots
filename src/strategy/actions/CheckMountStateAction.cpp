@@ -4,6 +4,8 @@
 
 #include "CheckMountStateAction.h"
 #include "BattlegroundWS.h"
+#include "Event.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool CheckMountStateAction::Execute(Event event)

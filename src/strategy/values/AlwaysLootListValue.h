@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-class AlwaysLootListValue : public ManualSetValue<std::set<uint32>&>
+
+class PlayerbotAI;
+
+class AlwaysLootListValue : public ManualSetValue<std::set<uint32>&>
 {
 	public:
         AlwaysLootListValue(PlayerbotAI* botAI) : ManualSetValue<std::set<uint32>&>(botAI, list) { }

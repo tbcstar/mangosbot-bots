@@ -5,6 +5,7 @@
 #include "ItemUsageValue.h"
 #include "ChatHelper.h"
 #include "GuildTaskMgr.h"
+#include "Playerbot.h"
 #include "RandomItemMgr.h"
 
 ItemUsage ItemUsageValue::Calculate()

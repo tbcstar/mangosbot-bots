@@ -3,6 +3,7 @@
  */
 
 #include "LootTriggers.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool LootAvailableTrigger::IsActive()

@@ -3,6 +3,8 @@
  */
 
 #include "InviteToGroupAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool InviteToGroupAction::Execute(Event event)

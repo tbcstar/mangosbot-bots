@@ -5,7 +5,10 @@
 #include "NamedObjectContext.h"
 #include "PvpValues.h"
 #include "QuestValues.h"
-class SharedValueContext : public NamedObjectContext<UntypedValue>
+
+class PlayerbotAI;
+
+class SharedValueContext : public NamedObjectContext<UntypedValue>
 {
     public:
         SharedValueContext() : NamedObjectContext(true)

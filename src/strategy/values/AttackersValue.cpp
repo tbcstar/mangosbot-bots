@@ -4,6 +4,7 @@
 
 #include "AttackersValue.h"
 #include "GridNotifiers.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 GuidVector AttackersValue::Calculate()

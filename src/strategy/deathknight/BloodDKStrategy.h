@@ -3,7 +3,10 @@
  */
 
 #include "GenericDKStrategy.h"
-class BloodDKStrategy : public GenericDKStrategy
+
+class PlayerbotAI;
+
+class BloodDKStrategy : public GenericDKStrategy
 {
     public:
         BloodDKStrategy(PlayerbotAI* botAI);

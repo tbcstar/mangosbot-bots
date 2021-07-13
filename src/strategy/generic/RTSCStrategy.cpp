@@ -3,6 +3,7 @@
  */
 
 #include "RTSCStrategy.h"
+#include "Playerbot.h"
 
 RTSCStrategy::RTSCStrategy(PlayerbotAI* botAI) : Strategy(botAI)
 {

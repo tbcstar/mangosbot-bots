@@ -5,7 +5,10 @@
 #include "QuestAction.h"
 #include "Action.h"
 
+class Event;
 class Quest;
+class PlayerbotAI;
+class WorldObject;
 
 class AcceptAllQuestsAction : public QuestAction
 {

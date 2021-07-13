@@ -4,8 +4,10 @@
 
 #include "InventoryAction.h"
 
+class Event;
 class FindItemVisitor;
 class Item;
+class PlayerbotAI;
 
 class UnequipAction : public InventoryAction
 {

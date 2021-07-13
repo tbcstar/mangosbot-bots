@@ -4,7 +4,10 @@
 
 #include "ReachTargetActions.h"
 #include "GenericSpellActions.h"
-class CastFeralChargeCatAction : public CastReachTargetSpellAction
+
+class PlayerbotAI;
+
+class CastFeralChargeCatAction : public CastReachTargetSpellAction
 {
 	public:
 		CastFeralChargeCatAction(PlayerbotAI* botAI) : CastReachTargetSpellAction(botAI, "feral charge - cat", 1.5f) { }

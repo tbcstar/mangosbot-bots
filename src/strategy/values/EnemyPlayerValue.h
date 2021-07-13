@@ -4,7 +4,11 @@
 
 #include "TargetValue.h"
 #include "PossibleTargetsValue.h"
-/*class EnemyPlayerValue : public TargetValue
+
+class PlayerbotAI;
+class Unit;
+
+/*class EnemyPlayerValue : public TargetValue
 {
 	public:
         EnemyPlayerValue(PlayerbotAI* botAI) : TargetValue(botAI) { }

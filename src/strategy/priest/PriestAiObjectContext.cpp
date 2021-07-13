@@ -10,6 +10,7 @@
 #include "ShadowPriestStrategy.h"
 #include "NamedObjectContext.h"
 #include "PullStrategy.h"
+#include "Playerbot.h"
 
 class PriestStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

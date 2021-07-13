@@ -3,6 +3,7 @@
  */
 
 #include "PaladinBuffStrategies.h"
+#include "Playerbot.h"
 
 void PaladinBuffManaStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

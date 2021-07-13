@@ -3,6 +3,7 @@
  */
 
 #include "RtiValue.h"
+#include "Playerbot.h"
 
 RtiValue::RtiValue(PlayerbotAI* botAI) : ManualSetValue<std::string>(botAI, "skull")
 {

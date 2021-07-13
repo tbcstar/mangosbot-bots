@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class CustomStrategyEditAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class CustomStrategyEditAction : public Action
 {
     public:
         CustomStrategyEditAction(PlayerbotAI* botAI) : Action(botAI, "cs") { }

@@ -3,6 +3,7 @@
  */
 
 #include "PriestTriggers.h"
+#include "Playerbot.h"
 
 bool PowerWordFortitudeOnPartyTrigger::IsActive()
 {

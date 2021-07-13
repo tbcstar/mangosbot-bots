@@ -3,7 +3,10 @@
  */
 
 #include "Strategy.h"
-class CustomStrategy : public Strategy, public Qualified
+
+class PlayerbotAI;
+
+class CustomStrategy : public Strategy, public Qualified
 {
     public:
         CustomStrategy(PlayerbotAI* botAI);

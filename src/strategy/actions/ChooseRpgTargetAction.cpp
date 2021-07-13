@@ -4,7 +4,9 @@
 
 #include "ChooseRpgTargetAction.h"
 #include "ChatHelper.h"
+#include "Event.h"
 #include "PossibleRpgTargetsValue.h"
+#include "Playerbot.h"
 #include "TravelMgr.h"
 
 bool ChooseRpgTargetAction::CanTrain(ObjectGuid guid)

@@ -3,6 +3,7 @@
  */
 
 #include "HolyPriestStrategy.h"
+#include "Playerbot.h"
 
 class HolyPriestStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

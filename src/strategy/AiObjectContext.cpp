@@ -14,6 +14,7 @@
 #include "SharedValueContext.h"
 #include "WorldPacketTriggerContext.h"
 #include "ValueContext.h"
+#include "Playerbot.h"
 
 AiObjectContext::AiObjectContext(PlayerbotAI* botAI) : PlayerbotAIAware(botAI)
 {

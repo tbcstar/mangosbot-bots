@@ -3,7 +3,10 @@
  */
 
 #include "GenericTriggers.h"
-class KickInterruptSpellTrigger : public InterruptSpellTrigger
+
+class PlayerbotAI;
+
+class KickInterruptSpellTrigger : public InterruptSpellTrigger
 {
     public:
         KickInterruptSpellTrigger(PlayerbotAI* botAI) : InterruptSpellTrigger(botAI, "kick") { }

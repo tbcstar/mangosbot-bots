@@ -3,6 +3,7 @@
  */
 
 #include "RandomItemMgr.h"
+#include "Playerbot.h"
 
 char* strstri(char const* str1, char const* str2);
 
@@ -315,7 +316,9 @@ bool RandomItemMgr::CanEquipItem(BotEquipKey key, ItemTemplate const* proto)
 
     return true;
 }
-void RandomItemMgr::AddItemStats(uint32 mod, uint8& sp, uint8& ap, uint8& tank)
+
+
+void RandomItemMgr::AddItemStats(uint32 mod, uint8& sp, uint8& ap, uint8& tank)
 {
     switch (mod)
     {

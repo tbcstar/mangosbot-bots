@@ -4,7 +4,10 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-class LastSaidValue : public ManualSetValue<time_t>, public Qualified
+
+class PlayerbotAI;
+
+class LastSaidValue : public ManualSetValue<time_t>, public Qualified
 {
 	public:
         LastSaidValue(PlayerbotAI* botAI) : ManualSetValue<time_t>(botAI, time(nullptr) - 120, "last said") { }

@@ -3,7 +3,10 @@
  */
 
 #include "PassTroughStrategy.h"
-class QuestStrategy : public PassTroughStrategy
+
+class PlayerbotAI;
+
+class QuestStrategy : public PassTroughStrategy
 {
     public:
         QuestStrategy(PlayerbotAI* botAI);

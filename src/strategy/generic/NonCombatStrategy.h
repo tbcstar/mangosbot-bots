@@ -3,7 +3,10 @@
  */
 
 #include "PassTroughStrategy.h"
-class NonCombatStrategy : public Strategy
+
+class PlayerbotAI;
+
+class NonCombatStrategy : public Strategy
 {
     public:
         NonCombatStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }

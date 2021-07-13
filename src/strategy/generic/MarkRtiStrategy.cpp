@@ -3,6 +3,7 @@
  */
 
 #include "MarkRtiStrategy.h"
+#include "Playerbot.h"
 
 void MarkRtiStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

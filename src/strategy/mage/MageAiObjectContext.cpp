@@ -11,6 +11,7 @@
 #include "MageTriggers.h"
 #include "NamedObjectContext.h"
 #include "PullStrategy.h"
+#include "Playerbot.h"
 
 class MageStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

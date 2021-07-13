@@ -3,6 +3,8 @@
  */
 
 #include "HireAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool HireAction::Execute(Event event)
 {

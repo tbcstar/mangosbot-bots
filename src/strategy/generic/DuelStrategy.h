@@ -3,7 +3,10 @@
  */
 
 #include "PassTroughStrategy.h"
-class DuelStrategy : public PassTroughStrategy
+
+class PlayerbotAI;
+
+class DuelStrategy : public PassTroughStrategy
 {
     public:
         DuelStrategy(PlayerbotAI* botAI);

@@ -3,6 +3,7 @@
  */
 
 #include "StayStrategy.h"
+#include "Playerbot.h"
 
 NextAction** StayStrategy::getDefaultActions()
 {

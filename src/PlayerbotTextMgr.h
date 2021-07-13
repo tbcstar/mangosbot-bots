@@ -4,7 +4,10 @@
 
 #ifndef _PlayerbotTextMgr_H
 #define _PlayerbotTextMgr_H
-class PlayerbotTextMgr
+
+#include "Common.h"
+
+class PlayerbotTextMgr
 {
     public:
         PlayerbotTextMgr() { };

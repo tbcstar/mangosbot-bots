@@ -3,7 +3,10 @@
  */
 
 #include "Strategy.h"
-class RpgStrategy : public Strategy
+
+class PlayerbotAI;
+
+class RpgStrategy : public Strategy
 {
     public:
         RpgStrategy(PlayerbotAI* botAI);

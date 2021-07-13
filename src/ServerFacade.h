@@ -5,6 +5,11 @@
 #ifndef _ServerFacade_H
 #define _ServerFacade_H
 
+#include "Common.h"
+
+class Unit;
+class WorldObject;
+
 class ServerFacade
 {
     public:

@@ -4,7 +4,12 @@
 
 #include "Action.h"
 
+class Event;
+class ObjectGuid;
 class Quest;
+class Player;
+class PlayerbotAI;
+class WorldObject;
 
 class QuestAction : public Action
 {

@@ -4,7 +4,13 @@
 
 #include "Action.h"
 #include "NamedObjectContext.h"
-class EmoteActionBase : public Action
+
+class Event;
+class Player;
+class PlayerbotAI;
+class Unit;
+
+class EmoteActionBase : public Action
 {
     public:
         EmoteActionBase(PlayerbotAI* botAI, std::string const& name);

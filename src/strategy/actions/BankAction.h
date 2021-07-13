@@ -4,7 +4,9 @@
 
 #include "InventoryAction.h"
 
+class Event;
 class Item;
+class PlayerbotAI;
 
 class BankAction : public InventoryAction
 {

@@ -3,6 +3,8 @@
  */
 
 #include "ImbueAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 ImbueWithPoisonAction::ImbueWithPoisonAction(PlayerbotAI* botAI) : Action(botAI, "apply poison")
 {

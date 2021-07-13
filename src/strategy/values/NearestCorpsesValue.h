@@ -3,7 +3,11 @@
  */
 
 #include "NearestUnitsValue.h"
-class NearestCorpsesValue : public NearestUnitsValue
+#include "PlayerbotAIConfig.h"
+
+class PlayerbotAI;
+
+class NearestCorpsesValue : public NearestUnitsValue
 {
 	public:
         NearestCorpsesValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance) : NearestUnitsValue(botAI, "nearest corpses", range) { }

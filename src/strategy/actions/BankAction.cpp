@@ -3,7 +3,9 @@
  */
 
 #include "BankAction.h"
+#include "Event.h"
 #include "ItemCountValue.h"
+#include "Playerbot.h"
 
 bool BankAction::Execute(Event event)
 {

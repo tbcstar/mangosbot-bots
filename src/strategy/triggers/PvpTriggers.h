@@ -3,7 +3,10 @@
  */
 
 #include "Trigger.h"
-class EnemyPlayerNear : public Trigger
+
+class PlayerbotAI;
+
+class EnemyPlayerNear : public Trigger
 {
     public:
         EnemyPlayerNear(PlayerbotAI* botAI) : Trigger(botAI, "enemy player near") { }

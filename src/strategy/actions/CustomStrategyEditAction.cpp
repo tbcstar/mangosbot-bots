@@ -4,6 +4,8 @@
 
 #include "CustomStrategyEditAction.h"
 #include "CustomStrategy.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool CustomStrategyEditAction::Execute(Event event)
 {

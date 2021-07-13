@@ -3,7 +3,10 @@
  */
 
 #include "NonCombatStrategy.h"
-class GenericDruidNonCombatStrategy : public NonCombatStrategy
+
+class PlayerbotAI;
+
+class GenericDruidNonCombatStrategy : public NonCombatStrategy
 {
     public:
         GenericDruidNonCombatStrategy(PlayerbotAI* botAI);

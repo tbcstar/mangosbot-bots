@@ -3,7 +3,10 @@
  */
 
 #include "NonCombatStrategy.h"
-class HunterBuffSpeedStrategy : public NonCombatStrategy
+
+class PlayerbotAI;
+
+class HunterBuffSpeedStrategy : public NonCombatStrategy
 {
     public:
         HunterBuffSpeedStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }

@@ -3,6 +3,7 @@
  */
 
 #include "PartyMemberToHeal.h"
+#include "Playerbot.h"
 
 class IsTargetOfHealingSpell : public SpellEntryPredicate
 {

@@ -3,6 +3,8 @@
  */
 
 #include "DebugAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool DebugAction::Execute(Event event)
 {

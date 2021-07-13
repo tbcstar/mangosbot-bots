@@ -4,6 +4,7 @@
 
 #include "PossibleRpgTargetsValue.h"
 #include "GridNotifiers.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 #include "TravelMgr.h"
 

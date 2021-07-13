@@ -4,6 +4,8 @@
 
 #include "DropQuestAction.h"
 #include "ChatHelper.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool DropQuestAction::Execute(Event event)
 {

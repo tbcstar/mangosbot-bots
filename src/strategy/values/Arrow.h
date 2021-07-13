@@ -4,6 +4,8 @@
 
 #include "Formations.h"
 
+class Player;
+class PlayerbotAI;
 class WorldLocation;
 
 class UnitPosition

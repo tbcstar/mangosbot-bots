@@ -3,6 +3,8 @@
  */
 
 #include "LeaveGroupAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool LeaveGroupAction::Execute(Event event)
 {

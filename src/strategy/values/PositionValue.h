@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-class PositionInfo
+
+class PlayerbotAI;
+
+class PositionInfo
 {
     public:
         PositionInfo() : valueSet(false), x(0), y(0), z(0), mapId(0) { }

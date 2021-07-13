@@ -3,7 +3,11 @@
  */
 
 #include "NearestUnitsValue.h"
-class PossibleTargetsValue : public NearestUnitsValue
+#include "PlayerbotAIConfig.h"
+
+class PlayerbotAI;
+
+class PossibleTargetsValue : public NearestUnitsValue
 {
 	public:
         PossibleTargetsValue(PlayerbotAI* botAI, std::string const& name = "possible targets", float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false):

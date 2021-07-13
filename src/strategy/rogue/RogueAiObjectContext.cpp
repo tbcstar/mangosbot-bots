@@ -9,6 +9,7 @@
 #include "RogueTriggers.h"
 #include "NamedObjectContext.h"
 #include "PullStrategy.h"
+#include "Playerbot.h"
 
 class RogueStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

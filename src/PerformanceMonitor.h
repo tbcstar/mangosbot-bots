@@ -5,6 +5,7 @@
 #ifndef _PerformanceMonitor_H
 #define _PerformanceMonitor_H
 
+#include "Common.h"
 #include <mutex>
 #include <chrono>
 #include <ctime>
@@ -58,6 +59,8 @@ class PerformanceMonitor
         std::map<PerformanceMetric, std::map<std::string, PerformanceData*> > data;
         std::mutex lock;
 };
-#define sPerformanceMonitor PerformanceMonitor::instance()
+
+
+#define sPerformanceMonitor PerformanceMonitor::instance()
 
 #endif

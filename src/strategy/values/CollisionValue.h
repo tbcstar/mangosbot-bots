@@ -4,7 +4,10 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-class CollisionValue : public BoolCalculatedValue, public Qualified
+
+class PlayerbotAI;
+
+class CollisionValue : public BoolCalculatedValue, public Qualified
 {
 	public:
         CollisionValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI), Qualified() { }

@@ -4,7 +4,11 @@
 
 #include "Action.h"
 #include "ChatHelper.h"
-class SkipSpellsListAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class SkipSpellsListAction : public Action
 {
     public:
         SkipSpellsListAction(PlayerbotAI* botAI) : Action(botAI, "ss") { }

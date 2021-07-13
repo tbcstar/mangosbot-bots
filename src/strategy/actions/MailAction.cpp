@@ -4,8 +4,10 @@
 
 #include "MailAction.h"
 #include "Mail.h"
+#include "Event.h"
 #include "ChatHelper.h"
 #include "Helpers.h"
+#include "Playerbot.h"
 
 std::map<std::string, MailProcessor*> MailAction::processors;
 

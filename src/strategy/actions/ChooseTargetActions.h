@@ -3,7 +3,11 @@
  */
 
 #include "AttackAction.h"
-class DpsAoeAction : public AttackAction
+
+class Event;
+class PlayerbotAI;
+
+class DpsAoeAction : public AttackAction
 {
     public:
         DpsAoeAction(PlayerbotAI* botAI) : AttackAction(botAI, "dps aoe") { }

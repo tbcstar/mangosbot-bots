@@ -4,6 +4,7 @@
 
 #include "CcTargetValue.h"
 #include "Action.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 class FindTargetForCcStrategy : public FindTargetStrategy

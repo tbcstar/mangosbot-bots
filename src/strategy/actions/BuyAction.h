@@ -4,8 +4,11 @@
 
 #include "InventoryAction.h"
 
+class Event;
 class FindItemVisitor;
+class ObjectGuid;
 class Item;
+class PlayerbotAI;
 
 struct ItemTemplate;
 struct VendorItemData;

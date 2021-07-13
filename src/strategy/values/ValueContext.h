@@ -75,7 +75,10 @@
 #include "StatsValues.h"
 #include "TankTargetValue.h"
 #include "ThreatValues.h"
-class ValueContext : public NamedObjectContext<UntypedValue>
+
+class PlayerbotAI;
+
+class ValueContext : public NamedObjectContext<UntypedValue>
 {
     public:
         ValueContext()

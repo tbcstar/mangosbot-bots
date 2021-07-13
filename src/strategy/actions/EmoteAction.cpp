@@ -3,6 +3,8 @@
  */
 
 #include "EmoteAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 std::map<std::string, uint32> EmoteActionBase::emotes;

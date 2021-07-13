@@ -3,6 +3,7 @@
  */
 
 #include "LineTargetValue.h"
+#include "Playerbot.h"
 
 Unit* LineTargetValue::Calculate()
 {

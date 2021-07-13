@@ -3,6 +3,7 @@
  */
 
 #include "LootNonCombatStrategy.h"
+#include "Playerbot.h"
 
 void LootNonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
@@ -21,4 +22,5 @@ void RevealStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {
     triggers.push_back(new TriggerNode("often", NextAction::array(0, new NextAction("reveal gathering item", 50.0f), nullptr)));
 }
-
+
+

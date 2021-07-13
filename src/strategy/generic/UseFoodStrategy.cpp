@@ -3,6 +3,7 @@
  */
 
 #include "UseFoodStrategy.h"
+#include "Playerbot.h"
 
 void UseFoodStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

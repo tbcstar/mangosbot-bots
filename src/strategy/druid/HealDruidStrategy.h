@@ -3,7 +3,10 @@
  */
 
 #include "GenericDruidStrategy.h"
-class HealDruidStrategy : public GenericDruidStrategy
+
+class PlayerbotAI;
+
+class HealDruidStrategy : public GenericDruidStrategy
 {
     public:
         HealDruidStrategy(PlayerbotAI* botAI);

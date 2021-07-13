@@ -3,6 +3,7 @@
  */
 
 #include "Arrow.h"
+#include "Playerbot.h"
 
 WorldLocation ArrowFormation::GetLocationInternal()
 {

@@ -3,7 +3,12 @@
  */
 
 #include "Action.h"
-class XpGainAction : public Action
+
+class Event;
+class PlayerbotAI;
+class Unit;
+
+class XpGainAction : public Action
 {
     public:
         XpGainAction(PlayerbotAI* botAI) : Action(botAI, "xp gain") { }

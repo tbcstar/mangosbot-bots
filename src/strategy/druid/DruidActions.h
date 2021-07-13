@@ -3,7 +3,12 @@
  */
 
 #include "GenericSpellActions.h"
-class CastFaerieFireAction : public CastDebuffSpellAction
+
+class Event;
+class PlayerbotAI;
+class Unit;
+
+class CastFaerieFireAction : public CastDebuffSpellAction
 {
 	public:
 		CastFaerieFireAction(PlayerbotAI* botAI) : CastDebuffSpellAction(botAI, "faerie fire") { }

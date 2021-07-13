@@ -4,6 +4,7 @@
 
 #include "CastTimeStrategy.h"
 #include "GenericSpellActions.h"
+#include "Playerbot.h"
 
 float CastTimeMultiplier::GetValue(Action* action)
 {

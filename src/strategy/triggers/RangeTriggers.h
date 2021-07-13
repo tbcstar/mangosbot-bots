@@ -2,8 +2,12 @@
  * Copyright (C) 2016+ AzerothCore <www.azerothcore.org>, released under GNU GPL v2 license, you may redistribute it and/or modify it under version 2 of the License, or (at your option), any later version.
  */
 
+#include "PlayerbotAIConfig.h"
 #include "Trigger.h"
-class EnemyTooCloseForSpellTrigger : public Trigger
+
+class PlayerbotAI;
+
+class EnemyTooCloseForSpellTrigger : public Trigger
 {
     public:
         EnemyTooCloseForSpellTrigger(PlayerbotAI* botAI) : Trigger(botAI, "enemy too close for spell") { }

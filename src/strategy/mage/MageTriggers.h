@@ -3,7 +3,10 @@
  */
 
 #include "CureTriggers.h"
-class ArcaneIntellectOnPartyTrigger : public BuffOnPartyTrigger
+
+class PlayerbotAI;
+
+class ArcaneIntellectOnPartyTrigger : public BuffOnPartyTrigger
 {
     public:
         ArcaneIntellectOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "arcane intellect", 2) { }

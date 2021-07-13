@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-class RtiValue : public ManualSetValue<std::string>
+
+class PlayerbotAI;
+
+class RtiValue : public ManualSetValue<std::string>
 {
 	public:
         RtiValue(PlayerbotAI* botAI);

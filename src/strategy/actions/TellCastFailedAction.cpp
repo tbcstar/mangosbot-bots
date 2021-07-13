@@ -3,7 +3,9 @@
  */
 
 #include "TellCastFailedAction.h"
+#include "Event.h"
 #include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool TellCastFailedAction::Execute(Event event)
 {

@@ -3,7 +3,10 @@
  */
 
 #include "PartyMemberValue.h"
-class PartyMemberToResurrect : public PartyMemberValue
+
+class PlayerbotAI;
+
+class PartyMemberToResurrect : public PartyMemberValue
 {
 	public:
         PartyMemberToResurrect(PlayerbotAI* botAI) : PartyMemberValue(botAI) { }

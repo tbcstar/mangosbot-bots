@@ -7,7 +7,9 @@
 #include "ChooseRpgTargetAction.h"
 #include "EmoteAction.h"
 #include "GossipDef.h"
+#include "Event.h"
 #include "PossibleRpgTargetsValue.h"
+#include "Playerbot.h"
 
 bool RpgAction::Execute(Event event)
 {

@@ -5,6 +5,7 @@
 #include "AiObject.h"
 
 class Action;
+class PlayerbotAI;
 
 class Multiplier : public AiNamedObject
 {

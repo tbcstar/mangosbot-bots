@@ -4,6 +4,8 @@
 
 #include "Stances.h"
 #include "Arrow.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 Unit* Stance::GetTarget()
 {

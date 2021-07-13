@@ -5,8 +5,11 @@
 #include "InventoryAction.h"
 #include "MovementActions.h"
 
+class Event;
 class GameObject;
 class LootObject;
+class PlayerbotAI;
+class SpellInfo;
 
 class LootAction : public InventoryAction
 {

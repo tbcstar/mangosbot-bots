@@ -3,6 +3,8 @@
  */
 
 #include "TrainerAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 void TrainerAction::Learn(uint32 cost, TrainerSpell const* tSpell, std::ostringstream& msg)
 {

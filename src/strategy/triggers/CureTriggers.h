@@ -3,7 +3,10 @@
  */
 
 #include "GenericTriggers.h"
-class NeedCureTrigger : public SpellTrigger
+
+class PlayerbotAI;
+
+class NeedCureTrigger : public SpellTrigger
 {
     public:
         NeedCureTrigger(PlayerbotAI* botAI, std::string spell, uint32 dispelType) : SpellTrigger(botAI, spell, 5), dispelType(dispelType() { }

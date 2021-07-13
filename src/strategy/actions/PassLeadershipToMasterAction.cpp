@@ -3,6 +3,8 @@
  */
 
 #include "PassLeadershipToMasterAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool PassLeadershipToMasterAction::Execute(Event event)
 {

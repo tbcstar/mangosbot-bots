@@ -7,6 +7,7 @@
 #include "GuildMgr.h"
 #include "Mail.h"
 #include "MapManager.h"
+#include "Playerbot.h"
 #include "RandomItemMgr.h"
 #include "ServerFacade.h"
 

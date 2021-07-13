@@ -3,6 +3,7 @@
  */
 
 #include "TankWarriorStrategy.h"
+#include "Playerbot.h"
 
 TankWarriorStrategy::TankWarriorStrategy(PlayerbotAI* botAI) : GenericWarriorStrategy(botAI)
 {

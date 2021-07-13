@@ -3,7 +3,9 @@
  */
 
 #include "AreaTriggerAction.h"
+#include "Event.h"
 #include "LastMovementValue.h"
+#include "Playerbot.h"
 #include "Transport.h"
 
 bool ReachAreaTriggerAction::Execute(Event event)

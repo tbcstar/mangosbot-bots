@@ -3,6 +3,7 @@
  */
 
 #include "NonCombatStrategy.h"
+#include "Playerbot.h"
 
 void NonCombatStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

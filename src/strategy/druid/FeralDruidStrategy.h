@@ -4,7 +4,10 @@
 
 #include "DruidAiObjectContext.h"
 #include "GenericDruidStrategy.h"
-class ShapeshiftDruidStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
+
+class PlayerbotAI;
+
+class ShapeshiftDruidStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
     public:
         ShapeshiftDruidStrategyActionNodeFactory()

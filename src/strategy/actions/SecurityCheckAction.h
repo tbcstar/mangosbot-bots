@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class SecurityCheckAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class SecurityCheckAction : public Action
 {
     public:
         SecurityCheckAction(PlayerbotAI* botAI) : Action(botAI, "security check") { }

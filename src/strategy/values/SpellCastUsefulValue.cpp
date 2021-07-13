@@ -3,6 +3,7 @@
  */
 
 #include "SpellCastUsefulValue.h"
+#include "Playerbot.h"
 
 bool SpellCastUsefulValue::Calculate()
 {

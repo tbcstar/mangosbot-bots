@@ -6,6 +6,7 @@
 #include "AiObjectContext.h"
 #include "ItemUsageValue.h"
 #include "LootObjectStack.h"
+#include "Playerbot.h"
 
 class NormalLootStrategy : public LootStrategy
 {

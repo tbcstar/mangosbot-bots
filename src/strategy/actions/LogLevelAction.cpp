@@ -3,6 +3,8 @@
  */
 
 #include "LogLevelAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool LogLevelAction::Execute(Event event)
 {

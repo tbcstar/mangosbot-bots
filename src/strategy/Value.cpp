@@ -4,6 +4,7 @@
 
 #include "Value.h"
 #include "PerformanceMonitor.h"
+#include "Playerbot.h"
 
 template<class T>
 T CalculatedValue<T>::Get()

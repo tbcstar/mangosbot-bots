@@ -3,6 +3,7 @@
  */
 
 #include "FireMageStrategy.h"
+#include "Playerbot.h"
 
 NextAction** FireMageStrategy::getDefaultActions()
 {

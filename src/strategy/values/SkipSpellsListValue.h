@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-class SkipSpellsListValue : public ManualSetValue<std::set<uint32>&>
+
+class PlayerbotAI;
+
+class SkipSpellsListValue : public ManualSetValue<std::set<uint32>&>
 {
 	public:
         SkipSpellsListValue(PlayerbotAI* botAI) : ManualSetValue<std::set<uint32>&>(botAI, list) { }

@@ -4,7 +4,10 @@
 
 #include "QuestAction.h"
 
+class Event;
 class Quest;
+class PlayerbotAI;
+class WorldObject;
 
 class TalkToQuestGiverAction : public QuestAction
 {

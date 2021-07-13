@@ -4,7 +4,10 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-class IsMovingValue : public BoolCalculatedValue, public Qualified
+
+class PlayerbotAI;
+
+class IsMovingValue : public BoolCalculatedValue, public Qualified
 {
 	public:
         IsMovingValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }

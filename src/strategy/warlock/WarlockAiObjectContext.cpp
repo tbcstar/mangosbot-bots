@@ -11,6 +11,7 @@
 #include "NamedObjectContext.h"
 #include "UseItemAction.h"
 #include "PullStrategy.h"
+#include "Playerbot.h"
 
 class WarlockStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {

@@ -4,6 +4,7 @@
 
 #include "NearestCorpsesValue.h"
 #include "GridNotifiers.h"
+#include "Playerbot.h"
 
 class AnyDeadUnitInObjectRangeCheck
 {

@@ -3,7 +3,11 @@
  */
 
 #include "NearestUnitsValue.h"
-class PossibleRpgTargetsValue : public NearestUnitsValue
+#include "PlayerbotAIConfig.h"
+
+class PlayerbotAI;
+
+class PossibleRpgTargetsValue : public NearestUnitsValue
 {
 	public:
         PossibleRpgTargetsValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->rpgDistance);

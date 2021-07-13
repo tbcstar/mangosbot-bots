@@ -3,6 +3,7 @@
  */
 
 #include "RtiTargetValue.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 int32 RtiTargetValue::GetRtiIndex(string rti)

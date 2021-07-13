@@ -3,7 +3,10 @@
  */
 
 #include "GenericWarlockStrategy.h"
-class DpsWarlockStrategy : public GenericWarlockStrategy
+
+class PlayerbotAI;
+
+class DpsWarlockStrategy : public GenericWarlockStrategy
 {
     public:
         DpsWarlockStrategy(PlayerbotAI* botAI);

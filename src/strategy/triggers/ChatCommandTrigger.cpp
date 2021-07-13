@@ -3,6 +3,7 @@
  */
 
 #include "ChatCommandTrigger.h"
+#include "Playerbot.h"
 
 void ChatCommandTrigger::ExternalEvent(std::string const& paramName, Player* eventPlayer = nullptr)
 {

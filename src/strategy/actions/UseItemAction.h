@@ -4,7 +4,10 @@
 
 #include "Action.h"
 
+class Event;
 class Item;
+class ObjectGuid;
+class PlayerbotAI;
 
 class UseItemAction : public Action
 {

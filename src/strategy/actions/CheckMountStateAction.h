@@ -3,7 +3,11 @@
  */
 
 #include "UseItemAction.h"
-class CheckMountStateAction : public UseItemAction
+
+class Event;
+class PlayerbotAI;
+
+class CheckMountStateAction : public UseItemAction
 {
     public:
         CheckMountStateAction(PlayerbotAI* botAI) : UseItemAction(botAI, "check mount state") { }

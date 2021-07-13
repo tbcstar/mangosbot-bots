@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class RemoveAuraAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class RemoveAuraAction : public Action
 {
     public:
         RemoveAuraAction(PlayerbotAI* botAI);

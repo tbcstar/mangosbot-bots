@@ -3,6 +3,7 @@
  */
 
 #include "DpsTargetValue.h"
+#include "Playerbot.h"
 
 class FindLeastHpTargetStrategy : public FindTargetStrategy
 {

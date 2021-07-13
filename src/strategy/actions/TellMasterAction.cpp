@@ -3,6 +3,8 @@
  */
 
 #include "TellMasterAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool TellMasterAction::Execute(Event event)
 {

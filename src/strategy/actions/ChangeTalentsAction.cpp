@@ -4,6 +4,8 @@
 
 #include "ChangeTalentsAction.h"
 #include "ChatHelper.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool ChangeTalentsAction::Execute(Event event)
 {

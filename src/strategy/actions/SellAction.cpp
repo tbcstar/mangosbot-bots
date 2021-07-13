@@ -3,8 +3,10 @@
  */
 
 #include "SellAction.h"
+#include "Event.h"
 #include "ItemVisitors.h"
 #include "ItemUsageValue.h"
+#include "Playerbot.h"
 
 class SellItemsVisitor : public IterateItemsVisitor
 {

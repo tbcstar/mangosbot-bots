@@ -3,6 +3,7 @@
  */
 
 #include "HasTotemValue.h"
+#include "Playerbot.h"
 
 bool HasTotemValue::Calculate()
 {

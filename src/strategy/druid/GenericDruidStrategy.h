@@ -3,7 +3,10 @@
  */
 
 #include "CombatStrategy.h"
-class GenericDruidStrategy : public CombatStrategy
+
+class PlayerbotAI;
+
+class GenericDruidStrategy : public CombatStrategy
 {
     protected:
         GenericDruidStrategy(PlayerbotAI* botAI);

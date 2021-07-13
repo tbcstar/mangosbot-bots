@@ -3,7 +3,11 @@
  */
 
 #include "QueryItemUsageAction.h"
-struct ItemTemplate;
+
+class Event;
+class PlayerbotAI;
+
+struct ItemTemplate;
 
 class LootRollAction : public QueryItemUsageAction
 {

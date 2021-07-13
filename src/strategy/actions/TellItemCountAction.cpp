@@ -3,7 +3,9 @@
  */
 
 #include "TellItemCountAction.h"
+#include "Event.h"
 #include "ItemCountValue.h"
+#include "Playerbot.h"
 
 bool TellItemCountAction::Execute(Event event)
 {

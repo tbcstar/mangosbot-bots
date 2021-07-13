@@ -3,7 +3,11 @@
  */
 
 #include "MovementActions.h"
-class ReachAreaTriggerAction : public MovementAction
+
+class Event;
+class PlayerbotAI;
+
+class ReachAreaTriggerAction : public MovementAction
 {
     public:
         ReachAreaTriggerAction(PlayerbotAI* botAI) : MovementAction(botAI, "reach area trigger") { }

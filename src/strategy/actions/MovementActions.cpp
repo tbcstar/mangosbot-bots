@@ -5,11 +5,13 @@
 #include "MovementActions.h"
 #include "MovementGenerator.h"
 #include "TargetedMovementGenerator.h"
+#include "Event.h"
 #include "LastMovementValue.h"
 #include "PositionValue.h"
 #include "Stances.h"
 #include "FleeManager.h"
 #include "LootObjectStack.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 #include "TravelMgr.h"
 #include "TravelNode.h"
@@ -135,7 +137,9 @@ bool MovementAction::MoveTo(uint32 mapId, float x, float y, float z, bool idle, 
 
     float minDist = sPlayerbotAIConfig->targetPosRecalcDistance; //Minium distance a bot should move.
     float maxDist = sPlayerbotAIConfig->reactDistance;           //Maxium distance a bot can move in one single action.
-    bool generatePath = !bot->IsFlying() && !bot->HasUnitMovementFlag(MOVEMENTFLAG_SWIMMING) && !bot->IsInWater() && !bot->IsUnderWater();
+
+
+    bool generatePath = !bot->IsFlying() && !bot->HasUnitMovementFlag(MOVEMENTFLAG_SWIMMING) && !bot->IsInWater() && !bot->IsUnderWater();
     if (generatePath)
     {
         z += CONTACT_DISTANCE;

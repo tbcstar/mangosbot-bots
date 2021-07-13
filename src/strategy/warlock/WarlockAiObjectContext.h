@@ -3,7 +3,10 @@
  */
 
 #include "AiObjectContext.h"
-class WarlockAiObjectContext : public AiObjectContext
+
+class PlayerbotAI;
+
+class WarlockAiObjectContext : public AiObjectContext
 {
     public:
         WarlockAiObjectContext(PlayerbotAI* botAI);

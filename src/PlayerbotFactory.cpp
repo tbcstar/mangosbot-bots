@@ -8,6 +8,7 @@
 #include "ArenaTeam.h"
 #include "GuildMgr.h"
 #include "MapManager.h"
+#include "Playerbot.h"
 #include "PlayerbotDbStore.h"
 #include "RandomItemMgr.h"
 #include "RandomPlayerbotFactory.h"
@@ -1553,7 +1554,9 @@ void PlayerbotFactory::InitAvailableSpells()
 		}
     }
 }
-void PlayerbotFactory::InitSpecialSpells()
+
+
+void PlayerbotFactory::InitSpecialSpells()
 {
     for (std::vector<uint32>::iterator i = sPlayerbotAIConfig->randomBotSpellIds.begin(); i != sPlayerbotAIConfig->randomBotSpellIds.end(); ++i)
     {

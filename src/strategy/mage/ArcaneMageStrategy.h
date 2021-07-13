@@ -3,7 +3,10 @@
  */
 
 #include "GenericMageStrategy.h"
-class ArcaneMageStrategy : public GenericMageStrategy
+
+class PlayerbotAI;
+
+class ArcaneMageStrategy : public GenericMageStrategy
 {
     public:
         ArcaneMageStrategy(PlayerbotAI* botAI);

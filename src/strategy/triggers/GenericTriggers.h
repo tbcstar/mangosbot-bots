@@ -5,7 +5,11 @@
 #include "RangeTriggers.h"
 #include "HealthTriggers.h"
 #include "Trigger.h"
-#define BUFF_TRIGGER(clazz, spell, action) \
+
+class PlayerbotAI;
+class Unit;
+
+#define BUFF_TRIGGER(clazz, spell, action) \
 class clazz : public BuffTrigger \
 { \
     public: \

@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class TellReputationAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class TellReputationAction : public Action
 {
     public:
         TellReputationAction(PlayerbotAI* botAI) : Action(botAI, "reputation") { }

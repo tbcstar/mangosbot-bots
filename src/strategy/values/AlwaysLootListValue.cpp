@@ -3,6 +3,7 @@
  */
 
 #include "AlwaysLootListValue.h"
+#include "Playerbot.h"
 
 std::string const& AlwaysLootListValue::Save()
 {

@@ -3,6 +3,7 @@
  */
 
 #include "GenericWarlockStrategy.h"
+#include "Playerbot.h"
 
 class GenericWarlockStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

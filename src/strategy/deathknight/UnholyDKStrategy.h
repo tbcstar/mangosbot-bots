@@ -3,7 +3,10 @@
  */
 
 #include "GenericDKStrategy.h"
-class UnholyDKStrategy : public GenericDKStrategy
+
+class PlayerbotAI;
+
+class UnholyDKStrategy : public GenericDKStrategy
 {
     public:
         UnholyDKStrategy(PlayerbotAI* botAI) : GenericDKStrategy(botAI) {}

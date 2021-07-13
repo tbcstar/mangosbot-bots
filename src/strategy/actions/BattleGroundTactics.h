@@ -5,6 +5,8 @@
 #include "MovementActions.h"
 
 class Battleground;
+class Event;
+class PlayerbotAI;
 
 #define SPELL_CAPTURE_BANNER 21651
 

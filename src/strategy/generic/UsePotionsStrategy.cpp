@@ -3,6 +3,7 @@
  */
 
 #include "UsePotionsStrategy.h"
+#include "Playerbot.h"
 
 class UsePotionsStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

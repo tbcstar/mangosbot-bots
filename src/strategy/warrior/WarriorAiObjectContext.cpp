@@ -10,6 +10,7 @@
 #include "WarriorTriggers.h"
 #include "NamedObjectContext.h"
 #include "PullStrategy.h"
+#include "Playerbot.h"
 
 class WarriorStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {
@@ -81,7 +82,9 @@ class WarriorTriggerFactoryInternal : public NamedObjectContext<Trigger>
         static Trigger* SwordAndBoard(PlayerbotAI* botAI) { return new SwordAndBoardTrigger(botAI); }
         static Trigger* shield_bash_on_enemy_healer(PlayerbotAI* botAI) { return new ShieldBashInterruptEnemyHealerSpellTrigger(botAI); }
 };
-class WarriorAiObjectContextInternal : public NamedObjectContext<Action>
+
+
+class WarriorAiObjectContextInternal : public NamedObjectContext<Action>
 {
     public:
         WarriorAiObjectContextInternal()

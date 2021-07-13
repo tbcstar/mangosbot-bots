@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class AutoLearnSpellAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class AutoLearnSpellAction : public Action
 {
     public:
         AutoLearnSpellAction(PlayerbotAI* botAI, std::string const& name = "auto learn spell") : Action(botAI, name) { }

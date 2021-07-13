@@ -3,7 +3,9 @@
  */
 
 #include "TellLosAction.h"
+#include "Event.h"
 #include "ChatHelper.h"
+#include "Playerbot.h"
 
 bool TellLosAction::Execute(Event event)
 {

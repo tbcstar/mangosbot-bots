@@ -4,7 +4,10 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-class SpellCastUsefulValue : public BoolCalculatedValue, public Qualified
+
+class PlayerbotAI;
+
+class SpellCastUsefulValue : public BoolCalculatedValue, public Qualified
 {
 	public:
         SpellCastUsefulValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }

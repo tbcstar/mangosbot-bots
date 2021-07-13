@@ -4,7 +4,12 @@
 
 #include "Action.h"
 #include "ChatHelper.h"
-struct TrainerSpell;
+
+class Creature;
+class Event;
+class PlayerbotAI;
+
+struct TrainerSpell;
 
 class TrainerAction : public Action
 {

@@ -3,10 +3,14 @@
  */
 
 #include "Action.h"
-class AcceptInvitationAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class AcceptInvitationAction : public Action
 {
     public:
         AcceptInvitationAction(PlayerbotAI* botAI) : Action(botAI, "accept invitation") { }
 
-        bool Execute(Event event) override;
+        bool Execute(Event event) override
 };

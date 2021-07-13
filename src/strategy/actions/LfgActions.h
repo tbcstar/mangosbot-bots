@@ -3,7 +3,11 @@
  */
 
 #include "InventoryAction.h"
-class LfgJoinAction : public InventoryAction
+
+class Event;
+class PlayerbotAI;
+
+class LfgJoinAction : public InventoryAction
 {
     public:
         LfgJoinAction(PlayerbotAI* botAI, std::string const& name = "lfg join") : InventoryAction(botAI, name) { }

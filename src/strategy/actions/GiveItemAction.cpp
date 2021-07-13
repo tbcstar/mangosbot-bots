@@ -3,7 +3,9 @@
  */
 
 #include "GiveItemAction.h"
+#include "Event.h"
 #include "ItemCountValue.h"
+#include "Playerbot.h"
 
 std::vector<std::string> split(std::string const&s, char delim);
 

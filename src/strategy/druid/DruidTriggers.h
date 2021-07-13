@@ -3,7 +3,10 @@
  */
 
 #include "GenericTriggers.h"
-class MarkOfTheWildOnPartyTrigger : public BuffOnPartyTrigger
+
+class PlayerbotAI;
+
+class MarkOfTheWildOnPartyTrigger : public BuffOnPartyTrigger
 {
     public:
         MarkOfTheWildOnPartyTrigger(PlayerbotAI* botAI) : BuffOnPartyTrigger(botAI, "mark of the wild", 2) { }

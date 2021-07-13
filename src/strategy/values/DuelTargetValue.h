@@ -3,7 +3,10 @@
  */
 
 #include "TargetValue.h"
-class DuelTargetValue : public TargetValue
+
+class PlayerbotAI;
+
+class DuelTargetValue : public TargetValue
 {
 	public:
         DuelTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) { }

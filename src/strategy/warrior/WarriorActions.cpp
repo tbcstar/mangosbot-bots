@@ -3,6 +3,7 @@
  */
 
 #include "WarriorActions.h"
+#include "Playerbot.h"
 
 bool CastSunderArmorAction::isUseful()
 {

@@ -3,6 +3,7 @@
  */
 
 #include "PartyMemberValue.h"
+#include "Playerbot.h"
 
 Unit* PartyMemberValue::FindPartyMember(std::vector<Player*>* party, FindPlayerPredicate& predicate)
 {

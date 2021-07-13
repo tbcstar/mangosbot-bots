@@ -3,7 +3,11 @@
  */
 
 #include "NearestUnitsValue.h"
-class NearestNonBotPlayersValue : public NearestUnitsValue
+#include "PlayerbotAIConfig.h"
+
+class PlayerbotAI;
+
+class NearestNonBotPlayersValue : public NearestUnitsValue
 {
 	public:
         NearestNonBotPlayersValue(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->grindDistance) : NearestUnitsValue(botAI, "nearest non bot players", range, true) { }

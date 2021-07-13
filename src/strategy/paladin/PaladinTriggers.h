@@ -3,7 +3,10 @@
  */
 
 #include "CureTriggers.h"
-BUFF_TRIGGER(HolyShieldTrigger, "holy shield", "holy shield")
+
+class PlayerbotAI;
+
+BUFF_TRIGGER(HolyShieldTrigger, "holy shield", "holy shield")
 BUFF_TRIGGER(RighteousFuryTrigger, "righteous fury", "righteous fury")
 
 BUFF_TRIGGER(RetributionAuraTrigger, "retribution aura", "retribution aura")

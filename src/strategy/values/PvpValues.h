@@ -3,7 +3,11 @@
  */
 
 #include "Value.h"
-class BgTypeValue : public ManualSetValue<uint32>
+
+class PlayerbotAI;
+class Unit;
+
+class BgTypeValue : public ManualSetValue<uint32>
 {
     public:
         BgTypeValue(PlayerbotAI* botAI) : ManualSetValue<uint32>(botAI, 0, "bg type") { }

@@ -4,7 +4,10 @@
 
 #include "Action.h"
 #include "NamedObjectContext.h"
-class ShadowPriestStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
+
+class PlayerbotAI;
+
+class ShadowPriestStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {
     public:
         ShadowPriestStrategyActionNodeFactory()

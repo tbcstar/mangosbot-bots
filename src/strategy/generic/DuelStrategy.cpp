@@ -3,6 +3,7 @@
  */
 
 #include "DuelStrategy.h"
+#include "Playerbot.h"
 
 void DuelStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

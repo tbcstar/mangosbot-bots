@@ -3,7 +3,11 @@
  */
 
 #include "Chat.h"
+#include "Common.h"
+#include "Event.h"
 #include "PlayerbotAIBase.h"
+#include "PlayerbotAIConfig.h"
+#include "WorldPacket.h"
 
 #include <stack>
 #include <queue>
@@ -11,10 +15,23 @@
 class AiObjectContext;
 class ChatHelper;
 class CompositeChatFilter;
+class Creature;
 class Engine;
 class ExternalEventHelper;
+class Gameobject;
+class Item;
+class ObjectGuid;
+class Player;
+class PlayerbotMgr;
 class PlayerbotSecurity;
+class Spell;
+class SpellInfo;
+class Unit;
+class WorldObject;
 class WorldPosition;
+
+struct CreatureData;
+struct GameObjectData;
 
 enum PlayerbotSecurityLevel : uint32;
 enum StrategyType : uint32;
@@ -166,7 +183,7 @@ enum ActivityType
     ALL_ACTIVITY            = 7
 };
 
-enum BotRoles : uint8
+enum BotRoles
 {
     BOT_ROLE_NONE   = 0x00,
     BOT_ROLE_TANK   = 0x01,
@@ -303,10 +320,10 @@ class PlayerbotAI : public PlayerbotAIBase
         bool AllowActive(ActivityType activityType);
         void SetMaster(Player* master) { master = master; }
         AiObjectContext* GetAiObjectContext() { return aiObjectContext; }
-        ChatHelper* GetChatHelper();
+        ChatHelper* GetChatHelper() { return &chatHelper; }
         bool IsOpposing(Player* player);
         static bool IsOpposing(uint8 race1, uint8 race2);
-        PlayerbotSecurity* GetSecurity();
+        PlayerbotSecurity* GetSecurity() { return &security; }
 
     private:
         void _fillGearScoreData(Player* player, Item* item, std::vector<uint32>* gearScore, uint32& twoHandScore);

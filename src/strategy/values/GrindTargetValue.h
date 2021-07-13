@@ -3,7 +3,11 @@
  */
 
 #include "TargetValue.h"
-class GrindTargetValue : public TargetValue
+
+class PlayerbotAI;
+class Unit;
+
+class GrindTargetValue : public TargetValue
 {
 	public:
         GrindTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) { }

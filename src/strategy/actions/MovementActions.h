@@ -3,7 +3,15 @@
  */
 
 #include "Action.h"
-class MovementAction : public Action
+#include "PlayerbotAIConfig.h"
+
+class Event;
+class Player;
+class PlayerbotAI;
+class Unit;
+class WorldObject;
+
+class MovementAction : public Action
 {
     public:
         MovementAction(PlayerbotAI* botAI, std::string const& name);

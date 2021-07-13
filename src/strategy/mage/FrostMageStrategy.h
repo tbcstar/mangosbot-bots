@@ -3,7 +3,10 @@
  */
 
 #include "GenericMageStrategy.h"
-class FrostMageStrategy : public GenericMageStrategy
+
+class PlayerbotAI;
+
+class FrostMageStrategy : public GenericMageStrategy
 {
     public:
         FrostMageStrategy(PlayerbotAI* botAI);

@@ -3,6 +3,7 @@
  */
 
 #include "RogueComboActions.h"
+#include "Playerbot.h"
 
 bool CastComboAction::isUseful()
 {

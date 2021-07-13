@@ -3,6 +3,7 @@
  */
 
 #include "FeralDruidStrategy.h"
+#include "Playerbot.h"
 
 class FeralDruidStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

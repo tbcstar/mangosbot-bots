@@ -3,6 +3,7 @@
  */
 
 #include "FollowMasterStrategy.h"
+#include "Playerbot.h"
 
 NextAction** FollowMasterStrategy::getDefaultActions()
 {

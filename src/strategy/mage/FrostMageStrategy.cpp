@@ -3,6 +3,7 @@
  */
 
 #include "FrostMageStrategy.h"
+#include "Playerbot.h"
 
 FrostMageStrategy::FrostMageStrategy(PlayerbotAI* botAI) : GenericMageStrategy(botAI)
 {

@@ -3,7 +3,9 @@
  */
 
 #include "StayActions.h"
+#include "Event.h"
 #include "LastMovementValue.h"
+#include "Playerbot.h"
 
 bool StayActionBase::Stay()
 {

@@ -4,7 +4,9 @@
 
 #include "SkipSpellsListAction.h"
 #include "LootAction.h"
+#include "Event.h"
 #include "SkipSpellsListValue.h"
+#include "Playerbot.h"
 
 bool SkipSpellsListAction::Execute(Event event)
 {

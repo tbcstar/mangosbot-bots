@@ -6,6 +6,8 @@
 #include "ArenaTeam.h"
 #include "ArenaTeamMgr.h"
 #include "BattlegroundMgr.h"
+#include "Event.h"
+#include "Playerbot.h"
 #include "PositionValue.h"
 
 bool BGJoinAction::Execute(Event event)
@@ -157,7 +159,9 @@ bool BGJoinAction::gatherArenaTeam(ArenaType type)
 
         member->GetPlayerbotAI()->Reset();
         member->TeleportTo(bot->GetMapId(), bot->GetPositionX(), bot->GetPositionY(), bot->GetPositionZ(), 0);
-        LOG_INFO("playerbots", "Bot #%d <%s>: member of <%s>", member->GetGUIDLow(), member->GetName().c_str(), arenateam->GetName().c_str());
+
+
+        LOG_INFO("playerbots", "Bot #%d <%s>: member of <%s>", member->GetGUIDLow(), member->GetName().c_str(), arenateam->GetName().c_str());
 
         count++;
     }

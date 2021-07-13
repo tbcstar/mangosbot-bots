@@ -3,7 +3,10 @@
  */
 
 #include "GenericSpellActions.h"
-class CastLesserHealingWaveAction : public CastHealingSpellAction
+
+class PlayerbotAI;
+
+class CastLesserHealingWaveAction : public CastHealingSpellAction
 {
     public:
         CastLesserHealingWaveAction(PlayerbotAI* botAI) : CastHealingSpellAction(botAI, "lesser healing wave") { }

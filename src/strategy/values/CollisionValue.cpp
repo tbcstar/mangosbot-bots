@@ -4,6 +4,7 @@
 
 #include "CollisionValue.h"
 #include "GridNotifiers.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 bool CollisionValue::Calculate()

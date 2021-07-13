@@ -6,7 +6,11 @@
 #include "NamedObjectContext.h"
 #include "Value.h"
 #include "InventoryAction.h"
-class InventoryItemValueBase : public InventoryAction
+
+class Event;
+class PlayerbotAI;
+
+class InventoryItemValueBase : public InventoryAction
 {
     public:
         InventoryItemValueBase(PlayerbotAI* botAI) : InventoryAction(botAI, "empty") { }

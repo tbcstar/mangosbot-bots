@@ -3,6 +3,7 @@
  */
 
 #include "CurrentTargetValue.h"
+#include "Playerbot.h"
 
 Unit* CurrentTargetValue::Get()
 {

@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-class RandomBotUpdateAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class RandomBotUpdateAction : public Action
 {
     public:
         RandomBotUpdateAction(PlayerbotAI* botAI) : Action(botAI, "random bot update") { }

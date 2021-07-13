@@ -3,7 +3,10 @@
  */
 
 #include "Strategy.h"
-class SayStrategy : public Strategy
+
+class PlayerbotAI;
+
+class SayStrategy : public Strategy
 {
     public:
         SayStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }

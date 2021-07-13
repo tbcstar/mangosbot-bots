@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-struct TalentEntry;
+
+class Event;
+class PlayerbotAI;
+
+struct TalentEntry;
 struct TalentTabEntry;
 
 #define SORT_BY_DEFAULT 0

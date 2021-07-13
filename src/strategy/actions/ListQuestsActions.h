@@ -3,7 +3,11 @@
  */
 
 #include "Action.h"
-enum QuestListFilter
+
+class Event;
+class PlayerbotAI;
+
+enum QuestListFilter
 {
     QUEST_LIST_FILTER_SUMMARY       = 0,
     QUEST_LIST_FILTER_COMPLETED     = 1,

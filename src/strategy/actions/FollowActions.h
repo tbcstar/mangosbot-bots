@@ -3,7 +3,11 @@
  */
 
 #include "MovementActions.h"
-class FollowAction : public MovementAction
+
+class Event;
+class PlayerbotAI;
+
+class FollowAction : public MovementAction
 {
 	public:
 		FollowAction(PlayerbotAI* botAI) : MovementAction(botAI, "follow") { }

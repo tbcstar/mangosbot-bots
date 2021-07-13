@@ -3,6 +3,7 @@
  */
 
 #include "DKTriggers.h"
+#include "Playerbot.h"
 
 bool DKPresenceTrigger::IsActive()
 {

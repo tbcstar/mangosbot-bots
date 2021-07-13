@@ -4,6 +4,7 @@
 
 #include "LeastHpTargetValue.h"
 #include "AttackersValue.h"
+#include "Playerbot.h"
 
 class FindLeastHpTargetStrategy : public FindNonCcTargetStrategy
 {

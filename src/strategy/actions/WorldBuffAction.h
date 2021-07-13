@@ -3,7 +3,12 @@
  */
 
 #include "Action.h"
-class WorldBuffAction : public Action
+
+class Event;
+class PlayerbotAI;
+class Unit;
+
+class WorldBuffAction : public Action
 {
     public:
         WorldBuffAction(PlayerbotAI* botAI) : Action(botAI, "world buff") { }

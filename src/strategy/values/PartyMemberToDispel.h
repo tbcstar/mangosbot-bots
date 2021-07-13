@@ -4,7 +4,10 @@
 
 #include "PartyMemberValue.h"
 #include "NamedObjectContext.h"
-class PartyMemberToDispel : public PartyMemberValue, public Qualified
+
+class PlayerbotAI;
+
+class PartyMemberToDispel : public PartyMemberValue, public Qualified
 {
 	public:
         PartyMemberToDispel(PlayerbotAI* botAI) : PartyMemberValue(botAI), Qualified() { }

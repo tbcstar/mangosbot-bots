@@ -11,7 +11,10 @@
 #include "HealPaladinStrategy.h"
 #include "TankPaladinStrategy.h"
 #include "NamedObjectContext.h"
-class PaladinStrategyFactoryInternal : public NamedObjectContext<Strategy>
+#include "Playerbot.h"
+
+
+class PaladinStrategyFactoryInternal : public NamedObjectContext<Strategy>
 {
     public:
         PaladinStrategyFactoryInternal()

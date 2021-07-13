@@ -4,7 +4,9 @@
 
 #include "InventoryAction.h"
 
+class Event;
 class FindItemVisitor;
+class PlayerbotAI;
 
 class DestroyItemAction : public InventoryAction
 {

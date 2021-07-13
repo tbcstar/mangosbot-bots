@@ -3,7 +3,11 @@
  */
 
 #include "MovementActions.h"
-class MoveToRpgTargetAction : public MovementAction
+
+class Event;
+class PlayerbotAI;
+
+class MoveToRpgTargetAction : public MovementAction
 {
     public:
         MoveToRpgTargetAction(PlayerbotAI* botAI) : MovementAction(botAI, "move to rpg target") { }

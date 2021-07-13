@@ -4,6 +4,7 @@
 
 #include "ThreatStrategy.h"
 #include "GenericSpellActions.h"
+#include "Playerbot.h"
 
 float ThreatMultiplier::GetValue(Action* action)
 {

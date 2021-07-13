@@ -3,7 +3,13 @@
  */
 
 #include "MovementActions.h"
-class RpgAction : public MovementAction
+
+class Event;
+class ObjectGuid;
+class PlayerbotAI;
+class Unit;
+
+class RpgAction : public MovementAction
 {
     public:
         RpgAction(PlayerbotAI* botAI) : MovementAction(botAI, "rpg") { }

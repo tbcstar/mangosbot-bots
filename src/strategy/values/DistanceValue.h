@@ -4,7 +4,10 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-class DistanceValue : public FloatCalculatedValue, public Qualified
+
+class PlayerbotAI;
+
+class DistanceValue : public FloatCalculatedValue, public Qualified
 {
 	public:
         DistanceValue(PlayerbotAI* botAI) : FloatCalculatedValue(botAI) { }

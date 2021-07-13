@@ -3,6 +3,7 @@
  */
 
 #include "RpgTriggers.h"
+#include "Playerbot.h"
 
 bool NoRpgTargetTrigger::IsActive()
 {

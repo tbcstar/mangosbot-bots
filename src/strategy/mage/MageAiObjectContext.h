@@ -3,7 +3,10 @@
  */
 
 #include "AiObjectContext.h"
-class MageAiObjectContext : public AiObjectContext
+
+class PlayerbotAI;
+
+class MageAiObjectContext : public AiObjectContext
 {
     public:
         MageAiObjectContext(PlayerbotAI* botAI);

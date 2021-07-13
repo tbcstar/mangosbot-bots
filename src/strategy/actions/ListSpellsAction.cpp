@@ -3,6 +3,8 @@
  */
 
 #include "ListSpellsAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 std::map<uint32, SkillLineAbilityEntry const*> ListSpellsAction::skillSpells;
 std::set<uint32> ListSpellsAction::vendorItems;
@@ -100,7 +102,9 @@ bool ListSpellsAction::Execute(Event event)
             filter = ss.size() > 2 ? filter = ss[2] : "";
         }
     }
-    std::string const& ignoreList = ",Opening,Closing,Stuck,Remove Insignia,Opening - No Text,Grovel,Duel,Honorless Target,";
+
+
+    std::string const& ignoreList = ",Opening,Closing,Stuck,Remove Insignia,Opening - No Text,Grovel,Duel,Honorless Target,";
     std::string alreadySeenList = ",";
 
     uint32 minLevel = 0;

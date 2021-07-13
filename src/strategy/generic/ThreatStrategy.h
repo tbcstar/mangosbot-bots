@@ -3,7 +3,10 @@
  */
 
 #include "Strategy.h"
-class ThreatMultiplier : public Multiplier
+
+class PlayerbotAI;
+
+class ThreatMultiplier : public Multiplier
 {
     public:
         ThreatMultiplier(PlayerbotAI* botAI) : Multiplier(botAI, "threat") { }

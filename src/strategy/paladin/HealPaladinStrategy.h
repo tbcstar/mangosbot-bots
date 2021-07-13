@@ -3,7 +3,10 @@
  */
 
 #include "GenericPaladinStrategy.h"
-class HealPaladinStrategy : public GenericPaladinStrategy
+
+class PlayerbotAI;
+
+class HealPaladinStrategy : public GenericPaladinStrategy
 {
     public:
         HealPaladinStrategy(PlayerbotAI* botAI);

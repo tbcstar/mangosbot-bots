@@ -3,6 +3,7 @@
  */
 
 #include "NewPlayerNearbyValue.h"
+#include "Playerbot.h"
 
 ObjectGuid NewPlayerNearbyValue::Calculate()
 {

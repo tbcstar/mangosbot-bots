@@ -3,7 +3,10 @@
  */
 
 #include "TargetValue.h"
-class TankTargetValue : public TargetValue
+
+class PlayerbotAI;
+
+class TankTargetValue : public TargetValue
 {
 	public:
         TankTargetValue(PlayerbotAI* botAI) : TargetValue(botAI) { }

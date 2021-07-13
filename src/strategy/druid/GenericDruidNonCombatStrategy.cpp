@@ -3,6 +3,7 @@
  */
 
 #include "GenericDruidNonCombatStrategy.h"
+#include "Playerbot.h"
 
 class GenericDruidNonCombatStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

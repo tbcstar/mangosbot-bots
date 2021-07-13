@@ -3,7 +3,11 @@
  */
 
 #include "Value.h"
-class NearestGameObjects : public ObjectGuidListCalculatedValue
+#include "PlayerbotAIConfig.h"
+
+class PlayerbotAI;
+
+class NearestGameObjects : public ObjectGuidListCalculatedValue
 {
 	public:
         NearestGameObjects(PlayerbotAI* botAI, float range = sPlayerbotAIConfig->sightDistance, bool ignoreLos = false) :

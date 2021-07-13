@@ -4,7 +4,13 @@
 
 #ifndef _PlayerbotSecurity_H
 #define _PlayerbotSecurity_H
-enum PlayerbotSecurityLevel : uint32
+
+#include "Common.h"
+#include "ObjectGuid.h"
+
+class Player;
+
+enum PlayerbotSecurityLevel : uint32
 {
     PLAYERBOT_SECURITY_DENY_ALL     = 0,
     PLAYERBOT_SECURITY_TALK         = 1,

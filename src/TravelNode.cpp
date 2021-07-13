@@ -5,6 +5,7 @@
 #include "TravelNode.h"
 #include "TravelNodeStore.h"
 #include "PathGenerator.h"
+#include "Playerbot.h"
 
 #include <iomanip>
 #include <regex>
@@ -238,7 +239,9 @@ TravelNodePath* TravelNode::buildPath(TravelNode* endNode, Unit* bot, bool postP
 
     return returnNodePath;
 }
-//Generic routine to remove references to nodes.
+
+
+//Generic routine to remove references to nodes.
 void TravelNode::removeLinkTo(TravelNode* node, bool removePaths)
 {
     if (node) //Unlink this specific node
@@ -361,7 +364,9 @@ void TravelNode::cropUselessLinks()
     //vector<pair<TravelNode*, TravelNode*>> toRemove;
     for (auto& firstLink : getLinks())
     {
-        TravelNode* firstNode = firstLink.first;
+
+
+        TravelNode* firstNode = firstLink.first;
         float firstLength = firstLink.second.getDistance();
         for (auto& secondLink : getLinks())
         {

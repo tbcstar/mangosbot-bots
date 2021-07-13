@@ -4,7 +4,10 @@
 
 #include "NamedObjectContext.h"
 #include "Value.h"
-class IsBehindValue : public BoolCalculatedValue, public Qualified
+
+class PlayerbotAI;
+
+class IsBehindValue : public BoolCalculatedValue, public Qualified
 {
 	public:
         IsBehindValue(PlayerbotAI* botAI) : BoolCalculatedValue(botAI) { }

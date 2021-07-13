@@ -3,7 +3,10 @@
  */
 
 #include "Strategy.h"
-class PaladinBuffManaStrategy : public Strategy
+
+class PlayerbotAI;
+
+class PaladinBuffManaStrategy : public Strategy
 {
     public:
         PaladinBuffManaStrategy(PlayerbotAI* botAI) : Strategy(botAI) { }

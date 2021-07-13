@@ -3,6 +3,7 @@
  */
 
 #include "PlayerbotTextMgr.h"
+#include "Playerbot.h"
 
 void replaceAll(std::string& str, std::string const& from, std::string const& to);
 

@@ -3,7 +3,11 @@
  */
 
 #include "MovementActions.h"
-class ReviveFromCorpseAction : public MovementAction
+
+class Event;
+class PlayerbotAI;
+
+class ReviveFromCorpseAction : public MovementAction
 {
 	public:
 		ReviveFromCorpseAction(PlayerbotAI* botAI) : MovementAction(botAI, "revive from corpse") { }

@@ -3,6 +3,7 @@
  */
 
 #include "DruidTriggers.h"
+#include "Playerbot.h"
 
 bool MarkOfTheWildOnPartyTrigger::IsActive()
 {

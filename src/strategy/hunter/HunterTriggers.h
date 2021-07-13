@@ -3,7 +3,10 @@
  */
 
 #include "GenericTriggers.h"
-BEGIN_TRIGGER(HunterNoStingsActiveTrigger, Trigger)
+
+class PlayerbotAI;
+
+BEGIN_TRIGGER(HunterNoStingsActiveTrigger, Trigger)
 END_TRIGGER()
 
 class HunterAspectOfTheHawkTrigger : public BuffTrigger

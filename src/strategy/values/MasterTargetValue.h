@@ -3,7 +3,11 @@
  */
 
 #include "Value.h"
-class MasterTargetValue : public UnitCalculatedValue
+
+class PlayerbotAI;
+class Unit;
+
+class MasterTargetValue : public UnitCalculatedValue
 {
 	public:
         MasterTargetValue(PlayerbotAI* botAI) : UnitCalculatedValue(botAI) { }

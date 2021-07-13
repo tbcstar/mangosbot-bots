@@ -3,6 +3,7 @@
  */
 
 #include "CureTriggers.h"
+#include "Playerbot.h"
 #include "WorldBuffAction.h""
 
 bool NeedCureTrigger::IsActive()

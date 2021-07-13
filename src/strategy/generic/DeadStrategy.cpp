@@ -3,6 +3,7 @@
  */
 
 #include "DeadStrategy.h"
+#include "Playerbot.h"
 
 void DeadStrategy::InitTriggers(std::vector<TriggerNode*>& triggers)
 {

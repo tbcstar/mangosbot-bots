@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-class LogLevelValue : public ManualSetValue<LogLevel>
+
+class PlayerbotAI;
+
+class LogLevelValue : public ManualSetValue<LogLevel>
 {
 	public:
         LogLevelValue(PlayerbotAI* botAI) : ManualSetValue<LogLevel>(botAI, LOG_LEVEL_DEBUG) { }

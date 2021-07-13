@@ -5,6 +5,9 @@
 #include "Value.h"
 
 class Group;
+class Player;
+class PlayerbotAI;
+class Unit;
 
 class AttackersValue : public ObjectGuidListCalculatedValue
 {

@@ -4,6 +4,7 @@
 
 #include "NearestNpcsValue.h"
 #include "GridNotifiers.h"
+#include "Playerbot.h"
 
 void NearestNpcsValue::FindUnits(std::list<Unit*> &targets)
 {

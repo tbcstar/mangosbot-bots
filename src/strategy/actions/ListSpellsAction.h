@@ -4,7 +4,11 @@
 
 #include "DBCStructure.h"
 #include "InventoryAction.h"
-class ListSpellsAction : public InventoryAction
+
+class Event;
+class PlayerbotAI;
+
+class ListSpellsAction : public InventoryAction
 {
     public:
         ListSpellsAction(PlayerbotAI* botAI) : InventoryAction(botAI, "spells") { }

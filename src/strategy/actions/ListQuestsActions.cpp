@@ -3,6 +3,8 @@
  */
 
 #include "ListQuestsActions.h"
+#include "Event.h"
+#include "Playerbot.h"
 #include "TravelMgr.h"
 
 bool ListQuestsAction::Execute(Event event)

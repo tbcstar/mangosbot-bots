@@ -3,7 +3,10 @@
  */
 
 #include "NonCombatStrategy.h"
-class GuardStrategy : public NonCombatStrategy
+
+class PlayerbotAI;
+
+class GuardStrategy : public NonCombatStrategy
 {
     public:
         GuardStrategy(PlayerbotAI* botAI) : NonCombatStrategy(botAI) { }

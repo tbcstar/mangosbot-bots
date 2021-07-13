@@ -3,6 +3,8 @@
  */
 
 #include "OutfitAction.h"
+#include "Event.h"
+#include "Playerbot.h"
 #include "ItemVisitors.h"
 
 bool OutfitAction::Execute(Event event)

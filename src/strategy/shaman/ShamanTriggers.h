@@ -3,7 +3,10 @@
  */
 
 #include "CureTriggers.h"
-class ShamanWeaponTrigger : public BuffTrigger
+
+class PlayerbotAI;
+
+class ShamanWeaponTrigger : public BuffTrigger
 {
     public:
         ShamanWeaponTrigger(PlayerbotAI* botAI) : BuffTrigger(botAI, "rockbiter weapon", 2) { }

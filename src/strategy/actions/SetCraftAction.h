@@ -5,7 +5,11 @@
 #include "DBCStructure.h"
 #include "Action.h"
 #include "CraftValue.h"
-class SetCraftAction : public Action
+
+class Event;
+class PlayerbotAI;
+
+class SetCraftAction : public Action
 {
     public:
         SetCraftAction(PlayerbotAI* botAI) : Action(botAI, "craft") { }

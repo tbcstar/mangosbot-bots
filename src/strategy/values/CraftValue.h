@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-class CraftData
+
+class PlayerbotAI;
+
+class CraftData
 {
     public:
         CraftData() : itemId(0) { }

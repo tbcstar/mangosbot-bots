@@ -3,7 +3,10 @@
  */
 
 #include "Trigger.h"
-class LfgProposalActiveTrigger : public Trigger
+
+class PlayerbotAI;
+
+class LfgProposalActiveTrigger : public Trigger
 {
     public:
         LfgProposalActiveTrigger(PlayerbotAI* botAI) : Trigger(botAI, "lfg proposal active", 20) { }

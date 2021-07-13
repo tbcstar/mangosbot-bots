@@ -3,7 +3,10 @@
  */
 
 #include "AiObjectContext.h"
-class HunterAiObjectContext : public AiObjectContext
+
+class PlayerbotAI;
+
+class HunterAiObjectContext : public AiObjectContext
 {
     public:
         HunterAiObjectContext(PlayerbotAI* botAI);

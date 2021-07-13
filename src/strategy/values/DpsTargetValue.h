@@ -3,7 +3,10 @@
  */
 
 #include "RtiTargetValue.h"
-class DpsTargetValue : public RtiTargetValue
+
+class PlayerbotAI;
+
+class DpsTargetValue : public RtiTargetValue
 {
 	public:
         DpsTargetValue(PlayerbotAI* botAI) : RtiTargetValue(botAI) { }

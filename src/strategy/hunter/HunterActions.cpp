@@ -3,6 +3,8 @@
  */
 
 #include "HunterActions.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 bool CastSerpentStingAction::isUseful()
 {

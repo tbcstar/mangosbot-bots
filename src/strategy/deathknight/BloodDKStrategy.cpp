@@ -3,6 +3,7 @@
  */
 
 #include "BloodDKStrategy.h"
+#include "Playerbot.h"
 
 class BloodDKStrategyActionNodeFactory : public NamedObjectFactory<ActionNode>
 {

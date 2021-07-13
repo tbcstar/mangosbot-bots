@@ -3,7 +3,11 @@
  */
 
 #include "ChangeStrategyAction.h"
-class SwitchToMeleeAction : public ChangeCombatStrategyAction
+
+class Event;
+class PlayerbotAI;
+
+class SwitchToMeleeAction : public ChangeCombatStrategyAction
 {
     public:
         SwitchToMeleeAction(PlayerbotAI* botAI) : ChangeCombatStrategyAction(botAI, "-ranged,+close") { }

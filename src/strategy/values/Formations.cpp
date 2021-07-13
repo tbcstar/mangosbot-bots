@@ -4,6 +4,8 @@
 
 #include "Formations.h"
 #include "Arrow.h"
+#include "Event.h"
+#include "Playerbot.h"
 #include "ServerFacade.h"
 
 WorldLocation Formation::NullLocation = WorldLocation();

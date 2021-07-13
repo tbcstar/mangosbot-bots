@@ -5,9 +5,12 @@
 #ifndef _GuildTaskMgr_H
 #define _GuildTaskMgr_H
 
+#include "Common.h"
 #include "Transaction.h"
 
 class ChatHandler;
+class Player;
+class Unit;
 
 class GuildTaskMgr
 {

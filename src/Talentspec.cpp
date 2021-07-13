@@ -3,6 +3,8 @@
  */
 
 #include "Talentspec.h"
+#include "Event.h"
+#include "Playerbot.h"
 
 uint32 TalentSpec::TalentListEntry::tabPage() const
 {

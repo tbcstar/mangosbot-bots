@@ -3,7 +3,10 @@
  */
 
 #include "HealPriestStrategy.h"
-class HolyPriestStrategy : public HealPriestStrategy
+
+class PlayerbotAI;
+
+class HolyPriestStrategy : public HealPriestStrategy
 {
     public:
         HolyPriestStrategy(PlayerbotAI* botAI);

@@ -3,7 +3,10 @@
  */
 
 #include "Value.h"
-class ManaSaveLevelValue : public ManualSetValue<double>
+
+class PlayerbotAI;
+
+class ManaSaveLevelValue : public ManualSetValue<double>
 {
 	public:
         ManaSaveLevelValue(PlayerbotAI* botAI) : ManualSetValue<double>(botAI, 1.0, "mana save level") { }

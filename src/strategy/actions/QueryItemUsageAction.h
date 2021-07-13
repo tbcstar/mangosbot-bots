@@ -4,7 +4,9 @@
 
 #include "InventoryAction.h"
 
+class Event;
 class Quest;
+class PlayerbotAI;
 
 struct ItemTemplate;
 struct QuestStatusData;

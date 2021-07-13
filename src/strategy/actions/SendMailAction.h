@@ -3,7 +3,11 @@
  */
 
 #include "InventoryAction.h"
-class SendMailAction : public InventoryAction
+
+class Event;
+class PlayerbotAI;
+
+class SendMailAction : public InventoryAction
 {
     public:
         SendMailAction(PlayerbotAI* botAI) : InventoryAction(botAI, "sendmail") { }
